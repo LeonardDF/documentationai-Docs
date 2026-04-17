@@ -1,0 +1,528 @@
+---
+title: People Data Schema
+---
+
+The people data schema below lists all available fields in a people record.  Note that actual people records may not have every field present.
+
+<ParamField body="address" param-type="text" showLocation="false">
+  The current work address of this person.
+
+  **Example:**
+  ```json
+  "address": "1125 Lancaster Avenue"
+  ```
+</ParamField>
+
+<ParamField body="birthDate" param-type="date" showLocation="false">
+  The full date of birth of the person in `YYYY-MM-DD` format.
+
+  **Example:**
+  ```json
+  "birthDate": "1977-10-02"
+  ```
+</ParamField>
+
+<ParamField body="birthYear" param-type="integer" showLocation="false">
+  The birth year of the person in `YYYY` format.
+
+  **Example:**
+  ```json
+  "birthYear": "1977"
+  ```
+</ParamField>
+
+<ParamField body="businessCategories" param-type="text" showLocation="false">
+  A list of category keywords used for the business the person currently works in. Business Categories for people data can be found [here](/docs/possible-values-for-people-fields).
+
+  **Example:**
+  ```json
+  "businessCategories": ["Advertising Agencies"]
+  ```
+</ParamField>
+
+<ParamField body="businessName" param-type="text" showLocation="false">
+  The current business where this person works.
+
+  **Example:**
+  ```json
+  "businessName": "International Direct Response Inc"
+  ```
+</ParamField>
+
+<ParamField body="city" param-type="text" showLocation="false">
+  The current city where this person works.
+
+  **Example:**
+  ```json
+  "city": "Berwyn"
+  ```
+</ParamField>
+
+<ParamField body="country" param-type="text" showLocation="false">
+  The current country where this person works.
+
+  **Example:**
+  ```json
+  "country": "US"
+  ```
+</ParamField>
+
+<ParamField body="dateAdded" param-type="date" showLocation="false">
+  The date this person was first added to the people database.
+
+  **Example:**
+  ```json
+  "dateAdded": "2017-01-08T19:12:13Z"
+  ```
+</ParamField>
+
+<ParamField body="dateOfDeath" param-type="date" showLocation="false">
+  The date of death of the person.
+
+  **Example:**
+  ```json
+  "dateOfDeath": "2020-07-27T00:00:00Z"
+  ```
+</ParamField>
+
+<ParamField body="dateUpdated" param-type="date" showLocation="false">
+  The most recent date this person was updated or seen by our system.
+
+  **Example:**
+  ```json
+  "dateUpdated": "2017-01-08T19:12:13Z"
+  ```
+</ParamField>
+
+<ParamField body="deceased" param-type="boolean" showLocation="false">
+  The value to determine if the person is currently deseased.
+
+  **Example:**
+  ```json
+  "deceased": true
+  ```
+</ParamField>
+
+<ParamField body="domains" param-type="domain" showLocation="false">
+  A list of each unique domain found in the `sourceURLs` field.
+
+  **Example:**
+  ```json
+  "domains": ["datafiniti.co"]
+  ```
+</ParamField>
+
+<ParamField body="emails" param-type="text" showLocation="false">
+  A list of emails associated with this person.
+
+  **Example:**
+  ```json
+  "emails": ["doug@idronline.net"]
+  ```
+</ParamField>
+
+<ParamField body="firstName" param-type="text" showLocation="false">
+  The person's first name.
+
+  **Example:**
+  ```json
+  "firstName": "Doug"
+  ```
+</ParamField>
+
+<ParamField body="gender" param-type="text" showLocation="false">
+  The person's gender.
+
+  **Example:**
+  ```json
+  "gender": "male"
+  ```
+</ParamField>
+
+<ParamField body="industries" param-type="text" showLocation="false">
+  A list of category keywords used for previous businesses in the person's experience. Industries for people data can be found [here](/docs/possible-values-for-people-fields).
+
+  **Example:**
+  ```json
+  "industries": ["Advertising Agencies"]
+  ```
+</ParamField>
+
+<ParamField body="interests" param-type="text" showLocation="false">
+  The personal interests of the person.
+
+  **Example:**
+  ```json
+  "interests": ["disaster and humanitarian relief", "politics", "human rights", "cooking", "startups"]
+  ```
+</ParamField>
+
+<ParamField body="jobFunction" param-type="text" showLocation="false">
+  The person's current job function.  Job function values can be found [here](/docs/possible-values-for-people-fields).
+
+  **Example:**
+  ```json
+  "jobFunction": "Marketing"
+  ```
+</ParamField>
+
+<ParamField body="jobLevel" param-type="text" showLocation="false">
+  The person's current job level.  Job level values can be found [here](/docs/possible-values-for-people-fields).
+
+  **Example:**
+  ```json
+  "jobLevel": "C-Team"
+  ```
+</ParamField>
+
+<ParamField body="jobSkills" param-type="text" showLocation="false">
+  The person's job-related skills.
+
+  **Example:**
+  ```json
+  "jobSkills": ["enterprise software", "start ups", "monetization", "product management", "agile methodologies"]
+  ```
+</ParamField>
+
+<ParamField body="jobTitle" param-type="text" showLocation="false">
+  The person's current job title.
+
+  **Example:**
+  ```json
+  "jobTitle": "President of New Business Development"
+  ```
+</ParamField>
+
+<ParamField body="keys" param-type="keyword" showLocation="false">
+  A list of internal Datafiniti identifiers for people.  The `keys` field is used to merge raw data from individual sources into the master Datafiniti record.  [Learn more about how this works](https://datafiniti.co).
+
+  **Example:**
+  ```json
+  "keys": ["dougidronlinenet"]
+  ```
+</ParamField>
+
+<ParamField body="lastName" param-type="text" showLocation="false">
+  The person's last name.
+
+  **Example:**
+  ```json
+  "lastName": "Guyer"
+  ```
+</ParamField>
+
+<ParamField body="licenses" param-type="nested" showLocation="false">
+  A list of licenses associated with this person.
+
+  **Example:**
+  ```json
+  "licenses": [{"type": "TREC", "value": "123456"}]
+  ```
+  <Expandable title="Sub-fields">
+    <ParamField body="licenses.type" param-type="text" showLocation="false">
+      The type of license the person value is identified by.
+    </ParamField>
+    <ParamField body="licenses.value" param-type="text" showLocation="false">
+      The string value of the license identified by the type.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="linkedinURL" param-type="keyword" showLocation="false">
+  LinkedIn URL for this person.  [LinkedIn](https://www.linkedin.com/)
+
+  **Example:**
+  ```json
+  "linkedinURL": "https://linkedin.com/in/some-person-7525231"
+  ```
+</ParamField>
+
+<ParamField body="mostRecentProfileImageURL" param-type="text" showLocation="false">
+  The person's most recent professional profile picture on their social network.
+
+  **Example:**
+  ```json
+  "mostRecentProfileImageURL": "https://storage.googleapis.com/upnest1/upload/realtor/1532839254_3e19998c-d18b-4d98-b4d6-a468c70e0e6c.jpeg"
+  ```
+</ParamField>
+
+<ParamField body="mostRecentPropertyPurchaseDate" param-type="date" showLocation="false">
+  The most recent purchase date of the owner of the property.
+
+  **Example:**
+  ```json
+  "mostRecentPropertyPurchaseDate": "2024-12-04T00:00:00.000Z"
+  ```
+</ParamField>
+
+<ParamField body="mostRecentPropertyPurchaseKey" param-type="keyword" showLocation="false">
+  The most recent matching property key to the Datafiniti property database.
+
+  **Example:**
+  ```json
+  "mostRecentPropertyPurchaseKey": "us/az/phoenix/3327n18thave"
+  ```
+</ParamField>
+
+<ParamField body="maxRecentSoldPrice" param-type="float" showLocation="false">
+  The maximum most recently sold price of a property from the broker.
+
+  **Example:**
+  ```json
+  "maxRecentSoldPrice": 700000
+  ```
+</ParamField>
+
+<ParamField body="minRecentSoldPrice" param-type="float" showLocation="false">
+  The minimum most recently sold price of a property from the broker.
+
+  **Example:**
+  ```json
+  "minRecentSoldPrice": 155000
+  ```
+</ParamField>
+
+<ParamField body="numEmployeesMin" param-type="integer" showLocation="false">
+  The minimum number of employees at the business where this person currently works.
+
+  **Example:**
+  ```json
+  "numEmployeesMin": 20
+  ```
+</ParamField>
+
+<ParamField body="numEmployeesMax" param-type="integer" showLocation="false">
+  The maximum number of employees at the business where this person currently works.
+
+  **Example:**
+  ```json
+  "numEmployeesMax": 99
+  ```
+</ParamField>
+
+<ParamField body="personalEmails" param-type="text" showLocation="false">
+  The personal email addresses of the person.
+
+  **Example:**
+  ```json
+  "personalEmails": ["mesheldo@gmail.com"]
+  ```
+</ParamField>
+
+<ParamField body="phoneNumberHighScoreMobile" param-type="text" showLocation="false">
+  The highest scored mobile phone from the phoneNumbers field.
+
+  **Example:**
+  ```json
+  "phoneNumberHighScoreMobile": "+1 602-571-8454"
+  ```
+</ParamField>
+
+<ParamField body="phoneNumberHighScoreMobileScore" param-type="integer" showLocation="false">
+  The highest score amount of a mobile phone from the phoneNumbers field.
+
+  **Example:**
+  ```json
+  "phoneNumberHighScoreMobileScore": 90
+  ```
+</ParamField>
+
+<ParamField body="phoneNumberHighScoreLand" param-type="text" showLocation="false">
+  The highest bdscore land line phone from the phoneNumbers field.
+
+  **Example:**
+  ```json
+  "phoneNumberHighScoreLand": "+1 440-238-1444"
+  ```
+</ParamField>
+
+<ParamField body="phoneNumberHighScoreLandScore" param-type="integer" showLocation="false">
+  The highest score amount of a land line phone from the phoneNumbers field.
+
+  **Example:**
+  ```json
+  "phoneNumberHighScoreLandScore": 100
+  ```
+</ParamField>
+
+<ParamField body="phoneNumbers" param-type="nested" showLocation="false">
+  A list of verified phone numbers where this person can be reached.
+
+  **Example:**
+  ```json
+  {
+    "number": "+1 205-665-7871",
+    "carrier": "BELLSOUTH TELECOMM INC DBA SOUTH CENTRAL BELL TEL",
+    "type": "Land Line",
+    "tested": false,
+    "reachableStatus": false,
+    "bdscore": 70,
+    "lastDateSeen": "2024-04-11T18:37:01.725Z"
+  }
+  ```
+
+  <Expandable title="Sub-fields">
+    <ParamField body="phoneNumbers.bdscore" param-type="float" showLocation="false">
+      0-100 (higher the better) score on how likely the person is to pick up the phone.
+    </ParamField>
+    <ParamField body="phoneNumbers.carrier" param-type="text" showLocation="false">
+      Carrier of the phone number.
+    </ParamField>
+    <ParamField body="phoneNumbers.lastDateSeen" param-type="date" showLocation="false">
+      Last date seen of the phone number.
+    </ParamField>
+    <ParamField body="phoneNumbers.number" param-type="text" showLocation="false">
+      The 10 digit plus country code phone number.
+    </ParamField>
+    <ParamField body="phoneNumbers.reachableStatus" param-type="boolean" showLocation="false">
+      If the person was reachable on this phone number.
+    </ParamField>
+    <ParamField body="phoneNumbers.tested" param-type="boolean" showLocation="false">
+      Tested status of the phone.
+    </ParamField>
+    <ParamField body="phoneNumbers.type" param-type="text" showLocation="false">
+      Land line or mobile phone.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="postalCode" param-type="keyword" showLocation="false">
+  The current postal/zip code where this person works.
+
+  **Example:**
+  ```json
+  "postalCode": "19312-1243"
+  ```
+</ParamField>
+
+<ParamField body="primaryEmail" param-type="text" showLocation="false">
+  The person's current professional email address.
+
+  **Example:**
+  ```json
+  "primaryEmail": "maggie.sheldon@hover.to"
+  ```
+</ParamField>
+
+<ParamField body="professionalEmails" param-type="text" showLocation="false">
+  The person's professional email addresses.
+
+  **Example:**
+  ```json
+  "professionalEmails": ["maggie.sheldon@hover.to", "msheldon@mavenlink.com"]
+  ```
+</ParamField>
+
+<ParamField body="profileImageURLs" param-type="text" showLocation="false">
+  The person's professional profile picture on their social network.
+
+  **Example:**
+  ```json
+  "profileImageURLs": "https://storage.googleapis.com/upnest1/upload/realtor/1532839254_3e19998c-d18b-4d98-b4d6-a468c70e0e6c.jpeg"
+  ```
+</ParamField>
+
+<ParamField body="propertyKeys" param-type="string" showLocation="false">
+  The person's generated key from Datafiniti. Can be used to compare in the property search API endpoint.
+
+  **Example:**
+  ```json
+  "propertyKeys": ["us/tx/sugarland/72grantslkcir"]
+  ```
+</ParamField>
+
+<ParamField body="propertiesOwned" param-type="text" deprecated="true" showLocation="false">
+  This field shows the property keys the person is connected to in Datafiniti's property database.
+
+  Deprecated as of Jan 8th, 2026.
+
+  **Example:**
+  ```json
+  "propertiesOwned": ["us/or/sisters/68885hurtleyrnchrd"]
+  ```
+</ParamField>
+
+<ParamField body="propertiesOwnedHistory" param-type="nested" showLocation="false">
+  A list of properties owned by this person with purchase and sale dates.
+
+  **Example:**
+  ```json
+  [
+    {
+      "propertyKey": "us/az/phoenix/3327n18thave",
+      "datePurchased": "2024-12-04T00:00:00.000Z"
+    },
+    {
+      "propertyKey": "us/az/phoenix/3327n18thave",
+      "dateSold": "2024-12-04T00:00:00.000Z",
+      "datePurchased": "2024-12-04T00:00:00.000Z"
+    }
+  ]
+  ```
+
+  <Expandable title="Sub-fields">
+    <ParamField body="propertiesOwnedHistory.propertyKey" param-type="keyword" showLocation="false">
+      The property data record that corresponds to the homeowner.
+    </ParamField>
+    <ParamField body="propertiesOwnedHistory.datePurchased" param-type="date" showLocation="false">
+      The date the homeowner purchased the property.
+    </ParamField>
+    <ParamField body="propertiesOwnedHistory.dateSold" param-type="date" showLocation="false">
+      The date the property owner sold this property.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="propertiesRepresented" param-type="keyword" showLocation="false">
+  The property the person represents as a broker. Links directly to a key within our property data.
+
+  **Example:**
+  ```json
+  "propertiesRepresented": ["us/ut/ogden/668w4150s"]
+  ```
+</ParamField>
+
+<ParamField body="province" param-type="text" showLocation="false">
+  The current province/state where this person works.
+
+  **Example:**
+  ```json
+  "province": "PA"
+  ```
+</ParamField>
+
+<ParamField body="salesCountAllTime" param-type="integer" showLocation="false">
+  The total count of properties sold by the broker.
+
+  **Example:**
+  ```json
+  "salesCountAllTime": 55
+  ```
+</ParamField>
+
+<ParamField body="salesCountLastYear" param-type="integer" showLocation="false">
+  The total count of properties sold by the broker within the last 365 days.
+
+  **Example:**
+  ```json
+  "salesCountLastYear": 12
+  ```
+</ParamField>
+
+<ParamField body="sourceURLs" param-type="keyword" showLocation="false">
+  A list of URLs used to generate data for this business location.  If `https://datafiniti.co` is used, then the data was sourced from our data partners.
+
+  **Example:**
+  ```json
+  "sourceURLs": ["https://datafiniti.co"]
+  ```
+</ParamField>
+
+<ParamField body="tcpa" param-type="boolean" showLocation="false">
+  A flag indicating whether the person is on the TCPA litigators list.
+
+  **Example:**
+  ```json
+  "tcpa": false
+  ```
+</ParamField>

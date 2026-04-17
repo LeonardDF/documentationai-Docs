@@ -1,0 +1,20 @@
+---
+title: Available Views for Property Data
+---
+
+The `view` parameter in the API determines which fields are returned by your data request and the order in which they're shown.  It also determines if multi-valued fields will flatten or expand their individual elements into multiple entries.
+
+Note that each `view` is available in either `json` or `csv` format.  The `format` parameter you use will determine which one is used.
+
+Available views for property data:
+
+<Columns cols="2">
+  <Card title="properties_all" href="/v3/docs/properties_all" icon="layout-list" horizontal="false">
+    Returns all available property data fields in a flat structure.
+  </Card>
+
+  <Card title="properties_all_nested" href="/v3/docs/properties_all_nested" icon="folder-tree" horizontal="false">
+    Returns all property fields with multi-valued data in nested format.
+  </Card>
+</Columns>
+

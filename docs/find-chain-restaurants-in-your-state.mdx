@@ -1,0 +1,32 @@
+---
+title: Find Franchised Restaurants in Your State
+---
+
+## Introduction
+
+Let's say you're looking for information on Burger Kings from the Business database. For this example we will be searching for all Burger King Restaurants locations in the State of Flordia, that were built after the year 2000.
+
+### Franchise by Name Filter
+
+Since the name has two words in it, you would want to put it in quotes like `name:"Burger King"`. This ensures that Datafiniti processes the name in its entirety, otherwise, you'll get results back that have `Burger` in the name OR `King` in the name.
+
+We will also focus on only location in the state of Florida that were built after the year 2000.
+
+Here is an example through the "Filter Builder":
+
+#### Filter Builder
+
+<Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1775452386525-svsah81h1z-2a59763-image.png?fm=auto&auto=compress%2Cformat" width="1920" height="1080" alt="Screenshot showing filter builder" noCaption />
+
+#### API
+
+Using this code you can paste it into the API tab of the business data page:
+
+country:US AND yearOpened:>2000 AND province:"FL" AND name:"Burger King"
+
+<br />
+
+<Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1775452388078-n8bm1qe9jg-2d33677-image.png?fm=auto&auto=compress%2Cformat" width="1920" height="1080" alt="Screenshot showing api" noCaption />
+
+<br />
+

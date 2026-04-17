@@ -1,0 +1,779 @@
+---
+title: Business Data Schema
+---
+
+The business data schema below lists all available fields in a business record.  Note that actual business records (actually, most of them) may not have every field present.
+
+<ParamField body="address" param-type="text" showLocation="false">
+  The physical street address for this business location.
+
+
+  **Example:**
+  ```json
+  "address": "3382 30th St"
+  ```
+</ParamField>
+
+<ParamField body="careerPageURL" param-type="text" showLocation="false">
+  A URL pointing to the career page for the business.
+
+
+  **Example:**
+  ```json
+  "careerPageURL": "http://www.searocketbistro.com/employment"
+  ```
+</ParamField>
+
+<ParamField body="categories" param-type="text" showLocation="false">
+  A list of category keywords used for this business across multiple sources.
+
+  **Example:**
+  ```json
+  "categories": [
+     "Seafood Restaurant",
+     "Fish & Seafood Retail",
+     "restaurant"
+   ]
+  ```
+</ParamField>
+
+<ParamField body="city" param-type="text" showLocation="false">
+  The city of this business location.
+
+
+  **Example:**
+  ```json
+  "city": "San Diego"
+  ```
+</ParamField>
+
+<ParamField body="claimed" param-type="text" showLocation="false">
+  A list of websites where the business location has been claimed by the business' owner.
+
+  **Example:**
+  ```json
+  "claimed": [
+     "http://yellowpages.com/",
+     "http://foursquare.com/"
+   ]
+  ```
+</ParamField>
+
+<ParamField body="country" param-type="text" showLocation="false">
+  The two-letter country code for the business location's country.
+
+
+  **Example:**
+  ```json
+  "country": "US"
+  ```
+</ParamField>
+
+<ParamField body="cuisines" param-type="text" showLocation="false">
+  A list of cuisines offered by this business location.  This field will only show for restaurants or other eating locations.
+
+  **Example:**
+  ```json
+  "cuisines": [
+     "Seafood Restaurants",
+     "Sandwich Shop",
+     "Seafood, Vegetarian / Vegan, Mediterranean"
+   ]
+  ```
+</ParamField>
+
+<ParamField body="dateAdded" param-type="text" showLocation="false">
+  The date this business was first added to the business database.
+
+
+  **Example:**
+  ```json
+  "dateAdded": "2016-03-24T09:27:02Z"
+  ```
+</ParamField>
+
+<ParamField body="dateUpdated" param-type="text" showLocation="false">
+  The most recent date this business was updated or seen by our system.
+
+
+  **Example:**
+  ```json
+  "dateUpdated": "2017-03-20T20:45:49Z"
+  ```
+</ParamField>
+
+<ParamField body="descriptions" param-type="nested" showLocation="false">
+  A list of descriptions for this business from various sources.  Each description contains:
+
+  **Example:**
+  ```json
+  "descriptions": [
+     {
+       "dateSeen": [
+         "2016-06-18T01:17:41Z"
+       ],
+       "sourceURLs": [
+         "https://www.zagat.com/r/petes-seafood-and-sandwich-san-diego"
+       ],
+       "value": "Sizable made-to-order sandwiches, including lobster rolls, meatball Parmesan heroes and a variety of vegetarian options, are served at this East Coast–style sandwich shop nestled in the heart of North Park."
+     }
+   ]
+  ```
+
+  <Expandable title="Sub-fields">
+    <ParamField body="descriptions.dateSeen" param-type="text" showLocation="false">
+      A list of dates when this description has been seen for this business.
+    </ParamField>
+    <ParamField body="descriptions.sourceURLs" param-type="text" showLocation="false">
+      A list of source URLs where this specific description was seen.
+    </ParamField>
+    <ParamField body="descriptions.value" param-type="text" showLocation="false">
+      A unique description for this business.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="emails" param-type="text" showLocation="false">
+  A list of emails belonging to the business.
+
+  **Example:**
+  ```json
+  "emails": [
+     "elena@searocketbistro.com"
+   ]
+  ```
+</ParamField>
+
+<ParamField body="facebookPageURL" param-type="text" showLocation="false">
+  A URL pointing to the Facebook page for the business.
+
+
+  **Example:**
+  ```json
+  "facebookPageURL": "http://www.facebook.com/pages/Sea-Rocket-Bistro/114213985293774"
+  ```
+</ParamField>
+
+<ParamField body="faxes" param-type="text" showLocation="false">
+  A list of fax numbers for the business.
+
+  **Example:**
+  ```json
+  "faxes": [
+     "3135619486"
+   ]
+  ```
+</ParamField>
+
+<ParamField body="features" param-type="nested" showLocation="false">
+  A list of features associated with this business location.  The feature list can be collected from specific feature sections available on listings for this business.  It can also serve as a catch-all field for miscellaneous characteristics of this business that don't make sense to include as top-level fields.
+  
+   Each feature contains:
+
+  **Example:**
+  ```json
+  "features": [
+     {
+       "key": "attire",
+       "value": [
+         "Casual Dress"
+       ]
+     },
+     {
+       "key": "parking",
+       "value": [
+         "Street Parking",
+         "Valet"
+       ]
+     }
+   ]
+  ```
+
+  <Expandable title="Sub-fields">
+    <ParamField body="features.key" param-type="text" showLocation="false">
+      A label for this feature.
+    </ParamField>
+    <ParamField body="features.value" param-type="text" showLocation="false">
+      A list of possible values for this feature.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="hours" param-type="nested" showLocation="false">
+  The hours of operation for this business location.
+  
+   Each hour object may contain:
+
+  **Example:**
+  ```json
+  "hours": [
+     {
+       "day": "Mon - Fri",
+       "hour": "11:00 am - 9:00 pm"
+     },
+     {
+       "day": "Sat - Sun",
+       "hour": "11:00 am - 10:00 pm"
+     },
+   ]
+  ```
+
+  <Expandable title="Sub-fields">
+    <ParamField body="hours.day" param-type="text" showLocation="false">
+      The day(s) for this hour of operation.
+    </ParamField>
+    <ParamField body="hours.dept" param-type="text" showLocation="false">
+      The department or business unit related to this hour of operation.
+    </ParamField>
+    <ParamField body="hours.hour" param-type="text" showLocation="false">
+      The hours of operation.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="imageURLs" param-type="text" showLocation="false">
+  A list of image URLs associated with this business.
+
+  **Example:**
+  ```json
+  "imageURLs": [
+     "https://irs0.4sqi.net/img/general/200x200/118688231_EmfdW9_8FpBrxsa5WDVektvkubj-XpCW5ln6s6pnClo.jpg",
+     "https://irs0.4sqi.net/img/general/200x200/1556291_gjOF8nnudHh_ICSWXoTs75_FxtcKt25nZtwbqjaHtKQ.jpg",
+   ]
+  ```
+</ParamField>
+
+<ParamField body="isClosed" param-type="text" showLocation="false">
+  A `true` or `false` value for whether or not the business location is closed.
+
+
+  **Example:**
+  ```json
+  "isClosed": "false"
+  ```
+</ParamField>
+
+<ParamField body="keys" param-type="text" showLocation="false">
+  A list of internal Datafiniti identifiers for this business.  The `keys` field is used to merge raw data from individual sources into the master Datafiniti record.  [Learn more about how this works](https://datafiniti.co).
+
+  **Example:**
+  ```json
+  "keys": [
+     "us/ca/sandiego/338230thst/2075732923"
+   ]
+  ```
+</ParamField>
+
+<ParamField body="languagesSpoken" param-type="text" showLocation="false">
+  A list of the languages spoken at this business.
+
+  **Example:**
+  ```json
+  "languagesSpoken: [
+     "English",
+     "Spanish"
+   ]
+  ```
+</ParamField>
+
+<ParamField body="latitude" param-type="text" showLocation="false">
+  The latitude coordinates for this business location.
+
+
+  **Example:**
+  ```json
+  "latitude": "32.740654"
+  ```
+</ParamField>
+
+<ParamField body="longitude" param-type="text" showLocation="false">
+  The longitude coordinates for this business location.
+
+
+  **Example:**
+  ```json
+  "longitude": "-117.129482"
+  ```
+</ParamField>
+
+<ParamField body="menuPageURL" param-type="text" showLocation="false">
+  A URL pointing to the menu for the business.   This field will only show for restaurants or other eating locations.
+
+
+  **Example:**
+  ```json
+  "menuPageURL": "http://www.citysearch.com/profile/menu/648254644"
+  ```
+</ParamField>
+
+<ParamField body="menus" param-type="nested" showLocation="false">
+  A list of menu items offered by the business.  This field will only show for restaurants or other eating locations.
+  
+   Each menu item may include:
+
+  **Example:**
+  ```json
+  "menus": [
+     {
+       "amountMin": 12,
+       "amountMax": 12,
+       "category": "sample menu",
+       "currency": "USD",
+       "dateSeen": [
+         "2017-03-22T01:03:56Z"
+       ],
+       "name": "Fish Carpaccio",
+       "sourceURLs": [
+     "http://www.superpages.com/bp/san-diego-ca/petes-seafood-sandwich-L2615943735.htm"
+       ]
+     },
+     {
+       "amountMin": 7,
+       "amountMax": 7,
+       "category": "sample menu",
+       "currency": "USD",
+       "dateSeen": [
+         "2017-03-22T01:03:56Z"
+       ],
+       "description": "A dense bread pudding recipe served cold with butterscotch sauce",
+       "name": "Seasonal Pumpkin Bread Pudding",
+       "sourceURLs": [
+     "http://www.superpages.com/bp/san-diego-ca/petes-seafood-sandwich-L2615943735.htm"
+       ]
+     }
+   ]
+  ```
+
+  <Expandable title="Sub-fields">
+    <ParamField body="menus.amountMin" param-type="text" showLocation="false">
+      The minimum price value of the item.
+    </ParamField>
+    <ParamField body="menus.amountMax" param-type="text" showLocation="false">
+      The maximum price value of the item.  This is typically the same as amountMin, except in cases where a price range is listed.
+    </ParamField>
+    <ParamField body="menus.category" param-type="text" showLocation="false">
+      The menu section this item belongs to.
+    </ParamField>
+    <ParamField body="menus.currency" param-type="text" showLocation="false">
+      The currency listed for amountMin and amountMax.
+    </ParamField>
+    <ParamField body="menus.dateSeen" param-type="text" showLocation="false">
+      A list of dates when this item was seen.
+    </ParamField>
+    <ParamField body="menus.description" param-type="text" showLocation="false">
+      A description for the item.
+    </ParamField>
+    <ParamField body="menus.name" param-type="text" showLocation="false">
+      The item's name on the menu.
+    </ParamField>
+    <ParamField body="menus.sourceURLs" param-type="text" showLocation="false">
+      A list of URLs where this item was seen.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="name" param-type="text" showLocation="false">
+  The business location's name.
+
+
+  **Example:**
+  ```json
+  "name": "Pete's Seafood & Sandwich"
+  ```
+</ParamField>
+
+<ParamField body="neighborhoods" param-type="text" showLocation="false">
+  A list of neighborhoods where this business is located.  Sometimes an area can belong to multiple neighborhoods, which is why this field is a list.
+
+  **Example:**
+  ```json
+  "neighborhoods": [
+     "North Park, Western San Diego",
+     "North Park"
+   ]
+  ```
+</ParamField>
+
+<ParamField body="numEmployeesMin" param-type="text" showLocation="false">
+  The lower bound on the number of people possibly employed by this business.
+
+
+  **Example:**
+  ```json
+  "numEmployeesMin": "5"
+  ```
+</ParamField>
+
+<ParamField body="numEmployeesMax" param-type="text" showLocation="false">
+  The upper bound on the number of people employed by this business.
+
+
+  **Example:**
+  ```json
+  "numEmployeesMax": "10"
+  ```
+</ParamField>
+
+<ParamField body="numRoom" param-type="text" showLocation="false">
+  The number of rooms available at this business.  This field typically shows for hotels or other similar businesses.
+
+
+  **Example:**
+  ```json
+  "numRoom": 10
+  ```
+</ParamField>
+
+<ParamField body="paymentTypes" param-type="text" showLocation="false">
+  A list of payment options accepted by the business.
+
+  **Example:**
+  ```json
+  "paymentTypes":[
+     "American Express",
+     "Mastercard",
+     "Visa"
+   ]
+  ```
+</ParamField>
+
+<ParamField body="people" param-type="nested" showLocation="false">
+  A list of known people associated with or employed by this business.
+  
+   Each person may contain:
+
+  **Example:**
+  ```json
+  "people": [
+     {
+       "dateSeen": [
+         "2014-08-22T03:48:23Z"
+       ],
+       "name": "Cody Jones",
+       "title": "Owner"
+     },
+     {
+       "dateSeen": [
+         "2014-08-22T03:48:23Z"
+       ],
+       "name": "Chaseee Ewing",
+       "title": "Head Chef"
+     }
+   ]
+  ```
+
+  <Expandable title="Sub-fields">
+    <ParamField body="people.dateSeen" param-type="text" showLocation="false">
+      A list of dates when this person was seen.
+    </ParamField>
+    <ParamField body="people.name" param-type="text" showLocation="false">
+      The person's name.
+    </ParamField>
+    <ParamField body="people.title" param-type="text" showLocation="false">
+      The person's title.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="phones" param-type="text" showLocation="false">
+  A list of phone numbers for the business.
+
+  **Example:**
+  ```json
+  "phones": [
+     "6192558940",
+     "6195734102"
+   ]
+  ```
+</ParamField>
+
+<ParamField body="postalCode" param-type="text" showLocation="false">
+  The postal or zip code of the business' location.
+
+
+  **Example:**
+  ```json
+  "postalCode": "92014"
+  ```
+</ParamField>
+
+<ParamField body="priceRangeCurrency" param-type="text" showLocation="false">
+  The currency associated with the price range fields.
+
+
+  **Example:**
+  ```json
+  "priceRangeCurrency": "USD"
+  ```
+</ParamField>
+
+<ParamField body="priceRangeMin" param-type="text" showLocation="false">
+  The lower bound of the business' price range.  This field is typically used for retail businesses.
+
+
+  **Example:**
+  ```json
+  "priceRangeMin": 25
+  ```
+</ParamField>
+
+<ParamField body="priceRangeMax" param-type="text" showLocation="false">
+  The upper bound of the business' price range.  This field is typically used for retail businesses.
+
+
+  **Example:**
+  ```json
+  "priceRangeMax": 40
+  ```
+</ParamField>
+
+<ParamField body="productsOrServices" param-type="text" showLocation="false">
+  A list of products or services offered by this business.
+
+  **Example:**
+  ```json
+  "productsOrServices": [
+     "Food",
+     "Catering"
+   ]
+  ```
+</ParamField>
+
+<ParamField body="province" param-type="text" showLocation="false">
+  The province or state for this business location.
+
+
+  **Example:**
+  ```json
+  "province": "CA"
+  ```
+</ParamField>
+
+<ParamField body="revenueCurrency" param-type="text" showLocation="false">
+  The currency associated with the revenue fields.
+
+
+  **Example:**
+  ```json
+  "revenueCurrency": "USD"
+  ```
+</ParamField>
+
+<ParamField body="revenueMin" param-type="text" showLocation="false">
+  The minimum known value of the business' annual revenue.
+
+
+  **Example:**
+  ```json
+  "revenueMin": 30000
+  ```
+</ParamField>
+
+<ParamField body="revenueMax" param-type="text" showLocation="false">
+  The maximum known value of the business' annual revenue.
+
+
+  **Example:**
+  ```json
+  "revenueMax": 100000
+  ```
+</ParamField>
+
+<ParamField body="reviews" param-type="nested" showLocation="false">
+  A list of reviews for this business location.
+  
+   Review objects may contain:
+
+  **Example:**
+  ```json
+  "reviews": [
+     {
+       "date": "2016-02-27T00:00:00Z",
+       "dateAdded": "2017-03-20T20:45:49Z",
+       "dateSeen": [
+         "2016-05-17T00:00:00Z",
+         "2016-05-13T00:00:00Z",
+       ],
+       "sourceURLs": [
+       "https://foursquare.com/v/petes-seafood--sandwich/56391bfacd105fac6c403c63"
+       ],
+       "text": "best fried ipswich clams in san diego!  large portions- not just the 6-8 clams you get at other local eateries. great service! i will be back!",
+       "username": "Colleen Alarcon"
+     },
+     {
+       "date": "2016-02-15T00:00:00Z",
+       "dateAdded": "2017-03-20T20:45:49Z",
+       "dateSeen": [
+         "2016-05-17T00:00:00Z",
+         "2016-05-13T00:00:00Z",
+       ],
+       "sourceURLs": [
+  
+  
+     "https://foursquare.com/v/petes-seafood--sandwich/56391bfacd105fac6c403c63"
+       ],
+       "text": "the lobster roll is simply amazing!!!",
+       "username": "P. Chunyi Hsu"
+     }
+   ]
+  ```
+
+  <Expandable title="Sub-fields">
+    <ParamField body="reviews.date" param-type="text" showLocation="false">
+      The date the review was posted.
+    </ParamField>
+    <ParamField body="reviews.dateAdded" param-type="text" showLocation="false">
+      The date the review was added to Datafiniti.
+    </ParamField>
+    <ParamField body="reviews.dateSeen" param-type="text" showLocation="false">
+      A list of dates when the review was seen by Datafiniti.
+    </ParamField>
+    <ParamField body="reviews.doRecommend" param-type="text" showLocation="false">
+      A true/false for whether or not the reviewer recommends the product.
+    </ParamField>
+    <ParamField body="reviews.id" param-type="text" showLocation="false">
+      The website ID associated with this review.
+    </ParamField>
+    <ParamField body="reviews.rating" param-type="text" showLocation="false">
+      A 1 to 5 star value for the review.
+    </ParamField>
+    <ParamField body="reviews.sourceURLs" param-type="text" showLocation="false">
+      A list of URLs where this review was seen.
+    </ParamField>
+    <ParamField body="reviews.text" param-type="text" showLocation="false">
+      The full (or available) text of the review.
+    </ParamField>
+    <ParamField body="reviews.title" param-type="text" showLocation="false">
+      The review's title.
+    </ParamField>
+    <ParamField body="reviews.userCity" param-type="text" showLocation="false">
+      The reviewer's city.
+    </ParamField>
+    <ParamField body="reviews.username" param-type="text" showLocation="false">
+      The reviewer's username.
+    </ParamField>
+    <ParamField body="reviews.userProvince" param-type="text" showLocation="false">
+      The reviewer's province or state.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="rooms" param-type="nested" showLocation="false">
+  A list of room types available at the business' location.  This field is typically associated with hotels and other similar businesses.
+  
+   Room objects may contain:
+
+  **Example:**
+  ```json
+  "rooms": [
+     {
+       "amountMin": 90,
+       "amountMax": 90,
+       "capacity": 3,
+       "currency": "USD",
+       "dateSeen": [
+         "2016-05-04T00:00:00Z"
+       ],
+       "roomType": "Standard Room"
+     },
+     {
+       "amountMin": 119,
+       "amountMax": 119,
+       "capacity": 4,
+       "currency": "USD",
+       "dateSeen": [
+         "2016-05-04T00:00:00Z"
+       ],
+       "roomType": "Superior Room"
+     }
+   ]
+  ```
+
+  <Expandable title="Sub-fields">
+    <ParamField body="rooms.amountMin" param-type="text" showLocation="false">
+      The minimum price value listed for the room.
+    </ParamField>
+    <ParamField body="rooms.amountMax" param-type="text" showLocation="false">
+      The maximum price value listed.
+    </ParamField>
+    <ParamField body="rooms.capacity" param-type="text" showLocation="false">
+      The maximum number of people that can occupy this room.
+    </ParamField>
+    <ParamField body="rooms.currency" param-type="text" showLocation="false">
+      The currency listed for amountMin and amountMax.
+    </ParamField>
+    <ParamField body="rooms.dateSeen" param-type="text" showLocation="false">
+      A list of dates when this room was seen.
+    </ParamField>
+    <ParamField body="rooms.roomType" param-type="text" showLocation="false">
+      A classification for the type of room.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="sic" param-type="text" showLocation="false">
+  The SIC code for the business.  [Learn more about SIC codes](https://en.wikipedia.org/wiki/Standard_Industrial_Classification).
+
+
+  **Example:**
+  ```json
+  "sic": "5610"
+  ```
+</ParamField>
+
+<ParamField body="sourceURLs" param-type="text" showLocation="false">
+  A list of URLs used to generate data for this business location.
+
+  **Example:**
+  ```json
+  "sourceURLs": [
+     "http://www.superpages.com/bp/san-diego-ca/petes-seafood-sandwich-L2615943735.htm",
+     "https://foursquare.com/v/petes-seafood--sandwich/56391bfacd105fac6c403c63",
+     "https://www.zagat.com/r/petes-seafood-and-sandwich-san-diego",
+   ]
+  ```
+</ParamField>
+
+<ParamField body="twitter" param-type="text" showLocation="false">
+  The twitter username for the business.
+
+
+  **Example:**
+  ```json
+  "twitter": "sdpark2park"
+  ```
+</ParamField>
+
+<ParamField body="websites" param-type="text" showLocation="false">
+  A list of websites for the business.
+
+  **Example:**
+  ```json
+  "websites": [
+     "http://www.bostonpetes.com/",
+     "http://www.searocketbistro.com"
+   ]
+  ```
+</ParamField>
+
+<ParamField body="yearIncorporated" param-type="text" showLocation="false">
+  The year the business was incorporated.
+
+
+  **Example:**
+  ```json
+  "yearIncorporated": 2004
+  ```
+</ParamField>
+
+<ParamField body="yearOpened" param-type="text" showLocation="false">
+  The year the business opened.
+
+
+  **Example:**
+  ```json
+  "yearOpened": 2005
+  ```
+</ParamField>
+
+
