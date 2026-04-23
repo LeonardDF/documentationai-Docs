@@ -168,7 +168,7 @@ Within the `records` field, you'll see a single property returned with multiple 
 
 Each property record will have multiple fields associated with it.  You can see a full list of available fields in our [Property Data Schema](/docs/property-data-schema).
 
-## 4. Refine your search
+## 4. Refine Your Search
 
 If you think about the original query we made, you'll realize we didn't really specify we only wanted homes for sale.  There are several other types of properties (e.g., commercial, rentals) that may also be in the data.  Since we only want homes for sale, we should narrow our search appropriately.  Modify your request body to look like this:
 
@@ -200,7 +200,7 @@ Hit "Send" to see the updated results.
 
 If you would like to narrow your search to just exact matches you can place the search term in quotation marks.
 
-## 5. Initiate a download of the data
+## 5. Initiate a Download of the Data
 
 Once we like what we see from the sample matches, it's time to download a larger data set!  To do this, we're going to further modify our request body to look like this:
 
@@ -246,12 +246,12 @@ When you make this API call, you'll see a response similar to:
 We'll explain each of these fields in the next section.
 
 <Callout kind="alert" collapsed="false">
-  **Credit limit monitoring**
+  **Credit Limit Monitoring**
 
   When using the API, you will not receive any warning if you are going past your monthly record limit.  Keep a track on how many records you have left by checking your account.  You are responsible for monitoring your monthly limit. To learn more about your credit limit please review [How Credits Work](/docs/how-credits-work-api).
 </Callout>
 
-## 6. Monitor the status of the download
+## 6. Monitor the Status of the Download
 
 As the download request runs, you can check on its status by using the "Get Download" call in your Postman collection.  Just replace `:id` with the `ID` value you saw in the previous step.
 
@@ -293,7 +293,7 @@ Here's what these fields mean:
 | `num_records`    | The total number of records that will be downloaded.                                                                                                                                                 |
 | `total_cost`     | The number of credits this request has cost you.  Property records only cost 1 credit per record.                                                                                                    |
 
-## 7. Download the result file(s)
+## 7. Download the Result File(s)
 
 Once the download response shows `"status": "completed"`, you can download the data using the URLs in the `results` field.
 
@@ -301,19 +301,19 @@ If you've requested a lot of records (i.e., over 10,000), you may see more than 
 
 To download the result files, copy each `url` value and paste it into your browser.  Your browser will initiate a download to your computer.
 
-## 8. Parse the data
+## 8. Parse the Data
 
 Navigate to the results file URL or you download page [here](https://portal.datafiniti.co/download) and open the file(s) pertaining to your download ID.
 
 <Callout kind="info" collapsed="false">
-  **Json format**
+  **Json Format**
 
   The JSON data will actually be a text file, instead of a single JSON object. Each line in the text file is a JSON object. We format the data this way because most programming languages won't handle parsing the entire data set as a JSON object with their standard system calls very well. Commonly known as NDJSON.
 </Callout>
 
 From here, you'll most likely want to process the data using the programming language of your choice. Our other [Getting Started with Property Data](/docs/getting-started-with-property-data) provide instructions on how to process this data.
 
-### Open the result file(s) in Excel
+### Open the Result File(s) in Excel
 
 If your format was `csv` the download code will save one or more result files to your project folder.  Open one of those files in Excel.  It will look something like:
 
@@ -323,12 +323,12 @@ Using Excel or you preferred data analyzing platform, we can easily count the to
 
 For more use case specific examples please visit our [Use Cases for Property Data](/docs/use-cases-for-property-data).
 
-### Parse the JSON data
+### Parse the JSON Data
 
 The download code will save one or more result files to your project folder.
 
 <Callout kind="info" collapsed="false">
-  **JSON format download**
+  **JSON Format Download**
 
   The JSON data will actually be a text file, instead of a single JSON object. Each line in the text file is a JSON object. We format the data this way because most programming languages won't handle parsing the entire data set as a JSON object with their standard system calls very well. Commonly know as NDJSON
 </Callout>
