@@ -1,5 +1,5 @@
 ---
-title: Property Data with cURL
+title: Property Data With cURL
 ---
 For this guide, we're going to assume you're interested in using Datafiniti's property data to do some marketing analysis on homes in the US.  Let's say you're a data scientist that's been tasked with the following:
 
@@ -17,11 +17,11 @@ For this guide, we're going to assume you're interested in using Datafiniti's pr
 
 Here are the steps we'll take:
 
-## 1. Open your terminal
+## 1. Open Your Terminal
 
 If you want to use cURL to access the Datafiniti API, we're assuming you have access to a standard, Linux-based terminal.  Open a terminal session to get started.
 
-## 2. Get your API token
+## 2. Get Your API Token
 
 The next thing you'll need is your API token.  The API token lets you authenticate with Datafiniti API and tells it who you are, what you have access to, and so on.  Without it, you can't use the API.
 
@@ -43,7 +43,7 @@ For security reasons, your API token will be automatically changed whenever you 
   For security reasons, your API token will be automatically changed whenever you change your password.
 </Callout>
 
-## 3. Run your first search
+## 3. Run Your First Search
 
 The first thing we'll do is do a test search that will give us a sense for what sort of data might be available.  Eventually we'll refine our search so that we get back the most relevant data.
 
@@ -166,7 +166,7 @@ Within the `records` field, you'll see a single property returned with multiple 
 
 Each property record will have multiple fields associated with it.  You can see a full list of available fields in our [Property Data Schema](/docs/property-data-schema).
 
-## 4. Refine your search
+## 4. Refine Your Search
 
 If you think about the original query we made, you'll realize we didn't really specify we only wanted homes for sale.  There are several other types of properties (e.g., commercial, rentals) that may also be in the data.  Since we only want homes for sale, we should narrow our search appropriately.  Modify your request to look like this:
 
@@ -183,7 +183,7 @@ This API call is different in a couple ways:
 3. It changes the `format` to `json` so we can export the data later to a specific format.
 
 <Callout kind="info" collapsed="false">
-  **Formatting your data**
+  **Formatting Your Data**
 
   Please note that the format can be changed to `CSV` as well for ease to import into a spreadsheet
 </Callout>
@@ -192,7 +192,7 @@ Datafiniti lets you construct very refined boolean queries.  If you wanted to do
 
 If you would like to narrow your search to just exact matches you can place the search term in quotation marks.
 
-## 5. Initiate a full download of the data
+## 5. Initiate a Full Download of the Data
 
 Once we like what we see from the sample matches, it's time to download the entire data set!  To do this, we're going to further modify our request to look like the following for each data format
 
@@ -207,7 +207,7 @@ Here's what we changed:
 2. We added `"download": true`.  This tells the API to issue a download request instead of a search request.
 
 <Callout kind="alert" collapsed="false">
-  **Num\_record not being specified**
+  **Num\_Record Not Being Specified**
 
   If num\_records is not specified, ALL of the records matching the query will be downloaded.
 </Callout>
@@ -236,7 +236,7 @@ We'll explain each of these fields in the next section.
   When using the API, you will not receive any warning if you are going past your monthly record limit.  Keep a track on how many records you have left by checking your account.  You are responsible for any overage fees if you go past your monthly limit.
 </Callout>
 
-## 6. Monitor the status of the download
+## 6. Monitor the Status of the Download
 
 As the download request runs, you can check on its status by making a call to the `/downloads/` endpoint like so:
 
@@ -282,7 +282,7 @@ Here's what these fields mean:
 | `num_records`    | The total number of records that will be downloaded.                                                                                                                                                 |
 | `total_cost`     | The number of credits this request has cost you.  Property records only cost 1 credit per record.                                                                                                    |
 
-## 7. Download the result file(s)
+## 7. Download the Result File(s)
 
 Once the download response shows `"status": "completed"`, you can download the data using the URLs in the `results` field.
 
@@ -296,19 +296,19 @@ curl 'https://datafiniti-downloads.s3.amazonaws.com/15/7_1.txt?X-Amz-Algorithm=A
 
 You'll probably want to rename `output.txt` to something specific to this request.
 
-## 8. Parse the data
+## 8. Parse the Data
 
 Navigate to the results file URL or you download page [here](https://portal.datafiniti.co/download) and open the file(s) pertaining to your download ID.
 
 <Callout kind="info" collapsed="false">
-  **Json format**
+  **Json Format**
 
   The JSON data will actually be a text file, instead of a single JSON object. Each line in the text file is a JSON object. We format the data this way because most programming languages won't handle parsing the entire data set as a JSON object with their standard system calls very well. Commonly known as NDJSON.
 </Callout>
 
 From here, you'll most likely want to process the data using the programming language of your choice. Our other [Getting Started with Property Data](/docs/getting-started-with-property-data) provide instructions on how to process this data.
 
-### Open the CSV file(s) in Excel
+### Open the CSV File(s) in Excel
 
 If your format was `csv` the download code will save one or more result files to your project folder.  Open one of those files in Excel.  It will look something like:
 
@@ -318,7 +318,7 @@ Using Excel or you preferred data analyzing platform, we can easily count the to
 
 For more use case specific examples please visit our [Use Cases for Property Data](/docs/use-cases-for-property-data).
 
-### Open the JSON file(s)
+### Open the JSON File(s)
 
 Navigate to the file you downloaded and open it.
 

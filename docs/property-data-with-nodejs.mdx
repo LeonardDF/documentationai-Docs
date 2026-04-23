@@ -15,7 +15,7 @@ For this guide, we're going to assume you're interested in using Datafiniti's pr
 
 Here are the steps we'll take:
 
-## 1. Install the request module for Node
+## 1. Install the Request Module for Node
 
 In your terminal, run the following to install the `request` module for Node:
 
@@ -23,7 +23,7 @@ In your terminal, run the following to install the `request` module for Node:
 npm install request
 ```
 
-## 2. Get your API token
+## 2. Get Your API Token
 
 The next thing you'll need is your API token.  The API token lets you authenticate with Datafiniti API and tells it who you are, what you have access to, and so on.  Without it, you can't use the API.
 
@@ -32,14 +32,14 @@ To get your API token, go the [Datafiniti Web Portal (https://portal.datafiniti.
 For security reasons, your API token will be automatically changed whenever you change your password.
 
 <Callout kind="info">
-  **API_key in code**
+  **API Key in Code**
 
 For the rest of this document, we'll use `AAAXXXXXXXXXXXX` as a substitute example for your actual API token when showing example API calls.
 </Callout>
 
 <br />
 
-## 3. Run your first search
+## 3. Run Your First Search
 
 The first thing we'll do is do a test search that will give us a sense for what sort of data might be available.  Eventually we'll refine our search so that we get back the most relevant data.
 
@@ -257,7 +257,7 @@ Within the `records` field, you'll see a single business returned with multiple 
 
 Each business record will have multiple fields associated with it.  You can see a full list of available fields in our [Property Data Schema](/docs/property-data-schema).
 
-## 4. Refine your search
+## 4. Refine Your Search
 
 If you think about the original query we made, you'll realize we didn't really specify we only wanted homes for sale.  There are several other types of properties (e.g., commercial, rentals) that may also be in the data.  Since we only want homes for sale, we should narrow our search appropriately.  Modify your code to look like this:
 
@@ -318,7 +318,7 @@ Datafiniti lets you construct very refined boolean queries.  If you wanted to do
 
 If you would like to narrow your search to just exact matches you can place the search term in quotation marks.
 
-## 5. Initiate a download of the data
+## 5. Initiate a Download of the Data
 
 Once we like what we see from the sample matches, it's time to download a larger data set!  To do this, we're going to update our code a fair bit (an explanation follows):
 
@@ -413,20 +413,20 @@ If num_records is not specified, ALL of the records matching the query will be d
 
 Since we've handled multiple steps of the download process in this code, we won't go into the details here, but we do recommend you familiarize yourself with those steps.  Checking them out in our [Property Data with Postman](/docs/property-data-with-postman) guide.
 
-## 6. Parse the data
+## 6. Parse the Data
 
-### Open the result file(s) in Excel
+### Open the Result File(s) in Excel
 
 The download code will save one or more result files to your project folder.  Open one of those files in Excel.  It will look something like:
 
 <Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1775452313714-6a82pgruus-b8b08d6f8ae5cdf1c77c8c56b6da899a6c006ce27fb76ddfb795aaf0a4f3b50b-image.png?fm=auto&auto=compress%2Cformat" width="1920" height="1080" alt="Screenshot showing open the result file(s) in excel" noCaption />
 
-### Parse the JSON data
+### Parse the JSON Data
 
 The download code will save one or more result files to your project folder.
 
 <Callout kind="info">
-  **JSON format download**
+  **JSON Format Download**
 
 The JSON data will actually be a text file, instead of a single JSON object. Each line in the text file is a JSON object. We format the data this way because most programming languages won't handle parsing the entire data set as a JSON object with their standard system calls very well. Commonly know as NDJSON
 </Callout>
