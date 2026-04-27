@@ -1185,6 +1185,11 @@
                     "path": "reference/api-status-check",
                     "method": "GET",
                     "openapi": "reference/datafiniti-openapi.json GET /health"
+                  },
+                  {
+                    "title": "API Status Page",
+                    "path": "status.datafiniti.co",
+                    "icon": "arrow-up-right-from-square"
                   }
                 ]
               }
