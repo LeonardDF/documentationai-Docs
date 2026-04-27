@@ -1,12 +1,12 @@
 ---
-title: Creating a custom people view on the fly
+title: Creating a Custom People View on the Fly
 ---
 
 ## Introduction
 
 Many Datafiniti customers are interested in using our people data with only specific fields in the record results of a query. In this guide, we will show you a couple of ways to set up a custom view.
 
-## Setting a view in your People Search API
+## Setting a View in Your People Search API
 
 Whenever you set up your people search API body you can create a view by declaring the fields in the JSON of the body. Let's use the following query as a base for a property search:
 
@@ -71,7 +71,7 @@ Here is an example of the download of this view:
 
 * [Custom People View CSV](https://drive.google.com/file/d/15rnbkt-JobOBwD2nHwYUwZqtRjsLRvXt/view?usp=sharing)
 
-## Creating a custom people view via create view API endpoint
+## Creating a Custom People View via Create View API Endpoint
 
 This method will create a permanent view that you can declare by name in the view of your search body. Using the [https://api.datafiniti.co/v4/views](https://api.datafiniti.co/v4/views) API endpoint you can create a view. We will use the previous fields as our view body. We will name this view `people_simplified`.
 
@@ -161,7 +161,7 @@ Please note you can name the view any string value not currently used. To check 
 </Callout>
 
 <Callout kind="alert">
-  **dataType**
+  **DataType**
 
 Be sure that you declare the correct dataType to the dataType you wish to search. As we need to match the API to the dataType's schema. Learn more about [Property Data Schema](/docs/property-data-schema).
 </Callout>

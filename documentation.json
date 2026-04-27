@@ -388,15 +388,15 @@
                             "path": "docs/available-views-for-people-data"
                           },
                           {
-                            "title": "Default view",
+                            "title": "Default View",
                             "path": "docs/people_all"
                           },
                           {
-                            "title": "Creating a custom people view on the fly",
+                            "title": "Creating a Custom People View on the Fly",
                             "path": "docs/creating-a-custom-people-view-on-the-fly"
                           },
                           {
-                            "title": "Create & save a custom people view",
+                            "title": "Create & Save a Custom People View",
                             "path": "docs/create-save-a-custom-people-view"
                           }
                         ]
@@ -1187,7 +1187,7 @@
                     "openapi": "reference/datafiniti-openapi.json GET /health"
                   },
                   {
-                    "title": "API Status Page",
+                    "title": "API Status",
                     "href": "https://status.datafiniti.co/",
                     "icon": "external-link"
                   }
