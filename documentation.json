@@ -1188,8 +1188,8 @@
                   },
                   {
                     "title": "API Status Page",
-                    "path": "status.datafiniti.co",
-                    "icon": "arrow-up-right-from-square"
+                    "href": "https://status.datafiniti.co/",
+                    "icon": "external-link"
                   }
                 ]
               }
