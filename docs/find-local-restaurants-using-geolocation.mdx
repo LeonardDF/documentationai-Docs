@@ -1,5 +1,5 @@
 ---
-title: Find local restaurants using geoLocation
+title: Find Local Restaurants Using GeoLocation
 ---
 
 ## Introduction
@@ -7,7 +7,7 @@ title: Find local restaurants using geoLocation
 If you're looking to discover restaurants near a specific location, Datafiniti's Business Data API makes it easy with the `geoLocation` field. This guide will walk you through how to structure your queries to find restaurants within a geographic area, and how to refine your results using other helpful fields in the [business data schema](/docs/business-data-schema).
 
 <Callout kind="info">
-  **What is geoLocation?**
+  **What Is geoLocation?**
 
 The geoLocation field allows you to search for businesses within a defined radius of a geographic coordinate. This is especially useful when you're looking for local businesses—like restaurants—near a specific city, address, or GPS coordinate. You can visit here for more information on [Geolocation](/docs/business-geolocation).
 </Callout>
@@ -30,7 +30,7 @@ Let’s say you want to find restaurants within 5 miles of downtown Austin, TX. 
 
 This query tells the API to find businesses classified as "Restaurant" and is located within a 5-mile radius of Austin's center coordinates (-97.7431, 30.2672).
 
-## Search for similar businesses in your area
+## Search For Similar Businesses In Your Area
 
 You can further narrow your search results by combining `geoLocation` with other filters from the [Business Data Schema](). First let’s filter a new category to target "Mexican Restaurant" and "Fast Food" specifically.
 
@@ -1438,7 +1438,7 @@ Example response:
 }
 ```
 
-### Filter by star rating
+### Filter By Star Rating
 
 Now let's find highly rated restaurants nearby based on your our ratings field. We’ll use a range filter to find restaurants with ratings between 4 and 5 points. (any non-point review rating is converted to a 5 point system)
 
@@ -1464,7 +1464,7 @@ You can focus on the `categories` field and match similar types or restaurants b
             ],
 ```
 
-### Filter by menu prices
+### Filter By Menu Prices
 
 The `menus.prices` field to target restaurants in a budget range. You can filter by `menus.amountMax` to infer price ranges from menu item prices.
 
@@ -1476,7 +1476,7 @@ For example, to find lower-cost restaurants with menu items that cost no more th
 }
 ```
 
-## Restaurant market research
+## Restaurant Market Research
 
 You can use the previous records found to compare against other areas in the US. Let’s say you’re doing market research on fast-casual dining options in Los Angeles. Here is an example:
 
