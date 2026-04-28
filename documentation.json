@@ -608,31 +608,31 @@
                             "path": "docs/searching-by-gtin"
                           },
                           {
-                            "title": "Lookup products by brand and model number",
+                            "title": "Lookup Products by Brand and Model Number",
                             "path": "docs/lookup-products-by-brand-and-model-number"
                           },
                           {
-                            "title": "Train LLMs with product descriptions and review",
+                            "title": "Train LLMs with Product Descriptions and Review",
                             "path": "docs/train-llms-with-product-descriptions-and-review"
                           },
                           {
-                            "title": "Pricing analytics for pet food",
+                            "title": "Pricing Analytics for Pet Food",
                             "path": "docs/pricing-analytics-for-pet-food"
                           },
                           {
-                            "title": "Cleanup product data entered by customers",
+                            "title": "Cleanup Product Data Entered by Customers",
                             "path": "docs/cleanup-product-data-entered-by-customers"
                           },
                           {
-                            "title": "Build a database of wines",
+                            "title": "Build a Database of Wines",
                             "path": "docs/build-a-database-of-wines"
                           },
                           {
-                            "title": "Provide personalized pricing recommendations",
+                            "title": "Provide Personalized Pricing Recommendations",
                             "path": "docs/provide-personalized-pricing-recommendations"
                           },
                           {
-                            "title": "Match products against a competitor",
+                            "title": "Match Products Against a Competitor",
                             "path": "docs/match-products-against-a-competitor"
                           },
                           {
