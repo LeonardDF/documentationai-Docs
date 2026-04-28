@@ -1,12 +1,11 @@
 ---
 title: Pricing Analytics for Pet Food
 ---
-
 ## Introduction
 
-Datafiniti provides a robust collecting of pricing data for all sorts of products.  Let's take a look at how to pull data that can be used for pricing intelligence in one specific category, pet food.
+Datafiniti provides a robust c of pricing data for all sorts of products.  Let's take a look at how to pull data that can be used for pricing intelligence in one specific category, pet food.
 
-## Accessing pricing data
+## Accessing Pricing Data
 
 Pricing data is available in each record's `prices` field.  This field will show a complete log of all known prices for a product, along with the timestamp and source of that price.
 
@@ -69,7 +68,7 @@ The products returned by this query will have `prices` arrays, which will look l
 
 Each price object represents the information for a single price amount seen by Datafiniti, along with all dates and sources for when and where that price was seen.
 
-## Finding If the Current Product Is On Sale
+## Finding if the Current Product Is on Sale
 
 By utilizing our `mostRecentPriceIsSale` field you can see if a product is currently list as On Sale. This is a Boolean value. Lets now change the query to search for only pet food that is on sale.
 
@@ -80,13 +79,13 @@ By utilizing our `mostRecentPriceIsSale` field you can see if a product is curre
 }
 ```
 
-<Callout kind="info">
+<Callout kind="info" collapsed="false">
   **mostRecentPriceIsSale**
 
-Please note that all most recent fields are data points "at the time of the API call" and are subject to change over time. If you wish to get frequent updates, then you will need to build that into your logic/code.
+  Please note that all most recent fields are data points "at the time of the API call" and are subject to change over time. If you wish to get frequent updates, then you will need to build that into your logic/code.
 </Callout>
 
-## Generating pricing analytics
+## Generating Pricing Analytics
 
 We can pull the same `prices` array for each of the products matching the query we used originally (or any other query).  Using this collection of pricing data, we can perform a wide variety of analysis to determine what factors determine price for a given product, what the price distribution looks like across a product market segment, and so on.
 
@@ -96,10 +95,10 @@ Datafiniti provides additional metadata to help you segment your analysis.  Use 
 
 Here are example bulk download files of our previous query:
 
-* [Pet Food CSV](https://drive.google.com/file/d/1pZ07aduYb-YfDSgGaqcEp2rz-oy3fZfD/view?usp=share_link)
-* [Pet Food JSON](https://drive.google.com/file/d/1lOaD1GvAugVvUpFDfZkxY1UEItzBWYKN/view?usp=share_link)
+- [Pet Food CSV](https://drive.google.com/file/d/1pZ07aduYb-YfDSgGaqcEp2rz-oy3fZfD/view?usp=share_link)
+
+- [Pet Food JSON](https://drive.google.com/file/d/1lOaD1GvAugVvUpFDfZkxY1UEItzBWYKN/view?usp=share_link)
 
 ### Conclusion
 
-With the knowledge of how to pull records with business-specific categories, you can now generate pricing intelligence reports on specific brands of pet food.
-
+With the knowledge of how to pull records with business-specific categories, you can now generate pricing intelligence reports on specific brands of pet food collection
