@@ -465,7 +465,7 @@
                         "path": "docs/api-product-data"
                       },
                       {
-                        "group": "Getting started with Product Data",
+                        "group": "Getting Started with Product Data",
                         "pages": [
                           {
                             "title": "Getting Started with Product Data",
@@ -566,11 +566,11 @@
                             "path": "docs/product_all"
                           },
                           {
-                            "title": "Creating a custom product view on the fly",
+                            "title": "Creating a Custom Product View on the Fly",
                             "path": "docs/creating-a-custom-product-view-on-the-fly"
                           },
                           {
-                            "title": "Create & save a custom product view",
+                            "title": "Create & Save a Custom Product View",
                             "path": "docs/create-save-a-custom-product-view"
                           }
                         ]

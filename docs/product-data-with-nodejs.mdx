@@ -1,5 +1,5 @@
 ---
-title: Product Data with Node.js
+title: Product Data With Node.js
 ---
 
 For this guide, we're going to assume the following you're interested in using Datafiniti's product data to analyze trends in the women's luxury shoe market.  Let's say you're a data scientist that's been tasked with the following:
@@ -15,7 +15,7 @@ For this guide, we're going to assume the following you're interested in using D
 
 Here are the steps we'll take:
 
-## 1. Install the request module for Node
+## 1. Install the Request Module for Node
 
 In your terminal, run the following to install the `request` module for Node:
 
@@ -23,7 +23,7 @@ In your terminal, run the following to install the `request` module for Node:
 npm install request
 ```
 
-## 2. Get your API token
+## 2. Get Your API Token
 
 The next thing you'll need is your API token.  The API token lets you authenticate with Datafiniti API and tells it who you are, what you have access to, and so on.  Without it, you can't use the API.
 
@@ -37,7 +37,7 @@ For security reasons, your API token will be automatically changed whenever you 
 For the rest of this document, we'll use `AAAXXXXXXXXXXXX` as a substitute example for your actual API token when showing example API calls.
 </Callout>
 
-## 3. Run your first search
+## 3. Run Your First Search
 
 The first thing we'll do is do write some code that will run a test search.  This test search will give us a sense for what sort of data might be available.  Eventually we'll refine our search so that we get back the most relevant data.
 
@@ -151,7 +151,7 @@ Within the `records` field, you'll see a single product returned with multiple f
 
 Each product record will have multiple fields associated with it.  You can see a full list of available fields in our [Product Data Schema](/docs/product-data-schema).
 
-## 4. Refine your search
+## 4. Refine Your Search
 
 If you take a look at the sample record shown above, you'll notice that it's not actually a pair of shoes.  It's actually a shirt.  It was returned as a match because its category keywords included `Clothing, Shoes & Jewelry`.  If we downloaded all matching records, we would find several products that really are shoes, but we'd also find other products like this one, which aren't.
 
@@ -255,7 +255,7 @@ request(request_options, function(error, response, body) {
 
 The above query will only return products with the exact name of Apple Iphone 10.
 
-## 5. Initiate a download of the data
+## 5. Initiate a Download of the Data
 
 Once we like what we see from the sample matches, it's time to download a larger data set!  To do this, we're going to update our code a fair bit (an explanation follows):
 
@@ -355,15 +355,15 @@ Since we've handled multiple steps of the download process in this code, we won'
 When using the API, you will not receive any warning if you are going past your monthly record limit.  Keep a track on how many records you have left by checking your account.  You are responsible for monitoring your monthly limit. To learn more about your credit limit please review [How Credits Work](/docs/how-credits-work-api).
 </Callout>
 
-## 6. Parse the data
+## 6. Parse the Data
 
-### Open the result file(s) in Excel
+### Open the Result File(s) in Excel
 
 The download code will save one or more result files to your project folder.  Open one of those files in Excel.  It will look something like:
 
 <Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1775452313714-6a82pgruus-b8b08d6f8ae5cdf1c77c8c56b6da899a6c006ce27fb76ddfb795aaf0a4f3b50b-image.png?fm=auto&auto=compress%2Cformat" width="1920" height="1080" alt="Screenshot showing open the result file(s) in excel" noCaption />
 
-### Parse the JSON data
+### Parse the JSON Data
 
 The download code will save one or more result files to your project folder.
 

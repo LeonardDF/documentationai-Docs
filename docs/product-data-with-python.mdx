@@ -1,14 +1,14 @@
 ---
-title: Product Data with Python
+title: Product Data With Python
 ---
 
-For this guide, we're going to assume you're interested in using Datafiniti's product data to analyze trends in the women's luxury shoe market. Let's say you're a data scientist that's been tasked with the following:
+For this guide, we're going to assume you're interested in using Datafiniti's product data to analyze trends in the Women's Luxury Shoe Market. Let's say you're a data scientist that's been tasked with the following:
 
 1. Determine the average price of each brand.
 2. Sort the data by brand.
 3. Collect pricing data on women's luxury shoes from multiple online retailers.
 
-**Your environment and data needs:**
+**Your Environment and Data Needs:**
 
 1. You want to work with CSV or JSON data.
 2. You're working with Python.
@@ -21,7 +21,7 @@ Here are the steps we'll take:
 Note that we are using Python 3 for the examples below. Any 3.x version should work for this guide. You can always check your version via your python terminal via `python --version`.
 </Callout>
 
-## 1. Install the requests module for Python
+## 1. Install the Requests Module for Python
 
 In your terminal, run the following to install the `requests` module for Python:
 
@@ -29,14 +29,14 @@ In your terminal, run the following to install the `requests` module for Python:
 pip3 install requests
 ```
 
-## 2. Get your API token
+## 2. Get Your API Token
 
 The next thing you'll need is your API token. The API token lets you authenticate with Datafiniti API and tells it who you are, what you have access to, and so on. Without it, you can't use the API.
 
 To get your API token, go the [Datafiniti Web Portal](https://portal.datafiniti.co/settings/api), login, and click on "Copy Token". Your API token will be a long string of letters and numbers. Store it somewhere you can easily reference.
 
 <Callout kind="alert">
-  **API token reset**
+  **API Token Reset**
 
 For security reasons, your API token will be automatically changed whenever you change your password.
 </Callout>
@@ -47,7 +47,7 @@ For security reasons, your API token will be automatically changed whenever you 
 For the rest of this document, we'll use `AAAXXXXXXXXXXXX` as a substitute example for your actual API token when showing example API calls.
 </Callout>
 
-## 3. Run your first search
+## 3. Run Your First Search
 
 The first thing we'll do is write some code that will run a test search. This test search will give us a sense for what sort of data might be available. Eventually we'll refine our search so that we get back the most relevant data.
 
@@ -150,7 +150,7 @@ Within the `records` field, you'll see a single product returned with multiple f
 
 Each product record will have multiple fields associated with it. You can see a full list of available fields in our [Product Data Schema](/docs/product-data-schema).
 
-## 4. Refine your search
+## 4. Refine Your Search
 
 If you take a look at the sample record shown above, you'll notice that it's not actually a pair of shoes. It's actually a shirt. It was returned as a match because its category keywords included `Clothing, Shoes & Jewelry`. If we downloaded all matching records, we would find several products that really are shoes, but we'd also find other products like this one, which aren't.
 
@@ -238,7 +238,7 @@ else:
 
 The above query will only return products with the exact name of Apple Iphone 10.
 
-## 5. Initiate a download of the data
+## 5. Initiate a Download of the Data
 
 Once we like what we see from the sample matches, it's time to download a larger data set! To do this, we're going to update our code a fair bit (an explanation follows):
 
@@ -314,13 +314,13 @@ If num_records is not specified, ALL of the records matching the query will be d
 
 Since we've handled multiple steps of the download process in this code, we won't go into the details here, but we do recommend you familiarize yourself with those steps. Checking them out in our [Product Data with Postman and JSON](/docs/product-data-with-postman-json) guide.
 
-## 6. Parse the JSON data
+## 6. Parse the JSON Data
 
-### Open the result file(s) in Excel
+### Open the Result File(s) in Excel
 
 The download code will save one or more result files to your project folder. Open one of those files in Excel. It will look something like:
 
-### Parse the JSON data
+### Parse the JSON Data
 
 The download code will save one or more result files to your project folder.
 
