@@ -1206,6 +1206,10 @@
                     "group": "2026",
                     "pages": [
                       {
+                        "title": "May 2026",
+                        "path": "may-2026"
+                      },
+                      {
                         "title": "March 2026",
                         "path": "changelog/2026/202603-data-release-log"
                       },
