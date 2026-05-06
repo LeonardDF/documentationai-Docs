@@ -4,6 +4,499 @@ title: Property Data Schema
 
 The property data schema below lists all available fields in a property record. Note that actual property records (actually, most of them) may not have every field present.
 
+## Property Details
+
+<ParamField body="address" param-type="text" showLocation="false">
+  The physical street address for this property.
+
+
+  **Example:**
+  ```json
+  "address": "7206 Walling Ln"
+  ```
+</ParamField>
+
+<ParamField body="appliances" param-type="text" showLocation="false">
+  The appliances included with the property.
+
+
+  **Example:**
+  ```json
+  "appliances": ["Cooktop","Dryer","Dishwasher","Microwave","Refrigerator","Washer"]
+  ```
+</ParamField>
+
+<ParamField body="architecturalStyles" param-type="text" showLocation="false">
+  The architectural style of the property.
+
+
+  **Example:**
+  ```json
+  "architecturalStyles": ["Ranch","Bungalow"]
+  ```
+</ParamField>
+
+<ParamField body="buildingName" param-type="text" showLocation="false">
+  The name of the building where this property is located. This field is specific to apartments, condos, and similar property types.
+
+
+  **Example:**
+  ```json
+  "buildingName": "Castle Beach Club"
+  ```
+</ParamField>
+
+<ParamField body="categories" param-type="text" showLocation="false">
+  A list of category keywords used for this property across multiple sources.
+
+
+  **Example:**
+  ```json
+  "categories": ["Single family residence", "farming"]
+  ```
+</ParamField>
+
+<ParamField body="city" param-type="text" showLocation="false">
+  The city where the property is located.
+
+
+  **Example:**
+  ```json
+  "city": "Dallas"
+  ```
+</ParamField>
+
+<ParamField body="country" param-type="text" showLocation="false">
+  The two-letter country code for the property location's country.
+
+
+  **Example:**
+  ```json
+  "country": "US"
+  ```
+</ParamField>
+
+<ParamField body="descriptions" param-type="nested" showLocation="false">
+  A list of descriptions for this property from various sources. Each description contains:
+
+  **Example:**
+  ```json
+  "descriptions": [
+      {
+        "dateSeen": "2016-08-07T18:07:05Z",
+        "value": "charming starter home priced to sell. full finished basement with bath and with separate entrance."
+      }
+    ]
+  ```
+
+  <Expandable title="Sub-fields">
+    <ParamField body="descriptions.dateSeen" param-type="date" showLocation="false">
+      The date when this description has been seen for this property.
+    </ParamField>
+    <ParamField body="descriptions.value" param-type="text" showLocation="false">
+      A unique description for this property.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="exteriorConstruction" param-type="text" showLocation="false">
+  A list of all the exterior construction of the property.
+
+
+  **Example:**
+  ```json
+  "exteriorConstruction": ["brick","wood paneling"]
+  ```
+</ParamField>
+
+<ParamField body="exteriorFeatures" param-type="text" showLocation="false">
+  The exterior features the property offers.
+
+
+  **Example:**
+  ```json
+  "exteriorFeatures": ["Storm Shutters","Breezeway","Pool"]
+  ```
+</ParamField>
+
+<ParamField body="features" param-type="nested" showLocation="false">
+  A list of features associated with this property. The feature list can be collected from specific feature sections available on listings for this property. It can also serve as a catch-all field for miscellaneous characteristics of this property that don't make sense to include as top-level fields.
+  
+  Each feature contains:
+
+
+  **Example:**
+  ```json
+  "features": [
+      {
+        "key": "Community District",
+        "replace": "true",
+        "value": [
+          "318"
+        ]
+      }
+    ]
+  ```
+  <Expandable title="Sub-fields">
+    <ParamField body="features.key" param-type="text" showLocation="false">
+      A label for this feature.
+    </ParamField>
+    <ParamField body="features.replace" param-type="boolean" showLocation="false">
+      Flag indicating value field is replaced versus appended.
+    </ParamField>
+    <ParamField body="features.value" param-type="text" showLocation="false">
+      A list of possible values for this feature.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="floorPlans" param-type="nested" showLocation="false">
+  A list of floorplans associated with the property
+
+  **Example:**
+  ```json
+  "floorPlans": [
+      {
+        "name": "2x2",
+        "type": "2 beds",
+        "numBedrooms": 2,
+        "numBathrooms": 2,
+        "floorSize": "960 sqft"
+      }
+    ]
+  ```
+
+  <Expandable title="Sub-fields">
+    <ParamField body="floorPlans.floorSize" param-type="text" showLocation="false">
+      The floor size of the floor plan being referenced.
+    </ParamField>
+    <ParamField body="floorPlans.name" param-type="text" showLocation="false">
+      The name of the floor plan being referenced.
+    </ParamField>
+    <ParamField body="floorPlans.numBathrooms" param-type="integer" showLocation="false">
+      The number of bathrooms in the floor plan.
+    </ParamField>
+    <ParamField body="floorPlans.numBedrooms" param-type="integer" showLocation="false">
+      The number of bedrooms in the floor plan.
+    </ParamField>
+    <ParamField body="floorPlans.type" param-type="text" showLocation="false">
+      the type of floor plan classified by the property.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="floorSizeUnit" param-type="keyword" showLocation="false">
+  The units of measurement for `floorSize`.
+
+
+  **Example:**
+  ```json
+  "floorSizeUnit": "Sq. ft"
+  ```
+</ParamField>
+
+<ParamField body="floorSizeValue" param-type="float" showLocation="false">
+  The size of the walkable area of the property. For apartments and condos, this is the size of the property. For homes and buildings, this is the combined size of each floor and does not include lot size.
+
+
+  **Example:**
+  ```json
+  "floorSizeValue": 947
+  ```
+</ParamField>
+
+<ParamField body="geoLocation" param-type="geo_shape" showLocation="false">
+  A location value that stores the latitude and longitude in a format that allows geospatial querying.
+  
+  The value is stored as Well-Known Text format, which resembles an (x, y) value, i.e. (longitude latitude).
+
+
+  **Example:**
+  ```json
+  "geoLocation": "POINT (-119.5094 37.229366)"
+  ```
+</ParamField>
+
+<ParamField body="geoQuality" param-type="integer" showLocation="false">
+  The quality of the geoLocation data of the property.
+
+
+  **Example:**
+  ```json
+  "geoQuality": 0
+  ```
+</ParamField>
+
+<ParamField body="hvacTypes" param-type="text" showLocation="false">
+  The type / components of the HVAC system.
+
+
+  **Example:**
+  ```json
+  "hvacTypes": ["Cental Air","Electric","Fans"]
+  ```
+</ParamField>
+
+<ParamField body="imageURLs" param-type="keyword" showLocation="false">
+  A list of image URLs for this property.
+
+
+  **Example:**
+  ```json
+  "imageURLs": ["http://image.rent.com/imgr/61bbc9f535f0e180bc804ac8f4c50067"]
+  ```
+</ParamField>
+
+<ParamField body="isUnit" param-type="boolean" showLocation="false">
+  If the property is a unit number of a complex / building
+
+  **Example:**
+  ```json
+  "isUnit": true
+  ```
+</ParamField>
+
+<ParamField body="latitude" param-type="text" showLocation="false">
+  The latitude coordinates for this property.
+
+
+  **Example:**
+  ```json
+  "latitude": "32.860858"
+  ```
+</ParamField>
+
+<ParamField body="longitude" param-type="text" showLocation="false">
+  The longitude coordinates for this property.
+
+
+  **Example:**
+  ```json
+  "longitude": "-96.735808"
+  ```
+</ParamField>
+
+<ParamField body="lotDepthUnit" param-type="text" showLocation="false">
+  The depth dimension unit of a property's lot.
+
+
+  **Example:**
+  ```json
+  "lotDepthUnit": "ft"
+  ```
+</ParamField>
+
+<ParamField body="lotDepthValue" param-type="float" showLocation="false">
+  The depth dimension of a property's lot.
+
+
+  **Example:**
+  ```json
+  "lotDepthValue": 150
+  ```
+</ParamField>
+
+<ParamField body="lotSizeUnit" param-type="keyword" showLocation="false">
+  The units of measurement for `lotSize`.
+
+
+  **Example:**
+  ```json
+  "lotSizeUnit": "Sq. ft"
+  ```
+</ParamField>
+
+<ParamField body="lotSizeValue" param-type="integer" showLocation="false">
+  The lot size for the property. This is the ground area covered by the property.
+
+
+  **Example:**
+  ```json
+  "lotSizeValue": 2219
+  ```
+</ParamField>
+
+<ParamField body="numBathroom" param-type="float" showLocation="false">
+  The number of bathrooms in this property. Can be a whole number (e.g. "1") or a float (e.g., 1.25).
+
+
+  **Example:**
+  ```json
+  "numBathroom": 1.25
+  ```
+</ParamField>
+
+<ParamField body="numBedroom" param-type="integer" showLocation="false">
+  The number of bedrooms in this property.
+
+
+  **Example:**
+  ```json
+  "numBedroom": 3
+  ```
+</ParamField>
+
+<ParamField body="numFloor" param-type="integer" showLocation="false">
+  The number of floors or stories in this property.
+
+
+  **Example:**
+  ```json
+  "numFloor": 2
+  ```
+</ParamField>
+
+<ParamField body="numParkingSpaces" param-type="integer" showLocation="false">
+  The number of parking spots on the property.
+
+
+  **Example:**
+  ```json
+  "numParkingSpaces": 0
+  ```
+</ParamField>
+
+<ParamField body="numPeople" param-type="integer" showLocation="false">
+  The number of people that can occupy this property.
+
+
+  **Example:**
+  ```json
+  "numPeople": 6
+  ```
+</ParamField>
+
+<ParamField body="numRoom" param-type="integer" showLocation="false">
+  The number of rooms in this property.
+
+
+  **Example:**
+  ```json
+  "numRoom": 2
+  ```
+</ParamField>
+
+<ParamField body="numUnit" param-type="integer" showLocation="false">
+  The number of units available in this property.
+
+
+  **Example:**
+  ```json
+  "numUnit": 1
+  ```
+</ParamField>
+
+<ParamField body="parking" param-type="text" showLocation="false">
+  A list of details regarding parking at this property.
+
+
+  **Example:**
+  ```json
+  "parking": ["Garage"]
+  ```
+</ParamField>
+
+<ParamField body="parkingTypes" param-type="text" showLocation="false">
+  A list of parking types that pertains to the property.
+
+
+  **Example:**
+  ```json
+  "parkingTypes": ["Street", "Attached Garage"]
+  ```
+</ParamField>
+
+<ParamField body="postalCode" param-type="keyword" showLocation="false">
+  The postal or zip code of the property.
+
+
+  **Example:**
+  ```json
+  "postalCode": "75231"
+  ```
+</ParamField>
+
+<ParamField body="propertyType" param-type="text" showLocation="false">
+  A classification for the property type. See possible values [here](/docs/possible-values-for-property-fields).
+
+
+  **Example:**
+  ```json
+  "propertyType": "Condo"
+  ```
+</ParamField>
+
+<ParamField body="province" param-type="text" showLocation="false">
+  The province or state for this property.
+
+
+  **Example:**
+  ```json
+  "province": "TX"
+  ```
+</ParamField>
+
+<ParamField body="roofing" param-type="text" showLocation="false">
+  A list of materials the roof of the property is made from.
+
+
+  **Example:**
+  ```json
+  "roofing": ["Asphalt", "Fiberglass"]
+  ```
+</ParamField>
+
+<ParamField body="roomTypes" param-type="text" showLocation="false">
+  The types of rooms the property has.
+
+
+  **Example:**
+  ```json
+  "roomTypes": ["Laundry","Great","Game"]
+  ```
+</ParamField>
+
+<ParamField body="sewerType" param-type="text" showLocation="false">
+  The type of sewer access of the property. (public, private, and/or septic)
+
+
+  **Example:**
+  ```json
+  "sewerType": ["Private"]
+  ```
+</ParamField>
+
+<ParamField body="subdivision" param-type="string" showLocation="false">
+  Subdivision / neighborhood of the property.
+
+  **Example:**
+  ```json
+  "subdivision": "Crescent Heights Sub"
+  ```
+</ParamField>
+
+<ParamField body="title" param-type="text" showLocation="false">
+  The title text of the property.
+
+
+  **Example:**
+  ```json
+  "title": "Single Family Residence, A-Frame - Snellville, GA"
+  ```
+</ParamField>
+
+<ParamField body="yearBuilt" param-type="integer" showLocation="false">
+  The year the property was built.
+
+
+  **Example:**
+  ```json
+  "yearBuilt": 2021
+  ```
+</ParamField>
+
+## All Other Fields
+
 <ParamField body="absenteeOwner" param-type="nested" showLocation="false">
   The owner of a property who does not reside in or otherwise occupy that property.
 
