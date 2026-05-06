@@ -8,6 +8,8 @@ uThe property data schema below lists all available fields in a property record.
 
 ## Property Details
 
+### Commercial Details
+
 <ParamField body="absenteeOwner" param-type="nested">
   The owner of a property who does not reside in or otherwise occupy that property.
 
@@ -103,35 +105,8 @@ uThe property data schema below lists all available fields in a property record.
   </Expandable>
 </ParamField>
 
-<ParamField body="brandTenant" param-type="string">
-  The branded tenant that is currently associated with the property.
 
-  **Example:**
 
-  ```json
-  "brandTenant": "Bob Evans Restaurants, LLC"
-  ```
-</ParamField>
-
-<ParamField body="brokerCoop" param-type="boolean">
-  True / False whether or not the property is a broker's CoOp.
-
-  **Example:**
-
-  ```json
-  "brokerCoop": true
-  ```
-</ParamField>
-
-<ParamField body="buildingClass" param-type="string">
-  The building class as defined the classification relative to local commercial real estate markets.
-
-  **Example:**
-
-  ```json
-  "buildingClass": "A"
-  ```
-</ParamField>
 
 <ParamField body="buildingName" param-type="text">
   The name of the building where this property is located. This field is specific to apartments, condos, and similar property types.
@@ -143,25 +118,7 @@ uThe property data schema below lists all available fields in a property record.
   ```
 </ParamField>
 
-<ParamField body="capRate" param-type="float">
-  The capitalization rate of the property.
 
-  **Example:**
-
-  ```json
-  "capRate": 8
-  ```
-</ParamField>
-
-<ParamField body="capRateSourceURL" param-type="text">
-  The source url of the capRate.
-
-  **Example:**
-
-  ```json
-  "capRateSourceURL": "https://www.loopnet.com/Listing/5805-Manatee-Ave-W-Bradenton-FL/35241589/"
-  ```
-</ParamField>
 
 <ParamField body="categories" param-type="text">
   A list of category keywords used for this property across multiple sources.
@@ -173,25 +130,7 @@ uThe property data schema below lists all available fields in a property record.
   ```
 </ParamField>
 
-<ParamField body="cbsaCode" param-type="string">
-  The 5 digit cbsa code of the property.
 
-  **Example:**
-
-  ```json
-  "cbsaCode": 02312
-  ```
-</ParamField>
-
-<ParamField body="cbsaName" param-type="text">
-  The cbsa name associated with the property.
-
-  **Example:**
-
-  ```json
-  "cbsaName": "OXNARD-THOUSAND OAKS-VENTURA, CA METROPOLITAN"
-  ```
-</ParamField>
 
 <ParamField body="censusBlock" param-type="string">
   The census block the property is associate to.
@@ -358,35 +297,8 @@ uThe property data schema below lists all available fields in a property record.
   ```
 </ParamField>
 
-<ParamField body="dateAdded" param-type="date">
-  The date this property was first added to the property database.
 
-  **Example:**
 
-  ```json
-  "dateAdded": "2017-01-08T19:12:13Z"
-  ```
-</ParamField>
-
-<ParamField body="dateUpdated" param-type="date">
-  The most recent date this property was updated or seen by our system.
-
-  **Example:**
-
-  ```json
-  "dateUpdated": "2017-01-08T19:12:13Z"
-  ```
-</ParamField>
-
-<ParamField body="daysOnMarket" param-type="integer">
-  The number of days the property has been on market.
-
-  **Example:**
-
-  ```json
-  "daysOnMarket": 3
-  ```
-</ParamField>
 
 <ParamField body="deposits" param-type="nested">
   A list of deposit fees that have been seen for this property. Each deposit contains:
@@ -445,25 +357,7 @@ uThe property data schema below lists all available fields in a property record.
   </Expandable>
 </ParamField>
 
-<ParamField body="domains" param-type="domain">
-  A list of each unique domain found in the sourceURLs field.
 
-  **Example:**
-
-  ```json
-  "domains": ["www.airbnb.com"]
-  ```
-</ParamField>
-
-<ParamField body="effectiveGrossIncome" param-type="integer">
-  The effective gross income of the property.
-
-  **Example:**
-
-  ```json
-  "effectiveGrossIncome": 275352
-  ```
-</ParamField>
 
 <ParamField body="estimatedPrices" param-type="nested">
   A list of price estimates for the property.
@@ -685,25 +579,7 @@ uThe property data schema below lists all available fields in a property record.
   ```
 </ParamField>
 
-<ParamField body="grossRentalIncome" param-type="float">
-  The gross rental income of the property.
 
-  **Example:**
-
-  ```json
-  "grossRentalIncome": 66000
-  ```
-</ParamField>
-
-<ParamField body="groundLease" param-type="boolean">
-  True/False if the property includes a ground lease for the land.
-
-  **Example:**
-
-  ```json
-  "groundLease": false
-  ```
-</ParamField>
 
 <ParamField body="hvacTypes" param-type="text">
   The type / components of the HVAC system.
@@ -735,25 +611,7 @@ uThe property data schema below lists all available fields in a property record.
   ```
 </ParamField>
 
-<ParamField body="investmentType" param-type="text">
-  The investment type relating to the investment strategy or risk level.
 
-  **Example:**
-
-  ```json
-  "investmentType": "Stabilized"
-  ```
-</ParamField>
-
-<ParamField body="investmentTypeSourceURL" param-type="text">
-  The source URL of the investmentType.
-
-  **Example:**
-
-  ```json
-  "investmentTypeSourceURL": "https://www.crexi.com/properties/16266"
-  ```
-</ParamField>
 
 <ParamField body="involuntaryLienJudgement" param-type="nested">
   involuntaryLienJudgement shows if a lien is set against your wishes and is the result of not fulfilling your financial obligations
@@ -800,26 +658,7 @@ uThe property data schema below lists all available fields in a property record.
   ```
 </ParamField>
 
-<ParamField body="keys" param-type="keyword">
-  A list of internal Datafiniti identifiers for this property. The `keys` field is used to merge raw data from individual sources into the master Datafiniti record.
-  [How Property Records Are Merged](/docs/how-property-records-are-merged)
 
-  **Example:**
-
-  ```json
-  "keys": ["us/ca/nhills/9411brightwoodct"]
-  ```
-</ParamField>
-
-<ParamField body="languagesSpoken" param-type="text">
-  A list of the languages spoken at this property.
-
-  **Example:**
-
-  ```json
-  "languagesSpoken": ["French", "English"]
-  ```
-</ParamField>
 
 <ParamField body="latitude" param-type="text">
   The latitude coordinates for this property.
@@ -831,40 +670,7 @@ uThe property data schema below lists all available fields in a property record.
   ```
 </ParamField>
 
-<ParamField body="leasingTerms" param-type="nested">
-  A list of leasing terms that have been associated with this property. Each leasing term will contain:
 
-  **Example:**
-
-  ```json
-  "leasingTerms": [
-      {
-        "dateSeen": "2016-07-30T20:41:01Z",
-        "value": "12 Months"
-      }
-    ]
-  ```
-
-  <Expandable title="Sub-fields" default-open="false">
-    <ParamField body="leasingTerms.dateSeen" param-type="date">
-      The date when this term was seen.
-    </ParamField>
-
-    <ParamField body="leasingTerms.value" param-type="text">
-      The leasing term description.
-    </ParamField>
-  </Expandable>
-</ParamField>
-
-<ParamField body="leaseType" param-type="text">
-  The type of lease
-
-  **Example:**
-
-  ```json
-  "leaseType": "Triple Net"
-  ```
-</ParamField>
 
 <ParamField body="legalDescription" param-type="text">
   The legal description of the property record.
@@ -946,15 +752,6 @@ uThe property data schema below lists all available fields in a property record.
   ```
 </ParamField>
 
-<ParamField body="majorTenants" param-type="string">
-  The major tenants associated with the property.
-
-  **Example:**
-
-  ```json
-  "majorTenants": ["Traffic Planning & Design Inc", "Allentown Brew Works", "Bethlehem Brew Works", "C P Rankin Inc", "Touchpoint Industries, LLC", "One In Allentown"]
-  ```
-</ParamField>
 
 <ParamField body="managedBy" param-type="nested">
   A list of companies or people that have managed this property. Each managedBy object will contain:
@@ -1418,75 +1215,12 @@ uThe property data schema below lists all available fields in a property record.
   ```
 </ParamField>
 
-<ParamField body="msaCode" param-type="string">
-  The msa code of the property.
 
-  **Example:**
 
-  ```json
-  "msaCode": 212312
-  ```
-</ParamField>
 
-<ParamField body="msaName" param-type="text">
-  The msa name of the property.
 
-  **Example:**
 
-  ```json
-  "msaName": "OXNARD-THOUSAND OAKS-VENTURA, CA METROPOLITAN"
-  ```
-</ParamField>
 
-<ParamField body="municipality" param-type="text">
-  The property municipality in regards the county/city.
-
-  **Example:**
-
-  ```json
-  "municipality": "READING TWP"
-  ```
-</ParamField>
-
-<ParamField body="neighborhoods" param-type="text">
-  A list of neighborhoods where this property is located. Sometimes an area can belong to multiple neighborhoods, which is why this field is a list.
-
-  **Example:**
-
-  ```json
-  "neighborhoods": ["Canarsie"]
-  ```
-</ParamField>
-
-<ParamField body="netOperatingIncome" param-type="float">
-  The total revenue a property generates from all sources, such as rent and other fees, minus all operating expenses
-
-  **Example:**
-
-  ```json
-  "netOperatingIncome": 49050
-  ```
-</ParamField>
-
-<ParamField body="netOperatingIncomeSourceURL" param-type="text">
-  The source URL of the net operating income in regards to the property.
-
-  **Example:**
-
-  ```json
-  "netOperatingIncomeSourceURL": "https://deausenrealty.idxbroker.com/idx/details/listing/b004/PAPH2466918/1529-E-Berks-Street-Philadelphia-PA-191"
-  ```
-</ParamField>
-
-<ParamField body="netRentable" param-type="float">
-  The net rentable amount of the commercial property.
-
-  **Example:**
-
-  ```json
-  "netRentable": 34513
-  ```
-</ParamField>
 
 <ParamField body="numBathroom" param-type="float">
   The number of bathrooms in this property. Can be a whole number (e.g. "1") or a float (e.g., 1.25).
@@ -1538,15 +1272,6 @@ uThe property data schema below lists all available fields in a property record.
   ```
 </ParamField>
 
-<ParamField body="numProperties" param-type="integer">
-  The number of commercially available property within the address.
-
-  **Example:**
-
-  ```json
-  "numProperties": 2
-  ```
-</ParamField>
 
 <ParamField body="numRoom" param-type="integer">
   The number of rooms in this property.
@@ -1558,15 +1283,6 @@ uThe property data schema below lists all available fields in a property record.
   ```
 </ParamField>
 
-<ParamField body="numTenants" param-type="integer">
-  The number of active tenants for a commercial property.
-
-  **Example:**
-
-  ```json
-  "numTenants": 2
-  ```
-</ParamField>
 
 <ParamField body="numUnit" param-type="integer">
   The number of units available in this property.
@@ -1578,45 +1294,9 @@ uThe property data schema below lists all available fields in a property record.
   ```
 </ParamField>
 
-<ParamField body="occupancy" param-type="string">
-  The current status of the commercial occupancy of the property.
 
-  **Example:**
 
-  ```json
-  "occupancy": "Vacant"
-  ```
-</ParamField>
 
-<ParamField body="operatingExpenses" param-type="string">
-  The operating expense description of the commercial property.
-
-  **Example:**
-
-  ```json
-  "operatingExpenses": "Fee - Property Management"
-  ```
-</ParamField>
-
-<ParamField body="otherIncome" param-type="float">
-  Other income revenue value of the commercial property.
-
-  **Example:**
-
-  ```json
-  "otherIncome": 14400
-  ```
-</ParamField>
-
-<ParamField body="ownership" param-type="string">
-  The ownership clause / stake of a property for the buyer.
-
-  **Example:**
-
-  ```json
-  "ownership": "Fee Simple"
-  ```
-</ParamField>
 
 <ParamField body="owners" param-type="nested">
   **Example:**
@@ -1832,35 +1512,8 @@ uThe property data schema below lists all available fields in a property record.
   </Expandable>
 </ParamField>
 
-<ParamField body="permits" param-type="boolean">
-  if there is a permit or permitting process adhere to this property.
 
-  **Example:**
 
-  ```json
-  "permits": true
-  ```
-</ParamField>
-
-<ParamField body="petPolicy" param-type="text">
-  The pet policy for the property.
-
-  **Example:**
-
-  ```json
-  "petPolicy": "Pets are not allowed."
-  ```
-</ParamField>
-
-<ParamField body="phones" param-type="keyword">
-  A list of phone numbers for the property.
-
-  **Example:**
-
-  ```json
-  "phones": ["5058982700"]
-  ```
-</ParamField>
 
 <ParamField body="postalCode" param-type="keyword">
   The postal or zip code of the property.
@@ -1982,15 +1635,6 @@ uThe property data schema below lists all available fields in a property record.
   </Expandable>
 </ParamField>
 
-<ParamField body="proFormaNOI" param-type="float">
-  The pro Forma net operating income of the property.
-
-  **Example:**
-
-  ```json
-  "proFormaNOI": 122400
-  ```
-</ParamField>
 
 <ParamField body="propertyTaxes" param-type="nested">
   A list of property taxes that have been seen for this property. Each property tax will include:
@@ -2049,15 +1693,6 @@ uThe property data schema below lists all available fields in a property record.
   ```
 </ParamField>
 
-<ParamField body="rentableSquareFeet" param-type="float">
-  The rentable square footage of space for the rental property.
-
-  **Example:**
-
-  ```json
-  "rentableSquareFeet": 35000
-  ```
-</ParamField>
 
 <ParamField body="rentalStatuses" param-type="nested">
   A list of historical rental statuses. This field is used to indicate when the property is status `For Rent` or `Short-term Rental`.
@@ -2122,71 +1757,7 @@ uThe property data schema below lists all available fields in a property record.
   </Expandable>
 </ParamField>
 
-<ParamField body="rentBumps" param-type="string">
-  The terms of a rentable property on when a rent increase will occur.
 
-  **Example:**
-
-  ```json
-  "rentBumps": "10% Increase Every 5 Years in Term and In Each Option"
-  ```
-</ParamField>
-
-<ParamField body="reviews" param-type="nested">
-  A list of reviews for this property.
-
-  Review objects may contain:
-
-  **Example:**
-
-  ```json
-  "reviews": [
-      {
-        "dateSeen": "2016-08-17T00:00:00Z",
-        "text": "We love this place a lot!",
-        "username": "Yuwei"
-      }
-    ]
-  ```
-
-  <Expandable title="Sub-fields" default-open="false">
-    <ParamField body="reviews.date" param-type="date">
-      The date the review was posted.
-    </ParamField>
-
-    <ParamField body="reviews.dateSeen" param-type="date">
-      The date when the review was seen by Datafiniti.
-    </ParamField>
-
-    <ParamField body="reviews.doRecommend" param-type="boolean">
-      A true/false for whether or not the reviewer recommends the property.
-    </ParamField>
-
-    <ParamField body="reviews.rating" param-type="float">
-      A 1 to 5 star value for the review.
-    </ParamField>
-
-    <ParamField body="reviews.text" param-type="text">
-      The full (or available) text of the review.
-    </ParamField>
-
-    <ParamField body="reviews.title" param-type="text">
-      The review's title.
-    </ParamField>
-
-    <ParamField body="reviews.userCity" param-type="text">
-      The reviewer's city.
-    </ParamField>
-
-    <ParamField body="reviews.username" param-type="text">
-      The reviewer's username.
-    </ParamField>
-
-    <ParamField body="reviews.userProvince" param-type="text">
-      The reviewer's province or state.
-    </ParamField>
-  </Expandable>
-</ParamField>
 
 <ParamField body="roofing" param-type="text">
   A list of materials the roof of the property is made from.
@@ -2208,35 +1779,8 @@ uThe property data schema below lists all available fields in a property record.
   ```
 </ParamField>
 
-<ParamField body="rules" param-type="text">
-  A list of rules for living or staying at this property.
 
-  **Example:**
 
-  ```json
-  "rules": ["No smoking"]
-  ```
-</ParamField>
-
-<ParamField body="saleCondition" param-type="text">
-  The sale condition of a property as per the seller.
-
-  **Example:**
-
-  ```json
-  "saleCondition": "1031 Exchange"
-  ```
-</ParamField>
-
-<ParamField body="saleType" param-type="text">
-  The type of commercial sale of a property.
-
-  **Example:**
-
-  ```json
-  "saleType": "Standard"
-  ```
-</ParamField>
 
 <ParamField body="sewerType" param-type="text">
   The type of sewer access of the property. (public, private, and/or septic)
@@ -2248,62 +1792,6 @@ uThe property data schema below lists all available fields in a property record.
   ```
 </ParamField>
 
-<ParamField body="sourceURLsPerField" param-type="nested">
-  The latest sourceURL for each field that Datafiniti provides in the property data schema.
-
-  **Example:**
-
-  ```json
-  "sourceURLsPerField": [
-      {
-        "field": "country",
-        "sourceURLs": [
-          "https://mcassessor.maricopa.gov/119-16-052"
-        ]
-      },
-      {
-        "field": "mostRecentPriceDomain",
-        "sourceURLs": [
-          "https://mcassessor.maricopa.gov/119-16-052"
-        ]
-      },
-      {
-        "field": "city",
-        "sourceURLs": [
-          "https://mcassessor.maricopa.gov/119-16-052"
-        ]
-      },
-      {
-        "field": "latitude",
-        "sourceURLs": [
-          "https://mcassessor.maricopa.gov/119-16-052"
-        ]
-      },
-      {
-        "field": "postalCode",
-        "sourceURLs": [
-          "https://mcassessor.maricopa.gov/119-16-052"
-        ]
-      },
-      {
-        "field": "yearBuilt",
-        "sourceURLs": [
-          "https://mcassessor.maricopa.gov/119-16-052"
-        ]
-      }
-    ]
-  ```
-
-  <Expandable title="Sub-fields" default-open="false">
-    <ParamField body="sourceURLsPerField.Field" param-type="text">
-      the property data top level field the sourceURL pertains to.
-    </ParamField>
-
-    <ParamField body="sourceURLsPerField.SourceURLs" param-type="text">
-      the source URL of the field.
-    </ParamField>
-  </Expandable>
-</ParamField>
 
 <ParamField body="statuses" param-type="nested" required="false" deprecated="true">
   **Deprecated**
@@ -2419,15 +1907,6 @@ uThe property data schema below lists all available fields in a property record.
   </Expandable>
 </ParamField>
 
-<ParamField body="subtype" param-type="text">
-  The subtype of the propertyType field.
-
-  **Example:**
-
-  ```json
-  "subtype": ["Medical Office, Traditional Office"]
-  ```
-</ParamField>
 
 <ParamField body="subdivision" param-type="string">
   Subdivision / neighborhood of the property.
@@ -2459,25 +1938,7 @@ uThe property data schema below lists all available fields in a property record.
   ```
 </ParamField>
 
-<ParamField body="tenancy" param-type="text">
-  The type of tenants the property allows.
 
-  **Example:**
-
-  ```json
-  "tenancy": "Single"
-  ```
-</ParamField>
-
-<ParamField body="tenantCredit" param-type="text">
-  The credit approve for tenants wanting to rent the property.
-
-  **Example:**
-
-  ```json
-  "tenantCredit": "Corporate Guarantee"
-  ```
-</ParamField>
 
 <ParamField body="title" param-type="text">
   The title text of the property.
@@ -2489,25 +1950,7 @@ uThe property data schema below lists all available fields in a property record.
   ```
 </ParamField>
 
-<ParamField body="topographyCode" param-type="integer">
-  The topography code in relationship to the property.
 
-  **Example:**
-
-  ```json
-  "topographyCode": 150
-  ```
-</ParamField>
-
-<ParamField body="totalExpenses" param-type="float">
-  The total expense cost of the property.
-
-  **Example:**
-
-  ```json
-  "totalExpenses": 24984
-  ```
-</ParamField>
 
 <ParamField body="transactions" param-type="nested">
   A list of transactional data for this property after a sale is completed. This field is used to indicate when the property was purchased and by who.
@@ -2675,35 +2118,8 @@ uThe property data schema below lists all available fields in a property record.
   </Expandable>
 </ParamField>
 
-<ParamField body="vacancyLoss" param-type="float">
-  The vacancy amount loss from the previous tenant(s).
 
-  **Example:**
 
-  ```json
-  "vacancyLoss": 132000
-  ```
-</ParamField>
-
-<ParamField body="virtualTour" param-type="link">
-  The virtual tour link of a listing of the property.
-
-  **Example:**
-
-  ```json
-  "virtualTour": "http://www.tourfactory.com/idxr1453880"
-  ```
-</ParamField>
-
-<ParamField body="websiteIDs" param-type="keyword">
-  A list of website IDs for this property. Website IDs are tied to a specific online retailer. They are the unique identifier used by website. They are used by Datafiniti when other unique identifiers are not available for a property.
-
-  **Example:**
-
-  ```json
-  "websiteIDs": ["domain.com-123", "website.com-4567"]
-  ```
-</ParamField>
 
 <ParamField body="yearBuilt" param-type="integer">
   The year the property was built.
@@ -2724,6 +2140,8 @@ uThe property data schema below lists all available fields in a property record.
   "yearRenovated": 2022
   ```
 </ParamField>
+
+### Additional Details
 
 <ParamField body="zoning" param-type="string">
   The zoning value for the property.
