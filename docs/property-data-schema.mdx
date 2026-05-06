@@ -641,6 +641,495 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
+## Status Details
+
+<ParamField body="mostRecentRentalStatus" param-type="keyword" showLocation="false">
+  The most recent value for `rentalStatuses.type` for this property. See possible values [here](/docs/possible-values-for-property-fields).
+
+
+  **Example:**
+  ```json
+  "mostRecentStatus": "Rental"
+  ```
+</ParamField>
+
+<ParamField body="mostRecentRentalStatusDate" param-type="date" showLocation="false">
+  The most recent rental status date listed by the source.
+
+
+  **Example:**
+  ```json
+  "mostRecentRentalStatusDate": "2025-08-23T00:00:00.000Z"
+  ```
+</ParamField>
+
+<ParamField body="mostRecentRentalStatusFirstDateSeen" param-type="date" showLocation="false">
+  The most recent rental status first seen by Datafiniti
+
+
+  **Example:**
+  ```json
+  "mostRecentRentalStatusFirstDateSeen": "2024-09-11T00:00:00.000Z"
+  ```
+</ParamField>
+
+<ParamField body="mostRecentStatus" param-type="keyword" showLocation="false">
+  The most recent value for `statuses.type` for this property. See possible values [here](/docs/possible-values-for-property-fields).
+
+
+  **Example:**
+  ```json
+  "mostRecentStatus": "For Sale"
+  ```
+</ParamField>
+
+<ParamField body="mostRecentStatusDate" param-type="date" showLocation="false">
+  The date of change that corresponds to the `mostRecentStatus` for this property.
+
+
+  **Example:**
+  ```json
+  "mostRecentStatusDate": "2017-01-10T20:12:16Z"
+  ```
+</ParamField>
+
+<ParamField body="mostRecentStatusFirstDateSeen" param-type="date" showLocation="false">
+  This date corresponds to the most recent date seen of the most recent status data source.
+
+
+  **Example:**
+  ```json
+  "mostRecentStatusFirstDateSeen": "2021-09-09T00:00:00.000"
+  ```
+</ParamField>
+
+<ParamField body="mostRecentVacancy" param-type="boolean" showLocation="false">
+  The most recent vacancy value of the property.
+
+
+  **Example:**
+  ```json
+  "mostRecentVacancy": false
+  ```
+</ParamField>
+
+<ParamField body="mostRecentVacancyFirstDateSeen" param-type="date" showLocation="false">
+  This date corresponds to the first date seen from the source of the property listing.
+
+
+  **Example:**
+  ```json
+  "mostRecentVacancyFirstDateSeen": "2024-04-11T16:57:22.603Z"
+  ```
+</ParamField>
+
+<ParamField body="rentalStatuses" param-type="nested" showLocation="false">
+  A list of historical rental statuses. This field is used to indicate when the property is status `For Rent` or `Short-term Rental`.
+  
+  `rentalStatuses` objects may contain:
+
+  **Example:**
+  ```json
+  "rentalStatuses": [
+      {
+        "date": "2025-08-14T21:53:01.982Z",
+        "dateSeen": [
+          "2025-08-14T21:53:00.000Z"
+        ],
+        "firstDateSeen": "2025-08-14T21:53:00.000Z",
+        "lastDateSeen": "2025-08-14T21:53:00.000Z",
+        "sourceURLs": [
+          "https://www.airbnb.com/rooms/738825344801518115"
+        ],
+        "type": "Short Term Rental"
+      },
+      {
+        "date": "2003-08-18T00:00:00.000Z",
+        "dateSeen": [
+          "2025-06-05T23:32:16.983Z"
+        ],
+        "firstDateSeen": "2025-06-05T23:32:16.983Z",
+        "lastDateSeen": "2025-06-05T23:32:16.983Z",
+        "sourceURLs": [
+          "https://datafiniti.co/"
+        ],
+        "type": "Rental"
+      }
+    ]
+  ```
+
+  <Expandable title="Sub-fields">
+    <ParamField body="rentalStatuses.date" param-type="date" showLocation="false">
+      the date the rental status was posted by the source.
+    </ParamField>
+    <ParamField body="rentalStatuses.dateSeen" param-type="date" showLocation="false">
+      the date when the rental status was seen by Datafiniti.
+    </ParamField>
+    <ParamField body="rentalStatuses.type" param-type="string" showLocation="false">
+      the type of rental being listed `For Rent` or `Short-term Rental`
+    </ParamField>
+    <ParamField body="rentalStatuses.firstDateSeen" param-type="date" showLocation="false">
+      the first date seen of the rental status was seen by Datafiniti.
+    </ParamField>
+    <ParamField body="rentalStatuses.lastDateSeen" param-type="date" showLocation="false">
+      the latest date seen of the rental status was seen by Datafiniti.
+    </ParamField>
+    <ParamField body="rentalStatuses.sourceURLs" param-type="string" showLocation="false">
+      the source URL of the rental property listing.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="statuses" param-type="nested" deprecated="true" showLocation="false">
+  **Deprecated**
+  A list of statuses for this property. This field is used to indicate when the property is for sale, etc.
+  
+  Each status includes:
+
+  **Example:**
+  ```json
+  "statuses": [
+      {
+        "date": "2023-03-10T00:00:00.000Z",
+        "dateSeen": [
+          "2023-07-10T06:46:31.387Z",
+          "2023-07-01T02:58:12.456Z"
+        ],
+        "firstDateSeen": "2023-07-01T02:58:12.456Z",
+        "lastDateSeen": "2023-07-10T06:46:31.387Z",
+        "type": "Sold"
+      }
+    ]
+  ```
+
+  <Expandable title="Sub-fields">
+    <ParamField body="statuses.date" param-type="date" showLocation="false">
+      Date the status occurred
+    </ParamField>
+    <ParamField body="statuses.dateSeen" param-type="date" showLocation="false">
+      A list of dates when this status was seen by Datafiniti.
+    </ParamField>
+    <ParamField body="statuses.firstDateSeen" param-type="date" showLocation="false">
+      the first date seen of this status was seen by Datafiniti.
+    </ParamField>
+    <ParamField body="statuses.lastDateSeen" param-type="date" showLocation="false">
+      the latest date seen of this status was seen by Datafiniti.
+    </ParamField>
+    <ParamField body="statuses.isUnderContract" param-type="boolean" showLocation="false">
+      A true/false value to indicate if this status is under contract.
+    </ParamField>
+    <ParamField body="statuses.type" param-type="keyword" showLocation="false">
+      The status. See possible values [here](/docs/possible-values-for-property-fields).
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="statusHistory" param-type="nested" showLocation="false">
+  A list of Historical statuses for this property. This field is used to indicate when the property is for sale, etc. No rental statuses are found here.
+  
+  Each status includes:
+
+  **Example:**
+  ```json
+  "statusHistory": [
+      {
+        "dateSeen": [
+          "2024-03-08T07:24:15.145Z",
+          "2024-04-16T08:50:21.971Z"
+        ],
+        "type": "Off Market",
+        "sourceURLs": [
+          "https://www.xome.com/realestate/1530-n-smith-cir-601-wichita-ks-67212-46005393"
+        ],
+        "firstDateSeen": "2024-03-08T07:24:15.145Z",
+        "lastDateSeen": "2024-04-16T08:50:21.971Z"
+      },
+      {
+        "type": "For Sale",
+        "date": "2026-01-13T00:00:00.000Z",
+        "dateSeen": [
+          "2026-01-14T17:18:01.076Z",
+          "2026-01-14T21:25:24.946Z"
+        ],
+        "sourceURLs": [
+          "https://www.redfin.com/KS/Wichita/1530-N-Smith-Cir-67212/unit-601/home/120152524"
+        ],
+        "firstDateSeen": "2026-01-14T17:18:01.076Z",
+        "lastDateSeen": "2026-01-14T21:25:24.946Z"
+      }
+    ]
+  ```
+
+  <Expandable title="Sub-fields">
+    <ParamField body="statusHistory.date" param-type="date" showLocation="false">
+      Date the status occurred
+    </ParamField>
+    <ParamField body="statusHistory.dateSeen" param-type="date" showLocation="false">
+      A list of dates when this status was seen by Datafiniti.
+    </ParamField>
+    <ParamField body="statusHistory.firstDateSeen" param-type="date" showLocation="false">
+      the first date seen of this status was seen by Datafiniti.
+    </ParamField>
+    <ParamField body="statusHistory.lastDateSeen" param-type="date" showLocation="false">
+      the latest date seen of this status was seen by Datafiniti.
+    </ParamField>
+    <ParamField body="statusHistory.sourceURLs" param-type="url" showLocation="false">
+      The sourceURL of the status.
+    </ParamField>
+    <ParamField body="statusHistory.type" param-type="keyword" showLocation="false">
+      The status. See possible values [here](/docs/possible-values-for-property-fields).
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="vacancy" param-type="nested" showLocation="false">
+  The status of the vacancy of the property:
+
+  **Example:**
+  ```json
+  "vacancy": [
+      {
+        "vacant": false,
+        "lastDateSeen": "2024-04-11T16:57:22.603Z",
+        "firstDateSeen": "2024-04-11T16:57:22.603Z"
+      }
+    ]
+  ```
+
+  <Expandable title="Sub-fields">
+    <ParamField body="vacancy.firstDateSeen" param-type="date" showLocation="false">
+      Earliest date seen from the source of the vacancy by Datafiniti.
+    </ParamField>
+    <ParamField body="vacancy.lastDateSeen" param-type="date" showLocation="false">
+      Latest date seen from the source of the vacancy by Datafiniti.
+    </ParamField>
+    <ParamField body="vacancy.vacant" param-type="boolean" showLocation="false">
+      If the property is currently vacant
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+## Tax & Assessment Details
+
+<ParamField body="assessedValues" param-type="nested" showLocation="false">
+  The assessed value of the property. Each assessed value may contain:
+
+  **Example:**
+  ```json
+  "assessedValues": [
+      {
+        "totalAmount": 1745400.0,
+        "improvementsAmount": 1745400.0,
+        "landAmount": 1745400.0,
+        "year": 1985
+      }
+    ]
+  ```
+
+  <Expandable title="Sub-fields">
+    <ParamField body="assessedValues.improvementsAmount" param-type="float" showLocation="false">
+      assessed value for improvements made to the property.
+    </ParamField>
+    <ParamField body="assessedValues.landAmount" param-type="float" showLocation="false">
+      assessed value for the land/lot of the property.
+    </ParamField>
+    <ParamField body="assessedValues.totalAmount" param-type="float" showLocation="false">
+      amount value the property is currently assessed for.
+    </ParamField>
+    <ParamField body="assessedValues.year" param-type="integer" showLocation="false">
+      year value when the property was assessed.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="censusBlock" param-type="string" showLocation="false">
+  The census block the property is associate to.
+
+
+  **Example:**
+  ```json
+  "censusBlock": 1012
+  ```
+</ParamField>
+
+<ParamField body="censusBlockGroup" param-type="string" showLocation="false">
+  The census group the property is associated to.
+
+
+  **Example:**
+  ```json
+  "censusBlockGroup": 4
+  ```
+</ParamField>
+
+<ParamField body="censusTract" param-type="string" showLocation="false">
+  The census tract the property is associated to.
+
+
+  **Example:**
+  ```json
+  "censusTract": 5102
+  ```
+</ParamField>
+
+<ParamField body="civilDivisionCode" param-type="text" showLocation="false">
+  The civil division code for the property.
+
+
+  **Example:**
+  ```json
+  "civilDivisionCode": 4
+  ```
+</ParamField>
+
+<ParamField body="civilDivisionName" param-type="string" showLocation="false">
+  The civil division name of the property.
+
+
+  **Example:**
+  ```json
+  "civilDivisionName": "SUMMERSVILLE"
+  ```
+</ParamField>
+
+<ParamField body="congressionalDistrictHouse" param-type="string" showLocation="false">
+  District of the property.
+
+  **Example:**
+  ```json
+  "congressionalDistrictHouse": "4"
+  ```
+</ParamField>
+
+<ParamField body="county" param-type="text" showLocation="false">
+  The county of the property record.
+
+
+  **Example:**
+  ```json
+  "county": "Hillsborough"
+  ```
+</ParamField>
+
+<ParamField body="countyFIPS" param-type="integer" showLocation="false">
+  County FIPS # of the property.
+
+
+  **Example:**
+  ```json
+  "countyFIPS": 12057
+  ```
+</ParamField>
+
+<ParamField body="legalDescription" param-type="text" showLocation="false">
+  The legal description of the property record.
+
+
+  **Example:**
+  ```json
+  "legalDescription": "LOT 279 OXFORD OAKS PHASE TWO PB 16 PGS 17-17D"
+  ```
+</ParamField>
+
+<ParamField body="legalRange" param-type="string" showLocation="false">
+  Legal range of the property.
+
+  **Example:**
+  ```json
+  "legalRange": "08E"
+  ```
+</ParamField>
+
+<ParamField body="parcelNumbers" param-type="nested" showLocation="false">
+  The parcel number associated to the property.
+
+
+  **Example:**
+  ```json
+  "parcelNumbers": [
+      {
+        "number": "29-29-22-12-0015",
+        "account": "394308",
+        "year": 1985
+      }
+    ]
+  ```
+  <Expandable title="Sub-fields">
+    <ParamField body="parcelNumbers.account" param-type="string" showLocation="false">
+      Account number of parcel.
+    </ParamField>
+    <ParamField body="parcelNumbers.number" param-type="string" showLocation="false">
+      Legal parcel number of the property.
+    </ParamField>
+    <ParamField body="parcelNumbers.year" param-type="integer" showLocation="false">
+      Recorded year of the parcel number.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="propertyTaxes" param-type="nested" showLocation="false">
+  A list of property taxes that have been seen for this property. Each property tax will include:
+
+  **Example:**
+  ```json
+  "propertyTaxes": [
+      {
+        "amount": 1582,
+        "currency": "USD",
+        "dateSeen": [
+          "2016-08-09T09:34:15Z"
+        ],
+        "year": 2010
+      }
+    ]
+  ```
+
+  <Expandable title="Sub-fields">
+    <ParamField body="propertyTaxes.amount" param-type="float" showLocation="false">
+      The tax amount.
+    </ParamField>
+    <ParamField body="propertyTaxes.currency" param-type="text" showLocation="false">
+      The amount's currency.
+    </ParamField>
+    <ParamField body="propertyTaxes.dateSeen" param-type="date" showLocation="false">
+      A list of dates when this tax has been seen for this property.
+    </ParamField>
+    <ParamField body="propertyTaxes.year" param-type="integer" showLocation="false">
+      The year of taxable amount of the property.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="taxExemptions" param-type="text" showLocation="false">
+  A list of tax exemptions for the property.
+
+
+  **Example:**
+  ```json
+  "taxExemptions": ["Homeowner", "Disabled", "Senior"]
+  ```
+</ParamField>
+
+<ParamField body="taxID" param-type="keyword" showLocation="false">
+  The tax ID for the property.
+
+
+  **Example:**
+  ```json
+  "taxID": "30-9011-019-0029758"
+  ```
+</ParamField>
+
+<ParamField body="zoning" param-type="string" showLocation="false">
+  The zoning value for the property.
+
+
+  **Example:**
+  ```json
+  "zoning": "C-2PD"
+  ```
+</ParamField>
+
 ## Pricing Details
 
 <ParamField body="deposits" param-type="nested" showLocation="false">
