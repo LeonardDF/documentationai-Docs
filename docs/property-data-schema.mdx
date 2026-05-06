@@ -8,649 +8,7 @@ The property data schema below lists all available fields in a property record. 
 
 ## Property Details
 
-<ParamField body="address" param-type="text">
-  The physical street address for this property.
-
-  **Example:**
-
-  ```json
-  "address": "7206 Walling Ln"
-  ```
-</ParamField>
-
-<ParamField body="appliances" param-type="text">
-  The appliances included with the property.
-
-  **Example:**
-
-  ```json
-  "appliances": ["Cooktop","Dryer","Dishwasher","Microwave","Refrigerator","Washer"]
-  ```
-</ParamField>
-
-<ParamField body="architecturalStyles" param-type="text">
-  The architectural style of the property.
-
-  **Example:**
-
-  ```json
-  "architecturalStyles": ["Ranch","Bungalow"]
-  ```
-</ParamField>
-
-<ParamField body="buildingName" param-type="text">
-  The name of the building where this property is located. This field is specific to apartments, condos, and similar property types.
-
-  **Example:**
-
-  ```json
-  "buildingName": "Castle Beach Club"
-  ```
-</ParamField>
-
-<ParamField body="categories" param-type="text">
-  A list of category keywords used for this property across multiple sources.
-
-  **Example:**
-
-  ```json
-  "categories": ["Single family residence", "farming"]
-  ```
-</ParamField>
-
-<ParamField body="currentOwnerType" param-type="string">
-  Current owner type of the property.
-
-  **Example:**
-
-  ```json
-  "currentOwnerType": "Company"
-  ```
-</ParamField>
-
-<ParamField body="floorPlans" param-type="nested">
-  A list of floorplans associated with the property
-
-  **Example:**
-
-  ```json
-  "floorPlans": [
-      {
-        "name": "2x2",
-        "type": "2 beds",
-        "numBedrooms": 2,
-        "numBathrooms": 2,
-        "floorSize": "960 sqft"
-      }
-    ]
-  ```
-
-  <Expandable title="Sub-fields" default-open="false">
-    <ParamField body="floorPlans.floorSize" param-type="text">
-      The floor size of the floor plan being referenced.
-    </ParamField>
-
-    <ParamField body="floorPlans.name" param-type="text">
-      The name of the floor plan being referenced.
-    </ParamField>
-
-    <ParamField body="floorPlans.numBathrooms" param-type="integer">
-      The number of bathrooms in the floor plan.
-    </ParamField>
-
-    <ParamField body="floorPlans.numBedrooms" param-type="integer">
-      The number of bedrooms in the floor plan.
-    </ParamField>
-
-    <ParamField body="floorPlans.type" param-type="text">
-      the type of floor plan classified by the property.
-    </ParamField>
-  </Expandable>
-</ParamField>
-
-<ParamField body="floorSizeUnit" param-type="keyword">
-  The units of measurement for `floorSize`.
-
-  **Example:**
-
-  ```json
-  "floorSizeUnit": "Sq. ft"
-  ```
-</ParamField>
-
-<ParamField body="floorSizeValue" param-type="float">
-  The size of the walkable area of the property. For apartments and condos, this is the size of the property. For homes and buildings, this is the combined size of each floor and does not include lot size.
-
-  **Example:**
-
-  ```json
-  "floorSizeValue": 947
-  ```
-</ParamField>
-
-<ParamField body="geoLocation" param-type="geo_shape">
-  A location value that stores the latitude and longitude in a format that allows geospatial querying.
-
-  The value is stored as Well-Known Text format, which resembles an (x, y) value, i.e. (longitude latitude).
-
-  **Example:**
-
-  ```json
-  "geoLocation": "POINT (-119.5094 37.229366)"
-  ```
-</ParamField>
-
-<ParamField body="geoQuality" param-type="integer">
-  The quality of the geoLocation data of the property.
-
-  **Example:**
-
-  ```json
-  "geoQuality": 0
-  ```
-</ParamField>
-
-<ParamField body="hvacTypes" param-type="text">
-  The type / components of the HVAC system.
-
-  **Example:**
-
-  ```json
-  "hvacTypes": ["Cental Air","Electric","Fans"]
-  ```
-</ParamField>
-
-<ParamField body="imageURLs" param-type="keyword">
-  A list of image URLs for this property.
-
-  **Example:**
-
-  ```json
-  "imageURLs": ["http://image.rent.com/imgr/61bbc9f535f0e180bc804ac8f4c50067"]
-  ```
-</ParamField>
-
-<ParamField body="isUnit" param-type="boolean">
-  If the property is a unit number of a complex / building
-
-  **Example:**
-
-  ```json
-  "isUnit": true
-  ```
-</ParamField>
-
-<ParamField body="latitude" param-type="text">
-  The latitude coordinates for this property.
-
-  **Example:**
-
-  ```json
-  "latitude": "32.860858"
-  ```
-</ParamField>
-
-<ParamField body="legalDescription" param-type="text">
-  The legal description of the property record.
-
-  **Example:**
-
-  ```json
-  "legalDescription": "LOT 279 OXFORD OAKS PHASE TWO PB 16 PGS 17-17D"
-  ```
-</ParamField>
-
-<ParamField body="legalRange" param-type="string">
-  Legal range of the property.
-
-  **Example:**
-
-  ```json
-  "legalRange": "08E"
-  ```
-</ParamField>
-
-<ParamField body="listingName" param-type="text">
-  The name of the property listing. This isn't the name of the building. It's a descriptive name supplied for the listing itself.
-
-  **Example:**
-
-  ```json
-  "listingName": "Antico Appartamento"
-  ```
-</ParamField>
-
-<ParamField body="longitude" param-type="text">
-  The longitude coordinates for this property.
-
-  **Example:**
-
-  ```json
-  "longitude": "-96.735808"
-  ```
-</ParamField>
-
-<ParamField body="lotDepthUnit" param-type="text">
-  The depth dimension unit of a property's lot.
-
-  **Example:**
-
-  ```json
-  "lotDepthUnit": "ft"
-  ```
-</ParamField>
-
-<ParamField body="lotDepthValue" param-type="float">
-  The depth dimension of a property's lot.
-
-  **Example:**
-
-  ```json
-  "lotDepthValue": 150
-  ```
-</ParamField>
-
-<ParamField body="lotSizeUnit" param-type="keyword">
-  The units of measurement for `lotSize`.
-
-  **Example:**
-
-  ```json
-  "lotSizeUnit": "Sq. ft"
-  ```
-</ParamField>
-
-<ParamField body="lotSizeValue" param-type="integer">
-  The lot size for the property. This is the ground area covered by the property.
-
-  **Example:**
-
-  ```json
-  "lotSizeValue": 2219
-  ```
-</ParamField>
-
-<ParamField body="managedBy" param-type="nested">
-  A list of companies or people that have managed this property. Each managedBy object will contain:
-
-  **Example:**
-
-  ```json
-  "managedBy": [
-      {
-        "dateSeen": [
-          "2016-03-03T15:02:13Z"
-        ],
-        "value": "ROM Investments"
-      }
-    ]
-  ```
-
-  <Expandable title="Sub-fields" default-open="false">
-    <ParamField body="managedBy.dateSeen" param-type="date">
-      A list of dates when this information was seen.
-    </ParamField>
-
-    <ParamField body="managedBy.value" param-type="text">
-      The name of the company or person.
-    </ParamField>
-  </Expandable>
-</ParamField>
-
-<ParamField body="numBathroom" param-type="float">
-  The number of bathrooms in this property. Can be a whole number (e.g. "1") or a float (e.g., 1.25).
-
-  **Example:**
-
-  ```json
-  "numBathroom": 1.25
-  ```
-</ParamField>
-
-<ParamField body="numBedroom" param-type="integer">
-  The number of bedrooms in this property.
-
-  **Example:**
-
-  ```json
-  "numBedroom": 3
-  ```
-</ParamField>
-
-<ParamField body="numFloor" param-type="integer">
-  The number of floors or stories in this property.
-
-  **Example:**
-
-  ```json
-  "numFloor": 2
-  ```
-</ParamField>
-
-<ParamField body="numParkingSpaces" param-type="integer">
-  The number of parking spots on the property.
-
-  **Example:**
-
-  ```json
-  "numParkingSpaces": 0
-  ```
-</ParamField>
-
-<ParamField body="numPeople" param-type="integer">
-  The number of people that can occupy this property.
-
-  **Example:**
-
-  ```json
-  "numPeople": 6
-  ```
-</ParamField>
-
-<ParamField body="numRoom" param-type="integer">
-  The number of rooms in this property.
-
-  **Example:**
-
-  ```json
-  "numRoom": 2
-  ```
-</ParamField>
-
-<ParamField body="numUnit" param-type="integer">
-  The number of units available in this property.
-
-  **Example:**
-
-  ```json
-  "numUnit": 1
-  ```
-</ParamField>
-
-<ParamField body="ownerOccupied" param-type="boolean">
-  The true/false value of whether owner occupies the property.
-
-  **Example:**
-
-  ```json
-  "ownerOccupied": true
-  ```
-</ParamField>
-
-<ParamField body="ownerOccupiedStatus" param-type="nested">
-  **Example:**
-
-  ```json
-  "ownerOccupiedStatus": {
-      "status": true,
-      "firstDateSeen": "2023-12-01T13:35:16.399Z",
-      "lastDateSeen": "2023-12-01T13:35:16.399Z",
-      "startDate": "2017-07-21T00:00:00.000Z"
-    }
-  ```
-
-  <Expandable title="Sub-fields" default-open="false">
-    <ParamField body="ownerOccupiedStatus.firstDateSeen" param-type="date">
-      the first date seen by Datafiniti of owner occupancy being true
-    </ParamField>
-
-    <ParamField body="ownerOccupiedStatus.lastDateSeen" param-type="date">
-      the last date seen by Datafiniti of owner occupancy being true
-    </ParamField>
-
-    <ParamField body="ownerOccupiedStatus.startDate" param-type="date">
-      the lease start date seen by the leasing agency.
-    </ParamField>
-
-    <ParamField body="ownerOccupiedStatus.status" param-type="boolean">
-      The true/false value of whether owner occupies the property.
-    </ParamField>
-  </Expandable>
-</ParamField>
-
-<ParamField body="parking" param-type="text">
-  A list of details regarding parking at this property.
-
-  **Example:**
-
-  ```json
-  "parking": ["Garage"]
-  ```
-</ParamField>
-
-<ParamField body="parkingTypes" param-type="text">
-  A list of parking types that pertains to the property.
-
-  **Example:**
-
-  ```json
-  "parkingTypes": ["Street", "Attached Garage"]
-  ```
-</ParamField>
-
-<ParamField body="parcelNumbers" param-type="nested">
-  The parcel number associated to the property.
-
-  **Example:**
-
-  ```json
-  "parcelNumbers": [
-      {
-        "number": "29-29-22-12-0015",
-        "account": "394308",
-        "year": 1985
-      }
-    ]
-  ```
-
-  <Expandable title="Sub-fields" default-open="false">
-    <ParamField body="parcelNumbers.account" param-type="string">
-      Account number of parcel.
-    </ParamField>
-
-    <ParamField body="parcelNumbers.number" param-type="string">
-      Legal parcel number of the property.
-    </ParamField>
-
-    <ParamField body="parcelNumbers.year" param-type="integer">
-      Recorded year of the parcel number.
-    </ParamField>
-  </Expandable>
-</ParamField>
-
-<ParamField body="people" param-type="nested">
-  A list of known people associated with or employed by this property.
-
-  Each person may contain:
-
-  **Example:**
-
-  ```json
-  "people": [
-      {
-        "equity": 1065556,
-        "equityPercent": 100,
-        "name": "Luci Weinsein",
-        "firstName": "Luci",
-        "lastName": "Weinsein",
-        "landline": true,
-        "people_key": "luci/weinsein/1080154715",
-        "dateSeen": "2024-04-11T16:57:22.618Z",
-        "title": "Owner"
-      }
-    ]
-  ```
-
-  <Expandable title="Sub-fields" default-open="false">
-    <ParamField body="people.dateSeen" param-type="date">
-      The date when this person was seen.
-    </ParamField>
-
-    <ParamField body="people.email" param-type="text">
-      The person's email.
-    </ParamField>
-
-    <ParamField body="people.equity" param-type="float">
-      Sum total of equity of properties
-    </ParamField>
-
-    <ParamField body="people.equityPercent" param-type="float">
-      Percent estimated equity percentage (100 minus LTV)
-    </ParamField>
-
-    <ParamField body="people.firstName" param-type="text">
-      first name of the person
-    </ParamField>
-
-    <ParamField body="people.lastName" param-type="text">
-      last name of the person
-    </ParamField>
-
-    <ParamField body="people.landline" param-type="boolean">
-      Does the person have a landline.
-    </ParamField>
-
-    <ParamField body="people.name" param-type="text">
-      The person's name.
-    </ParamField>
-
-    <ParamField body="people.people_key" param-type="keyword">
-      the corresponding key that link to Datafiniti's people data record. (contact, demographics, & more)
-    </ParamField>
-
-    <ParamField body="people.phone" param-type="text">
-      The person's phone number.
-    </ParamField>
-
-    <ParamField body="people.title" param-type="text">
-      The person's title.
-    </ParamField>
-  </Expandable>
-</ParamField>
-
-<ParamField body="postalCode" param-type="keyword">
-  The postal or zip code of the property.
-
-  **Example:**
-
-  ```json
-  "postalCode": "75231"
-  ```
-</ParamField>
-
-<ParamField body="roofing" param-type="text">
-  A list of materials the roof of the property is made from.
-
-  **Example:**
-
-  ```json
-  "roofing": ["Asphalt", "Fiberglass"]
-  ```
-</ParamField>
-
-<ParamField body="roomTypes" param-type="text">
-  The types of rooms the property has.
-
-  **Example:**
-
-  ```json
-  "roomTypes": ["Laundry","Great","Game"]
-  ```
-</ParamField>
-
-<ParamField body="subdivision" param-type="string">
-  Subdivision / neighborhood of the property.
-
-  **Example:**
-
-  ```json
-  "subdivision": "Crescent Heights Sub"
-  ```
-</ParamField>
-
-<ParamField body="taxID" param-type="keyword">
-  The tax ID for the property.
-
-  **Example:**
-
-  ```json
-  "taxID": "30-9011-019-0029758"
-  ```
-</ParamField>
-
-<ParamField body="title" param-type="text">
-  The title text of the property.
-
-  **Example:**
-
-  ```json
-  "title": "Single Family Residence, A-Frame - Snellville, GA"
-  ```
-</ParamField>
-
-<ParamField body="trustDescription" param-type="string">
-  The description of the trust information in relation to the property.
-
-  **Example:**
-
-  ```json
-  "trustDescription": "Not a trust"
-  ```
-</ParamField>
-
-<ParamField body="yearBuilt" param-type="integer">
-  The year the property was built.
-
-  **Example:**
-
-  ```json
-  "yearBuilt": 2021
-  ```
-</ParamField>
-
-## Pricing Details
-
-<ParamField body="estimatedPrices" param-type="nested">
-  A list of price estimates for the property.
-
-  **Example:**
-
-  ```json
-  "estimatedPrices": [
-      {
-        "amountMax": 295000,
-        "amountMin": 295000,
-        "currency": "USD",
-        "dateSeen": [
-          "2023-10-20T16:53:37.235Z"
-        ],
-        "pricePerSquareFoot": 112.51
-      }
-    ]
-
-  <Expandable title="Sub-fields" default-open="false">
-    <ParamField body="estimatedPrices.amountMax" param-type="integer">
-      The maximum price estimate value listed.
-    </ParamField>
-
-    <ParamField body="estimatedPrices.amountMin" param-type="integer">
-      The minimum price estimate value listed.
-    </ParamField>
-
-    <ParamField body="estimatedPrices.currency" param-type="string">
-      The currency listed for amountMin and amountMax
-    </ParamField>
-
-    <ParamField body="estimatedPrices.dateSeen" param-type="date">
-      The date when this estimatedPrice was seen for this property.
-    </ParamField>
-
-    <ParamField body="estimatedPrices.pricePerSquareFoot" param-type="float">
-      The price divide by the square footage.
-    </ParamField>
-  </Expandable>
-</ParamField>
-
+<ParamField body="absenteeOwner" param-type="nested">
   The owner of a property who does not reside in or otherwise occupy that property.
 
   **Example:**
@@ -2781,7 +2139,928 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-### Additional Details
+## Pricing Details
+
+<ParamField body="estimatedPrices" param-type="nested">
+  A list of price estimates for the property.
+
+  **Example:**
+
+  ```json
+  "estimatedPrices": [
+      {
+        "amountMax": 295000,
+        "amountMin": 295000,
+        "currency": "USD",
+        "dateSeen": [
+          "2023-10-20T16:53:37.235Z"
+        ],
+        "pricePerSquareFoot": 112.51
+      }
+    ]
+  ```
+
+  <Expandable title="Sub-fields" default-open="false">
+    <ParamField body="estimatedPrices.amountMax" param-type="integer">
+      The maximum price estimate value listed.
+    </ParamField>
+
+    <ParamField body="estimatedPrices.amountMin" param-type="integer">
+      The minimum price estimate value listed.
+    </ParamField>
+
+    <ParamField body="estimatedPrices.currency" param-type="string">
+      The currency listed for amountMin and amountMax
+    </ParamField>
+
+    <ParamField body="estimatedPrices.dateSeen" param-type="date">
+      The date when this estimatedPrice was seen for this property.
+    </ParamField>
+
+    <ParamField body="estimatedPrices.pricePerSquareFoot" param-type="float">
+      The price divide by the square footage.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+## Broker Details
+
+<ParamField body="mlsName" param-type="text">
+  The mls name of the listing company/realtor
+
+  **Example:**
+
+  ```json
+  "mlsName": "sovereign realty group"
+  ```
+</ParamField>
+
+<ParamField body="mlsNumber" param-type="keyword">
+  The MLS number for the property. [Learn more about MLS numbers](https://en.wikipedia.org/wiki/Multiple_listing_service).
+
+  **Example:**
+
+  ```json
+  "mlsNumber": "16177277"
+  ```
+</ParamField>
+
+## Owner Details
+
+<ParamField body="currentOwnerType" param-type="string">
+  Current owner type of the property.
+
+  **Example:**
+
+  ```json
+  "currentOwnerType": "Company"
+  ```
+</ParamField>
+
+<ParamField body="mostRecentAbsenteeOwner" param-type="boolean">
+  The most recent boolean value for the absentee owner.
+
+  **Example:**
+
+  ```json
+  "mostRecentAbsenteeOwner": false
+  ```
+</ParamField>
+
+<ParamField body="mostRecentAbsenteeOwnerFirstDateSeen" param-type="date">
+  The most recent first date seen of the absentee owner.
+
+  **Example:**
+
+  ```json
+  "mostRecentAbsenteeOwnerFirstDateSeen": "2024-04-11T16:57:22.605Z"
+  ```
+</ParamField>
+
+<ParamField body="mostRecentOwnerFirstName" param-type="text">
+  The most recent first name from the owners top level field.
+
+  **Example:**
+
+  ```json
+  "mostRecentOwnerFirstName": "Jeff"
+  ```
+</ParamField>
+
+<ParamField body="mostRecentOwnerLastName" param-type="text">
+  The most recent last name from the owners top level field.
+
+  **Example:**
+
+  ```json
+  "mostRecentOwnerLastName": "Allback"
+  ```
+</ParamField>
+
+<ParamField body="mostRecentOwnerPeopleKey" param-type="keyword">
+  The most recent people key of the owners top level field. This can be matched to the people database
+
+  **Example:**
+
+  ```json
+  "mostRecentOwnerPeopleKey": "jeff/allback/us/al/85255/3114epatrickst"
+  ```
+</ParamField>
+
+<ParamField body="ownerOccupied" param-type="boolean">
+  The true/false value of whether owner occupies the property.
+
+  **Example:**
+
+  ```json
+  "ownerOccupied": true
+  ```
+</ParamField>
+
+<ParamField body="ownerOccupiedStatus" param-type="nested">
+  **Example:**
+
+  ```json
+  "ownerOccupiedStatus": {
+      "status": true,
+      "firstDateSeen": "2023-12-01T13:35:16.399Z",
+      "lastDateSeen": "2023-12-01T13:35:16.399Z",
+      "startDate": "2017-07-21T00:00:00.000Z"
+    }
+  ```
+
+  <Expandable title="Sub-fields" default-open="false">
+    <ParamField body="ownerOccupiedStatus.firstDateSeen" param-type="date">
+      the first date seen by Datafiniti of owner occupancy being true
+    </ParamField>
+
+    <ParamField body="ownerOccupiedStatus.lastDateSeen" param-type="date">
+      the last date seen by Datafiniti of owner occupancy being true
+    </ParamField>
+
+    <ParamField body="ownerOccupiedStatus.startDate" param-type="date">
+      the lease start date seen by the leasing agency.
+    </ParamField>
+
+    <ParamField body="ownerOccupiedStatus.status" param-type="boolean">
+      The true/false value of whether owner occupies the property.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="owners" param-type="nested">
+  **Example:**
+
+  ```json
+  "owners": [
+      {
+        "transactionDate": "2025-05-27T00:00:00.000Z",
+        "firstName": "Jeffrey",
+        "lastName": "Allback",
+        "peopleKey": "jeffrey/allback/us/az/85255/3114epatrickst",
+        "firstDateSeen": "2025-11-23T14:06:01Z",
+        "lastDateSeen": "2025-12-09T20:01:56Z"
+      }
+    ]
+  ```
+
+  <Expandable title="Sub-fields" default-open="false">
+    <ParamField body="owners.firstDateSeen" param-type="date">
+      the first time the owner was seen by Datafiniti.
+    </ParamField>
+
+    <ParamField body="owners.firstName" param-type="text">
+      first name of the owner.
+    </ParamField>
+
+    <ParamField body="owners.lastDateSeen" param-type="date">
+      the last time the owner was seen by Datafiniti.
+    </ParamField>
+
+    <ParamField body="owners.lastName" param-type="text">
+      last name of the owner.
+    </ParamField>
+
+    <ParamField body="owners.peopleKey" param-type="keyword">
+      people key matched to Datafiniti's people database.
+    </ParamField>
+
+    <ParamField body="owners.transactionDate" param-type="date">
+      date the owner purchased this property.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="people" param-type="nested">
+  A list of known people associated with or employed by this property.
+
+  Each person may contain:
+
+  **Example:**
+
+  ```json
+  "people": [
+      {
+        "equity": 1065556,
+        "equityPercent": 100,
+        "name": "Luci Weinsein",
+        "firstName": "Luci",
+        "lastName": "Weinsein",
+        "landline": true,
+        "people_key": "luci/weinsein/1080154715",
+        "dateSeen": "2024-04-11T16:57:22.618Z",
+        "title": "Owner"
+      }
+    ]
+  ```
+
+  <Expandable title="Sub-fields" default-open="false">
+    <ParamField body="people.dateSeen" param-type="date">
+      The date when this person was seen.
+    </ParamField>
+
+    <ParamField body="people.email" param-type="text">
+      The person's email.
+    </ParamField>
+
+    <ParamField body="people.equity" param-type="float">
+      Sum total of equity of properties
+    </ParamField>
+
+    <ParamField body="people.equityPercent" param-type="float">
+      Percent estimated equity percentage (100 minus LTV)
+    </ParamField>
+
+    <ParamField body="people.firstName" param-type="text">
+      first name of the person
+    </ParamField>
+
+    <ParamField body="people.lastName" param-type="text">
+      last name of the person
+    </ParamField>
+
+    <ParamField body="people.landline" param-type="boolean">
+      Does the person have a landline.
+    </ParamField>
+
+    <ParamField body="people.name" param-type="text">
+      The person's name.
+    </ParamField>
+
+    <ParamField body="people.people_key" param-type="keyword">
+      the corresponding key that link to Datafiniti's people data record. (contact, demographics, & more)
+    </ParamField>
+
+    <ParamField body="people.phone" param-type="text">
+      The person's phone number.
+    </ParamField>
+
+    <ParamField body="people.title" param-type="text">
+      The person's title.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="trustDescription" param-type="string">
+  The description of the trust information in relation to the property.
+
+  **Example:**
+
+  ```json
+  "trustDescription": "Not a trust"
+  ```
+</ParamField>
+
+## Transactions Details
+
+<ParamField body="transactions" param-type="nested">
+  A list of transactional data for this property after a sale is completed. This field is used to indicate when the property was purchased and by who.
+
+  Each transaction includes:
+
+  **Example:**
+
+  ```json
+  "transactions": [
+      {
+        "saleDate": "2023-01-04T12:00:00Z",
+        "firstDateSeen": "2023-01-04T12:00:00Z",
+        "lastDateSeen": "2023-01-04T12:00:00Z",
+        "documentNumber": "1HORTICULTURE, ORNAMENTAL (AGRICULTURAL)98",
+        "documentType": "Warranty Deed",
+        "price": 112900.0,
+        "sellerFirstName": "Anita",
+        "sellerMiddleName": "Brian",
+        "sellerLastName": "Powell",
+        "buyerFirstName": "Ben",
+        "buyerMiddleName": "Cherelle",
+        "buyerLastName": "Emaline",
+        "lenderName": "Ameris Bank",
+        "loanType": "Conventional",
+        "loanAmount": 10725.0,
+        "mortgageTerm": 360,
+        "interestType": "Adjustable",
+        "parcelNumber": "17-07-26-0-001-005.000",
+        "ownerType": "Company",
+        "contactOwnerMailAddressFull": "2337 JULIAN DR",
+        "transactionID": "841789370"
+      }
+    ]
+  ```
+
+  <Expandable title="Sub-fields" default-open="false">
+    <ParamField body="transactions.buyerFirstName" param-type="string">
+      First name of the buyer.
+    </ParamField>
+
+    <ParamField body="transactions.buyerLastName" param-type="string">
+      Last name of the buyer.
+    </ParamField>
+
+    <ParamField body="transactions.buyerMiddleName" param-type="string">
+      Middle name of the buyer.
+    </ParamField>
+
+    <ParamField body="transactions.contactOwnerMailAddressFull" param-type="string">
+      Mailing address provided by the buyer at the time of the transaction.
+    </ParamField>
+
+    <ParamField body="transactions.documentNumber" param-type="string">
+      the document number of the transaction.
+    </ParamField>
+
+    <ParamField body="transactions.documentType" param-type="string">
+      Contains all documents attached in this transaction.
+    </ParamField>
+
+    <ParamField body="transactions.firstDateSeen" param-type="date">
+      Earliest date seen from the source of the property listing by Datafiniti.
+    </ParamField>
+
+    <ParamField body="transactions.interestType" param-type="string">
+      interest rate by the lender.
+    </ParamField>
+
+    <ParamField body="transactions.lastDateSeen" param-type="date">
+      Latest date seen from the source of the property listing by Datafiniti.
+    </ParamField>
+
+    <ParamField body="transactions.lenderName" param-type="string">
+      Name of the lender.
+    </ParamField>
+
+    <ParamField body="transactions.loanAmount" param-type="double">
+      Loan amount by lending company.
+    </ParamField>
+
+    <ParamField body="transactions.loanType" param-type="string">
+      Type of loan for this transaction.
+    </ParamField>
+
+    <ParamField body="transactions.mortgageTerm" param-type="integer">
+      Length in months of the loan.
+    </ParamField>
+
+    <ParamField body="transactions.ownerType" param-type="string">
+      Type of owner for transaction.
+    </ParamField>
+
+    <ParamField body="transactions.parcelNumber" param-type="string">
+      Number parcel was created.
+    </ParamField>
+
+    <ParamField body="transactions.price" param-type="double">
+      Price of the property for this transaction.
+    </ParamField>
+
+    <ParamField body="transactions.saleDate" param-type="date">
+      Date the when transaction occurred
+    </ParamField>
+
+    <ParamField body="transactions.sellerFirstName" param-type="string">
+      First name of the seller.
+    </ParamField>
+
+    <ParamField body="transactions.sellerLastName" param-type="string">
+      Last name of the seller.
+    </ParamField>
+
+    <ParamField body="transactions.sellerMiddleName" param-type="string">
+      Middle name of the seller.
+    </ParamField>
+
+    <ParamField body="transactions.transactionID" param-type="string">
+      the ID value of the transaction.
+    </ParamField>
+
+    <ParamField body="transactions.type" param-type="string">
+      the type of transaction in relation to the saleDate.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+## Status Details
+
+<ParamField body="mostRecentRentalStatus" param-type="keyword">
+  The most recent value for `rentalStatuses.type` for this property. See possible values [here](/docs/possible-values-for-property-fields).
+
+  **Example:**
+
+  ```json
+  "mostRecentStatus": "Rental"
+  ```
+</ParamField>
+
+<ParamField body="mostRecentRentalStatusDate" param-type="date">
+  The most recent rental status date listed by the source.
+
+  **Example:**
+
+  ```json
+  "mostRecentRentalStatusDate": "2025-08-23T00:00:00.000Z"
+  ```
+</ParamField>
+
+<ParamField body="mostRecentRentalStatusFirstDateSeen" param-type="date">
+  The most recent rental status first seen by Datafiniti
+
+  **Example:**
+
+  ```json
+  "mostRecentRentalStatusFirstDateSeen": "2024-09-11T00:00:00.000Z"
+  ```
+</ParamField>
+
+<ParamField body="mostRecentStatus" param-type="keyword">
+  The most recent value for `statuses.type` for this property. See possible values [here](/docs/possible-values-for-property-fields).
+
+  **Example:**
+
+  ```json
+  "mostRecentStatus": "For Sale"
+  ```
+</ParamField>
+
+<ParamField body="mostRecentStatusDate" param-type="date">
+  The date of change that corresponds to the `mostRecentStatus` for this property.
+
+  **Example:**
+
+  ```json
+  "mostRecentStatusDate": "2017-01-10T20:12:16Z"
+  ```
+</ParamField>
+
+<ParamField body="mostRecentStatusFirstDateSeen" param-type="date">
+  This date corresponds to the most recent date seen of the most recent status data source.
+
+  **Example:**
+
+  ```json
+  "mostRecentStatusFirstDateSeen": "2021-09-09T00:00:00.000"
+  ```
+</ParamField>
+
+<ParamField body="mostRecentVacancy" param-type="boolean">
+  The most recent vacancy value of the property.
+
+  **Example:**
+
+  ```json
+  "mostRecentVacancy": false
+  ```
+</ParamField>
+
+<ParamField body="mostRecentVacancyFirstDateSeen" param-type="date">
+  This date corresponds to the first date seen from the source of the property listing.
+
+  **Example:**
+
+  ```json
+  "mostRecentVacancyFirstDateSeen": "2024-04-11T16:57:22.603Z"
+  ```
+</ParamField>
+
+<ParamField body="rentalStatuses" param-type="nested">
+  A list of historical rental statuses. This field is used to indicate when the property is status `For Rent` or `Short-term Rental`.
+
+  `rentalStatuses` objects may contain:
+
+  **Example:**
+
+  ```json
+  "rentalStatuses": [
+      {
+        "date": "2025-08-14T21:53:01.982Z",
+        "dateSeen": [
+          "2025-08-14T21:53:00.000Z"
+        ],
+        "firstDateSeen": "2025-08-14T21:53:00.000Z",
+        "lastDateSeen": "2025-08-14T21:53:00.000Z",
+        "sourceURLs": [
+          "https://www.airbnb.com/rooms/738825344801518115"
+        ],
+        "type": "Short Term Rental"
+      },
+      {
+        "date": "2003-08-18T00:00:00.000Z",
+        "dateSeen": [
+          "2025-06-05T23:32:16.983Z"
+        ],
+        "firstDateSeen": "2025-06-05T23:32:16.983Z",
+        "lastDateSeen": "2025-06-05T23:32:16.983Z",
+        "sourceURLs": [
+          "https://datafiniti.co/"
+        ],
+        "type": "Rental"
+      }
+    ]
+  ```
+
+  <Expandable title="Sub-fields" default-open="false">
+    <ParamField body="rentalStatuses.date" param-type="date">
+      the date the rental status was posted by the source.
+    </ParamField>
+
+    <ParamField body="rentalStatuses.dateSeen" param-type="date">
+      the date when the rental status was seen by Datafiniti.
+    </ParamField>
+
+    <ParamField body="rentalStatuses.firstDateSeen" param-type="date">
+      the first date seen of the rental status was seen by Datafiniti.
+    </ParamField>
+
+    <ParamField body="rentalStatuses.lastDateSeen" param-type="date">
+      the latest date seen of the rental status was seen by Datafiniti.
+    </ParamField>
+
+    <ParamField body="rentalStatuses.sourceURLs" param-type="string">
+      the source URL of the rental property listing.
+    </ParamField>
+
+    <ParamField body="rentalStatuses.type" param-type="string">
+      the type of rental being listed `For Rent` or `Short-term Rental`
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="statuses" param-type="nested">
+  **Deprecated**
+  A list of statuses for this property. This field is used to indicate when the property is for sale, etc.
+
+  Each status includes:
+
+  **Example:**
+
+  ```json
+  "statuses": [
+      {
+        "date": "2023-03-10T00:00:00.000Z",
+        "dateSeen": [
+          "2023-07-10T06:46:31.387Z",
+          "2023-07-01T02:58:12.456Z"
+        ],
+        "firstDateSeen": "2023-07-01T02:58:12.456Z",
+        "lastDateSeen": "2023-07-10T06:46:31.387Z",
+        "type": "Sold"
+      }
+    ]
+  ```
+
+  <Expandable title="Sub-fields" default-open="false">
+    <ParamField body="statuses.date" param-type="date">
+      Date the status occurred
+    </ParamField>
+
+    <ParamField body="statuses.dateSeen" param-type="date">
+      A list of dates when this status was seen by Datafiniti.
+    </ParamField>
+
+    <ParamField body="statuses.firstDateSeen" param-type="date">
+      the first date seen of this status was seen by Datafiniti.
+    </ParamField>
+
+    <ParamField body="statuses.isUnderContract" param-type="boolean">
+      A true/false value to indicate if this status is under contract.
+    </ParamField>
+
+    <ParamField body="statuses.lastDateSeen" param-type="date">
+      the latest date seen of this status was seen by Datafiniti.
+    </ParamField>
+
+    <ParamField body="statuses.type" param-type="keyword">
+      The status. See possible values [here](/docs/possible-values-for-property-fields).
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="statusHistory" param-type="nested">
+  A list of Historical statuses for this property. This field is used to indicate when the property is for sale, etc. No rental statuses are found here.
+
+  Each status includes:
+
+  **Example:**
+
+  ```json
+  "statusHistory": [
+      {
+        "dateSeen": [
+          "2024-03-08T07:24:15.145Z",
+          "2024-04-16T08:50:21.971Z"
+        ],
+        "type": "Off Market",
+        "sourceURLs": [
+          "https://www.xome.com/realestate/1530-n-smith-cir-601-wichita-ks-67212-46005393"
+        ],
+        "firstDateSeen": "2024-03-08T07:24:15.145Z",
+        "lastDateSeen": "2024-04-16T08:50:21.971Z"
+      },
+      {
+        "type": "For Sale",
+        "date": "2026-01-13T00:00:00.000Z",
+        "dateSeen": [
+          "2026-01-14T17:18:01.076Z",
+          "2026-01-14T21:25:24.946Z"
+        ],
+        "sourceURLs": [
+          "https://www.redfin.com/KS/Wichita/1530-N-Smith-Cir-67212/unit-601/home/120152524"
+        ],
+        "firstDateSeen": "2026-01-14T17:18:01.076Z",
+        "lastDateSeen": "2026-01-14T21:25:24.946Z"
+      }
+    ]
+  ```
+
+  <Expandable title="Sub-fields" default-open="false">
+    <ParamField body="statusHistory.date" param-type="date">
+      Date the status occurred
+    </ParamField>
+
+    <ParamField body="statusHistory.dateSeen" param-type="date">
+      A list of dates when this status was seen by Datafiniti.
+    </ParamField>
+
+    <ParamField body="statusHistory.firstDateSeen" param-type="date">
+      the first date seen of this status was seen by Datafiniti.
+    </ParamField>
+
+    <ParamField body="statusHistory.lastDateSeen" param-type="date">
+      the latest date seen of this status was seen by Datafiniti.
+    </ParamField>
+
+    <ParamField body="statusHistory.sourceURLs" param-type="url">
+      The sourceURL of the status.
+    </ParamField>
+
+    <ParamField body="statusHistory.type" param-type="keyword">
+      The status. See possible values [here](/docs/possible-values-for-property-fields).
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="vacancy" param-type="nested">
+  The status of the vacancy of the property:
+
+  **Example:**
+
+  ```json
+  "vacancy": [
+      {
+        "vacant": false,
+        "lastDateSeen": "2024-04-11T16:57:22.603Z",
+        "firstDateSeen": "2024-04-11T16:57:22.603Z"
+      }
+    ]
+  ```
+
+  <Expandable title="Sub-fields" default-open="false">
+    <ParamField body="vacancy.firstDateSeen" param-type="date">
+      Earliest date seen from the source of the vacancy by Datafiniti.
+    </ParamField>
+
+    <ParamField body="vacancy.lastDateSeen" param-type="date">
+      Latest date seen from the source of the vacancy by Datafiniti.
+    </ParamField>
+
+    <ParamField body="vacancy.vacant" param-type="boolean">
+      If the property is currently vacant
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+## Tax & Assessment Details
+
+<ParamField body="assessedValues" param-type="nested">
+  The assessed value of the property. Each assessed value may contain:
+
+  **Example:**
+
+  ```json
+  "assessedValues": [
+      {
+        "totalAmount": 1745400.0,
+        "improvementsAmount": 1745400.0,
+        "landAmount": 1745400.0,
+        "year": 1985
+      }
+    ]
+  ```
+
+  <Expandable title="Sub-fields" default-open="false">
+    <ParamField body="assessedValues.improvementsAmount" param-type="float">
+      assessed value for improvements made to the property.
+    </ParamField>
+
+    <ParamField body="assessedValues.landAmount" param-type="float">
+      assessed value for the land/lot of the property.
+    </ParamField>
+
+    <ParamField body="assessedValues.totalAmount" param-type="float">
+      amount value the property is currently assessed for.
+    </ParamField>
+
+    <ParamField body="assessedValues.year" param-type="integer">
+      year value when the property was assessed.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="censusBlock" param-type="string">
+  The census block the property is associate to.
+
+  **Example:**
+
+  ```json
+  "censusBlock": 1012
+  ```
+</ParamField>
+
+<ParamField body="censusBlockGroup" param-type="string">
+  The census group the property is associated to.
+
+  **Example:**
+
+  ```json
+  "censusBlockGroup": 4
+  ```
+</ParamField>
+
+<ParamField body="censusTract" param-type="string">
+  The census tract the property is associated to.
+
+  **Example:**
+
+  ```json
+  "censusTract": 5102
+  ```
+</ParamField>
+
+<ParamField body="civilDivisionCode" param-type="text">
+  The civil division code for the property.
+
+  **Example:**
+
+  ```json
+  "civilDivisionCode": 4
+  ```
+</ParamField>
+
+<ParamField body="civilDivisionName" param-type="string">
+  The civil division name of the property.
+
+  **Example:**
+
+  ```json
+  "civilDivisionName": "SUMMERSVILLE"
+  ```
+</ParamField>
+
+<ParamField body="county" param-type="text">
+  The county of the property record.
+
+  **Example:**
+
+  ```json
+  "county": "Hillsborough"
+  ```
+</ParamField>
+
+<ParamField body="countyFIPS" param-type="integer">
+  County FIPS # of the property.
+
+  **Example:**
+
+  ```json
+  "countyFIPS": 12057
+  ```
+</ParamField>
+
+<ParamField body="legalDescription" param-type="text">
+  The legal description of the property record.
+
+  **Example:**
+
+  ```json
+  "legalDescription": "LOT 279 OXFORD OAKS PHASE TWO PB 16 PGS 17-17D"
+  ```
+</ParamField>
+
+<ParamField body="legalRange" param-type="string">
+  Legal range of the property.
+
+  **Example:**
+
+  ```json
+  "legalRange": "08E"
+  ```
+</ParamField>
+
+<ParamField body="parcelNumbers" param-type="nested">
+  The parcel number associated to the property.
+
+  **Example:**
+
+  ```json
+  "parcelNumbers": [
+      {
+        "number": "29-29-22-12-0015",
+        "account": "394308",
+        "year": 1985
+      }
+    ]
+  ```
+
+  <Expandable title="Sub-fields" default-open="false">
+    <ParamField body="parcelNumbers.account" param-type="string">
+      Account number of parcel.
+    </ParamField>
+
+    <ParamField body="parcelNumbers.number" param-type="string">
+      Legal parcel number of the property.
+    </ParamField>
+
+    <ParamField body="parcelNumbers.year" param-type="integer">
+      Recorded year of the parcel number.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="propertyTaxes" param-type="nested">
+  A list of property taxes that have been seen for this property. Each property tax will include:
+
+  **Example:**
+
+  ```json
+  "propertyTaxes": [
+      {
+        "amount": 1582,
+        "currency": "USD",
+        "dateSeen": [
+          "2016-08-09T09:34:15Z"
+        ],
+        "year": 2010
+      }
+    ]
+  ```
+
+  <Expandable title="Sub-fields" default-open="false">
+    <ParamField body="propertyTaxes.amount" param-type="float">
+      The tax amount.
+    </ParamField>
+
+    <ParamField body="propertyTaxes.currency" param-type="text">
+      The amount's currency.
+    </ParamField>
+
+    <ParamField body="propertyTaxes.dateSeen" param-type="date">
+      A list of dates when this tax has been seen for this property.
+    </ParamField>
+
+    <ParamField body="propertyTaxes.year" param-type="integer">
+      The year of taxable amount of the property.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="taxExemptions" param-type="text">
+  A list of tax exemptions for the property.
+
+  **Example:**
+
+  ```json
+  "taxExemptions": ["Homeowner", "Disabled", "Senior"]
+  ```
+</ParamField>
+
+<ParamField body="taxID" param-type="keyword">
+  The tax ID for the property.
+
+  **Example:**
+
+  ```json
+  "taxID": "30-9011-019-0029758"
+  ```
+</ParamField>
 
 <ParamField body="zoning" param-type="string">
   The zoning value for the property.
