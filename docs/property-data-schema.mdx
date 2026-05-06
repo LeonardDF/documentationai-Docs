@@ -46,6 +46,152 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
+## Broker Details
+
+<ParamField body="brokers" param-type="nested" showLocation="false">
+  A list of brokers that have represented this property over time. Each broker may contain:
+
+  **Example:**
+  ```json
+  "brokers": {
+      "emails": [
+        "tomatterson@realtracs.com"
+      ],
+      "licenseNumber": "1059280",
+      "websites": [
+        "http://www.fridrichandclark.com/"
+      ],
+      "phones": [
+        "6153511737",
+        "6153274800"
+      ],
+      "agent": "Tom Atterson",
+      "firstName": "Tom",
+      "lastName": "Atterson",
+      "sourceURLs": [
+        "https://datafiniti.co/bd-datafiniti",
+        "https://www.redfin.com/TN/Arrington/4301-Union-Springs-Ln-37014/home/109775697"
+      ],
+      "dateSeen": "2025-03-28T17:18:49.715Z",
+      "company": "Frich & Clare Realty",
+      "people_key": "tom/atterson/1364043647"
+    }
+  ```
+
+  <Expandable title="Sub-fields">
+    <ParamField body="brokers.agent" param-type="text" showLocation="false">
+      The name of the real estate agent representing this property.
+    </ParamField>
+    <ParamField body="brokers.company" param-type="text" showLocation="false">
+      The company this agent works for (or the company representing this property).
+    </ParamField>
+    <ParamField body="brokers.dateSeen" param-type="date" showLocation="false">
+      The date this agent/company was seen representing the property.
+    </ParamField>
+    <ParamField body="brokers.emails" param-type="keyword" showLocation="false">
+      A list of email addresses associated with the agent or company.
+    </ParamField>
+    <ParamField body="brokers.licenseNumber" param-type="text" showLocation="false">
+      The license number of the agent representing the property.
+    </ParamField>
+    <ParamField body="brokers.licenseType" param-type="text" showLocation="false">
+      The license Type of the agent representing the property.
+    </ParamField>
+    <ParamField body="brokers.people_key" param-type="text" showLocation="false">
+      The corresponding key that link to Datafiniti's people data record. (contact, demographics, & more)
+    </ParamField>
+    <ParamField body="brokers.phones" param-type="keyword" showLocation="false">
+      A phone number associated with the agent or company.
+    </ParamField>
+    <ParamField body="brokers.websites" param-type="keyword" showLocation="false">
+      A list of websites associated with the agent or company.
+    </ParamField>
+    <ParamField body="brokers.workEmail" param-type="keyword" showLocation="false">
+      Email address specifically associated with the business the broker works for currently.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="listingName" param-type="text" showLocation="false">
+  The name of the property listing. This isn't the name of the building. It's a descriptive name supplied for the listing itself.
+
+
+  **Example:**
+  ```json
+  "listingName": "Antico Appartamento"
+  ```
+</ParamField>
+
+<ParamField body="mlsName" param-type="text" showLocation="false">
+  The mls name of the listing company/realtor
+
+
+  **Example:**
+  ```json
+  "mlsName": "sovereign realty group"
+  ```
+</ParamField>
+
+<ParamField body="mlsNumber" param-type="keyword" showLocation="false">
+  The MLS number for the property. [Learn more about MLS numbers](https://en.wikipedia.org/wiki/Multiple_listing_service).
+
+
+  **Example:**
+  ```json
+  "mlsNumber": "16177277"
+  ```
+</ParamField>
+
+<ParamField body="mostRecentBrokerAgent" param-type="text" showLocation="false">
+  The most recent broker agent added to the brokers field.
+
+
+  **Example:**
+  ```json
+  "mostRecentBrokerAgent": "Rackel Atkins"
+  ```
+</ParamField>
+
+<ParamField body="mostRecentBrokerCompany" param-type="text" showLocation="false">
+  The company of the most recent broker added to the broker's field.
+
+
+  **Example:**
+  ```json
+  "mostRecentBrokerCompany": "Compass Recom"
+  ```
+</ParamField>
+
+<ParamField body="mostRecentBrokerDateSeen" param-type="text" showLocation="false">
+  The date seen of the most recent broker added to the brokers field.
+
+
+  **Example:**
+  ```json
+  "mostRecentBrokerDateSeen": "2023-10-23T19:20:50.418Z"
+  ```
+</ParamField>
+
+<ParamField body="mostRecentBrokerEmails" param-type="text" showLocation="false">
+  The email(s) of the most recent broker agent.
+
+
+  **Example:**
+  ```json
+  "mostRecentBrokerEmails": ["mavhovsepia@pearsonrealty.com"]
+  ```
+</ParamField>
+
+<ParamField body="mostRecentBrokerPhones" param-type="text" showLocation="false">
+  The phone number(s) of the most recent broker agent.
+
+
+  **Example:**
+  ```json
+  "mostRecentBrokerPhones": ["(713) 948-6666"]
+  ```
+</ParamField>
+
 <ParamField body="categories" param-type="text" showLocation="false">
   A list of category keywords used for this property across multiple sources.
 
@@ -908,6 +1054,8 @@ The property data schema below lists all available fields in a property record. 
   </Expandable>
 </ParamField>
 
+## Owner Details
+
 <ParamField body="absenteeOwner" param-type="nested" showLocation="false">
   The owner of a property who does not reside in or otherwise occupy that property.
 
@@ -933,6 +1081,285 @@ The property data schema below lists all available fields in a property record. 
       Latest date seen of the absentee owner.
     </ParamField>
   </Expandable>
+</ParamField>
+
+<ParamField body="companies" param-type="nested" showLocation="false">
+  A list of companies that have been seen for this property. Each company can contain:
+
+  **Example:**
+  ```json
+  "companies": [
+      {
+        "companies.dateSeen": "2024-01-20",
+        "companies.email": "bankairport@gmail.com",
+        "companies.equity": 432000,
+        "companies.equityPercent": 40,
+        "companies.landline": true,
+        "companies.name": "Bank Airport Clark",
+        "companies.phone": "+19364029634",
+        "companies.title": "Resident"
+      }
+    ]
+  ```
+
+  <Expandable title="Sub-fields">
+    <ParamField body="companies.dateSeen" param-type="date" showLocation="false">
+      Date when Datafiniti seen the company's data.
+    </ParamField>
+    <ParamField body="companies.email" param-type="string" showLocation="false">
+      Email of the company.
+    </ParamField>
+    <ParamField body="companies.equity" param-type="integer" showLocation="false">
+      Sum total of equity of the company
+    </ParamField>
+    <ParamField body="companies.equityPercent" param-type="bigdecimal" showLocation="false">
+      the percent of equity of the company
+    </ParamField>
+    <ParamField body="companies.landline" param-type="boolean" showLocation="false">
+      True or False if a landline is found.
+    </ParamField>
+    <ParamField body="companies.name" param-type="string" showLocation="false">
+      The name of company
+    </ParamField>
+    <ParamField body="companies.phone" param-type="string" showLocation="false">
+      the phone number of the company.
+    </ParamField>
+    <ParamField body="companies.title" param-type="string" showLocation="false">
+      title of company in regards of the property.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="currentOwnerType" param-type="string" showLocation="false">
+  Current owner type of the property.
+
+  **Example:**
+  ```json
+  "currentOwnerType": "Company"
+  ```
+</ParamField>
+
+<ParamField body="managedBy" param-type="nested" showLocation="false">
+  A list of companies or people that have managed this property. Each managedBy object will contain:
+
+
+  **Example:**
+  ```json
+  "managedBy": [
+      {
+        "dateSeen": [
+          "2016-03-03T15:02:13Z"
+        ],
+        "value": "ROM Investments"
+      }
+    ]
+  ```
+  <Expandable title="Sub-fields">
+    <ParamField body="managedBy.dateSeen" param-type="date" showLocation="false">
+      A list of dates when this information was seen.
+    </ParamField>
+    <ParamField body="managedBy.value" param-type="text" showLocation="false">
+      The name of the company or person.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="mostRecentAbsenteeOwner" param-type="boolean" showLocation="false">
+  The most recent boolean value for the absentee owner.
+
+
+  **Example:**
+  ```json
+  "mostRecentAbsenteeOwner": false
+  ```
+</ParamField>
+
+<ParamField body="mostRecentAbsenteeOwnerFirstDateSeen" param-type="date" showLocation="false">
+  The most recent first date seen of the absentee owner.
+
+
+  **Example:**
+  ```json
+  "mostRecentAbsenteeOwnerFirstDateSeen": "2024-04-11T16:57:22.605Z"
+  ```
+</ParamField>
+
+<ParamField body="mostRecentOwnerFirstName" param-type="text" showLocation="false">
+  The most recent first name from the owners top level field.
+
+
+  **Example:**
+  ```json
+  "mostRecentOwnerFirstName": "Jeff"
+  ```
+</ParamField>
+
+<ParamField body="mostRecentOwnerLastName" param-type="text" showLocation="false">
+  The most recent last name from the owners top level field.
+
+
+  **Example:**
+  ```json
+  "mostRecentOwnerLastName": "Allback"
+  ```
+</ParamField>
+
+<ParamField body="mostRecentOwnerPeopleKey" param-type="keyword" showLocation="false">
+  The most recent people key of the owners top level field. This can be matched to the people database
+
+
+  **Example:**
+  ```json
+  "mostRecentOwnerPeopleKey": "jeff/allback/us/al/85255/3114epatrickst"
+  ```
+</ParamField>
+
+<ParamField body="ownerOccupied" param-type="boolean" showLocation="false">
+  The true/false value of whether owner occupies the property.
+
+
+  **Example:**
+  ```json
+  "ownerOccupied": true
+  ```
+</ParamField>
+
+<ParamField body="ownerOccupiedStatus" param-type="nested" showLocation="false">
+
+  **Example:**
+  ```json
+  "ownerOccupiedStatus": {
+      "status": true,
+      "firstDateSeen": "2023-12-01T13:35:16.399Z",
+      "lastDateSeen": "2023-12-01T13:35:16.399Z",
+      "startDate": "2017-07-21T00:00:00.000Z"
+    }
+  ```
+
+  <Expandable title="Sub-fields">
+    <ParamField body="ownerOccupiedStatus.firstDateSeen" param-type="date" showLocation="false">
+      the first date seen by Datafiniti of owner occupancy being true
+    </ParamField>
+    <ParamField body="ownerOccupiedStatus.lastDateSeen" param-type="date" showLocation="false">
+      the last date seen by Datafiniti of owner occupancy being true
+    </ParamField>
+    <ParamField body="ownerOccupiedStatus.startDate" param-type="date" showLocation="false">
+      the lease start date seen by the leasing agency.
+    </ParamField>
+    <ParamField body="ownerOccupiedStatus.status" param-type="boolean" showLocation="false">
+      The true/false value of whether owner occupies the property.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="owners" param-type="nested" showLocation="false">
+  A list of known people associated with or employed by this property.
+  
+  Each person may contain:
+
+  **Example:**
+  ```json
+  "owners": [
+      {
+        "transactionDate": "2025-05-27T00:00:00.000Z",
+        "firstName": "Jeffrey",
+        "lastName": "Allback",
+        "peopleKey": "jeffrey/allback/us/az/85255/3114epatrickst",
+        "firstDateSeen": "2025-11-23T14:06:01Z",
+        "lastDateSeen": "2025-12-09T20:01:56Z"
+      }
+    ]
+  ```
+
+  <Expandable title="Sub-fields">
+    <ParamField body="owners.firstDateSeen" param-type="date" showLocation="false">
+      the first time the owner was seen by Datafiniti.
+    </ParamField>
+    <ParamField body="owners.firstName" param-type="text" showLocation="false">
+      first name of the owner.
+    </ParamField>
+    <ParamField body="owners.lastDateSeen" param-type="date" showLocation="false">
+      the last time the owner was seen by Datafiniti.
+    </ParamField>
+    <ParamField body="owners.lastName" param-type="text" showLocation="false">
+      last name of the owner.
+    </ParamField>
+    <ParamField body="owners.peopleKey" param-type="keyword" showLocation="false">
+      people key matched to Datafiniti's people database.
+    </ParamField>
+    <ParamField body="owners.transactionDate" param-type="date" showLocation="false">
+      date the owner purchased this property.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="people" param-type="nested" showLocation="false">
+  A list of known people associated with or employed by this property.
+  
+  Each person may contain:
+
+  **Example:**
+  ```json
+  "people": [
+      {
+        "equity": 1065556,
+        "equityPercent": 100,
+        "name": "Luci Weinsein",
+        "firstName": "Luci",
+        "lastName": "Weinsein",
+        "landline": true,
+        "people_key": "luci/weinsein/1080154715",
+        "dateSeen": "2024-04-11T16:57:22.618Z",
+        "title": "Owner"
+      }
+    ]
+  ```
+
+  <Expandable title="Sub-fields">
+    <ParamField body="people.dateSeen" param-type="date" showLocation="false">
+      The date when this person was seen.
+    </ParamField>
+    <ParamField body="people.email" param-type="text" showLocation="false">
+      The person's email.
+    </ParamField>
+    <ParamField body="people.equity" param-type="float" showLocation="false">
+      Sum total of equity of properties
+    </ParamField>
+    <ParamField body="people.equityPercent" param-type="float" showLocation="false">
+      Percent estimated equity percentage (100 minus LTV)
+    </ParamField>
+    <ParamField body="people.firstName" param-type="text" showLocation="false">
+      first name of the person
+    </ParamField>
+    <ParamField body="people.lastName" param-type="text" showLocation="false">
+      last name of the person
+    </ParamField>
+    <ParamField body="people.landline" param-type="boolean" showLocation="false">
+      Does the person have a landline.
+    </ParamField>
+    <ParamField body="people.name" param-type="text" showLocation="false">
+      The person's name.
+    </ParamField>
+    <ParamField body="people.people_key" param-type="keyword" showLocation="false">
+      the corresponding key that link to Datafiniti's people data record. (contact, demographics, & more)
+    </ParamField>
+    <ParamField body="people.phone" param-type="text" showLocation="false">
+      The person's phone number.
+    </ParamField>
+    <ParamField body="people.title" param-type="text" showLocation="false">
+      The person's title.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="trustDescription" param-type="string" showLocation="false">
+  The description of the trust information in relation to the property.
+
+
+  **Example:**
+  ```json
+  "trustDescription": "Not a trust"
+  ```
 </ParamField>
 
 <ParamField body="address" param-type="text" showLocation="false">
