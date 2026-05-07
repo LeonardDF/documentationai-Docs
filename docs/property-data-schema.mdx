@@ -328,6 +328,16 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
+<ParamField body="leasingTerms" param-type="text">
+  A list of leasing terms associated with the property.
+
+  **Example:**
+
+  ```json
+  "leasingTerms": ["12 Months", "24 Months"]
+  ```
+</ParamField>
+
 <ParamField body="lotDepthUnit" param-type="text">
   The depth dimension unit of a property's lot.
 
@@ -1483,6 +1493,16 @@ The property data schema below lists all available fields in a property record. 
   </Expandable>
 </ParamField>
 
+<ParamField body="phones" param-type="text">
+  A list of phone numbers associated with the property.
+
+  **Example:**
+
+  ```json
+  "phones": ["(214) 555-0182"]
+  ```
+</ParamField>
+
 <ParamField body="trustDescription" param-type="string">
   The description of the trust information in relation to the property.
 
@@ -2509,6 +2529,21 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
+<ParamField body="permits" param-type="nested">
+  A list of permits associated with the property.
+
+  **Example:**
+
+  ```json
+  "permits": [
+      {
+        "number": "BLD-2024-01822",
+        "type": "Renovation Permit"
+      }
+    ]
+  ```
+</ParamField>
+
 <ParamField body="proFormaNOI" param-type="float">
   The projected net operating income for the property.
 
@@ -2750,37 +2785,3 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="leasingTerms" param-type="text">
-  A list of leasing terms associated with the property.
-
-  **Example:**
-
-  ```json
-  "leasingTerms": ["12 Months", "24 Months"]
-  ```
-</ParamField>
-
-<ParamField body="permits" param-type="nested">
-  A list of permits associated with the property.
-
-  **Example:**
-
-  ```json
-  "permits": [
-      {
-        "number": "BLD-2024-01822",
-        "type": "Renovation Permit"
-      }
-    ]
-  ```
-</ParamField>
-
-<ParamField body="phones" param-type="text">
-  A list of phone numbers associated with the property.
-
-  **Example:**
-
-  ```json
-  "phones": ["(214) 555-0182"]
-  ```
-</ParamField>
