@@ -2226,213 +2226,6 @@ The property data schema below lists all available fields in a property record. 
   </Expandable>
 </ParamField>
 
-## Transactions Details
-
-<ParamField body="instrumentNumber" param-type="string">
-  Instrument # of the property.
-
-  **Example:**
-
-  ```json
-  "instrumentNumber": "3312-0576"
-  ```
-</ParamField>
-
-<ParamField body="involuntaryLienJudgement" param-type="nested">
-  involuntaryLienJudgement shows if a lien is set against your wishes and is the result of not fulfilling your financial obligations
-
-  **Example:**
-
-  ```json
-  "involuntaryLienJudgement": [
-      {
-        "judgement": true,
-        "lien": true,
-        "lastDateSeen": "2024-04-11T18:37:01.751Z",
-        "firstDateSeen": "2024-04-11T18:37:01.751Z"
-      }
-    ]
-  ```
-
-  <Expandable title="Sub-fields" default-open="false">
-
-    <ParamField body="involuntaryLienJudgement.firstDateSeen" param-type="date">
-      first date seen on the lien of the property.
-    </ParamField>
-
-    <ParamField body="involuntaryLienJudgement.judgement" param-type="boolean">
-      if a lien was set on this property.
-    </ParamField>
-
-    <ParamField body="involuntaryLienJudgement.lien" param-type="boolean">
-      If a lien is current owed on the property
-    </ParamField>
-
-    <ParamField body="involuntaryLienJudgement.lastDateSeen" param-type="date">
-      last date seen on the lien of the property.
-    </ParamField>
-
-  </Expandable>
-</ParamField>
-
-<ParamField body="mostRecentInvoluntaryJudgement" param-type="boolean">
-  The most recent Involuntary Lien Judgement value
-
-  **Example:**
-
-  ```json
-  "mostRecentInvoluntaryJudgement": true
-  ```
-</ParamField>
-
-<ParamField body="mostRecentInvoluntaryLien" param-type="boolean">
-  The most recent Involuntary Lien on the property value
-
-  **Example:**
-
-  ```json
-  "mostRecentInvoluntaryLien": false
-  ```
-</ParamField>
-
-<ParamField body="mostRecentInvoluntaryLienJudgementFirstDateSeen" param-type="date">
-  The most recent first date seen of the Involuntary Lien.
-
-  **Example:**
-
-  ```json
-  "mostRecentInvoluntaryLienJudgementFirstDateSeen": "2024-04-11T18:19:19.342Z"
-  ```
-</ParamField>
-
-<ParamField body="transactions" param-type="nested">
-  A list of transactional data for this property after a sale is completed. This field is used to indicate when the property was purchased and by who.
-
-  Each transaction includes:
-
-  **Example:**
-
-  ```json
-  "transactions": [
-      {
-        "saleDate": "2023-01-04T12:00:00Z",
-        "firstDateSeen": "2023-01-04T12:00:00Z",
-        "lastDateSeen": "2023-01-04T12:00:00Z",
-        "documentNumber": "1HORTICULTURE, ORNAMENTAL (AGRICULTURAL)98",
-        "documentType": "Warranty Deed",
-        "price": 112900.0,
-        "sellerFirstName": "Anita",
-        "sellerMiddleName": "Brian",
-        "sellerLastName": "Powell",
-        "buyerFirstName": "Ben",
-        "buyerMiddleName": "Cherelle",
-        "buyerLastName": "Emaline",
-        "lenderName": "Ameris Bank",
-        "loanType": "Conventional",
-        "loanAmount": 10725.0,
-        "mortgageTerm": 360,
-        "interestType": "Adjustable",
-        "parcelNumber": "17-07-26-0-001-005.000",
-        "ownerType": "Company",
-        "contactOwnerMailAddressFull": "2337 JULIAN DR",
-        "transactionID": "841789370"
-      }
-    ]
-  ```
-
-  <Expandable title="Sub-fields" default-open="false">
-
-    <ParamField body="transactions.buyerFirstName" param-type="string">
-      First name of the buyer.
-    </ParamField>
-
-    <ParamField body="transactions.buyerLastName" param-type="string">
-      Last name of the buyer.
-    </ParamField>
-
-    <ParamField body="transactions.buyerMiddleName" param-type="string">
-      Middle name of the buyer.
-    </ParamField>
-
-    <ParamField body="transactions.contactOwnerMailAddressFull" param-type="string">
-      Mailing address provided by the buyer at the time of the transaction.
-    </ParamField>
-
-    <ParamField body="transactions.documentNumber" param-type="string">
-      the document number of the transaction.
-    </ParamField>
-
-    <ParamField body="transactions.documentType" param-type="string">
-      Contains all documents attached in this transaction.
-    </ParamField>
-
-    <ParamField body="transactions.firstDateSeen" param-type="date">
-      Earliest date seen from the source of the property listing by Datafiniti.
-    </ParamField>
-
-    <ParamField body="transactions.interestType" param-type="string">
-      interest rate by the lender.
-    </ParamField>
-
-    <ParamField body="transactions.lastDateSeen" param-type="date">
-      Latest date seen from the source of the property listing by Datafiniti.
-    </ParamField>
-
-    <ParamField body="transactions.lenderName" param-type="string">
-      Name of the lender.
-    </ParamField>
-
-    <ParamField body="transactions.loanAmount" param-type="double">
-      Loan amount by lending company.
-    </ParamField>
-
-    <ParamField body="transactions.loanType" param-type="string">
-      Type of loan for this transaction.
-    </ParamField>
-
-    <ParamField body="transactions.mortgageTerm" param-type="integer">
-      Length in months of the loan.
-    </ParamField>
-
-    <ParamField body="transactions.ownerType" param-type="string">
-      Type of owner for transaction.
-    </ParamField>
-
-    <ParamField body="transactions.parcelNumber" param-type="string">
-      Number parcel was created.
-    </ParamField>
-
-    <ParamField body="transactions.price" param-type="double">
-      Price of the property for this transaction.
-    </ParamField>
-
-    <ParamField body="transactions.saleDate" param-type="date">
-      Date the when transaction occurred
-    </ParamField>
-
-    <ParamField body="transactions.sellerFirstName" param-type="string">
-      First name of the seller.
-    </ParamField>
-
-    <ParamField body="transactions.sellerLastName" param-type="string">
-      Last name of the seller.
-    </ParamField>
-
-    <ParamField body="transactions.sellerMiddleName" param-type="string">
-      Middle name of the seller.
-    </ParamField>
-
-    <ParamField body="transactions.transactionID" param-type="string">
-      the ID value of the transaction.
-    </ParamField>
-
-    <ParamField body="transactions.type" param-type="string">
-      the type of transaction in relation to the saleDate.
-    </ParamField>
-
-  </Expandable>
-</ParamField>
-
 ## Tax & Assessment Details
 
 <ParamField body="assessedValues" param-type="nested">
@@ -2721,6 +2514,213 @@ The property data schema below lists all available fields in a property record. 
   ```json
   "municipality": "Dallas"
   ```
+</ParamField>
+
+## Transactions Details
+
+<ParamField body="instrumentNumber" param-type="string">
+  Instrument # of the property.
+
+  **Example:**
+
+  ```json
+  "instrumentNumber": "3312-0576"
+  ```
+</ParamField>
+
+<ParamField body="involuntaryLienJudgement" param-type="nested">
+  involuntaryLienJudgement shows if a lien is set against your wishes and is the result of not fulfilling your financial obligations
+
+  **Example:**
+
+  ```json
+  "involuntaryLienJudgement": [
+      {
+        "judgement": true,
+        "lien": true,
+        "lastDateSeen": "2024-04-11T18:37:01.751Z",
+        "firstDateSeen": "2024-04-11T18:37:01.751Z"
+      }
+    ]
+  ```
+
+  <Expandable title="Sub-fields" default-open="false">
+
+    <ParamField body="involuntaryLienJudgement.firstDateSeen" param-type="date">
+      first date seen on the lien of the property.
+    </ParamField>
+
+    <ParamField body="involuntaryLienJudgement.judgement" param-type="boolean">
+      if a lien was set on this property.
+    </ParamField>
+
+    <ParamField body="involuntaryLienJudgement.lien" param-type="boolean">
+      If a lien is current owed on the property
+    </ParamField>
+
+    <ParamField body="involuntaryLienJudgement.lastDateSeen" param-type="date">
+      last date seen on the lien of the property.
+    </ParamField>
+
+  </Expandable>
+</ParamField>
+
+<ParamField body="mostRecentInvoluntaryJudgement" param-type="boolean">
+  The most recent Involuntary Lien Judgement value
+
+  **Example:**
+
+  ```json
+  "mostRecentInvoluntaryJudgement": true
+  ```
+</ParamField>
+
+<ParamField body="mostRecentInvoluntaryLien" param-type="boolean">
+  The most recent Involuntary Lien on the property value
+
+  **Example:**
+
+  ```json
+  "mostRecentInvoluntaryLien": false
+  ```
+</ParamField>
+
+<ParamField body="mostRecentInvoluntaryLienJudgementFirstDateSeen" param-type="date">
+  The most recent first date seen of the Involuntary Lien.
+
+  **Example:**
+
+  ```json
+  "mostRecentInvoluntaryLienJudgementFirstDateSeen": "2024-04-11T18:19:19.342Z"
+  ```
+</ParamField>
+
+<ParamField body="transactions" param-type="nested">
+  A list of transactional data for this property after a sale is completed. This field is used to indicate when the property was purchased and by who.
+
+  Each transaction includes:
+
+  **Example:**
+
+  ```json
+  "transactions": [
+      {
+        "saleDate": "2023-01-04T12:00:00Z",
+        "firstDateSeen": "2023-01-04T12:00:00Z",
+        "lastDateSeen": "2023-01-04T12:00:00Z",
+        "documentNumber": "1HORTICULTURE, ORNAMENTAL (AGRICULTURAL)98",
+        "documentType": "Warranty Deed",
+        "price": 112900.0,
+        "sellerFirstName": "Anita",
+        "sellerMiddleName": "Brian",
+        "sellerLastName": "Powell",
+        "buyerFirstName": "Ben",
+        "buyerMiddleName": "Cherelle",
+        "buyerLastName": "Emaline",
+        "lenderName": "Ameris Bank",
+        "loanType": "Conventional",
+        "loanAmount": 10725.0,
+        "mortgageTerm": 360,
+        "interestType": "Adjustable",
+        "parcelNumber": "17-07-26-0-001-005.000",
+        "ownerType": "Company",
+        "contactOwnerMailAddressFull": "2337 JULIAN DR",
+        "transactionID": "841789370"
+      }
+    ]
+  ```
+
+  <Expandable title="Sub-fields" default-open="false">
+
+    <ParamField body="transactions.buyerFirstName" param-type="string">
+      First name of the buyer.
+    </ParamField>
+
+    <ParamField body="transactions.buyerLastName" param-type="string">
+      Last name of the buyer.
+    </ParamField>
+
+    <ParamField body="transactions.buyerMiddleName" param-type="string">
+      Middle name of the buyer.
+    </ParamField>
+
+    <ParamField body="transactions.contactOwnerMailAddressFull" param-type="string">
+      Mailing address provided by the buyer at the time of the transaction.
+    </ParamField>
+
+    <ParamField body="transactions.documentNumber" param-type="string">
+      the document number of the transaction.
+    </ParamField>
+
+    <ParamField body="transactions.documentType" param-type="string">
+      Contains all documents attached in this transaction.
+    </ParamField>
+
+    <ParamField body="transactions.firstDateSeen" param-type="date">
+      Earliest date seen from the source of the property listing by Datafiniti.
+    </ParamField>
+
+    <ParamField body="transactions.interestType" param-type="string">
+      interest rate by the lender.
+    </ParamField>
+
+    <ParamField body="transactions.lastDateSeen" param-type="date">
+      Latest date seen from the source of the property listing by Datafiniti.
+    </ParamField>
+
+    <ParamField body="transactions.lenderName" param-type="string">
+      Name of the lender.
+    </ParamField>
+
+    <ParamField body="transactions.loanAmount" param-type="double">
+      Loan amount by lending company.
+    </ParamField>
+
+    <ParamField body="transactions.loanType" param-type="string">
+      Type of loan for this transaction.
+    </ParamField>
+
+    <ParamField body="transactions.mortgageTerm" param-type="integer">
+      Length in months of the loan.
+    </ParamField>
+
+    <ParamField body="transactions.ownerType" param-type="string">
+      Type of owner for transaction.
+    </ParamField>
+
+    <ParamField body="transactions.parcelNumber" param-type="string">
+      Number parcel was created.
+    </ParamField>
+
+    <ParamField body="transactions.price" param-type="double">
+      Price of the property for this transaction.
+    </ParamField>
+
+    <ParamField body="transactions.saleDate" param-type="date">
+      Date the when transaction occurred
+    </ParamField>
+
+    <ParamField body="transactions.sellerFirstName" param-type="string">
+      First name of the seller.
+    </ParamField>
+
+    <ParamField body="transactions.sellerLastName" param-type="string">
+      Last name of the seller.
+    </ParamField>
+
+    <ParamField body="transactions.sellerMiddleName" param-type="string">
+      Middle name of the seller.
+    </ParamField>
+
+    <ParamField body="transactions.transactionID" param-type="string">
+      the ID value of the transaction.
+    </ParamField>
+
+    <ParamField body="transactions.type" param-type="string">
+      the type of transaction in relation to the saleDate.
+    </ParamField>
+
+  </Expandable>
 </ParamField>
 
 ## Additional Details
