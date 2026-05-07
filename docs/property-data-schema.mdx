@@ -511,6 +511,68 @@ uThe property data schema below lists all available fields in a property record.
   ```
 </ParamField>
 
+<ParamField body="petPolicy" param-type="text">
+  A list of pet policy details for this property.
+
+  **Example:**
+
+  ```json
+  "petPolicy": ["Cats Allowed","Dogs Allowed"]
+  ```
+</ParamField>
+
+<ParamField body="reviews" param-type="nested">
+  A list of reviews that have been seen for this property. Each review may contain:
+
+  **Example:**
+
+  ```json
+  "reviews": [
+      {
+        "date": "2024-03-14T00:00:00Z",
+        "dateSeen": [
+          "2024-03-15T08:22:11Z"
+        ],
+        "rating": 4.5,
+        "title": "Quiet building near downtown",
+        "text": "Responsive management and clean common areas."
+      }
+    ]
+  ```
+
+  <Expandable title="Sub-fields" default-open="false">
+    <ParamField body="reviews.date" param-type="date">
+      The date of the review.
+    </ParamField>
+
+    <ParamField body="reviews.dateSeen" param-type="date">
+      A list of dates when this review was seen.
+    </ParamField>
+
+    <ParamField body="reviews.rating" param-type="float">
+      The numeric rating associated with the review.
+    </ParamField>
+
+    <ParamField body="reviews.text" param-type="text">
+      The full review text.
+    </ParamField>
+
+    <ParamField body="reviews.title" param-type="text">
+      The review title or summary.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="rules" param-type="text">
+  A list of rules or restrictions for this property.
+
+  **Example:**
+
+  ```json
+  "rules": ["No smoking","No short-term subleasing"]
+  ```
+</ParamField>
+
 ## Broker Details
 
 <ParamField body="mlsName" param-type="text">
