@@ -666,6 +666,92 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
+## Fee fields
+
+<ParamField body="deposits" param-type="nested" showLocation="false">
+  A list of deposit fees that have been seen for this property. Each deposit contains:
+
+  **Example:**
+
+  ```json
+  "deposits": [
+      {
+        "amount": 104,
+        "currency": "USD",
+        "dateSeen": [
+          "2016-08-07T18:07:05Z"
+        ]
+      }
+    ]
+  ```
+
+  <Expandable title="Sub-fields" default-open="false">
+    <ParamField body="deposits.amount" param-type="float" showLocation="false">
+      The fee amount.
+    </ParamField>
+
+    <ParamField body="deposits.currency" param-type="keyword" showLocation="false">
+      The currency for the amount.
+    </ParamField>
+
+    <ParamField body="deposits.dateSeen" param-type="date" showLocation="false">
+      A list of dates this deposit fee was seen.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="fees" param-type="nested" showLocation="false">
+  A list of various fees that have been seen for this property. Each fee will contain:
+
+  **Example:**
+
+  ```json
+  "fees": [
+      {
+        "amountMax": 11,
+        "amountMin": 11,
+        "currency": "USD",
+        "dateSeen": [
+          "2016-08-07T18:07:05Z"
+        ],
+        "type": "Cleaning Fee"
+      }
+    ]
+  ```
+
+  <Expandable title="Sub-fields" default-open="false">
+    <ParamField body="fees.amountMax" param-type="float" showLocation="false">
+      The maximum fee value listed.
+    </ParamField>
+
+    <ParamField body="fees.amountMin" param-type="float" showLocation="false">
+      The minimum fee value listed.
+    </ParamField>
+
+    <ParamField body="fees.currency" param-type="keyword" showLocation="false">
+      The currency listed for amountMin and amountMax
+    </ParamField>
+
+    <ParamField body="fees.dateSeen" param-type="date" showLocation="false">
+      A list of dates when this fee was seen.
+    </ParamField>
+
+    <ParamField body="fees.type" param-type="text" showLocation="false">
+      A classification value for the fee.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="paymentTypes" param-type="text" showLocation="false">
+  A list of payment options accepted by the property.
+
+  **Example:**
+
+  ```json
+  "paymentTypes": ["Visa"]
+  ```
+</ParamField>
+
 ## Generic fields
 
 <ParamField body="categories" param-type="text" showLocation="false">
@@ -1805,122 +1891,6 @@ The property data schema below lists all available fields in a property record. 
 
 ## Rental price fields
 
-<ParamField body="deposits" param-type="nested" showLocation="false">
-  A list of deposit fees that have been seen for this property. Each deposit contains:
-
-  **Example:**
-
-  ```json
-  "deposits": [
-      {
-        "amount": 104,
-        "currency": "USD",
-        "dateSeen": [
-          "2016-08-07T18:07:05Z"
-        ]
-      }
-    ]
-  ```
-
-  <Expandable title="Sub-fields" default-open="false">
-    <ParamField body="deposits.amount" param-type="float" showLocation="false">
-      The fee amount.
-    </ParamField>
-
-    <ParamField body="deposits.currency" param-type="keyword" showLocation="false">
-      The currency for the amount.
-    </ParamField>
-
-    <ParamField body="deposits.dateSeen" param-type="date" showLocation="false">
-      A list of dates this deposit fee was seen.
-    </ParamField>
-  </Expandable>
-</ParamField>
-
-<ParamField body="estimatedPrices" param-type="nested" showLocation="false">
-  A list of price estimates for the property.
-
-  **Example:**
-
-  ```json
-  "estimatedPrices": [
-      {
-        "amountMax": 295000,
-        "amountMin": 295000,
-        "currency": "USD",
-        "dateSeen": [
-          "2023-10-20T16:53:37.235Z"
-        ],
-        "pricePerSquareFoot": 112.51
-      }
-    ]
-  ```
-
-  <Expandable title="Sub-fields" default-open="false">
-    <ParamField body="estimatedPrices.amountMax" param-type="integer" showLocation="false">
-      The maximum price estimate value listed.
-    </ParamField>
-
-    <ParamField body="estimatedPrices.amountMin" param-type="integer" showLocation="false">
-      The minimum price estimate value listed.
-    </ParamField>
-
-    <ParamField body="estimatedPrices.currency" param-type="string" showLocation="false">
-      The currency listed for amountMin and amountMax
-    </ParamField>
-
-    <ParamField body="estimatedPrices.dateSeen" param-type="date" showLocation="false">
-      The date when this estimatedPrice was seen for this property.
-    </ParamField>
-
-    <ParamField body="estimatedPrices.pricePerSquareFoot" param-type="float" showLocation="false">
-      The price divide by the square footage.
-    </ParamField>
-  </Expandable>
-</ParamField>
-
-<ParamField body="fees" param-type="nested" showLocation="false">
-  A list of various fees that have been seen for this property. Each fee will contain:
-
-  **Example:**
-
-  ```json
-  "fees": [
-      {
-        "amountMax": 11,
-        "amountMin": 11,
-        "currency": "USD",
-        "dateSeen": [
-          "2016-08-07T18:07:05Z"
-        ],
-        "type": "Cleaning Fee"
-      }
-    ]
-  ```
-
-  <Expandable title="Sub-fields" default-open="false">
-    <ParamField body="fees.amountMax" param-type="float" showLocation="false">
-      The maximum fee value listed.
-    </ParamField>
-
-    <ParamField body="fees.amountMin" param-type="float" showLocation="false">
-      The minimum fee value listed.
-    </ParamField>
-
-    <ParamField body="fees.currency" param-type="keyword" showLocation="false">
-      The currency listed for amountMin and amountMax
-    </ParamField>
-
-    <ParamField body="fees.dateSeen" param-type="date" showLocation="false">
-      A list of dates when this fee was seen.
-    </ParamField>
-
-    <ParamField body="fees.type" param-type="text" showLocation="false">
-      A classification value for the fee.
-    </ParamField>
-  </Expandable>
-</ParamField>
-
 <ParamField body="mostRecentEstimatedPriceAmount" param-type="integer" showLocation="false">
   The most recent estimated price amount
 
@@ -2123,16 +2093,6 @@ The property data schema below lists all available fields in a property record. 
 
   ```json
   "mostRecentSoldPriceDate": "2025-10-21T00:00:00.000Z"
-  ```
-</ParamField>
-
-<ParamField body="paymentTypes" param-type="text" showLocation="false">
-  A list of payment options accepted by the property.
-
-  **Example:**
-
-  ```json
-  "paymentTypes": ["Visa"]
   ```
 </ParamField>
 
