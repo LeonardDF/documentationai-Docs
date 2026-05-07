@@ -6,7 +6,7 @@ description: >-
 ---
 uThe property data schema below lists all available fields in a property record. Note that actual property records (actually, most of them) may not have every field present.
 
-## Property Details
+## Geographical Details
 
 <ParamField body="address" param-type="text">
   The physical street address for this property.
@@ -18,26 +18,6 @@ uThe property data schema below lists all available fields in a property record.
   ```
 </ParamField>
 
-<ParamField body="appliances" param-type="text">
-  The appliances included with the property.
-
-  **Example:**
-
-  ```json
-  "appliances": ["Cooktop","Dryer","Dishwasher","Microwave","Refrigerator","Washer"]
-  ```
-</ParamField>
-
-<ParamField body="architecturalStyles" param-type="text">
-  The architectural style of the property.
-
-  **Example:**
-
-  ```json
-  "architecturalStyles": ["Ranch","Bungalow"]
-  ```
-</ParamField>
-
 <ParamField body="buildingName" param-type="text">
   The name of the building where this property is located. This field is specific to apartments, condos, and similar property types.
 
@@ -45,16 +25,6 @@ uThe property data schema below lists all available fields in a property record.
 
   ```json
   "buildingName": "Castle Beach Club"
-  ```
-</ParamField>
-
-<ParamField body="categories" param-type="text">
-  A list of category keywords used for this property across multiple sources.
-
-  **Example:**
-
-  ```json
-  "categories": ["Single family residence", "farming"]
   ```
 </ParamField>
 
@@ -75,6 +45,110 @@ uThe property data schema below lists all available fields in a property record.
 
   ```json
   "country": "US"
+  ```
+</ParamField>
+
+<ParamField body="geoLocation" param-type="geo_shape">
+  A location value that stores the latitude and longitude in a format that allows geospatial querying.
+
+  The value is stored as Well-Known Text format, which resembles an (x, y) value, i.e. (longitude latitude).
+
+  **Example:**
+
+  ```json
+  "geoLocation": "POINT (-119.5094 37.229366)"
+  ```
+</ParamField>
+
+<ParamField body="geoQuality" param-type="integer">
+  The quality of the geoLocation data of the property.
+
+  **Example:**
+
+  ```json
+  "geoQuality": 0
+  ```
+</ParamField>
+
+<ParamField body="imageURLs" param-type="keyword">
+  A list of image URLs for this property.
+
+  **Example:**
+
+  ```json
+  "imageURLs": ["http://image.rent.com/imgr/61bbc9f535f0e180bc804ac8f4c50067"]
+  ```
+</ParamField>
+
+<ParamField body="latitude" param-type="text">
+  The latitude coordinates for this property.
+
+  **Example:**
+
+  ```json
+  "latitude": "32.860858"
+  ```
+</ParamField>
+
+<ParamField body="longitude" param-type="text">
+  The longitude coordinates for this property.
+
+  **Example:**
+
+  ```json
+  "longitude": "-96.735808"
+  ```
+</ParamField>
+
+<ParamField body="postalCode" param-type="keyword">
+  The postal or zip code of the property.
+
+  **Example:**
+
+  ```json
+  "postalCode": "75231"
+  ```
+</ParamField>
+
+<ParamField body="province" param-type="text">
+  The province or state for this property.
+
+  **Example:**
+
+  ```json
+  "province": "TX"
+  ```
+</ParamField>
+
+<ParamField body="title" param-type="text">
+  The title text of the property.
+
+  **Example:**
+
+  ```json
+  "title": "Single Family Residence, A-Frame - Snellville, GA"
+  ```
+</ParamField>
+
+## Residential Details
+
+<ParamField body="appliances" param-type="text">
+  The appliances included with the property.
+
+  **Example:**
+
+  ```json
+  "appliances": ["Cooktop","Dryer","Dishwasher","Microwave","Refrigerator","Washer"]
+  ```
+</ParamField>
+
+<ParamField body="architecturalStyles" param-type="text">
+  The architectural style of the property.
+
+  **Example:**
+
+  ```json
+  "architecturalStyles": ["Ranch","Bungalow"]
   ```
 </ParamField>
 
@@ -217,28 +291,6 @@ uThe property data schema below lists all available fields in a property record.
   ```
 </ParamField>
 
-<ParamField body="geoLocation" param-type="geo_shape">
-  A location value that stores the latitude and longitude in a format that allows geospatial querying.
-
-  The value is stored as Well-Known Text format, which resembles an (x, y) value, i.e. (longitude latitude).
-
-  **Example:**
-
-  ```json
-  "geoLocation": "POINT (-119.5094 37.229366)"
-  ```
-</ParamField>
-
-<ParamField body="geoQuality" param-type="integer">
-  The quality of the geoLocation data of the property.
-
-  **Example:**
-
-  ```json
-  "geoQuality": 0
-  ```
-</ParamField>
-
 <ParamField body="hvacTypes" param-type="text">
   The type / components of the HVAC system.
 
@@ -249,16 +301,6 @@ uThe property data schema below lists all available fields in a property record.
   ```
 </ParamField>
 
-<ParamField body="imageURLs" param-type="keyword">
-  A list of image URLs for this property.
-
-  **Example:**
-
-  ```json
-  "imageURLs": ["http://image.rent.com/imgr/61bbc9f535f0e180bc804ac8f4c50067"]
-  ```
-</ParamField>
-
 <ParamField body="isUnit" param-type="boolean">
   If the property is a unit number of a complex / building
 
@@ -266,26 +308,6 @@ uThe property data schema below lists all available fields in a property record.
 
   ```json
   "isUnit": true
-  ```
-</ParamField>
-
-<ParamField body="latitude" param-type="text">
-  The latitude coordinates for this property.
-
-  **Example:**
-
-  ```json
-  "latitude": "32.860858"
-  ```
-</ParamField>
-
-<ParamField body="longitude" param-type="text">
-  The longitude coordinates for this property.
-
-  **Example:**
-
-  ```json
-  "longitude": "-96.735808"
   ```
 </ParamField>
 
@@ -326,6 +348,16 @@ uThe property data schema below lists all available fields in a property record.
 
   ```json
   "lotSizeValue": 2219
+  ```
+</ParamField>
+
+<ParamField body="neighborhoods" param-type="text">
+  A list of neighborhoods where this property is located. Sometimes an area can belong to multiple neighborhoods, which is why this field is a list.
+
+  **Example:**
+
+  ```json
+  "neighborhoods": ["Canarsie"]
   ```
 </ParamField>
 
@@ -419,16 +451,6 @@ uThe property data schema below lists all available fields in a property record.
   ```
 </ParamField>
 
-<ParamField body="postalCode" param-type="keyword">
-  The postal or zip code of the property.
-
-  **Example:**
-
-  ```json
-  "postalCode": "75231"
-  ```
-</ParamField>
-
 <ParamField body="propertyType" param-type="text">
   A classification for the property type. See possible values [here](/docs/possible-values-for-property-fields).
 
@@ -436,16 +458,6 @@ uThe property data schema below lists all available fields in a property record.
 
   ```json
   "propertyType": "Condo"
-  ```
-</ParamField>
-
-<ParamField body="province" param-type="text">
-  The province or state for this property.
-
-  **Example:**
-
-  ```json
-  "province": "TX"
   ```
 </ParamField>
 
@@ -486,16 +498,6 @@ uThe property data schema below lists all available fields in a property record.
 
   ```json
   "subdivision": "Crescent Heights Sub"
-  ```
-</ParamField>
-
-<ParamField body="title" param-type="text">
-  The title text of the property.
-
-  **Example:**
-
-  ```json
-  "title": "Single Family Residence, A-Frame - Snellville, GA"
   ```
 </ParamField>
 
