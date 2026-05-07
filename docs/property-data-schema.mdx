@@ -730,38 +730,6 @@ The property data schema below lists all available fields in a property record. 
 
 ## Sales price fields
 
-<ParamField body="deposits" param-type="nested" required="false" deprecated="false">
-  A list of deposit fees that have been seen for this property. Each deposit contains:
-
-  **Example:**
-
-  ```json
-  "deposits": [
-      {
-        "amount": 104,
-        "currency": "USD",
-        "dateSeen": [
-          "2016-08-07T18:07:05Z"
-        ]
-      }
-    ]
-  ```
-
-  <Expandable title="Sub-fields" default-open="false">
-    <ParamField body="deposits.amount" param-type="float" required="false" deprecated="false">
-      The fee amount.
-    </ParamField>
-
-    <ParamField body="deposits.currency" param-type="keyword" required="false" deprecated="false">
-      The currency for the amount.
-    </ParamField>
-
-    <ParamField body="deposits.dateSeen" param-type="date" required="false" deprecated="false">
-      A list of dates this deposit fee was seen.
-    </ParamField>
-  </Expandable>
-</ParamField>
-
 <ParamField body="estimatedPrices" param-type="nested" required="false" deprecated="false">
   A list of price estimates for the property.
 
@@ -800,48 +768,6 @@ The property data schema below lists all available fields in a property record. 
 
     <ParamField body="estimatedPrices.pricePerSquareFoot" param-type="float" required="false" deprecated="false">
       The price divide by the square footage.
-    </ParamField>
-  </Expandable>
-</ParamField>
-
-<ParamField body="fees" param-type="nested" required="false" deprecated="false">
-  A list of various fees that have been seen for this property. Each fee will contain:
-
-  **Example:**
-
-  ```json
-  "fees": [
-      {
-        "amountMax": 11,
-        "amountMin": 11,
-        "currency": "USD",
-        "dateSeen": [
-          "2016-08-07T18:07:05Z"
-        ],
-        "type": "Cleaning Fee"
-      }
-    ]
-  ```
-
-  <Expandable title="Sub-fields" default-open="false">
-    <ParamField body="fees.amountMax" param-type="float" required="false" deprecated="false">
-      The maximum fee value listed.
-    </ParamField>
-
-    <ParamField body="fees.amountMin" param-type="float" required="false" deprecated="false">
-      The minimum fee value listed.
-    </ParamField>
-
-    <ParamField body="fees.currency" param-type="keyword" required="false" deprecated="false">
-      The currency listed for amountMin and amountMax
-    </ParamField>
-
-    <ParamField body="fees.dateSeen" param-type="date" required="false" deprecated="false">
-      A list of dates when this fee was seen.
-    </ParamField>
-
-    <ParamField body="fees.type" param-type="text" required="false" deprecated="false">
-      A classification value for the fee.
     </ParamField>
   </Expandable>
 </ParamField>
@@ -922,92 +848,7 @@ The property data schema below lists all available fields in a property record. 
   **Example:**
 
   ```json
-  "mostRecentPriceDomain": "www.nordstrom.com"
-  ```
-</ParamField>
-
-<ParamField body="mostRecentRentalListPriceAmount" param-type="float" required="false" deprecated="false">
-  The most recent rental listing price from our prices field.
-
-  **Example:**
-
-  ```json
-  "mostRecentRentalListPriceAmount": 429000
-  ```
-</ParamField>
-
-<ParamField body="mostRecentRentalListPriceDate" param-type="date" required="false" deprecated="false">
-  The most recent rental listing date from our prices field.
-
-  **Example:**
-
-  ```json
-  "mostRecentRentalListPriceDate": "2025-09-11T00:00:00.000Z"
-  ```
-</ParamField>
-
-<ParamField body="mostRecentRentalPriceAmount" param-type="bigdecimal" required="false" deprecated="true">
-  The property's most recent rent price amount from our prices field.
-
-  Deprecated on Jan 31st, 2026
-
-  **Example:**
-
-  ```json
-  "mostRecentRentalPriceAmount": 1436
-  ```
-</ParamField>
-
-<ParamField body="mostRecentRentalPriceDate" param-type="date" required="false" deprecated="true">
-  The most recent rental price date
-
-  Deprecated on Jan 31st, 2026
-
-  **Example:**
-
-  ```json
-  "mostRecentRentalPriceDate": "2024-09-11T00:00:00.000Z"
-  ```
-</ParamField>
-
-<ParamField body="mostRecentRentalPriceDomain" param-type="text" required="false" deprecated="false">
-  The most recent domain used for obtaining the rental price.
-
-  **Example:**
-
-  ```json
-  "mostRecentRentalPriceDomain": "www.remax.com"
-  ```
-</ParamField>
-
-<ParamField body="mostRecentRentalPriceFirstDateSeen" param-type="date" required="false" deprecated="false">
-  The most recent rental prices first seen by Datafiniti
-
-  **Example:**
-
-  ```json
-  "mostRecentRentalPriceFirstDateSeen": "2024-09-11T00:00:00.000Z"
-  ```
-</ParamField>
-
-<ParamField body="mostRecentRentalPricePeriod" param-type="keyword" required="false" deprecated="false">
-  The period term of the most recent rental price.
-  Either `Per Month` or `Per Year`
-
-  **Example:**
-
-  ```json
-  "mostRecentRentalPricePeriod": "Per Month"
-  ```
-</ParamField>
-
-<ParamField body="mostRecentRentalPriceSourceURL" param-type="text" required="false" deprecated="false">
-  The most recent source Url used for obtaining the rental price.
-
-  **Example:**
-
-  ```json
-  "mostRecentRentalPriceSourceURL": "www.remax.com/usdfusj/19278"
+  "mostRecentPriceDomain": "www.redfin.com"
   ```
 </ParamField>
 
@@ -1048,16 +889,6 @@ The property data schema below lists all available fields in a property record. 
 
   ```json
   "mostRecentSoldPriceDate": "2025-10-21T00:00:00.000Z"
-  ```
-</ParamField>
-
-<ParamField body="paymentTypes" param-type="text" required="false" deprecated="false">
-  A list of payment options accepted by the property.
-
-  **Example:**
-
-  ```json
-  "paymentTypes": ["Visa"]
   ```
 </ParamField>
 
@@ -1972,7 +1803,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-## Sales price fields
+## Rental price fields
 
 <ParamField body="deposits" param-type="nested" required="false" deprecated="false">
   A list of deposit fees that have been seen for this property. Each deposit contains:
