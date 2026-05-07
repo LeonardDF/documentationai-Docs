@@ -49,6 +49,16 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
+<ParamField body="county" param-type="text">
+  The county of the property record.
+
+  **Example:**
+
+  ```json
+  "county": "Hillsborough"
+  ```
+</ParamField>
+
 <ParamField body="geoLocation" param-type="geo_shape">
   A location value that stores the latitude and longitude in a format that allows geospatial querying.
 
@@ -2263,16 +2273,6 @@ The property data schema below lists all available fields in a property record. 
     </ParamField>
 
   </Expandable>
-</ParamField>
-
-<ParamField body="county" param-type="text">
-  The county of the property record.
-
-  **Example:**
-
-  ```json
-  "county": "Hillsborough"
-  ```
 </ParamField>
 
 <ParamField body="countyFIPS" param-type="integer">
