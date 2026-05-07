@@ -9,7 +9,7 @@ description: >-
 
 The property data schema below lists all available fields in a property record. Actual property records may not include every field.
 
-<ParamField body="address" param-type="text">
+<ParamField showLocation="false" body="address" param-type="text">
   The physical street address for this property.
 
   **Example:**
@@ -19,7 +19,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="buildingName" param-type="text">
+<ParamField showLocation="false" body="buildingName" param-type="text">
   The name of the building where this property is located. This field is specific to apartments, condos, and similar property types.
 
   **Example:**
@@ -29,7 +29,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="city" param-type="text">
+<ParamField showLocation="false" body="city" param-type="text">
   The city where the property is located.
 
   **Example:**
@@ -39,7 +39,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="country" param-type="text">
+<ParamField showLocation="false" body="country" param-type="text">
   The two-letter country code for the property location's country.
 
   **Example:**
@@ -49,7 +49,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="county" param-type="text">
+<ParamField showLocation="false" body="county" param-type="text">
   The county of the property record.
 
   **Example:**
@@ -59,7 +59,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="geoLocation" param-type="geo_shape">
+<ParamField showLocation="false" body="geoLocation" param-type="geo_shape">
   A location value that stores the latitude and longitude in a format that allows geospatial querying.
 
   The value is stored as Well-Known Text format, which resembles an (x, y) value, i.e. (longitude latitude).
@@ -71,7 +71,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="geoQuality" param-type="integer">
+<ParamField showLocation="false" body="geoQuality" param-type="integer">
   The quality of the geoLocation data of the property.
 
   **Example:**
@@ -81,7 +81,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="imageURLs" param-type="keyword">
+<ParamField showLocation="false" body="imageURLs" param-type="keyword">
   A list of image URLs for this property.
 
   **Example:**
@@ -91,7 +91,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="latitude" param-type="text">
+<ParamField showLocation="false" body="latitude" param-type="text">
   The latitude coordinates for this property.
 
   **Example:**
@@ -101,7 +101,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="longitude" param-type="text">
+<ParamField showLocation="false" body="longitude" param-type="text">
   The longitude coordinates for this property.
 
   **Example:**
@@ -111,7 +111,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="postalCode" param-type="keyword">
+<ParamField showLocation="false" body="postalCode" param-type="keyword">
   The postal or zip code of the property.
 
   **Example:**
@@ -121,7 +121,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="province" param-type="text">
+<ParamField showLocation="false" body="province" param-type="text">
   The province or state for this property.
 
   **Example:**
@@ -131,7 +131,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="title" param-type="text">
+<ParamField showLocation="false" body="title" param-type="text">
   The title text of the property.
 
   **Example:**
@@ -141,7 +141,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="topographyCode" param-type="string">
+<ParamField showLocation="false" body="topographyCode" param-type="string">
   A code describing the landform or terrain classification for the property.
 
   **Example:**
@@ -153,7 +153,7 @@ The property data schema below lists all available fields in a property record. 
 
 ## Broker Details
 
-<ParamField body="brokers" param-type="nested">
+<ParamField showLocation="false" body="brokers" param-type="nested">
   A list of brokers associated with this property.
 
   **Example:**
@@ -171,7 +171,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="listingName" param-type="text">
+<ParamField showLocation="false" body="listingName" param-type="text">
   The name of the property listing. This isn't the name of the building. It's a descriptive name supplied for the listing itself.
 
   **Example:**
@@ -181,7 +181,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mlsName" param-type="text">
+<ParamField showLocation="false" body="mlsName" param-type="text">
   The mls name of the listing company/realtor
 
   **Example:**
@@ -191,7 +191,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mlsNumber" param-type="keyword">
+<ParamField showLocation="false" body="mlsNumber" param-type="keyword">
   The MLS number for the property. [Learn more about MLS numbers](https://en.wikipedia.org/wiki/Multiple_listing_service).
 
   **Example:**
@@ -201,7 +201,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentBrokerAgent" param-type="text">
+<ParamField showLocation="false" body="mostRecentBrokerAgent" param-type="text">
   The most recent broker agent added to the brokers field.
 
   **Example:**
@@ -211,7 +211,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentBrokerCompany" param-type="text">
+<ParamField showLocation="false" body="mostRecentBrokerCompany" param-type="text">
   The company of the most recent broker added to the broker's field.
 
   **Example:**
@@ -221,7 +221,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentBrokerDateSeen" param-type="text">
+<ParamField showLocation="false" body="mostRecentBrokerDateSeen" param-type="text">
   The date seen of the most recent broker added to the brokers field.
 
   **Example:**
@@ -231,7 +231,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentBrokerEmails" param-type="text">
+<ParamField showLocation="false" body="mostRecentBrokerEmails" param-type="text">
   The email(s) of the most recent broker agent.
 
   **Example:**
@@ -241,7 +241,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentBrokerPhones" param-type="text">
+<ParamField showLocation="false" body="mostRecentBrokerPhones" param-type="text">
   The phone number(s) of the most recent broker agent.
 
   **Example:**
@@ -253,7 +253,7 @@ The property data schema below lists all available fields in a property record. 
 
 ## Commercial Details
 
-<ParamField body="brandTenant" param-type="string">
+<ParamField showLocation="false" body="brandTenant" param-type="string">
   The branded tenant associated with the commercial property.
 
   **Example:**
@@ -263,7 +263,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="brokerCoop" param-type="boolean">
+<ParamField showLocation="false" body="brokerCoop" param-type="boolean">
   Indicates whether broker cooperation is offered for the commercial listing.
 
   **Example:**
@@ -273,7 +273,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="buildingClass" param-type="string">
+<ParamField showLocation="false" body="buildingClass" param-type="string">
   The building class assigned to the commercial property.
 
   **Example:**
@@ -283,7 +283,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="capRate" param-type="float">
+<ParamField showLocation="false" body="capRate" param-type="float">
   The capitalization rate associated with the property.
 
   **Example:**
@@ -293,7 +293,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="capRateSourceURL" param-type="text">
+<ParamField showLocation="false" body="capRateSourceURL" param-type="text">
   The source URL used for the cap rate value.
 
   **Example:**
@@ -303,7 +303,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="daysOnMarket" param-type="integer">
+<ParamField showLocation="false" body="daysOnMarket" param-type="integer">
   The number of days the property has been on the market.
 
   **Example:**
@@ -313,7 +313,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="effectiveGrossIncome" param-type="float">
+<ParamField showLocation="false" body="effectiveGrossIncome" param-type="float">
   The effective gross income reported for the property.
 
   **Example:**
@@ -323,7 +323,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="grossRentalIncome" param-type="float">
+<ParamField showLocation="false" body="grossRentalIncome" param-type="float">
   The gross rental income reported for the property.
 
   **Example:**
@@ -333,7 +333,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="groundLease" param-type="boolean">
+<ParamField showLocation="false" body="groundLease" param-type="boolean">
   Indicates whether the property is subject to a ground lease.
 
   **Example:**
@@ -343,7 +343,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="investmentType" param-type="string">
+<ParamField showLocation="false" body="investmentType" param-type="string">
   The investment classification for the commercial property.
 
   **Example:**
@@ -353,7 +353,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="investmentTypeSourceURL" param-type="text">
+<ParamField showLocation="false" body="investmentTypeSourceURL" param-type="text">
   The source URL used for the investment type classification.
 
   **Example:**
@@ -363,7 +363,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="leaseType" param-type="string">
+<ParamField showLocation="false" body="leaseType" param-type="string">
   The lease structure for the commercial property.
 
   **Example:**
@@ -373,7 +373,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="majorTenants" param-type="text">
+<ParamField showLocation="false" body="majorTenants" param-type="text">
   A list of major tenants associated with the property.
 
   **Example:**
@@ -383,7 +383,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="netOperatingIncome" param-type="float">
+<ParamField showLocation="false" body="netOperatingIncome" param-type="float">
   The net operating income reported for the property.
 
   **Example:**
@@ -393,7 +393,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="netOperatingIncomeSourceURL" param-type="text">
+<ParamField showLocation="false" body="netOperatingIncomeSourceURL" param-type="text">
   The source URL used for the net operating income value.
 
   **Example:**
@@ -403,7 +403,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="netRentable" param-type="float">
+<ParamField showLocation="false" body="netRentable" param-type="float">
   The net rentable area for the property.
 
   **Example:**
@@ -413,7 +413,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="numProperties" param-type="integer">
+<ParamField showLocation="false" body="numProperties" param-type="integer">
   The number of properties included in the commercial offering.
 
   **Example:**
@@ -423,7 +423,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="numTenants" param-type="integer">
+<ParamField showLocation="false" body="numTenants" param-type="integer">
   The number of tenants associated with the property.
 
   **Example:**
@@ -433,7 +433,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="occupancy" param-type="float">
+<ParamField showLocation="false" body="occupancy" param-type="float">
   The occupancy percentage for the property.
 
   **Example:**
@@ -443,7 +443,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="operatingExpenses" param-type="float">
+<ParamField showLocation="false" body="operatingExpenses" param-type="float">
   The operating expenses reported for the property.
 
   **Example:**
@@ -453,7 +453,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="otherIncome" param-type="float">
+<ParamField showLocation="false" body="otherIncome" param-type="float">
   Additional income reported for the property outside base rents.
 
   **Example:**
@@ -463,7 +463,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="ownership" param-type="string">
+<ParamField showLocation="false" body="ownership" param-type="string">
   The ownership structure associated with the commercial property.
 
   **Example:**
@@ -473,7 +473,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="permits" param-type="nested">
+<ParamField showLocation="false" body="permits" param-type="nested">
   A list of permits associated with the property.
 
   **Example:**
@@ -488,7 +488,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="proFormaNOI" param-type="float">
+<ParamField showLocation="false" body="proFormaNOI" param-type="float">
   The projected net operating income for the property.
 
   **Example:**
@@ -498,7 +498,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="rentableSquareFeet" param-type="nested">
+<ParamField showLocation="false" body="rentableSquareFeet" param-type="nested">
   Rentable square footage details for the property.
 
   **Example:**
@@ -513,7 +513,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="rentBumps" param-type="nested">
+<ParamField showLocation="false" body="rentBumps" param-type="nested">
   Scheduled rent increases associated with the property.
 
   **Example:**
@@ -528,7 +528,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="saleCondition" param-type="nested">
+<ParamField showLocation="false" body="saleCondition" param-type="nested">
   Sale condition details associated with the commercial property.
 
   **Example:**
@@ -542,7 +542,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="saleType" param-type="nested">
+<ParamField showLocation="false" body="saleType" param-type="nested">
   Sale type details associated with the commercial property.
 
   **Example:**
@@ -556,7 +556,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="sourceURLsPerField" param-type="nested">
+<ParamField showLocation="false" body="sourceURLsPerField" param-type="nested">
   Source URLs mapped to specific fields in the property record.
 
   **Example:**
@@ -571,7 +571,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="subtype" param-type="nested">
+<ParamField showLocation="false" body="subtype" param-type="nested">
   Subtype classifications for the commercial property.
 
   **Example:**
@@ -585,7 +585,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="tenancy" param-type="nested">
+<ParamField showLocation="false" body="tenancy" param-type="nested">
   Tenancy details for the property.
 
   **Example:**
@@ -599,7 +599,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="tenantCredit" param-type="nested">
+<ParamField showLocation="false" body="tenantCredit" param-type="nested">
   Tenant credit details associated with the property.
 
   **Example:**
@@ -613,7 +613,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="totalExpenses" param-type="nested">
+<ParamField showLocation="false" body="totalExpenses" param-type="nested">
   Total expense details for the property.
 
   **Example:**
@@ -628,7 +628,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="vacancyLoss" param-type="nested">
+<ParamField showLocation="false" body="vacancyLoss" param-type="nested">
   Vacancy loss details associated with the property.
 
   **Example:**
@@ -643,7 +643,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="virtualTour" param-type="nested">
+<ParamField showLocation="false" body="virtualTour" param-type="nested">
   Virtual tour details for the property.
 
   **Example:**
@@ -657,7 +657,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="yearRenovated" param-type="integer">
+<ParamField showLocation="false" body="yearRenovated" param-type="integer">
   The latest date the property was renovated.
 
   **Example:**
@@ -669,7 +669,7 @@ The property data schema below lists all available fields in a property record. 
 
 ## Pricing Details
 
-<ParamField body="deposits" param-type="nested">
+<ParamField showLocation="false" body="deposits" param-type="nested">
   A list of deposit fees that have been seen for this property. Each deposit contains:
 
   **Example:**
@@ -688,22 +688,22 @@ The property data schema below lists all available fields in a property record. 
 
   <Expandable title="Sub-fields" default-open="false">
 
-    <ParamField body="deposits.amount" param-type="float">
+    <ParamField showLocation="false" body="deposits.amount" param-type="float">
       The fee amount.
     </ParamField>
 
-    <ParamField body="deposits.currency" param-type="keyword">
+    <ParamField showLocation="false" body="deposits.currency" param-type="keyword">
       The currency for the amount.
     </ParamField>
 
-    <ParamField body="deposits.dateSeen" param-type="date">
+    <ParamField showLocation="false" body="deposits.dateSeen" param-type="date">
       A list of dates this deposit fee was seen.
     </ParamField>
 
   </Expandable>
 </ParamField>
 
-<ParamField body="estimatedPrices" param-type="nested">
+<ParamField showLocation="false" body="estimatedPrices" param-type="nested">
   A list of price estimates for the property.
 
   **Example:**
@@ -724,30 +724,30 @@ The property data schema below lists all available fields in a property record. 
 
   <Expandable title="Sub-fields" default-open="false">
 
-    <ParamField body="estimatedPrices.amountMax" param-type="integer">
+    <ParamField showLocation="false" body="estimatedPrices.amountMax" param-type="integer">
       The maximum price estimate value listed.
     </ParamField>
 
-    <ParamField body="estimatedPrices.amountMin" param-type="integer">
+    <ParamField showLocation="false" body="estimatedPrices.amountMin" param-type="integer">
       The minimum price estimate value listed.
     </ParamField>
 
-    <ParamField body="estimatedPrices.currency" param-type="string">
+    <ParamField showLocation="false" body="estimatedPrices.currency" param-type="string">
       The currency listed for amountMin and amountMax
     </ParamField>
 
-    <ParamField body="estimatedPrices.dateSeen" param-type="date">
+    <ParamField showLocation="false" body="estimatedPrices.dateSeen" param-type="date">
       The date when this estimatedPrice was seen for this property.
     </ParamField>
 
-    <ParamField body="estimatedPrices.pricePerSquareFoot" param-type="float">
+    <ParamField showLocation="false" body="estimatedPrices.pricePerSquareFoot" param-type="float">
       The price divide by the square footage.
     </ParamField>
 
   </Expandable>
 </ParamField>
 
-<ParamField body="fees" param-type="nested">
+<ParamField showLocation="false" body="fees" param-type="nested">
   A list of various fees that have been seen for this property. Each fee will contain:
 
   **Example:**
@@ -768,30 +768,30 @@ The property data schema below lists all available fields in a property record. 
 
   <Expandable title="Sub-fields" default-open="false">
 
-    <ParamField body="fees.amountMax" param-type="float">
+    <ParamField showLocation="false" body="fees.amountMax" param-type="float">
       The maximum fee value listed.
     </ParamField>
 
-    <ParamField body="fees.amountMin" param-type="float">
+    <ParamField showLocation="false" body="fees.amountMin" param-type="float">
       The minimum fee value listed.
     </ParamField>
 
-    <ParamField body="fees.currency" param-type="keyword">
+    <ParamField showLocation="false" body="fees.currency" param-type="keyword">
       The currency listed for amountMin and amountMax
     </ParamField>
 
-    <ParamField body="fees.dateSeen" param-type="date">
+    <ParamField showLocation="false" body="fees.dateSeen" param-type="date">
       A list of dates when this fee was seen.
     </ParamField>
 
-    <ParamField body="fees.type" param-type="text">
+    <ParamField showLocation="false" body="fees.type" param-type="text">
       A classification value for the fee.
     </ParamField>
 
   </Expandable>
 </ParamField>
 
-<ParamField body="mostRecentEstimatedPriceAmount" param-type="integer">
+<ParamField showLocation="false" body="mostRecentEstimatedPriceAmount" param-type="integer">
   The most recent estimated price amount
 
   **Example:**
@@ -801,7 +801,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentEstimatedPriceDate" param-type="date">
+<ParamField showLocation="false" body="mostRecentEstimatedPriceDate" param-type="date">
   The most recent estimate price date
 
   **Example:**
@@ -811,7 +811,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentEstimatedPriceDomain" param-type="text">
+<ParamField showLocation="false" body="mostRecentEstimatedPriceDomain" param-type="text">
   The most recent source domain of the estimate price
 
   **Example:**
@@ -821,7 +821,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentEstimatedPriceSourceURL" param-type="text">
+<ParamField showLocation="false" body="mostRecentEstimatedPriceSourceURL" param-type="text">
   The most recent sourceURL used for obtaining the price estimate
 
   **Example:**
@@ -831,7 +831,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentPriceAmount" param-type="bigdecimal">
+<ParamField showLocation="false" body="mostRecentPriceAmount" param-type="bigdecimal">
   The property's most recent price amount from our prices field. **This does not include rent prices**
 
   **Example:**
@@ -841,7 +841,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentPriceCurrency" param-type="text">
+<ParamField showLocation="false" body="mostRecentPriceCurrency" param-type="text">
   The currency listed for mostRecentPriceAmount.
 
   **Example:**
@@ -851,7 +851,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentPriceDate" param-type="date">
+<ParamField showLocation="false" body="mostRecentPriceDate" param-type="date">
   The most recent price date of the property record.
 
   **Example:**
@@ -861,7 +861,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentPriceDomain" param-type="domain">
+<ParamField showLocation="false" body="mostRecentPriceDomain" param-type="domain">
   The domain of the most recent price scraped by Datafiniti
 
   **Example:**
@@ -871,7 +871,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentRentalListPriceAmount" param-type="float">
+<ParamField showLocation="false" body="mostRecentRentalListPriceAmount" param-type="float">
   The most recent rental listing price from our prices field.
 
   **Example:**
@@ -881,7 +881,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentRentalListPriceDate" param-type="date">
+<ParamField showLocation="false" body="mostRecentRentalListPriceDate" param-type="date">
   The most recent rental listing date from our prices field.
 
   **Example:**
@@ -891,7 +891,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentRentalPriceAmount" param-type="bigdecimal" required="false" deprecated="true">
+<ParamField showLocation="false" body="mostRecentRentalPriceAmount" param-type="bigdecimal" required="false" deprecated="true">
   The property's most recent rent price amount from our prices field.
 
   Deprecated on Jan 31st, 2026
@@ -903,7 +903,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentRentalPriceDate" param-type="date" required="false" deprecated="true">
+<ParamField showLocation="false" body="mostRecentRentalPriceDate" param-type="date" required="false" deprecated="true">
   The most recent rental price date
 
   Deprecated on Jan 31st, 2026
@@ -915,7 +915,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentRentalPriceDomain" param-type="text">
+<ParamField showLocation="false" body="mostRecentRentalPriceDomain" param-type="text">
   The most recent domain used for obtaining the rental price.
 
   **Example:**
@@ -925,7 +925,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentRentalPriceFirstDateSeen" param-type="date">
+<ParamField showLocation="false" body="mostRecentRentalPriceFirstDateSeen" param-type="date">
   The most recent rental prices first seen by Datafiniti
 
   **Example:**
@@ -935,7 +935,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentRentalPricePeriod" param-type="keyword">
+<ParamField showLocation="false" body="mostRecentRentalPricePeriod" param-type="keyword">
   The period term of the most recent rental price.
   Either `Per Month` or `Per Year`
 
@@ -946,7 +946,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentRentalPriceSourceURL" param-type="text">
+<ParamField showLocation="false" body="mostRecentRentalPriceSourceURL" param-type="text">
   The most recent source Url used for obtaining the rental price.
 
   **Example:**
@@ -956,7 +956,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentSaleListPriceAmount" param-type="float">
+<ParamField showLocation="false" body="mostRecentSaleListPriceAmount" param-type="float">
   The most recent "sale list" price from our prices field.
 
   **Example:**
@@ -966,7 +966,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentSaleListPriceDate" param-type="date">
+<ParamField showLocation="false" body="mostRecentSaleListPriceDate" param-type="date">
   The most recent "sale list" price date from our prices field.
 
   **Example:**
@@ -976,7 +976,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentSoldPriceAmount" param-type="float">
+<ParamField showLocation="false" body="mostRecentSoldPriceAmount" param-type="float">
   The most recent "sale" price from our prices field.
 
   **Example:**
@@ -986,7 +986,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentSoldPriceDate" param-type="date">
+<ParamField showLocation="false" body="mostRecentSoldPriceDate" param-type="date">
   The most recent "sale" price date from our prices field.
 
   **Example:**
@@ -996,7 +996,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="paymentTypes" param-type="text">
+<ParamField showLocation="false" body="paymentTypes" param-type="text">
   A list of payment options accepted by the property.
 
   **Example:**
@@ -1006,7 +1006,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="prices" param-type="nested">
+<ParamField showLocation="false" body="prices" param-type="nested">
   A list of prices for this property.
 
   Price objects may contain:
@@ -1047,71 +1047,71 @@ The property data schema below lists all available fields in a property record. 
 
   <Expandable title="Sub-fields" default-open="false">
 
-    <ParamField body="prices.amountMax" param-type="float">
+    <ParamField showLocation="false" body="prices.amountMax" param-type="float">
       The maximum price value listed. This is typically the same as amountMin, except in cases where a price range is listed.
     </ParamField>
 
-    <ParamField body="prices.amountMin" param-type="float">
+    <ParamField showLocation="false" body="prices.amountMin" param-type="float">
       The minimum price value listed.
     </ParamField>
 
-    <ParamField body="prices.availability" param-type="keyword">
+    <ParamField showLocation="false" body="prices.availability" param-type="keyword">
       The property's availability at this price.
     </ParamField>
 
-    <ParamField body="prices.comment" param-type="text">
+    <ParamField showLocation="false" body="prices.comment" param-type="text">
       A note related to this price.
     </ParamField>
 
-    <ParamField body="prices.currency" param-type="text">
+    <ParamField showLocation="false" body="prices.currency" param-type="text">
       The currency listed for amountMin and amountMax.
     </ParamField>
 
-    <ParamField body="prices.date" param-type="date">
+    <ParamField showLocation="false" body="prices.date" param-type="date">
       A list of date when the property was set to this price.
     </ParamField>
 
-    <ParamField body="prices.dateSeen" param-type="date">
+    <ParamField showLocation="false" body="prices.dateSeen" param-type="date">
       A list of dates when this price was seen.
     </ParamField>
 
-    <ParamField body="prices.dateValidEnd" param-type="date">
+    <ParamField showLocation="false" body="prices.dateValidEnd" param-type="date">
       The date when this price is no longer valid.
     </ParamField>
 
-    <ParamField body="prices.dateValidStart" param-type="date">
+    <ParamField showLocation="false" body="prices.dateValidStart" param-type="date">
       The date when this price becomes valid.
     </ParamField>
 
-    <ParamField body="prices.domain" param-type="text">
+    <ParamField showLocation="false" body="prices.domain" param-type="text">
       The domain of the source of the price.
     </ParamField>
 
-    <ParamField body="prices.isSale" param-type="boolean">
+    <ParamField showLocation="false" body="prices.isSale" param-type="boolean">
       A true/false for whether or not this is a sale price. - deprecated
     </ParamField>
 
-    <ParamField body="prices.isSold" param-type="boolean">
+    <ParamField showLocation="false" body="prices.isSold" param-type="boolean">
       A true/false for whether or not this is the sold price. - deprecated
     </ParamField>
 
-    <ParamField body="prices.minStay" param-type="text">
+    <ParamField showLocation="false" body="prices.minStay" param-type="text">
       The minimum length of stay required for this price.
     </ParamField>
 
-    <ParamField body="prices.period" param-type="text">
+    <ParamField showLocation="false" body="prices.period" param-type="text">
       The calendar period for which this price is valid.
     </ParamField>
 
-    <ParamField body="prices.pricePerSquareFoot" param-type="float">
+    <ParamField showLocation="false" body="prices.pricePerSquareFoot" param-type="float">
       The price divide by the square footage.
     </ParamField>
 
-    <ParamField body="prices.status" param-type="string">
+    <ParamField showLocation="false" body="prices.status" param-type="string">
       The property status of the prices
     </ParamField>
 
-    <ParamField body="prices.type" param-type="string">
+    <ParamField showLocation="false" body="prices.type" param-type="string">
       the type of price at which the property was listed for sale, sold, or rent. (Sale List, Sold, or Rental List)
     </ParamField>
 
@@ -1120,7 +1120,7 @@ The property data schema below lists all available fields in a property record. 
 
 ## Owner Details
 
-<ParamField body="absenteeOwner" param-type="nested">
+<ParamField showLocation="false" body="absenteeOwner" param-type="nested">
   The owner of a property who does not reside in or otherwise occupy that property.
 
   **Example:**
@@ -1137,22 +1137,22 @@ The property data schema below lists all available fields in a property record. 
 
   <Expandable title="Sub-fields" default-open="false">
 
-    <ParamField body="absenteeOwner.absent" param-type="boolean">
+    <ParamField showLocation="false" body="absenteeOwner.absent" param-type="boolean">
       Is currently an absentee owner
     </ParamField>
 
-    <ParamField body="absenteeOwner.firstDateSeen" param-type="date">
+    <ParamField showLocation="false" body="absenteeOwner.firstDateSeen" param-type="date">
       Earliest date seen of the absentee owner.
     </ParamField>
 
-    <ParamField body="absenteeOwner.lastDateSeen" param-type="date">
+    <ParamField showLocation="false" body="absenteeOwner.lastDateSeen" param-type="date">
       Latest date seen of the absentee owner.
     </ParamField>
 
   </Expandable>
 </ParamField>
 
-<ParamField body="companies" param-type="nested">
+<ParamField showLocation="false" body="companies" param-type="nested">
   A list of companies that have been seen for this property. Each company can contain:
 
   **Example:**
@@ -1174,42 +1174,42 @@ The property data schema below lists all available fields in a property record. 
 
   <Expandable title="Sub-fields" default-open="false">
 
-    <ParamField body="companies.dateSeen" param-type="date">
+    <ParamField showLocation="false" body="companies.dateSeen" param-type="date">
       Date when Datafiniti seen the company's data.
     </ParamField>
 
-    <ParamField body="companies.email" param-type="string">
+    <ParamField showLocation="false" body="companies.email" param-type="string">
       Email of the company.
     </ParamField>
 
-    <ParamField body="companies.equity" param-type="integer">
+    <ParamField showLocation="false" body="companies.equity" param-type="integer">
       Sum total of equity of the company
     </ParamField>
 
-    <ParamField body="companies.equityPercent" param-type="bigdecimal">
+    <ParamField showLocation="false" body="companies.equityPercent" param-type="bigdecimal">
       the percent of equity of the company
     </ParamField>
 
-    <ParamField body="companies.landline" param-type="boolean">
+    <ParamField showLocation="false" body="companies.landline" param-type="boolean">
       True or False if a landline is found.
     </ParamField>
 
-    <ParamField body="companies.name" param-type="string">
+    <ParamField showLocation="false" body="companies.name" param-type="string">
       The name of company
     </ParamField>
 
-    <ParamField body="companies.phone" param-type="string">
+    <ParamField showLocation="false" body="companies.phone" param-type="string">
       the phone number of the company.
     </ParamField>
 
-    <ParamField body="companies.title" param-type="string">
+    <ParamField showLocation="false" body="companies.title" param-type="string">
       title of company in regards of the property.
     </ParamField>
 
   </Expandable>
 </ParamField>
 
-<ParamField body="currentOwnerType" param-type="string">
+<ParamField showLocation="false" body="currentOwnerType" param-type="string">
   Current owner type of the property.
 
   **Example:**
@@ -1219,7 +1219,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="managedBy" param-type="nested">
+<ParamField showLocation="false" body="managedBy" param-type="nested">
   A list of companies or people that have managed this property. Each managedBy object will contain:
 
   **Example:**
@@ -1237,18 +1237,18 @@ The property data schema below lists all available fields in a property record. 
 
   <Expandable title="Sub-fields" default-open="false">
 
-    <ParamField body="managedBy.dateSeen" param-type="date">
+    <ParamField showLocation="false" body="managedBy.dateSeen" param-type="date">
       A list of dates when this information was seen.
     </ParamField>
 
-    <ParamField body="managedBy.value" param-type="text">
+    <ParamField showLocation="false" body="managedBy.value" param-type="text">
       The name of the company or person.
     </ParamField>
 
   </Expandable>
 </ParamField>
 
-<ParamField body="mostRecentAbsenteeOwner" param-type="boolean">
+<ParamField showLocation="false" body="mostRecentAbsenteeOwner" param-type="boolean">
   The most recent boolean value for the absentee owner.
 
   **Example:**
@@ -1258,7 +1258,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentAbsenteeOwnerFirstDateSeen" param-type="date">
+<ParamField showLocation="false" body="mostRecentAbsenteeOwnerFirstDateSeen" param-type="date">
   The most recent first date seen of the absentee owner.
 
   **Example:**
@@ -1268,7 +1268,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentOwnerFirstName" param-type="text">
+<ParamField showLocation="false" body="mostRecentOwnerFirstName" param-type="text">
   The most recent first name from the owners top level field.
 
   **Example:**
@@ -1278,7 +1278,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentOwnerLastName" param-type="text">
+<ParamField showLocation="false" body="mostRecentOwnerLastName" param-type="text">
   The most recent last name from the owners top level field.
 
   **Example:**
@@ -1288,7 +1288,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentOwnerPeopleKey" param-type="keyword">
+<ParamField showLocation="false" body="mostRecentOwnerPeopleKey" param-type="keyword">
   The most recent people key of the owners top level field. This can be matched to the people database
 
   **Example:**
@@ -1298,7 +1298,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="ownerOccupied" param-type="boolean">
+<ParamField showLocation="false" body="ownerOccupied" param-type="boolean">
   The true/false value of whether owner occupies the property.
 
   **Example:**
@@ -1308,7 +1308,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="ownerOccupiedStatus" param-type="nested">
+<ParamField showLocation="false" body="ownerOccupiedStatus" param-type="nested">
   **Example:**
 
   ```json
@@ -1322,26 +1322,26 @@ The property data schema below lists all available fields in a property record. 
 
   <Expandable title="Sub-fields" default-open="false">
 
-    <ParamField body="ownerOccupiedStatus.firstDateSeen" param-type="date">
+    <ParamField showLocation="false" body="ownerOccupiedStatus.firstDateSeen" param-type="date">
       the first date seen by Datafiniti of owner occupancy being true
     </ParamField>
 
-    <ParamField body="ownerOccupiedStatus.lastDateSeen" param-type="date">
+    <ParamField showLocation="false" body="ownerOccupiedStatus.lastDateSeen" param-type="date">
       the last date seen by Datafiniti of owner occupancy being true
     </ParamField>
 
-    <ParamField body="ownerOccupiedStatus.startDate" param-type="date">
+    <ParamField showLocation="false" body="ownerOccupiedStatus.startDate" param-type="date">
       the lease start date seen by the leasing agency.
     </ParamField>
 
-    <ParamField body="ownerOccupiedStatus.status" param-type="boolean">
+    <ParamField showLocation="false" body="ownerOccupiedStatus.status" param-type="boolean">
       The true/false value of whether owner occupies the property.
     </ParamField>
 
   </Expandable>
 </ParamField>
 
-<ParamField body="owners" param-type="nested">
+<ParamField showLocation="false" body="owners" param-type="nested">
   **Example:**
 
   ```json
@@ -1359,34 +1359,34 @@ The property data schema below lists all available fields in a property record. 
 
   <Expandable title="Sub-fields" default-open="false">
 
-    <ParamField body="owners.firstDateSeen" param-type="date">
+    <ParamField showLocation="false" body="owners.firstDateSeen" param-type="date">
       the first time the owner was seen by Datafiniti.
     </ParamField>
 
-    <ParamField body="owners.firstName" param-type="text">
+    <ParamField showLocation="false" body="owners.firstName" param-type="text">
       first name of the owner.
     </ParamField>
 
-    <ParamField body="owners.lastDateSeen" param-type="date">
+    <ParamField showLocation="false" body="owners.lastDateSeen" param-type="date">
       the last time the owner was seen by Datafiniti.
     </ParamField>
 
-    <ParamField body="owners.lastName" param-type="text">
+    <ParamField showLocation="false" body="owners.lastName" param-type="text">
       last name of the owner.
     </ParamField>
 
-    <ParamField body="owners.peopleKey" param-type="keyword">
+    <ParamField showLocation="false" body="owners.peopleKey" param-type="keyword">
       people key matched to Datafiniti's people database.
     </ParamField>
 
-    <ParamField body="owners.transactionDate" param-type="date">
+    <ParamField showLocation="false" body="owners.transactionDate" param-type="date">
       date the owner purchased this property.
     </ParamField>
 
   </Expandable>
 </ParamField>
 
-<ParamField body="people" param-type="nested">
+<ParamField showLocation="false" body="people" param-type="nested">
   A list of known people associated with or employed by this property.
 
   Each person may contain:
@@ -1411,54 +1411,54 @@ The property data schema below lists all available fields in a property record. 
 
   <Expandable title="Sub-fields" default-open="false">
 
-    <ParamField body="people.dateSeen" param-type="date">
+    <ParamField showLocation="false" body="people.dateSeen" param-type="date">
       The date when this person was seen.
     </ParamField>
 
-    <ParamField body="people.email" param-type="text">
+    <ParamField showLocation="false" body="people.email" param-type="text">
       The person's email.
     </ParamField>
 
-    <ParamField body="people.equity" param-type="float">
+    <ParamField showLocation="false" body="people.equity" param-type="float">
       Sum total of equity of properties
     </ParamField>
 
-    <ParamField body="people.equityPercent" param-type="float">
+    <ParamField showLocation="false" body="people.equityPercent" param-type="float">
       Percent estimated equity percentage (100 minus LTV)
     </ParamField>
 
-    <ParamField body="people.firstName" param-type="text">
+    <ParamField showLocation="false" body="people.firstName" param-type="text">
       first name of the person
     </ParamField>
 
-    <ParamField body="people.lastName" param-type="text">
+    <ParamField showLocation="false" body="people.lastName" param-type="text">
       last name of the person
     </ParamField>
 
-    <ParamField body="people.landline" param-type="boolean">
+    <ParamField showLocation="false" body="people.landline" param-type="boolean">
       Does the person have a landline.
     </ParamField>
 
-    <ParamField body="people.name" param-type="text">
+    <ParamField showLocation="false" body="people.name" param-type="text">
       The person's name.
     </ParamField>
 
-    <ParamField body="people.people_key" param-type="keyword">
+    <ParamField showLocation="false" body="people.people_key" param-type="keyword">
       the corresponding key that link to Datafiniti's people data record. (contact, demographics, & more)
     </ParamField>
 
-    <ParamField body="people.phone" param-type="text">
+    <ParamField showLocation="false" body="people.phone" param-type="text">
       The person's phone number.
     </ParamField>
 
-    <ParamField body="people.title" param-type="text">
+    <ParamField showLocation="false" body="people.title" param-type="text">
       The person's title.
     </ParamField>
 
   </Expandable>
 </ParamField>
 
-<ParamField body="phones" param-type="text">
+<ParamField showLocation="false" body="phones" param-type="text">
   A list of phone numbers associated with the property.
 
   **Example:**
@@ -1468,7 +1468,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="trustDescription" param-type="string">
+<ParamField showLocation="false" body="trustDescription" param-type="string">
   The description of the trust information in relation to the property.
 
   **Example:**
@@ -1480,7 +1480,7 @@ The property data schema below lists all available fields in a property record. 
 
 ## Residential Details
 
-<ParamField body="appliances" param-type="text">
+<ParamField showLocation="false" body="appliances" param-type="text">
   The appliances included with the property.
 
   **Example:**
@@ -1490,7 +1490,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="architecturalStyles" param-type="text">
+<ParamField showLocation="false" body="architecturalStyles" param-type="text">
   The architectural style of the property.
 
   **Example:**
@@ -1500,7 +1500,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="descriptions" param-type="nested">
+<ParamField showLocation="false" body="descriptions" param-type="nested">
   A list of descriptions for this property from various sources. Each description contains:
 
   **Example:**
@@ -1516,18 +1516,18 @@ The property data schema below lists all available fields in a property record. 
 
   <Expandable title="Sub-fields" default-open="false">
 
-    <ParamField body="descriptions.dateSeen" param-type="date">
+    <ParamField showLocation="false" body="descriptions.dateSeen" param-type="date">
       The date when this description has been seen for this property.
     </ParamField>
 
-    <ParamField body="descriptions.value" param-type="text">
+    <ParamField showLocation="false" body="descriptions.value" param-type="text">
       A unique description for this property.
     </ParamField>
 
   </Expandable>
 </ParamField>
 
-<ParamField body="exteriorConstruction" param-type="text">
+<ParamField showLocation="false" body="exteriorConstruction" param-type="text">
   A list of all the exterior construction of the property.
 
   **Example:**
@@ -1537,7 +1537,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="exteriorFeatures" param-type="text">
+<ParamField showLocation="false" body="exteriorFeatures" param-type="text">
   The exterior features the property offers.
 
   **Example:**
@@ -1547,7 +1547,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="features" param-type="nested">
+<ParamField showLocation="false" body="features" param-type="nested">
   A list of features associated with this property. The feature list can be collected from specific feature sections available on listings for this property. It can also serve as a catch-all field for miscellaneous characteristics of this property that don't make sense to include as top-level fields.
 
   Each feature contains:
@@ -1568,22 +1568,22 @@ The property data schema below lists all available fields in a property record. 
 
   <Expandable title="Sub-fields" default-open="false">
 
-    <ParamField body="features.key" param-type="text">
+    <ParamField showLocation="false" body="features.key" param-type="text">
       A label for this feature.
     </ParamField>
 
-    <ParamField body="features.replace" param-type="boolean">
+    <ParamField showLocation="false" body="features.replace" param-type="boolean">
       Flag indicating value field is replaced versus appended.
     </ParamField>
 
-    <ParamField body="features.value" param-type="text">
+    <ParamField showLocation="false" body="features.value" param-type="text">
       A list of possible values for this feature.
     </ParamField>
 
   </Expandable>
 </ParamField>
 
-<ParamField body="floorPlans" param-type="nested">
+<ParamField showLocation="false" body="floorPlans" param-type="nested">
   A list of floorplans associated with the property
 
   **Example:**
@@ -1602,30 +1602,30 @@ The property data schema below lists all available fields in a property record. 
 
   <Expandable title="Sub-fields" default-open="false">
 
-    <ParamField body="floorPlans.floorSize" param-type="text">
+    <ParamField showLocation="false" body="floorPlans.floorSize" param-type="text">
       The floor size of the floor plan being referenced.
     </ParamField>
 
-    <ParamField body="floorPlans.name" param-type="text">
+    <ParamField showLocation="false" body="floorPlans.name" param-type="text">
       The name of the floor plan being referenced.
     </ParamField>
 
-    <ParamField body="floorPlans.numBathrooms" param-type="integer">
+    <ParamField showLocation="false" body="floorPlans.numBathrooms" param-type="integer">
       The number of bathrooms in the floor plan.
     </ParamField>
 
-    <ParamField body="floorPlans.numBedrooms" param-type="integer">
+    <ParamField showLocation="false" body="floorPlans.numBedrooms" param-type="integer">
       The number of bedrooms in the floor plan.
     </ParamField>
 
-    <ParamField body="floorPlans.type" param-type="text">
+    <ParamField showLocation="false" body="floorPlans.type" param-type="text">
       the type of floor plan classified by the property.
     </ParamField>
 
   </Expandable>
 </ParamField>
 
-<ParamField body="floorSizeUnit" param-type="keyword">
+<ParamField showLocation="false" body="floorSizeUnit" param-type="keyword">
   The units of measurement for `floorSize`.
 
   **Example:**
@@ -1635,7 +1635,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="floorSizeValue" param-type="float">
+<ParamField showLocation="false" body="floorSizeValue" param-type="float">
   The size of the walkable area of the property. For apartments and condos, this is the size of the property. For homes and buildings, this is the combined size of each floor and does not include lot size.
 
   **Example:**
@@ -1645,7 +1645,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="hvacTypes" param-type="text">
+<ParamField showLocation="false" body="hvacTypes" param-type="text">
   The type / components of the HVAC system.
 
   **Example:**
@@ -1655,7 +1655,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="isUnit" param-type="boolean">
+<ParamField showLocation="false" body="isUnit" param-type="boolean">
   If the property is a unit number of a complex / building
 
   **Example:**
@@ -1665,7 +1665,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="leasingTerms" param-type="text">
+<ParamField showLocation="false" body="leasingTerms" param-type="text">
   A list of leasing terms associated with the property.
 
   **Example:**
@@ -1675,7 +1675,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="lotDepthUnit" param-type="text">
+<ParamField showLocation="false" body="lotDepthUnit" param-type="text">
   The depth dimension unit of a property's lot.
 
   **Example:**
@@ -1685,7 +1685,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="lotDepthValue" param-type="float">
+<ParamField showLocation="false" body="lotDepthValue" param-type="float">
   The depth dimension of a property's lot.
 
   **Example:**
@@ -1695,7 +1695,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="lotSizeUnit" param-type="keyword">
+<ParamField showLocation="false" body="lotSizeUnit" param-type="keyword">
   The units of measurement for `lotSize`.
 
   **Example:**
@@ -1705,7 +1705,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="lotSizeValue" param-type="integer">
+<ParamField showLocation="false" body="lotSizeValue" param-type="integer">
   The lot size for the property. This is the ground area covered by the property.
 
   **Example:**
@@ -1715,7 +1715,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="neighborhoods" param-type="text">
+<ParamField showLocation="false" body="neighborhoods" param-type="text">
   A list of neighborhoods where this property is located. Sometimes an area can belong to multiple neighborhoods, which is why this field is a list.
 
   **Example:**
@@ -1725,7 +1725,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="numBathroom" param-type="float">
+<ParamField showLocation="false" body="numBathroom" param-type="float">
   The number of bathrooms in this property. Can be a whole number (e.g. "1") or a float (e.g., 1.25).
 
   **Example:**
@@ -1735,7 +1735,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="numBedroom" param-type="integer">
+<ParamField showLocation="false" body="numBedroom" param-type="integer">
   The number of bedrooms in this property.
 
   **Example:**
@@ -1745,7 +1745,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="numFloor" param-type="integer">
+<ParamField showLocation="false" body="numFloor" param-type="integer">
   The number of floors or stories in this property.
 
   **Example:**
@@ -1755,7 +1755,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="numParkingSpaces" param-type="integer">
+<ParamField showLocation="false" body="numParkingSpaces" param-type="integer">
   The number of parking spots on the property.
 
   **Example:**
@@ -1765,7 +1765,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="numPeople" param-type="integer">
+<ParamField showLocation="false" body="numPeople" param-type="integer">
   The number of people that can occupy this property.
 
   **Example:**
@@ -1775,7 +1775,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="numRoom" param-type="integer">
+<ParamField showLocation="false" body="numRoom" param-type="integer">
   The number of rooms in this property.
 
   **Example:**
@@ -1785,7 +1785,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="numUnit" param-type="integer">
+<ParamField showLocation="false" body="numUnit" param-type="integer">
   The number of units available in this property.
 
   **Example:**
@@ -1795,7 +1795,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="parking" param-type="text">
+<ParamField showLocation="false" body="parking" param-type="text">
   A list of details regarding parking at this property.
 
   **Example:**
@@ -1805,7 +1805,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="parkingTypes" param-type="text">
+<ParamField showLocation="false" body="parkingTypes" param-type="text">
   A list of parking types that pertains to the property.
 
   **Example:**
@@ -1815,7 +1815,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="propertyType" param-type="text">
+<ParamField showLocation="false" body="propertyType" param-type="text">
   A classification for the property type. See possible values [here](/docs/possible-values-for-property-fields).
 
   **Example:**
@@ -1825,7 +1825,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="roofing" param-type="text">
+<ParamField showLocation="false" body="roofing" param-type="text">
   A list of materials the roof of the property is made from.
 
   **Example:**
@@ -1835,7 +1835,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="roomTypes" param-type="text">
+<ParamField showLocation="false" body="roomTypes" param-type="text">
   The types of rooms the property has.
 
   **Example:**
@@ -1845,7 +1845,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="sewerType" param-type="text">
+<ParamField showLocation="false" body="sewerType" param-type="text">
   The type of sewer access of the property. (public, private, and/or septic)
 
   **Example:**
@@ -1855,7 +1855,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="subdivision" param-type="string">
+<ParamField showLocation="false" body="subdivision" param-type="string">
   Subdivision / neighborhood of the property.
 
   **Example:**
@@ -1865,7 +1865,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="yearBuilt" param-type="integer">
+<ParamField showLocation="false" body="yearBuilt" param-type="integer">
   The year the property was built.
 
   **Example:**
@@ -1875,7 +1875,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="petPolicy" param-type="text">
+<ParamField showLocation="false" body="petPolicy" param-type="text">
   A list of pet policy details for this property.
 
   **Example:**
@@ -1885,7 +1885,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="reviews" param-type="nested">
+<ParamField showLocation="false" body="reviews" param-type="nested">
   A list of reviews that have been seen for this property. Each review may contain:
 
   **Example:**
@@ -1906,30 +1906,30 @@ The property data schema below lists all available fields in a property record. 
 
   <Expandable title="Sub-fields" default-open="false">
 
-    <ParamField body="reviews.date" param-type="date">
+    <ParamField showLocation="false" body="reviews.date" param-type="date">
       The date of the review.
     </ParamField>
 
-    <ParamField body="reviews.dateSeen" param-type="date">
+    <ParamField showLocation="false" body="reviews.dateSeen" param-type="date">
       A list of dates when this review was seen.
     </ParamField>
 
-    <ParamField body="reviews.rating" param-type="float">
+    <ParamField showLocation="false" body="reviews.rating" param-type="float">
       The numeric rating associated with the review.
     </ParamField>
 
-    <ParamField body="reviews.text" param-type="text">
+    <ParamField showLocation="false" body="reviews.text" param-type="text">
       The full review text.
     </ParamField>
 
-    <ParamField body="reviews.title" param-type="text">
+    <ParamField showLocation="false" body="reviews.title" param-type="text">
       The review title or summary.
     </ParamField>
 
   </Expandable>
 </ParamField>
 
-<ParamField body="rules" param-type="text">
+<ParamField showLocation="false" body="rules" param-type="text">
   A list of rules or restrictions for this property.
 
   **Example:**
@@ -1941,7 +1941,7 @@ The property data schema below lists all available fields in a property record. 
 
 ## Status Details
 
-<ParamField body="mostRecentRentalStatus" param-type="keyword">
+<ParamField showLocation="false" body="mostRecentRentalStatus" param-type="keyword">
   The most recent value for `rentalStatuses.type` for this property. See possible values [here](/docs/possible-values-for-property-fields).
 
   **Example:**
@@ -1951,7 +1951,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentRentalStatusDate" param-type="date">
+<ParamField showLocation="false" body="mostRecentRentalStatusDate" param-type="date">
   The most recent rental status date listed by the source.
 
   **Example:**
@@ -1961,7 +1961,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentRentalStatusFirstDateSeen" param-type="date">
+<ParamField showLocation="false" body="mostRecentRentalStatusFirstDateSeen" param-type="date">
   The most recent rental status first seen by Datafiniti
 
   **Example:**
@@ -1971,7 +1971,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentStatus" param-type="keyword">
+<ParamField showLocation="false" body="mostRecentStatus" param-type="keyword">
   The most recent value for `statuses.type` for this property. See possible values [here](/docs/possible-values-for-property-fields).
 
   **Example:**
@@ -1981,7 +1981,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentStatusDate" param-type="date">
+<ParamField showLocation="false" body="mostRecentStatusDate" param-type="date">
   The date of change that corresponds to the `mostRecentStatus` for this property.
 
   **Example:**
@@ -1991,7 +1991,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentStatusFirstDateSeen" param-type="date">
+<ParamField showLocation="false" body="mostRecentStatusFirstDateSeen" param-type="date">
   This date corresponds to the most recent date seen of the most recent status data source.
 
   **Example:**
@@ -2001,7 +2001,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentVacancy" param-type="boolean">
+<ParamField showLocation="false" body="mostRecentVacancy" param-type="boolean">
   The most recent vacancy value of the property.
 
   **Example:**
@@ -2011,7 +2011,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentVacancyFirstDateSeen" param-type="date">
+<ParamField showLocation="false" body="mostRecentVacancyFirstDateSeen" param-type="date">
   This date corresponds to the first date seen from the source of the property listing.
 
   **Example:**
@@ -2021,7 +2021,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="rentalStatuses" param-type="nested">
+<ParamField showLocation="false" body="rentalStatuses" param-type="nested">
   A list of historical rental statuses. This field is used to indicate when the property is status `For Rent` or `Short-term Rental`.
 
   `rentalStatuses` objects may contain:
@@ -2059,34 +2059,34 @@ The property data schema below lists all available fields in a property record. 
 
   <Expandable title="Sub-fields" default-open="false">
 
-    <ParamField body="rentalStatuses.date" param-type="date">
+    <ParamField showLocation="false" body="rentalStatuses.date" param-type="date">
       the date the rental status was posted by the source.
     </ParamField>
 
-    <ParamField body="rentalStatuses.dateSeen" param-type="date">
+    <ParamField showLocation="false" body="rentalStatuses.dateSeen" param-type="date">
       the date when the rental status was seen by Datafiniti.
     </ParamField>
 
-    <ParamField body="rentalStatuses.firstDateSeen" param-type="date">
+    <ParamField showLocation="false" body="rentalStatuses.firstDateSeen" param-type="date">
       the first date seen of the rental status was seen by Datafiniti.
     </ParamField>
 
-    <ParamField body="rentalStatuses.lastDateSeen" param-type="date">
+    <ParamField showLocation="false" body="rentalStatuses.lastDateSeen" param-type="date">
       the latest date seen of the rental status was seen by Datafiniti.
     </ParamField>
 
-    <ParamField body="rentalStatuses.sourceURLs" param-type="string">
+    <ParamField showLocation="false" body="rentalStatuses.sourceURLs" param-type="string">
       the source URL of the rental property listing.
     </ParamField>
 
-    <ParamField body="rentalStatuses.type" param-type="string">
+    <ParamField showLocation="false" body="rentalStatuses.type" param-type="string">
       the type of rental being listed `For Rent` or `Short-term Rental`
     </ParamField>
 
   </Expandable>
 </ParamField>
 
-<ParamField body="statuses" param-type="nested" required="false" deprecated="true">
+<ParamField showLocation="false" body="statuses" param-type="nested" required="false" deprecated="true">
   **Deprecated**
   A list of statuses for this property. This field is used to indicate when the property is for sale, etc.
 
@@ -2111,34 +2111,34 @@ The property data schema below lists all available fields in a property record. 
 
   <Expandable title="Sub-fields" default-open="false">
 
-    <ParamField body="statuses.date" param-type="date">
+    <ParamField showLocation="false" body="statuses.date" param-type="date">
       Date the status occurred
     </ParamField>
 
-    <ParamField body="statuses.dateSeen" param-type="date">
+    <ParamField showLocation="false" body="statuses.dateSeen" param-type="date">
       A list of dates when this status was seen by Datafiniti.
     </ParamField>
 
-    <ParamField body="statuses.firstDateSeen" param-type="date">
+    <ParamField showLocation="false" body="statuses.firstDateSeen" param-type="date">
       the first date seen of this status was seen by Datafiniti.
     </ParamField>
 
-    <ParamField body="statuses.isUnderContract" param-type="boolean">
+    <ParamField showLocation="false" body="statuses.isUnderContract" param-type="boolean">
       A true/false value to indicate if this status is under contract.
     </ParamField>
 
-    <ParamField body="statuses.lastDateSeen" param-type="date">
+    <ParamField showLocation="false" body="statuses.lastDateSeen" param-type="date">
       the latest date seen of this status was seen by Datafiniti.
     </ParamField>
 
-    <ParamField body="statuses.type" param-type="keyword">
+    <ParamField showLocation="false" body="statuses.type" param-type="keyword">
       The status. See possible values [here](/docs/possible-values-for-property-fields).
     </ParamField>
 
   </Expandable>
 </ParamField>
 
-<ParamField body="statusHistory" param-type="nested">
+<ParamField showLocation="false" body="statusHistory" param-type="nested">
   A list of Historical statuses for this property. This field is used to indicate when the property is for sale, etc. No rental statuses are found here.
 
   Each status includes:
@@ -2177,34 +2177,34 @@ The property data schema below lists all available fields in a property record. 
 
   <Expandable title="Sub-fields" default-open="false">
 
-    <ParamField body="statusHistory.date" param-type="date">
+    <ParamField showLocation="false" body="statusHistory.date" param-type="date">
       Date the status occurred
     </ParamField>
 
-    <ParamField body="statusHistory.dateSeen" param-type="date">
+    <ParamField showLocation="false" body="statusHistory.dateSeen" param-type="date">
       A list of dates when this status was seen by Datafiniti.
     </ParamField>
 
-    <ParamField body="statusHistory.firstDateSeen" param-type="date">
+    <ParamField showLocation="false" body="statusHistory.firstDateSeen" param-type="date">
       the first date seen of this status was seen by Datafiniti.
     </ParamField>
 
-    <ParamField body="statusHistory.lastDateSeen" param-type="date">
+    <ParamField showLocation="false" body="statusHistory.lastDateSeen" param-type="date">
       the latest date seen of this status was seen by Datafiniti.
     </ParamField>
 
-    <ParamField body="statusHistory.sourceURLs" param-type="url">
+    <ParamField showLocation="false" body="statusHistory.sourceURLs" param-type="url">
       The sourceURL of the status.
     </ParamField>
 
-    <ParamField body="statusHistory.type" param-type="keyword">
+    <ParamField showLocation="false" body="statusHistory.type" param-type="keyword">
       The status. See possible values [here](/docs/possible-values-for-property-fields).
     </ParamField>
 
   </Expandable>
 </ParamField>
 
-<ParamField body="vacancy" param-type="nested">
+<ParamField showLocation="false" body="vacancy" param-type="nested">
   The status of the vacancy of the property:
 
   **Example:**
@@ -2221,15 +2221,15 @@ The property data schema below lists all available fields in a property record. 
 
   <Expandable title="Sub-fields" default-open="false">
 
-    <ParamField body="vacancy.firstDateSeen" param-type="date">
+    <ParamField showLocation="false" body="vacancy.firstDateSeen" param-type="date">
       Earliest date seen from the source of the vacancy by Datafiniti.
     </ParamField>
 
-    <ParamField body="vacancy.lastDateSeen" param-type="date">
+    <ParamField showLocation="false" body="vacancy.lastDateSeen" param-type="date">
       Latest date seen from the source of the vacancy by Datafiniti.
     </ParamField>
 
-    <ParamField body="vacancy.vacant" param-type="boolean">
+    <ParamField showLocation="false" body="vacancy.vacant" param-type="boolean">
       If the property is currently vacant
     </ParamField>
 
@@ -2238,7 +2238,7 @@ The property data schema below lists all available fields in a property record. 
 
 ## Tax & Assessment Details
 
-<ParamField body="assessedValues" param-type="nested">
+<ParamField showLocation="false" body="assessedValues" param-type="nested">
   The assessed value of the property. Each assessed value may contain:
 
   **Example:**
@@ -2256,26 +2256,26 @@ The property data schema below lists all available fields in a property record. 
 
   <Expandable title="Sub-fields" default-open="false">
 
-    <ParamField body="assessedValues.improvementsAmount" param-type="float">
+    <ParamField showLocation="false" body="assessedValues.improvementsAmount" param-type="float">
       assessed value for improvements made to the property.
     </ParamField>
 
-    <ParamField body="assessedValues.landAmount" param-type="float">
+    <ParamField showLocation="false" body="assessedValues.landAmount" param-type="float">
       assessed value for the land/lot of the property.
     </ParamField>
 
-    <ParamField body="assessedValues.totalAmount" param-type="float">
+    <ParamField showLocation="false" body="assessedValues.totalAmount" param-type="float">
       amount value the property is currently assessed for.
     </ParamField>
 
-    <ParamField body="assessedValues.year" param-type="integer">
+    <ParamField showLocation="false" body="assessedValues.year" param-type="integer">
       year value when the property was assessed.
     </ParamField>
 
   </Expandable>
 </ParamField>
 
-<ParamField body="countyFIPS" param-type="integer">
+<ParamField showLocation="false" body="countyFIPS" param-type="integer">
   County FIPS # of the property.
 
   **Example:**
@@ -2285,7 +2285,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="legalDescription" param-type="text">
+<ParamField showLocation="false" body="legalDescription" param-type="text">
   The legal description of the property record.
 
   **Example:**
@@ -2295,7 +2295,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="legalRange" param-type="string">
+<ParamField showLocation="false" body="legalRange" param-type="string">
   Legal range of the property.
 
   **Example:**
@@ -2305,7 +2305,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="parcelNumbers" param-type="nested">
+<ParamField showLocation="false" body="parcelNumbers" param-type="nested">
   The parcel number associated to the property.
 
   **Example:**
@@ -2322,22 +2322,22 @@ The property data schema below lists all available fields in a property record. 
 
   <Expandable title="Sub-fields" default-open="false">
 
-    <ParamField body="parcelNumbers.account" param-type="string">
+    <ParamField showLocation="false" body="parcelNumbers.account" param-type="string">
       Account number of parcel.
     </ParamField>
 
-    <ParamField body="parcelNumbers.number" param-type="string">
+    <ParamField showLocation="false" body="parcelNumbers.number" param-type="string">
       Legal parcel number of the property.
     </ParamField>
 
-    <ParamField body="parcelNumbers.year" param-type="integer">
+    <ParamField showLocation="false" body="parcelNumbers.year" param-type="integer">
       Recorded year of the parcel number.
     </ParamField>
 
   </Expandable>
 </ParamField>
 
-<ParamField body="propertyTaxes" param-type="nested">
+<ParamField showLocation="false" body="propertyTaxes" param-type="nested">
   A list of property taxes that have been seen for this property. Each property tax will include:
 
   **Example:**
@@ -2357,26 +2357,26 @@ The property data schema below lists all available fields in a property record. 
 
   <Expandable title="Sub-fields" default-open="false">
 
-    <ParamField body="propertyTaxes.amount" param-type="float">
+    <ParamField showLocation="false" body="propertyTaxes.amount" param-type="float">
       The tax amount.
     </ParamField>
 
-    <ParamField body="propertyTaxes.currency" param-type="text">
+    <ParamField showLocation="false" body="propertyTaxes.currency" param-type="text">
       The amount's currency.
     </ParamField>
 
-    <ParamField body="propertyTaxes.dateSeen" param-type="date">
+    <ParamField showLocation="false" body="propertyTaxes.dateSeen" param-type="date">
       A list of dates when this tax has been seen for this property.
     </ParamField>
 
-    <ParamField body="propertyTaxes.year" param-type="integer">
+    <ParamField showLocation="false" body="propertyTaxes.year" param-type="integer">
       The year of taxable amount of the property.
     </ParamField>
 
   </Expandable>
 </ParamField>
 
-<ParamField body="taxExemptions" param-type="text">
+<ParamField showLocation="false" body="taxExemptions" param-type="text">
   A list of tax exemptions for the property.
 
   **Example:**
@@ -2386,7 +2386,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="taxID" param-type="keyword">
+<ParamField showLocation="false" body="taxID" param-type="keyword">
   The tax ID for the property.
 
   **Example:**
@@ -2396,7 +2396,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="zoning" param-type="string">
+<ParamField showLocation="false" body="zoning" param-type="string">
   The zoning value for the property.
 
   **Example:**
@@ -2406,7 +2406,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="censusBlock" param-type="string">
+<ParamField showLocation="false" body="censusBlock" param-type="string">
   The census block the property is associate to.
 
   **Example:**
@@ -2416,7 +2416,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="censusBlockGroup" param-type="string">
+<ParamField showLocation="false" body="censusBlockGroup" param-type="string">
   The census group the property is associated to.
 
   **Example:**
@@ -2426,7 +2426,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="censusTract" param-type="string">
+<ParamField showLocation="false" body="censusTract" param-type="string">
   The census tract the property is associated to.
 
   **Example:**
@@ -2436,7 +2436,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="civilDivisionCode" param-type="text">
+<ParamField showLocation="false" body="civilDivisionCode" param-type="text">
   The civil division code for the property.
 
   **Example:**
@@ -2446,7 +2446,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="civilDivisionName" param-type="string">
+<ParamField showLocation="false" body="civilDivisionName" param-type="string">
   The civil division name of the property.
 
   **Example:**
@@ -2456,7 +2456,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="congressionalDistrictHouse" param-type="string">
+<ParamField showLocation="false" body="congressionalDistrictHouse" param-type="string">
   District of the property.
 
   **Example:**
@@ -2466,7 +2466,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="cbsaCode" param-type="string">
+<ParamField showLocation="false" body="cbsaCode" param-type="string">
   The Core Based Statistical Area code for the property.
 
   **Example:**
@@ -2476,7 +2476,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="cbsaName" param-type="string">
+<ParamField showLocation="false" body="cbsaName" param-type="string">
   The Core Based Statistical Area name for the property.
 
   **Example:**
@@ -2486,7 +2486,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="msaCode" param-type="string">
+<ParamField showLocation="false" body="msaCode" param-type="string">
   The metropolitan statistical area code for the property.
 
   **Example:**
@@ -2496,7 +2496,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="msaName" param-type="string">
+<ParamField showLocation="false" body="msaName" param-type="string">
   The metropolitan statistical area name for the property.
 
   **Example:**
@@ -2506,7 +2506,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="municipality" param-type="string">
+<ParamField showLocation="false" body="municipality" param-type="string">
   The municipality associated with the property.
 
   **Example:**
@@ -2518,7 +2518,7 @@ The property data schema below lists all available fields in a property record. 
 
 ## Transactions Details
 
-<ParamField body="instrumentNumber" param-type="string">
+<ParamField showLocation="false" body="instrumentNumber" param-type="string">
   Instrument # of the property.
 
   **Example:**
@@ -2528,7 +2528,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="involuntaryLienJudgement" param-type="nested">
+<ParamField showLocation="false" body="involuntaryLienJudgement" param-type="nested">
   involuntaryLienJudgement shows if a lien is set against your wishes and is the result of not fulfilling your financial obligations
 
   **Example:**
@@ -2546,26 +2546,26 @@ The property data schema below lists all available fields in a property record. 
 
   <Expandable title="Sub-fields" default-open="false">
 
-    <ParamField body="involuntaryLienJudgement.firstDateSeen" param-type="date">
+    <ParamField showLocation="false" body="involuntaryLienJudgement.firstDateSeen" param-type="date">
       first date seen on the lien of the property.
     </ParamField>
 
-    <ParamField body="involuntaryLienJudgement.judgement" param-type="boolean">
+    <ParamField showLocation="false" body="involuntaryLienJudgement.judgement" param-type="boolean">
       if a lien was set on this property.
     </ParamField>
 
-    <ParamField body="involuntaryLienJudgement.lien" param-type="boolean">
+    <ParamField showLocation="false" body="involuntaryLienJudgement.lien" param-type="boolean">
       If a lien is current owed on the property
     </ParamField>
 
-    <ParamField body="involuntaryLienJudgement.lastDateSeen" param-type="date">
+    <ParamField showLocation="false" body="involuntaryLienJudgement.lastDateSeen" param-type="date">
       last date seen on the lien of the property.
     </ParamField>
 
   </Expandable>
 </ParamField>
 
-<ParamField body="mostRecentInvoluntaryJudgement" param-type="boolean">
+<ParamField showLocation="false" body="mostRecentInvoluntaryJudgement" param-type="boolean">
   The most recent Involuntary Lien Judgement value
 
   **Example:**
@@ -2575,7 +2575,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentInvoluntaryLien" param-type="boolean">
+<ParamField showLocation="false" body="mostRecentInvoluntaryLien" param-type="boolean">
   The most recent Involuntary Lien on the property value
 
   **Example:**
@@ -2585,7 +2585,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentInvoluntaryLienJudgementFirstDateSeen" param-type="date">
+<ParamField showLocation="false" body="mostRecentInvoluntaryLienJudgementFirstDateSeen" param-type="date">
   The most recent first date seen of the Involuntary Lien.
 
   **Example:**
@@ -2595,7 +2595,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="transactions" param-type="nested">
+<ParamField showLocation="false" body="transactions" param-type="nested">
   A list of transactional data for this property after a sale is completed. This field is used to indicate when the property was purchased and by who.
 
   Each transaction includes:
@@ -2632,91 +2632,91 @@ The property data schema below lists all available fields in a property record. 
 
   <Expandable title="Sub-fields" default-open="false">
 
-    <ParamField body="transactions.buyerFirstName" param-type="string">
+    <ParamField showLocation="false" body="transactions.buyerFirstName" param-type="string">
       First name of the buyer.
     </ParamField>
 
-    <ParamField body="transactions.buyerLastName" param-type="string">
+    <ParamField showLocation="false" body="transactions.buyerLastName" param-type="string">
       Last name of the buyer.
     </ParamField>
 
-    <ParamField body="transactions.buyerMiddleName" param-type="string">
+    <ParamField showLocation="false" body="transactions.buyerMiddleName" param-type="string">
       Middle name of the buyer.
     </ParamField>
 
-    <ParamField body="transactions.contactOwnerMailAddressFull" param-type="string">
+    <ParamField showLocation="false" body="transactions.contactOwnerMailAddressFull" param-type="string">
       Mailing address provided by the buyer at the time of the transaction.
     </ParamField>
 
-    <ParamField body="transactions.documentNumber" param-type="string">
+    <ParamField showLocation="false" body="transactions.documentNumber" param-type="string">
       the document number of the transaction.
     </ParamField>
 
-    <ParamField body="transactions.documentType" param-type="string">
+    <ParamField showLocation="false" body="transactions.documentType" param-type="string">
       Contains all documents attached in this transaction.
     </ParamField>
 
-    <ParamField body="transactions.firstDateSeen" param-type="date">
+    <ParamField showLocation="false" body="transactions.firstDateSeen" param-type="date">
       Earliest date seen from the source of the property listing by Datafiniti.
     </ParamField>
 
-    <ParamField body="transactions.interestType" param-type="string">
+    <ParamField showLocation="false" body="transactions.interestType" param-type="string">
       interest rate by the lender.
     </ParamField>
 
-    <ParamField body="transactions.lastDateSeen" param-type="date">
+    <ParamField showLocation="false" body="transactions.lastDateSeen" param-type="date">
       Latest date seen from the source of the property listing by Datafiniti.
     </ParamField>
 
-    <ParamField body="transactions.lenderName" param-type="string">
+    <ParamField showLocation="false" body="transactions.lenderName" param-type="string">
       Name of the lender.
     </ParamField>
 
-    <ParamField body="transactions.loanAmount" param-type="double">
+    <ParamField showLocation="false" body="transactions.loanAmount" param-type="double">
       Loan amount by lending company.
     </ParamField>
 
-    <ParamField body="transactions.loanType" param-type="string">
+    <ParamField showLocation="false" body="transactions.loanType" param-type="string">
       Type of loan for this transaction.
     </ParamField>
 
-    <ParamField body="transactions.mortgageTerm" param-type="integer">
+    <ParamField showLocation="false" body="transactions.mortgageTerm" param-type="integer">
       Length in months of the loan.
     </ParamField>
 
-    <ParamField body="transactions.ownerType" param-type="string">
+    <ParamField showLocation="false" body="transactions.ownerType" param-type="string">
       Type of owner for transaction.
     </ParamField>
 
-    <ParamField body="transactions.parcelNumber" param-type="string">
+    <ParamField showLocation="false" body="transactions.parcelNumber" param-type="string">
       Number parcel was created.
     </ParamField>
 
-    <ParamField body="transactions.price" param-type="double">
+    <ParamField showLocation="false" body="transactions.price" param-type="double">
       Price of the property for this transaction.
     </ParamField>
 
-    <ParamField body="transactions.saleDate" param-type="date">
+    <ParamField showLocation="false" body="transactions.saleDate" param-type="date">
       Date the when transaction occurred
     </ParamField>
 
-    <ParamField body="transactions.sellerFirstName" param-type="string">
+    <ParamField showLocation="false" body="transactions.sellerFirstName" param-type="string">
       First name of the seller.
     </ParamField>
 
-    <ParamField body="transactions.sellerLastName" param-type="string">
+    <ParamField showLocation="false" body="transactions.sellerLastName" param-type="string">
       Last name of the seller.
     </ParamField>
 
-    <ParamField body="transactions.sellerMiddleName" param-type="string">
+    <ParamField showLocation="false" body="transactions.sellerMiddleName" param-type="string">
       Middle name of the seller.
     </ParamField>
 
-    <ParamField body="transactions.transactionID" param-type="string">
+    <ParamField showLocation="false" body="transactions.transactionID" param-type="string">
       the ID value of the transaction.
     </ParamField>
 
-    <ParamField body="transactions.type" param-type="string">
+    <ParamField showLocation="false" body="transactions.type" param-type="string">
       the type of transaction in relation to the saleDate.
     </ParamField>
 
@@ -2725,7 +2725,7 @@ The property data schema below lists all available fields in a property record. 
 
 ## Additional Details
 
-<ParamField body="categories" param-type="text">
+<ParamField showLocation="false" body="categories" param-type="text">
   A list of category keywords used for this property across multiple sources.
 
   **Example:**
@@ -2735,7 +2735,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="dateAdded" param-type="date">
+<ParamField showLocation="false" body="dateAdded" param-type="date">
   The date when the property record was first added.
 
   **Example:**
@@ -2745,7 +2745,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="dateUpdated" param-type="date">
+<ParamField showLocation="false" body="dateUpdated" param-type="date">
   The date when the property record was last updated.
 
   **Example:**
@@ -2755,7 +2755,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="domains" param-type="text">
+<ParamField showLocation="false" body="domains" param-type="text">
   A list of source domains associated with the property record.
 
   **Example:**
@@ -2765,7 +2765,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="keys" param-type="text">
+<ParamField showLocation="false" body="keys" param-type="text">
   A list of keys associated with the property record.
 
   **Example:**
@@ -2775,7 +2775,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="languagesSpoken" param-type="text">
+<ParamField showLocation="false" body="languagesSpoken" param-type="text">
   A list of languages spoken by property staff or agents associated with the listing.
 
   **Example:**
