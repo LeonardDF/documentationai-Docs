@@ -1767,66 +1767,6 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="propertyType" param-type="text" showLocation="false">
-  A classification for the property type. See possible values [here](/docs/possible-values-for-property-fields).
-
-  **Example:**
-
-  ```json
-  "propertyType": "Condo"
-  ```
-</ParamField>
-
-<ParamField body="roofing" param-type="text" showLocation="false">
-  A list of materials the roof of the property is made from.
-
-  **Example:**
-
-  ```json
-  "roofing": ["Asphalt", "Fiberglass"]
-  ```
-</ParamField>
-
-<ParamField body="roomTypes" param-type="text" showLocation="false">
-  The types of rooms the property has.
-
-  **Example:**
-
-  ```json
-  "roomTypes": ["Laundry","Great","Game"]
-  ```
-</ParamField>
-
-<ParamField body="sewerType" param-type="text" showLocation="false">
-  The type of sewer access of the property. (public, private, and/or septic)
-
-  **Example:**
-
-  ```json
-  "sewerType": ["Private"]
-  ```
-</ParamField>
-
-<ParamField body="subdivision" param-type="string" showLocation="false">
-  Subdivision / neighborhood of the property.
-
-  **Example:**
-
-  ```json
-  "subdivision": "Crescent Heights Sub"
-  ```
-</ParamField>
-
-<ParamField body="yearBuilt" param-type="integer" showLocation="false">
-  The year the property was built.
-
-  **Example:**
-
-  ```json
-  "yearBuilt": 2021
-  ```
-</ParamField>
-
 <ParamField body="petPolicy" param-type="text" showLocation="false">
   A list of pet policy details for this property.
 
@@ -1834,6 +1774,16 @@ The property data schema below lists all available fields in a property record. 
 
   ```json
   "petPolicy": ["Cats Allowed","Dogs Allowed"]
+  ```
+</ParamField>
+
+<ParamField body="propertyType" param-type="text" showLocation="false">
+  A classification for the property type. See possible values [here](/docs/possible-values-for-property-fields).
+
+  **Example:**
+
+  ```json
+  "propertyType": "Condo"
   ```
 </ParamField>
 
@@ -1879,17 +1829,18 @@ The property data schema below lists all available fields in a property record. 
   </Expandable>
 </ParamField>
 
-<ParamField body="rules" param-type="text" showLocation="false">
-  A list of rules or restrictions for this property.
+<ParamField body="roofing" param-type="text" showLocation="false">
+  A list of materials the roof of the property is made from.
 
   **Example:**
 
   ```json
-  "rules": ["No smoking","No short-term subleasing"]
+  "roofing": ["Asphalt", "Fiberglass"]
   ```
 </ParamField>
 
-## Rental price fields
+<ParamField body="roomTypes" param-type="text" showLocation="false">
+  The types of rooms the property has.
 
 <ParamField body="mostRecentEstimatedPriceAmount" param-type="integer" showLocation="false">
   The most recent estimated price amount
