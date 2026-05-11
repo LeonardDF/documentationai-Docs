@@ -1842,321 +1842,52 @@ The property data schema below lists all available fields in a property record. 
 <ParamField body="roomTypes" param-type="text" showLocation="false">
   The types of rooms the property has.
 
-<ParamField body="mostRecentEstimatedPriceAmount" param-type="integer" showLocation="false">
-  The most recent estimated price amount
+  **Example:**
+
+  ```json
+  "roomTypes": ["Bedroom", "Kitchen", "Living Room"]
+  ```
+</ParamField>
+
+<ParamField body="rules" param-type="text" showLocation="false">
+  A list of rules associated with the property.
 
   **Example:**
 
   ```json
-  "mostRecentEstimatedPriceAmount": 95267
+  "rules": ["No smoking", "No loud parties"]
   ```
 </ParamField>
 
-<ParamField body="mostRecentEstimatedPriceDate" param-type="date" showLocation="false">
-  The most recent estimate price date
+<ParamField body="sewerType" param-type="text" showLocation="false">
+  The sewer system type for the property.
 
   **Example:**
 
   ```json
-  "mostRecentEstimatedPriceDate": "2024-09-11T00:00:00.000Z"
+  "sewerType": ["Public Sewer"]
   ```
 </ParamField>
 
-<ParamField body="mostRecentEstimatedPriceDomain" param-type="text" showLocation="false">
-  The most recent source domain of the estimate price
+<ParamField body="subdivision" param-type="text" showLocation="false">
+  The subdivision or community name associated with the property.
 
   **Example:**
 
   ```json
-  "mostRecentEstimatedPriceDomain": "www.redfin.com"
+  "subdivision": "Oak Ridge Estates"
   ```
 </ParamField>
 
-<ParamField body="mostRecentEstimatedPriceSourceURL" param-type="text" showLocation="false">
-  The most recent sourceURL used for obtaining the price estimate
+<ParamField body="yearBuilt" param-type="integer" showLocation="false">
+  The year the property was built.
 
   **Example:**
 
   ```json
-  "mostRecentEstimatedPriceSourceURL": "www.redfin.com/093757"
+  "yearBuilt": 1998
   ```
 </ParamField>
-
-<ParamField body="mostRecentPriceAmount" param-type="bigdecimal" showLocation="false">
-  The property's most recent price amount from our prices field. **This does not include rent prices**
-
-  **Example:**
-
-  ```json
-  "mostRecentPriceAmount": 85
-  ```
-</ParamField>
-
-<ParamField body="mostRecentPriceCurrency" param-type="text" showLocation="false">
-  The currency listed for mostRecentPriceAmount.
-
-  **Example:**
-
-  ```json
-  "mostRecentPriceCurrency": "USD"
-  ```
-</ParamField>
-
-<ParamField body="mostRecentPriceDate" param-type="date" showLocation="false">
-  The most recent price date of the property record.
-
-  **Example:**
-
-  ```json
-  "mostRecentPriceDate": "2022-03-29T19:26:49.157Z"
-  ```
-</ParamField>
-
-<ParamField body="mostRecentPriceDomain" param-type="domain" showLocation="false">
-  The domain of the most recent price scraped by Datafiniti
-
-  **Example:**
-
-  ```json
-  "mostRecentPriceDomain": "www.nordstrom.com"
-  ```
-</ParamField>
-
-<ParamField body="mostRecentRentalListPriceAmount" param-type="float" showLocation="false">
-  The most recent rental listing price from our prices field.
-
-  **Example:**
-
-  ```json
-  "mostRecentRentalListPriceAmount": 429000
-  ```
-</ParamField>
-
-<ParamField body="mostRecentRentalListPriceDate" param-type="date" showLocation="false">
-  The most recent rental listing date from our prices field.
-
-  **Example:**
-
-  ```json
-  "mostRecentRentalListPriceDate": "2025-09-11T00:00:00.000Z"
-  ```
-</ParamField>
-
-<ParamField body="mostRecentRentalPriceAmount" param-type="bigdecimal" deprecated="true" showLocation="false">
-  The property's most recent rent price amount from our prices field.
-
-  Deprecated on Jan 31st, 2026
-
-  **Example:**
-
-  ```json
-  "mostRecentRentalPriceAmount": 1436
-  ```
-</ParamField>
-
-<ParamField body="mostRecentRentalPriceDate" param-type="date" deprecated="true" showLocation="false">
-  The most recent rental price date
-
-  Deprecated on Jan 31st, 2026
-
-  **Example:**
-
-  ```json
-  "mostRecentRentalPriceDate": "2024-09-11T00:00:00.000Z"
-  ```
-</ParamField>
-
-<ParamField body="mostRecentRentalPriceDomain" param-type="text" showLocation="false">
-  The most recent domain used for obtaining the rental price.
-
-  **Example:**
-
-  ```json
-  "mostRecentRentalPriceDomain": "www.remax.com"
-  ```
-</ParamField>
-
-<ParamField body="mostRecentRentalPriceFirstDateSeen" param-type="date" showLocation="false">
-  The most recent rental prices first seen by Datafiniti
-
-  **Example:**
-
-  ```json
-  "mostRecentRentalPriceFirstDateSeen": "2024-09-11T00:00:00.000Z"
-  ```
-</ParamField>
-
-<ParamField body="mostRecentRentalPricePeriod" param-type="keyword" showLocation="false">
-  The period term of the most recent rental price.
-  Either `Per Month` or `Per Year`
-
-  **Example:**
-
-  ```json
-  "mostRecentRentalPricePeriod": "Per Month"
-  ```
-</ParamField>
-
-<ParamField body="mostRecentRentalPriceSourceURL" param-type="text" showLocation="false">
-  The most recent source Url used for obtaining the rental price.
-
-  **Example:**
-
-  ```json
-  "mostRecentRentalPriceSourceURL": "www.remax.com/usdfusj/19278"
-  ```
-</ParamField>
-
-<ParamField body="mostRecentSaleListPriceAmount" param-type="float" showLocation="false">
-  The most recent "sale list" price from our prices field.
-
-  **Example:**
-
-  ```json
-  "mostRecentSaleListPriceAmount": 456990
-  ```
-</ParamField>
-
-<ParamField body="mostRecentSaleListPriceDate" param-type="date" showLocation="false">
-  The most recent "sale list" price date from our prices field.
-
-  **Example:**
-
-  ```json
-  "mostRecentSaleListPriceDate": "2025-10-23T00:00:00.000Z"
-  ```
-</ParamField>
-
-<ParamField body="mostRecentSoldPriceAmount" param-type="float" showLocation="false">
-  The most recent "sale" price from our prices field.
-
-  **Example:**
-
-  ```json
-  "mostRecentSoldPriceAmount": 480000
-  ```
-</ParamField>
-
-<ParamField body="mostRecentSoldPriceDate" param-type="date" showLocation="false">
-  The most recent "sale" price date from our prices field.
-
-  **Example:**
-
-  ```json
-  "mostRecentSoldPriceDate": "2025-10-21T00:00:00.000Z"
-  ```
-</ParamField>
-
-<ParamField body="prices" param-type="nested" showLocation="false">
-  A list of prices for this property.
-
-  Price objects may contain:
-
-  **Example:**
-
-  ```json
-  "prices": [
-      {
-        "amountMax": 289000,
-        "amountMin": 289000,
-        "availability": "true",
-        "comment": "Listed by Awaye Realty Management",
-        "currency": "USD",
-        "date": "2017-10-21T00:00:00Z",
-        "dateSeen": [
-          "2017-10-09T00:00:00Z"
-        ],
-        "domain": "www.redfin.com",
-        "isSale": "false",
-        "isSold": "false",
-        "pricePerSquareFoot": 197,
-        "status": "For Sale"
-      },
-      {
-        "amountMax": 817,
-        "amountMin": 817,
-        "currency": "USD",
-        "dateSeen": [
-          "2016-01-20T00:00:00Z"
-        ],
-        "type": "sale list",
-        "minStay": "7 nights",
-        "period": "Per week"
-      }
-    ]
-  ```
-
-  <Expandable title="Sub-fields" default-open="false">
-    <ParamField body="prices.amountMax" param-type="float" showLocation="false">
-      The maximum price value listed. This is typically the same as amountMin, except in cases where a price range is listed.
-    </ParamField>
-
-    <ParamField body="prices.amountMin" param-type="float" showLocation="false">
-      The minimum price value listed.
-    </ParamField>
-
-    <ParamField body="prices.availability" param-type="keyword" showLocation="false">
-      The property's availability at this price.
-    </ParamField>
-
-    <ParamField body="prices.comment" param-type="text" showLocation="false">
-      A note related to this price.
-    </ParamField>
-
-    <ParamField body="prices.currency" param-type="text" showLocation="false">
-      The currency listed for amountMin and amountMax.
-    </ParamField>
-
-    <ParamField body="prices.date" param-type="date" showLocation="false">
-      A list of date when the property was set to this price.
-    </ParamField>
-
-    <ParamField body="prices.dateSeen" param-type="date" showLocation="false">
-      A list of dates when this price was seen.
-    </ParamField>
-
-    <ParamField body="prices.dateValidEnd" param-type="date" showLocation="false">
-      The date when this price is no longer valid.
-    </ParamField>
-
-    <ParamField body="prices.dateValidStart" param-type="date" showLocation="false">
-      The date when this price becomes valid.
-    </ParamField>
-
-    <ParamField body="prices.domain" param-type="text" showLocation="false">
-      The domain of the source of the price.
-    </ParamField>
-
-    <ParamField body="prices.isSale" param-type="boolean" showLocation="false">
-      A true/false for whether or not this is a sale price. - deprecated
-    </ParamField>
-
-    <ParamField body="prices.isSold" param-type="boolean" showLocation="false">
-      A true/false for whether or not this is the sold price. - deprecated
-    </ParamField>
-
-    <ParamField body="prices.minStay" param-type="text" showLocation="false">
-      The minimum length of stay required for this price.
-    </ParamField>
-
-    <ParamField body="prices.period" param-type="text" showLocation="false">
-      The calendar period for which this price is valid.
-    </ParamField>
-
-    <ParamField body="prices.pricePerSquareFoot" param-type="float" showLocation="false">
-      The price divide by the square footage.
-    </ParamField>
-
-    <ParamField body="prices.status" param-type="string" showLocation="false">
-      The property status of the prices
-    </ParamField>
-
-    <ParamField body="prices.type" param-type="string" showLocation="false">
-      the type of price at which the property was listed for sale, sold, or rent. (Sale List, Sold, or Rental List)
-    </ParamField>
-  </Expandable>
-</ParamField>
-
 
 ## Status fields
 
