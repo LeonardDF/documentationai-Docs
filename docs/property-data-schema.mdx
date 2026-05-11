@@ -4,133 +4,6 @@ description: >-
   Reference the available fields in a property record, grouped by category with
   nested sub-fields, examples, and deprecation notes.
 ---
-## Geographical fields
-
-The property data schema below lists all available fields in a property record. Actual property records may not include every field.
-
-<ParamField body="address" param-type="text" showLocation="false">
-  The physical street address for this property.
-
-  **Example:**
-
-  ```json
-  "address": "7206 Walling Ln"
-  ```
-</ParamField>
-
-<ParamField body="buildingName" param-type="text" showLocation="false">
-  The name of the building where this property is located. This field is specific to apartments, condos, and similar property types.
-
-  **Example:**
-
-  ```json
-  "buildingName": "Castle Beach Club"
-  ```
-</ParamField>
-
-<ParamField body="city" param-type="text" showLocation="false">
-  The city where the property is located.
-
-  **Example:**
-
-  ```json
-  "city": "Dallas"
-  ```
-</ParamField>
-
-<ParamField body="country" param-type="text" showLocation="false">
-  The two-letter country code for the property location's country.
-
-  **Example:**
-
-  ```json
-  "country": "US"
-  ```
-</ParamField>
-
-<ParamField body="county" param-type="text" showLocation="false">
-  The county of the property record.
-
-  **Example:**
-
-  ```json
-  "county": "Hillsborough"
-  ```
-</ParamField>
-
-<ParamField body="geoLocation" param-type="geo_shape" showLocation="false">
-  A location value that stores the latitude and longitude in a format that allows geospatial querying.
-
-  The value is stored as Well-Known Text format, which resembles an (x, y) value, i.e. (longitude latitude).
-
-  **Example:**
-
-  ```json
-  "geoLocation": "POINT (-119.5094 37.229366)"
-  ```
-</ParamField>
-
-<ParamField body="geoQuality" param-type="integer" showLocation="false">
-  The quality of the geoLocation data of the property.
-
-  **Example:**
-
-  ```json
-  "geoQuality": 0
-  ```
-</ParamField>
-
-<ParamField body="latitude" param-type="text" showLocation="false">
-  The latitude coordinates for this property.
-
-  **Example:**
-
-  ```json
-  "latitude": "32.860858"
-  ```
-</ParamField>
-
-<ParamField body="longitude" param-type="text" showLocation="false">
-  The longitude coordinates for this property.
-
-  **Example:**
-
-  ```json
-  "longitude": "-96.735808"
-  ```
-</ParamField>
-
-<ParamField body="postalCode" param-type="keyword" showLocation="false">
-  The postal or zip code of the property.
-
-  **Example:**
-
-  ```json
-  "postalCode": "75231"
-  ```
-</ParamField>
-
-<ParamField body="province" param-type="text" showLocation="false">
-  The province or state for this property.
-
-  **Example:**
-
-  ```json
-  "province": "TX"
-  ```
-</ParamField>
-
-
-<ParamField body="topographyCode" param-type="string" showLocation="false">
-  A code describing the landform or terrain classification for the property.
-
-  **Example:**
-
-  ```json
-  "topographyCode": "LEVEL"
-  ```
-</ParamField>
-
 ## Broker fields
 
 <ParamField body="brokers" param-type="nested" showLocation="false">
@@ -802,6 +675,133 @@ The property data schema below lists all available fields in a property record. 
 
   ```json
   "languagesSpoken": ["English", "Spanish"]
+  ```
+</ParamField>
+
+## Geographical fields
+
+The property data schema below lists all available fields in a property record. Actual property records may not include every field.
+
+<ParamField body="address" param-type="text" showLocation="false">
+  The physical street address for this property.
+
+  **Example:**
+
+  ```json
+  "address": "7206 Walling Ln"
+  ```
+</ParamField>
+
+<ParamField body="buildingName" param-type="text" showLocation="false">
+  The name of the building where this property is located. This field is specific to apartments, condos, and similar property types.
+
+  **Example:**
+
+  ```json
+  "buildingName": "Castle Beach Club"
+  ```
+</ParamField>
+
+<ParamField body="city" param-type="text" showLocation="false">
+  The city where the property is located.
+
+  **Example:**
+
+  ```json
+  "city": "Dallas"
+  ```
+</ParamField>
+
+<ParamField body="country" param-type="text" showLocation="false">
+  The two-letter country code for the property location's country.
+
+  **Example:**
+
+  ```json
+  "country": "US"
+  ```
+</ParamField>
+
+<ParamField body="county" param-type="text" showLocation="false">
+  The county of the property record.
+
+  **Example:**
+
+  ```json
+  "county": "Hillsborough"
+  ```
+</ParamField>
+
+<ParamField body="geoLocation" param-type="geo_shape" showLocation="false">
+  A location value that stores the latitude and longitude in a format that allows geospatial querying.
+
+  The value is stored as Well-Known Text format, which resembles an (x, y) value, i.e. (longitude latitude).
+
+  **Example:**
+
+  ```json
+  "geoLocation": "POINT (-119.5094 37.229366)"
+  ```
+</ParamField>
+
+<ParamField body="geoQuality" param-type="integer" showLocation="false">
+  The quality of the geoLocation data of the property.
+
+  **Example:**
+
+  ```json
+  "geoQuality": 0
+  ```
+</ParamField>
+
+<ParamField body="latitude" param-type="text" showLocation="false">
+  The latitude coordinates for this property.
+
+  **Example:**
+
+  ```json
+  "latitude": "32.860858"
+  ```
+</ParamField>
+
+<ParamField body="longitude" param-type="text" showLocation="false">
+  The longitude coordinates for this property.
+
+  **Example:**
+
+  ```json
+  "longitude": "-96.735808"
+  ```
+</ParamField>
+
+<ParamField body="postalCode" param-type="keyword" showLocation="false">
+  The postal or zip code of the property.
+
+  **Example:**
+
+  ```json
+  "postalCode": "75231"
+  ```
+</ParamField>
+
+<ParamField body="province" param-type="text" showLocation="false">
+  The province or state for this property.
+
+  **Example:**
+
+  ```json
+  "province": "TX"
+  ```
+</ParamField>
+
+
+<ParamField body="topographyCode" param-type="string" showLocation="false">
+  A code describing the landform or terrain classification for the property.
+
+  **Example:**
+
+  ```json
+  "topographyCode": "LEVEL"
   ```
 </ParamField>
 
