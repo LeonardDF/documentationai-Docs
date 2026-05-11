@@ -816,6 +816,49 @@ The property data schema below lists all available fields in a property record. 
 
 ## Sales price fields
 
+<ParamField body="estimatedPrices" param-type="nested" showLocation="false">
+  A list of price estimates for the property.
+
+  **Example:**
+
+  ```json
+  "estimatedPrices": [
+      {
+        "amountMax": 295000,
+        "amountMin": 295000,
+        "currency": "USD",
+        "dateSeen": [
+          "2023-10-20T16:53:37.235Z"
+        ],
+        "pricePerSquareFoot": 112.51
+      }
+    ]
+  ```
+
+  <Expandable title="Sub-fields" default-open="false">
+    <ParamField body="estimatedPrices.amountMax" param-type="integer" showLocation="false">
+      The maximum price estimate value listed.
+    </ParamField>
+
+    <ParamField body="estimatedPrices.amountMin" param-type="integer" showLocation="false">
+      The minimum price estimate value listed.
+    </ParamField>
+
+    <ParamField body="estimatedPrices.currency" param-type="string" showLocation="false">
+      The currency listed for amountMin and amountMax
+    </ParamField>
+
+    <ParamField body="estimatedPrices.dateSeen" param-type="date" showLocation="false">
+      The date when this estimatedPrice was seen for this property.
+    </ParamField>
+
+    <ParamField body="estimatedPrices.pricePerSquareFoot" param-type="float" showLocation="false">
+      The price divide by the square footage.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+
 <ParamField body="mostRecentEstimatedPriceAmount" param-type="integer" showLocation="false">
   The most recent estimated price amount
 
@@ -936,47 +979,6 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="estimatedPrices" param-type="nested" showLocation="false">
-  A list of price estimates for the property.
-
-  **Example:**
-
-  ```json
-  "estimatedPrices": [
-      {
-        "amountMax": 295000,
-        "amountMin": 295000,
-        "currency": "USD",
-        "dateSeen": [
-          "2023-10-20T16:53:37.235Z"
-        ],
-        "pricePerSquareFoot": 112.51
-      }
-    ]
-  ```
-
-  <Expandable title="Sub-fields" default-open="false">
-    <ParamField body="estimatedPrices.amountMax" param-type="integer" showLocation="false">
-      The maximum price estimate value listed.
-    </ParamField>
-
-    <ParamField body="estimatedPrices.amountMin" param-type="integer" showLocation="false">
-      The minimum price estimate value listed.
-    </ParamField>
-
-    <ParamField body="estimatedPrices.currency" param-type="string" showLocation="false">
-      The currency listed for amountMin and amountMax
-    </ParamField>
-
-    <ParamField body="estimatedPrices.dateSeen" param-type="date" showLocation="false">
-      The date when this estimatedPrice was seen for this property.
-    </ParamField>
-
-    <ParamField body="estimatedPrices.pricePerSquareFoot" param-type="float" showLocation="false">
-      The price divide by the square footage.
-    </ParamField>
-  </Expandable>
-</ParamField>
 
 <ParamField body="prices" param-type="nested" showLocation="false">
   A list of prices for this property.
