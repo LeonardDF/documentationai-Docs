@@ -2519,56 +2519,6 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-
-## SourceURL Fields
-
-<ParamField body="domains" param-type="text" showLocation="false">
-  A list of source domains associated with the property record.
-
-  **Example:**
-
-  ```json
-  "domains": ["www.redfin.com", "www.remax.com"]
-  ```
-</ParamField>
-
-<ParamField body="imageURLs" param-type="keyword" showLocation="false">
-  A list of image URLs for this property.
-
-  **Example:**
-
-  ```json
-  "imageURLs": ["http://image.rent.com/imgr/61bbc9f535f0e180bc804ac8f4c50067"]
-  ```
-</ParamField>
-
-<ParamField body="sourceURLs" param-type="keyword" showLocation="false" />
-  The top level sourceURL of the property.
-
-  **Example:**
-
-  ```json
-  "sourceURLs": ["https://www.redfin.com/listing/412-main-st-dallas-tx/31245001/""]
-  ```
-
-</ParamField>
-
-<ParamField body="sourceURLsPerField" param-type="nested" showLocation="false">
-  Source URLs mapped to specific fields in the property record.
-
-  **Example:**
-
-  ```json
-  "sourceURLsPerField": [
-      {
-        "field": "capRate",
-        "sourceURL": "https://www.loopnet.com/listing/412-main-st-dallas-tx/31245001/"
-      }
-    ]
-  ```
-</ParamField>
-
-
 ## Transactions Fields
 
 <ParamField body="instrumentNumber" param-type="string" showLocation="false">
@@ -2770,4 +2720,51 @@ The property data schema below lists all available fields in a property record. 
       the type of transaction in relation to the saleDate.
     </ParamField>
   </Expandable>
+</ParamField>
+## SourceURL Fields
+
+<ParamField body="domains" param-type="text" showLocation="false">
+  A list of source domains associated with the property record.
+
+  **Example:**
+
+  ```json
+  "domains": ["www.redfin.com", "www.remax.com"]
+  ```
+</ParamField>
+
+<ParamField body="imageURLs" param-type="keyword" showLocation="false">
+  A list of image URLs for this property.
+
+  **Example:**
+
+  ```json
+  "imageURLs": ["http://image.rent.com/imgr/61bbc9f535f0e180bc804ac8f4c50067"]
+  ```
+</ParamField>
+
+<ParamField body="sourceURLs" param-type="keyword" showLocation="false" />
+  The top level sourceURL of the property.
+
+  **Example:**
+
+  ```json
+  "sourceURLs": ["https://www.redfin.com/listing/412-main-st-dallas-tx/31245001/""]
+  ```
+
+</ParamField>
+
+<ParamField body="sourceURLsPerField" param-type="nested" showLocation="false">
+  Source URLs mapped to specific fields in the property record.
+
+  **Example:**
+
+  ```json
+  "sourceURLsPerField": [
+      {
+        "field": "capRate",
+        "sourceURL": "https://www.loopnet.com/listing/412-main-st-dallas-tx/31245001/"
+      }
+    ]
+  ```
 </ParamField>
