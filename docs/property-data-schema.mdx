@@ -4,7 +4,9 @@ description: >-
   Reference the available fields in a property record, grouped by category with
   nested sub-fields, examples, and deprecation notes.
 ---
-## Broker fields
+
+The property data schema below lists all available fields in a property record. Actual property records may not include every field.
+## Broker Fields
 
 <ParamField body="brokers" param-type="nested" showLocation="false">
   A list of brokers associated with this property.
@@ -21,26 +23,6 @@ description: >-
         "phones": ["(713) 948-6666"]
       }
     ]
-  ```
-</ParamField>
-
-<ParamField body="listingName" param-type="text" showLocation="false">
-  The name of the property listing. This isn't the name of the building. It's a descriptive name supplied for the listing itself.
-
-  **Example:**
-
-  ```json
-  "listingName": "Antico Appartamento"
-  ```
-</ParamField>
-
-<ParamField body="mlsName" param-type="text" showLocation="false">
-  The mls name of the listing company/realtor
-
-  **Example:**
-
-  ```json
-  "mlsName": "sovereign realty group"
   ```
 </ParamField>
 
@@ -104,7 +86,8 @@ description: >-
   ```
 </ParamField>
 
-## Commercial fields
+
+## Commercial Fields
 
 <ParamField body="brandTenant" param-type="string" showLocation="false">
   The branded tenant associated with the commercial property.
@@ -126,16 +109,6 @@ description: >-
   ```
 </ParamField>
 
-<ParamField body="buildingClass" param-type="string" showLocation="false">
-  The building class assigned to the commercial property.
-
-  **Example:**
-
-  ```json
-  "buildingClass": "Class A"
-  ```
-</ParamField>
-
 <ParamField body="capRate" param-type="float" showLocation="false">
   The capitalization rate associated with the property.
 
@@ -153,16 +126,6 @@ description: >-
 
   ```json
   "capRateSourceURL": "https://www.loopnet.com/listing/412-main-st-dallas-tx/31245001/"
-  ```
-</ParamField>
-
-<ParamField body="daysOnMarket" param-type="integer" showLocation="false">
-  The number of days the property has been on the market.
-
-  **Example:**
-
-  ```json
-  "daysOnMarket": 47
   ```
 </ParamField>
 
@@ -286,16 +249,6 @@ description: >-
   ```
 </ParamField>
 
-<ParamField body="occupancy" param-type="float" showLocation="false">
-  The occupancy percentage for the property.
-
-  **Example:**
-
-  ```json
-  "occupancy": 92.5
-  ```
-</ParamField>
-
 <ParamField body="operatingExpenses" param-type="float" showLocation="false">
   The operating expenses reported for the property.
 
@@ -313,31 +266,6 @@ description: >-
 
   ```json
   "otherIncome": 8500
-  ```
-</ParamField>
-
-<ParamField body="ownership" param-type="string" showLocation="false">
-  The ownership structure associated with the commercial property.
-
-  **Example:**
-
-  ```json
-  "ownership": "Fee Simple"
-  ```
-</ParamField>
-
-<ParamField body="permits" param-type="nested" showLocation="false">
-  A list of permits associated with the property.
-
-  **Example:**
-
-  ```json
-  "permits": [
-      {
-        "number": "BLD-2024-01822",
-        "type": "Renovation Permit"
-      }
-    ]
   ```
 </ParamField>
 
@@ -409,35 +337,6 @@ description: >-
   ```
 </ParamField>
 
-<ParamField body="sourceURLsPerField" param-type="nested" showLocation="false">
-  Source URLs mapped to specific fields in the property record.
-
-  **Example:**
-
-  ```json
-  "sourceURLsPerField": [
-      {
-        "field": "capRate",
-        "sourceURL": "https://www.loopnet.com/listing/412-main-st-dallas-tx/31245001/"
-      }
-    ]
-  ```
-</ParamField>
-
-<ParamField body="subtype" param-type="nested" showLocation="false">
-  Subtype classifications for the commercial property.
-
-  **Example:**
-
-  ```json
-  "subtype": [
-      {
-        "value": "Neighborhood Center"
-      }
-    ]
-  ```
-</ParamField>
-
 <ParamField body="tenancy" param-type="nested" showLocation="false">
   Tenancy details for the property.
 
@@ -496,31 +395,93 @@ description: >-
   ```
 </ParamField>
 
-<ParamField body="virtualTour" param-type="nested" showLocation="false">
-  Virtual tour details for the property.
+
+## Estimated Price Fields
+
+<ParamField body="estimatedPrices" param-type="nested" showLocation="false">
+  A list of price estimates for the property.
 
   **Example:**
 
   ```json
-  "virtualTour": [
+  "estimatedPrices": [
       {
-        "url": "https://my.matterport.com/show/?m=AbCdEf12345"
+        "amountMax": 295000,
+        "amountMin": 295000,
+        "currency": "USD",
+        "dateSeen": [
+          "2023-10-20T16:53:37.235Z"
+        ],
+        "pricePerSquareFoot": 112.51
       }
     ]
   ```
+
+  <Expandable title="Sub-fields" default-open="false">
+    <ParamField body="estimatedPrices.amountMax" param-type="integer" showLocation="false">
+      The maximum price estimate value listed.
+    </ParamField>
+
+    <ParamField body="estimatedPrices.amountMin" param-type="integer" showLocation="false">
+      The minimum price estimate value listed.
+    </ParamField>
+
+    <ParamField body="estimatedPrices.currency" param-type="string" showLocation="false">
+      The currency listed for amountMin and amountMax
+    </ParamField>
+
+    <ParamField body="estimatedPrices.dateSeen" param-type="date" showLocation="false">
+      The date when this estimatedPrice was seen for this property.
+    </ParamField>
+
+    <ParamField body="estimatedPrices.pricePerSquareFoot" param-type="float" showLocation="false">
+      The price divide by the square footage.
+    </ParamField>
+  </Expandable>
 </ParamField>
 
-<ParamField body="yearRenovated" param-type="integer" showLocation="false">
-  The latest date the property was renovated.
+<ParamField body="mostRecentEstimatedPriceAmount" param-type="integer" showLocation="false">
+  The most recent estimated price amount
 
   **Example:**
 
   ```json
-  "yearRenovated": 2022
+  "mostRecentEstimatedPriceAmount": 95267
   ```
 </ParamField>
 
-## Fee fields
+<ParamField body="mostRecentEstimatedPriceDate" param-type="date" showLocation="false">
+  The most recent estimate price date
+
+  **Example:**
+
+  ```json
+  "mostRecentEstimatedPriceDate": "2024-09-11T00:00:00.000Z"
+  ```
+</ParamField>
+
+<ParamField body="mostRecentEstimatedPriceDomain" param-type="text" showLocation="false">
+  The most recent source domain of the estimate price
+
+  **Example:**
+
+  ```json
+  "mostRecentEstimatedPriceDomain": "www.redfin.com"
+  ```
+</ParamField>
+
+<ParamField body="mostRecentEstimatedPriceSourceURL" param-type="text" showLocation="false">
+  The most recent sourceURL used for obtaining the price estimate
+
+  **Example:**
+
+  ```json
+  "mostRecentEstimatedPriceSourceURL": "www.redfin.com/093757"
+  ```
+</ParamField>
+
+
+## Fee Fields
 
 <ParamField body="deposits" param-type="nested" showLocation="false">
   A list of deposit fees that have been seen for this property. Each deposit contains:
@@ -606,81 +567,8 @@ description: >-
   ```
 </ParamField>
 
-## Generic fields
 
-<ParamField body="categories" param-type="text" showLocation="false">
-  A list of category keywords used for this property across multiple sources.
-
-  **Example:**
-
-  ```json
-  "categories": ["Single family residence", "farming"]
-  ```
-</ParamField>
-
-<ParamField body="dateAdded" param-type="date" showLocation="false">
-  The date when the property record was first added.
-
-  **Example:**
-
-  ```json
-  "dateAdded": "2024-01-15T10:22:31Z"
-  ```
-</ParamField>
-
-<ParamField body="dateUpdated" param-type="date" showLocation="false">
-  The date when the property record was last updated.
-
-  **Example:**
-
-  ```json
-  "dateUpdated": "2024-10-03T18:14:09Z"
-  ```
-</ParamField>
-
-<ParamField body="domains" param-type="text" showLocation="false">
-  A list of source domains associated with the property record.
-
-  **Example:**
-
-  ```json
-  "domains": ["www.redfin.com", "www.remax.com"]
-  ```
-</ParamField>
-
-<ParamField body="imageURLs" param-type="keyword" showLocation="false">
-  A list of image URLs for this property.
-
-  **Example:**
-
-  ```json
-  "imageURLs": ["http://image.rent.com/imgr/61bbc9f535f0e180bc804ac8f4c50067"]
-  ```
-</ParamField>
-
-<ParamField body="keys" param-type="text" showLocation="false">
-  A list of keys associated with the property record.
-
-  **Example:**
-
-  ```json
-  "keys": ["prop_8d1f7a2", "mls_16177277"]
-  ```
-</ParamField>
-
-<ParamField body="languagesSpoken" param-type="text" showLocation="false">
-  A list of languages spoken by property staff or agents associated with the listing.
-
-  **Example:**
-
-  ```json
-  "languagesSpoken": ["English", "Spanish"]
-  ```
-</ParamField>
-
-## Geographical fields
-
-The property data schema below lists all available fields in a property record. Actual property records may not include every field.
+## Geographical Fields
 
 <ParamField body="address" param-type="text" showLocation="false">
   The physical street address for this property.
@@ -719,16 +607,6 @@ The property data schema below lists all available fields in a property record. 
 
   ```json
   "country": "US"
-  ```
-</ParamField>
-
-<ParamField body="county" param-type="text" showLocation="false">
-  The county of the property record.
-
-  **Example:**
-
-  ```json
-  "county": "Hillsborough"
   ```
 </ParamField>
 
@@ -794,7 +672,6 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-
 <ParamField body="topographyCode" param-type="string" showLocation="false">
   A code describing the landform or terrain classification for the property.
 
@@ -805,7 +682,432 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-## Owner fields
+
+## Generic Fields
+
+<ParamField body="buildingClass" param-type="string" showLocation="false">
+  The building class assigned to the commercial property.
+
+  **Example:**
+
+  ```json
+  "buildingClass": "Class A"
+  ```
+</ParamField>
+
+<ParamField body="categories" param-type="text" showLocation="false">
+  A list of category keywords used for this property across multiple sources.
+
+  **Example:**
+
+  ```json
+  "categories": ["Single family residence", "farming"]
+  ```
+</ParamField>
+
+<ParamField body="dateAdded" param-type="date" showLocation="false">
+  The date when the property record was first added.
+
+  **Example:**
+
+  ```json
+  "dateAdded": "2024-01-15T10:22:31Z"
+  ```
+</ParamField>
+
+<ParamField body="dateUpdated" param-type="date" showLocation="false">
+  The date when the property record was last updated.
+
+  **Example:**
+
+  ```json
+  "dateUpdated": "2024-10-03T18:14:09Z"
+  ```
+</ParamField>
+
+<ParamField body="descriptions" param-type="nested" showLocation="false">
+  A list of descriptions for this property from various sources. Each description contains:
+
+  **Example:**
+
+  ```json
+  "descriptions": [
+      {
+        "dateSeen": "2016-08-07T18:07:05Z",
+        "value": "charming starter home priced to sell. full finished basement with bath and with separate entrance."
+      }
+    ]
+  ```
+
+  <Expandable title="Sub-fields" default-open="false">
+    <ParamField body="descriptions.dateSeen" param-type="date" showLocation="false">
+      The date when this description has been seen for this property.
+    </ParamField>
+
+    <ParamField body="descriptions.value" param-type="text" showLocation="false">
+      A unique description for this property.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="features" param-type="nested" showLocation="false">
+  A list of features associated with this property. The feature list can be collected from specific feature sections available on listings for this property. It can also serve as a catch-all field for miscellaneous characteristics of this property that don't make sense to include as top-level fields.
+
+  Each feature contains:
+
+  **Example:**
+
+  ```json
+  "features": [
+      {
+        "key": "Community District",
+        "replace": "true",
+        "value": [
+          "318"
+        ]
+      }
+    ]
+  ```
+
+  <Expandable title="Sub-fields" default-open="false">
+    <ParamField body="features.key" param-type="text" showLocation="false">
+      A label for this feature.
+    </ParamField>
+
+    <ParamField body="features.replace" param-type="boolean" showLocation="false">
+      Flag indicating value field is replaced versus appended.
+    </ParamField>
+
+    <ParamField body="features.value" param-type="text" showLocation="false">
+      A list of possible values for this feature.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="isUnit" param-type="boolean" showLocation="false">
+  If the property is a unit number of a complex / building
+
+  **Example:**
+
+  ```json
+  "isUnit": true
+  ```
+</ParamField>
+
+<ParamField body="keys" param-type="text" showLocation="false">
+  A list of keys associated with the property record.
+
+  **Example:**
+
+  ```json
+  "keys": ["prop_8d1f7a2", "mls_16177277"]
+  ```
+</ParamField>
+
+<ParamField body="languagesSpoken" param-type="text" showLocation="false">
+  A list of languages spoken by property staff or agents associated with the listing.
+
+  **Example:**
+
+  ```json
+  "languagesSpoken": ["English", "Spanish"]
+  ```
+</ParamField>
+
+<ParamField body="leasingTerms" param-type="text" showLocation="false">
+  A list of leasing terms associated with the property.
+
+  **Example:**
+
+  ```json
+  "leasingTerms": ["12 Months", "24 Months"]
+  ```
+</ParamField>
+
+<ParamField body="lotDepthUnit" param-type="text" showLocation="false">
+  The depth dimension unit of a property's lot.
+
+  **Example:**
+
+  ```json
+  "lotDepthUnit": "ft"
+  ```
+</ParamField>
+
+<ParamField body="lotDepthValue" param-type="float" showLocation="false">
+  The depth dimension of a property's lot.
+
+  **Example:**
+
+  ```json
+  "lotDepthValue": 150
+  ```
+</ParamField>
+
+<ParamField body="lotSizeUnit" param-type="keyword" showLocation="false">
+  The units of measurement for `lotSize`.
+
+  **Example:**
+
+  ```json
+  "lotSizeUnit": "Sq. ft"
+  ```
+</ParamField>
+
+<ParamField body="lotSizeValue" param-type="integer" showLocation="false">
+  The lot size for the property. This is the ground area covered by the property.
+
+  **Example:**
+
+  ```json
+  "lotSizeValue": 2219
+  ```
+</ParamField>
+
+<ParamField body="numFloor" param-type="integer" showLocation="false">
+  The number of floors or stories in this property.
+
+  **Example:**
+
+  ```json
+  "numFloor": 2
+  ```
+</ParamField>
+
+<ParamField body="occupancy" param-type="float" showLocation="false">
+  The occupancy percentage for the property.
+
+  **Example:**
+
+  ```json
+  "occupancy": 92.5
+  ```
+</ParamField>
+
+<ParamField body="parking" param-type="text" showLocation="false">
+  A list of details regarding parking at this property.
+
+  **Example:**
+
+  ```json
+  "parking": ["Garage"]
+  ```
+</ParamField>
+
+<ParamField body="parkingTypes" param-type="text" showLocation="false">
+  A list of parking types that pertains to the property.
+
+  **Example:**
+
+  ```json
+  "parkingTypes": ["Street", "Attached Garage"]
+  ```
+</ParamField>
+
+<ParamField body="permits" param-type="nested" showLocation="false">
+  A list of permits associated with the property.
+
+  **Example:**
+
+  ```json
+  "permits": [
+      {
+        "number": "BLD-2024-01822",
+        "type": "Renovation Permit"
+      }
+    ]
+  ```
+</ParamField>
+
+<ParamField body="petPolicy" param-type="text" showLocation="false">
+  A list of pet policy details for this property.
+
+  **Example:**
+
+  ```json
+  "petPolicy": ["Cats Allowed","Dogs Allowed"]
+  ```
+</ParamField>
+
+<ParamField body="phones" param-type="text" showLocation="false">
+  A list of phone numbers associated with the property.
+
+  **Example:**
+
+  ```json
+  "phones": ["(214) 555-0182"]
+  ```
+</ParamField>
+
+<ParamField body="reviews" param-type="nested" showLocation="false">
+  A list of reviews that have been seen for this property. Each review may contain:
+
+  **Example:**
+
+  ```json
+  "reviews": [
+      {
+        "date": "2024-03-14T00:00:00Z",
+        "dateSeen": [
+          "2024-03-15T08:22:11Z"
+        ],
+        "rating": 4.5,
+        "title": "Quiet building near downtown",
+        "text": "Responsive management and clean common areas."
+      }
+    ]
+  ```
+
+  <Expandable title="Sub-fields" default-open="false">
+    <ParamField body="reviews.date" param-type="date" showLocation="false">
+      The date of the review.
+    </ParamField>
+
+    <ParamField body="reviews.dateSeen" param-type="date" showLocation="false">
+      A list of dates when this review was seen.
+    </ParamField>
+
+    <ParamField body="reviews.rating" param-type="float" showLocation="false">
+      The numeric rating associated with the review.
+    </ParamField>
+
+    <ParamField body="reviews.text" param-type="text" showLocation="false">
+      The full review text.
+    </ParamField>
+
+    <ParamField body="reviews.title" param-type="text" showLocation="false">
+      The review title or summary.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="rules" param-type="text" showLocation="false">
+  A list of rules associated with the property.
+
+  **Example:**
+
+  ```json
+  "rules": ["No smoking", "No loud parties"]
+  ```
+</ParamField>
+
+<ParamField body="sewerType" param-type="text" showLocation="false">
+  The sewer system type for the property.
+
+  **Example:**
+
+  ```json
+  "sewerType": ["Public Sewer"]
+  ```
+</ParamField>
+
+<ParamField body="subtype" param-type="nested" showLocation="false">
+  Subtype classifications for the commercial property.
+
+  **Example:**
+
+  ```json
+  "subtype": [
+      {
+        "value": "Neighborhood Center"
+      }
+    ]
+  ```
+</ParamField>
+
+<ParamField body="virtualTour" param-type="nested" showLocation="false">
+  Virtual tour details for the property.
+
+  **Example:**
+
+  ```json
+  "virtualTour": [
+      {
+        "url": "https://my.matterport.com/show/?m=AbCdEf12345"
+      }
+    ]
+  ```
+</ParamField>
+
+<ParamField body="websiteIDs" param-type="keyword" showLocation="false" />
+
+<ParamField body="yearBuilt" param-type="integer" showLocation="false">
+  The year the property was built.
+
+  **Example:**
+
+  ```json
+  "yearBuilt": 1998
+  ```
+</ParamField>
+
+<ParamField body="yearRenovated" param-type="integer" showLocation="false">
+  The latest date the property was renovated.
+
+  **Example:**
+
+  ```json
+  "yearRenovated": 2022
+  ```
+</ParamField>
+
+
+## Listing Fields
+
+<ParamField body="dateOnMarket" param-type="date" showLocation="false" />
+
+<ParamField body="daysOnMarket" param-type="integer" showLocation="false">
+  The number of days the property has been on the market.
+
+  **Example:**
+
+  ```json
+  "daysOnMarket": 47
+  ```
+</ParamField>
+
+<ParamField body="listingName" param-type="text" showLocation="false">
+  The name of the property listing. This isn't the name of the building. It's a descriptive name supplied for the listing itself.
+
+  **Example:**
+
+  ```json
+  "listingName": "Antico Appartamento"
+  ```
+</ParamField>
+
+<ParamField body="mlsName" param-type="text" showLocation="false">
+  The mls name of the listing company/realtor
+
+  **Example:**
+
+  ```json
+  "mlsName": "sovereign realty group"
+  ```
+</ParamField>
+
+<ParamField body="mostRecentSaleListPriceAmount" param-type="float" showLocation="false">
+  The most recent "sale list" price from our prices field.
+
+  **Example:**
+
+  ```json
+  "mostRecentSaleListPriceAmount": 456990
+  ```
+</ParamField>
+
+<ParamField body="mostRecentSaleListPriceDate" param-type="date" showLocation="false">
+  The most recent "sale list" price date from our prices field.
+
+  **Example:**
+
+  ```json
+  "mostRecentSaleListPriceDate": "2025-10-23T00:00:00.000Z"
+  ```
+</ParamField>
+
+
+## Owner Fields
 
 <ParamField body="absenteeOwner" param-type="nested" showLocation="false">
   The owner of a property who does not reside in or otherwise occupy that property.
@@ -1063,6 +1365,16 @@ The property data schema below lists all available fields in a property record. 
   </Expandable>
 </ParamField>
 
+<ParamField body="ownership" param-type="string" showLocation="false">
+  The ownership structure associated with the commercial property.
+
+  **Example:**
+
+  ```json
+  "ownership": "Fee Simple"
+  ```
+</ParamField>
+
 <ParamField body="people" param-type="nested" showLocation="false">
   A list of known people associated with or employed by this property.
 
@@ -1133,16 +1445,6 @@ The property data schema below lists all available fields in a property record. 
   </Expandable>
 </ParamField>
 
-<ParamField body="phones" param-type="text" showLocation="false">
-  A list of phone numbers associated with the property.
-
-  **Example:**
-
-  ```json
-  "phones": ["(214) 555-0182"]
-  ```
-</ParamField>
-
 <ParamField body="title" param-type="text" showLocation="false">
   The title text of the property.
 
@@ -1152,7 +1454,6 @@ The property data schema below lists all available fields in a property record. 
   "title": "Single Family Residence, A-Frame - Snellville, GA"
   ```
 </ParamField>
-
 
 <ParamField body="trustDescription" param-type="string" showLocation="false">
   The description of the trust information in relation to the property.
@@ -1164,7 +1465,8 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-## Rental price fields
+
+## Rental Price Fields
 
 <ParamField body="mostRecentRentalListPriceAmount" param-type="float" showLocation="false">
   The most recent "rental list" price from our prices field.
@@ -1246,7 +1548,8 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-## Residential fields
+
+## Residential Fields
 
 <ParamField body="appliances" param-type="text" showLocation="false">
   The appliances included with the property.
@@ -1268,31 +1571,6 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="descriptions" param-type="nested" showLocation="false">
-  A list of descriptions for this property from various sources. Each description contains:
-
-  **Example:**
-
-  ```json
-  "descriptions": [
-      {
-        "dateSeen": "2016-08-07T18:07:05Z",
-        "value": "charming starter home priced to sell. full finished basement with bath and with separate entrance."
-      }
-    ]
-  ```
-
-  <Expandable title="Sub-fields" default-open="false">
-    <ParamField body="descriptions.dateSeen" param-type="date" showLocation="false">
-      The date when this description has been seen for this property.
-    </ParamField>
-
-    <ParamField body="descriptions.value" param-type="text" showLocation="false">
-      A unique description for this property.
-    </ParamField>
-  </Expandable>
-</ParamField>
-
 <ParamField body="exteriorConstruction" param-type="text" showLocation="false">
   A list of all the exterior construction of the property.
 
@@ -1311,40 +1589,6 @@ The property data schema below lists all available fields in a property record. 
   ```json
   "exteriorFeatures": ["Storm Shutters","Breezeway","Pool"]
   ```
-</ParamField>
-
-<ParamField body="features" param-type="nested" showLocation="false">
-  A list of features associated with this property. The feature list can be collected from specific feature sections available on listings for this property. It can also serve as a catch-all field for miscellaneous characteristics of this property that don't make sense to include as top-level fields.
-
-  Each feature contains:
-
-  **Example:**
-
-  ```json
-  "features": [
-      {
-        "key": "Community District",
-        "replace": "true",
-        "value": [
-          "318"
-        ]
-      }
-    ]
-  ```
-
-  <Expandable title="Sub-fields" default-open="false">
-    <ParamField body="features.key" param-type="text" showLocation="false">
-      A label for this feature.
-    </ParamField>
-
-    <ParamField body="features.replace" param-type="boolean" showLocation="false">
-      Flag indicating value field is replaced versus appended.
-    </ParamField>
-
-    <ParamField body="features.value" param-type="text" showLocation="false">
-      A list of possible values for this feature.
-    </ParamField>
-  </Expandable>
 </ParamField>
 
 <ParamField body="floorPlans" param-type="nested" showLocation="false">
@@ -1417,66 +1661,6 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="isUnit" param-type="boolean" showLocation="false">
-  If the property is a unit number of a complex / building
-
-  **Example:**
-
-  ```json
-  "isUnit": true
-  ```
-</ParamField>
-
-<ParamField body="leasingTerms" param-type="text" showLocation="false">
-  A list of leasing terms associated with the property.
-
-  **Example:**
-
-  ```json
-  "leasingTerms": ["12 Months", "24 Months"]
-  ```
-</ParamField>
-
-<ParamField body="lotDepthUnit" param-type="text" showLocation="false">
-  The depth dimension unit of a property's lot.
-
-  **Example:**
-
-  ```json
-  "lotDepthUnit": "ft"
-  ```
-</ParamField>
-
-<ParamField body="lotDepthValue" param-type="float" showLocation="false">
-  The depth dimension of a property's lot.
-
-  **Example:**
-
-  ```json
-  "lotDepthValue": 150
-  ```
-</ParamField>
-
-<ParamField body="lotSizeUnit" param-type="keyword" showLocation="false">
-  The units of measurement for `lotSize`.
-
-  **Example:**
-
-  ```json
-  "lotSizeUnit": "Sq. ft"
-  ```
-</ParamField>
-
-<ParamField body="lotSizeValue" param-type="integer" showLocation="false">
-  The lot size for the property. This is the ground area covered by the property.
-
-  **Example:**
-
-  ```json
-  "lotSizeValue": 2219
-  ```
-</ParamField>
-
 <ParamField body="neighborhoods" param-type="text" showLocation="false">
   A list of neighborhoods where this property is located. Sometimes an area can belong to multiple neighborhoods, which is why this field is a list.
 
@@ -1504,16 +1688,6 @@ The property data schema below lists all available fields in a property record. 
 
   ```json
   "numBedroom": 3
-  ```
-</ParamField>
-
-<ParamField body="numFloor" param-type="integer" showLocation="false">
-  The number of floors or stories in this property.
-
-  **Example:**
-
-  ```json
-  "numFloor": 2
   ```
 </ParamField>
 
@@ -1557,36 +1731,6 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="parking" param-type="text" showLocation="false">
-  A list of details regarding parking at this property.
-
-  **Example:**
-
-  ```json
-  "parking": ["Garage"]
-  ```
-</ParamField>
-
-<ParamField body="parkingTypes" param-type="text" showLocation="false">
-  A list of parking types that pertains to the property.
-
-  **Example:**
-
-  ```json
-  "parkingTypes": ["Street", "Attached Garage"]
-  ```
-</ParamField>
-
-<ParamField body="petPolicy" param-type="text" showLocation="false">
-  A list of pet policy details for this property.
-
-  **Example:**
-
-  ```json
-  "petPolicy": ["Cats Allowed","Dogs Allowed"]
-  ```
-</ParamField>
-
 <ParamField body="propertyType" param-type="text" showLocation="false">
   A classification for the property type. See possible values [here](/docs/possible-values-for-property-fields).
 
@@ -1595,48 +1739,6 @@ The property data schema below lists all available fields in a property record. 
   ```json
   "propertyType": "Condo"
   ```
-</ParamField>
-
-<ParamField body="reviews" param-type="nested" showLocation="false">
-  A list of reviews that have been seen for this property. Each review may contain:
-
-  **Example:**
-
-  ```json
-  "reviews": [
-      {
-        "date": "2024-03-14T00:00:00Z",
-        "dateSeen": [
-          "2024-03-15T08:22:11Z"
-        ],
-        "rating": 4.5,
-        "title": "Quiet building near downtown",
-        "text": "Responsive management and clean common areas."
-      }
-    ]
-  ```
-
-  <Expandable title="Sub-fields" default-open="false">
-    <ParamField body="reviews.date" param-type="date" showLocation="false">
-      The date of the review.
-    </ParamField>
-
-    <ParamField body="reviews.dateSeen" param-type="date" showLocation="false">
-      A list of dates when this review was seen.
-    </ParamField>
-
-    <ParamField body="reviews.rating" param-type="float" showLocation="false">
-      The numeric rating associated with the review.
-    </ParamField>
-
-    <ParamField body="reviews.text" param-type="text" showLocation="false">
-      The full review text.
-    </ParamField>
-
-    <ParamField body="reviews.title" param-type="text" showLocation="false">
-      The review title or summary.
-    </ParamField>
-  </Expandable>
 </ParamField>
 
 <ParamField body="roofing" param-type="text" showLocation="false">
@@ -1659,26 +1761,6 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="rules" param-type="text" showLocation="false">
-  A list of rules associated with the property.
-
-  **Example:**
-
-  ```json
-  "rules": ["No smoking", "No loud parties"]
-  ```
-</ParamField>
-
-<ParamField body="sewerType" param-type="text" showLocation="false">
-  The sewer system type for the property.
-
-  **Example:**
-
-  ```json
-  "sewerType": ["Public Sewer"]
-  ```
-</ParamField>
-
 <ParamField body="subdivision" param-type="text" showLocation="false">
   The subdivision or community name associated with the property.
 
@@ -1689,100 +1771,8 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="yearBuilt" param-type="integer" showLocation="false">
-  The year the property was built.
 
-  **Example:**
-
-  ```json
-  "yearBuilt": 1998
-  ```
-</ParamField>
-
-## Sales price fields
-
-<ParamField body="estimatedPrices" param-type="nested" showLocation="false">
-  A list of price estimates for the property.
-
-  **Example:**
-
-  ```json
-  "estimatedPrices": [
-      {
-        "amountMax": 295000,
-        "amountMin": 295000,
-        "currency": "USD",
-        "dateSeen": [
-          "2023-10-20T16:53:37.235Z"
-        ],
-        "pricePerSquareFoot": 112.51
-      }
-    ]
-  ```
-
-  <Expandable title="Sub-fields" default-open="false">
-    <ParamField body="estimatedPrices.amountMax" param-type="integer" showLocation="false">
-      The maximum price estimate value listed.
-    </ParamField>
-
-    <ParamField body="estimatedPrices.amountMin" param-type="integer" showLocation="false">
-      The minimum price estimate value listed.
-    </ParamField>
-
-    <ParamField body="estimatedPrices.currency" param-type="string" showLocation="false">
-      The currency listed for amountMin and amountMax
-    </ParamField>
-
-    <ParamField body="estimatedPrices.dateSeen" param-type="date" showLocation="false">
-      The date when this estimatedPrice was seen for this property.
-    </ParamField>
-
-    <ParamField body="estimatedPrices.pricePerSquareFoot" param-type="float" showLocation="false">
-      The price divide by the square footage.
-    </ParamField>
-  </Expandable>
-</ParamField>
-
-
-<ParamField body="mostRecentEstimatedPriceAmount" param-type="integer" showLocation="false">
-  The most recent estimated price amount
-
-  **Example:**
-
-  ```json
-  "mostRecentEstimatedPriceAmount": 95267
-  ```
-</ParamField>
-
-<ParamField body="mostRecentEstimatedPriceDate" param-type="date" showLocation="false">
-  The most recent estimate price date
-
-  **Example:**
-
-  ```json
-  "mostRecentEstimatedPriceDate": "2024-09-11T00:00:00.000Z"
-  ```
-</ParamField>
-
-<ParamField body="mostRecentEstimatedPriceDomain" param-type="text" showLocation="false">
-  The most recent source domain of the estimate price
-
-  **Example:**
-
-  ```json
-  "mostRecentEstimatedPriceDomain": "www.redfin.com"
-  ```
-</ParamField>
-
-<ParamField body="mostRecentEstimatedPriceSourceURL" param-type="text" showLocation="false">
-  The most recent sourceURL used for obtaining the price estimate
-
-  **Example:**
-
-  ```json
-  "mostRecentEstimatedPriceSourceURL": "www.redfin.com/093757"
-  ```
-</ParamField>
+## Sales Price Fields
 
 <ParamField body="mostRecentPriceAmount" param-type="bigdecimal" showLocation="false">
   The property's most recent price amount from our prices field. **This does not include rent prices**
@@ -1824,26 +1814,6 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="mostRecentSaleListPriceAmount" param-type="float" showLocation="false">
-  The most recent "sale list" price from our prices field.
-
-  **Example:**
-
-  ```json
-  "mostRecentSaleListPriceAmount": 456990
-  ```
-</ParamField>
-
-<ParamField body="mostRecentSaleListPriceDate" param-type="date" showLocation="false">
-  The most recent "sale list" price date from our prices field.
-
-  **Example:**
-
-  ```json
-  "mostRecentSaleListPriceDate": "2025-10-23T00:00:00.000Z"
-  ```
-</ParamField>
-
 <ParamField body="mostRecentSoldPriceAmount" param-type="float" showLocation="false">
   The most recent "sale" price from our prices field.
 
@@ -1863,7 +1833,6 @@ The property data schema below lists all available fields in a property record. 
   "mostRecentSoldPriceDate": "2025-10-21T00:00:00.000Z"
   ```
 </ParamField>
-
 
 <ParamField body="prices" param-type="nested" showLocation="false">
   A list of prices for this property.
@@ -1975,7 +1944,8 @@ The property data schema below lists all available fields in a property record. 
   </Expandable>
 </ParamField>
 
-## Status fields
+
+## Status Fields
 
 <ParamField body="mostRecentRentalStatus" param-type="keyword" showLocation="false">
   The most recent value for `rentalStatuses.type` for this property. See possible values [here](/docs/possible-values-for-property-fields).
@@ -2264,7 +2234,8 @@ The property data schema below lists all available fields in a property record. 
   </Expandable>
 </ParamField>
 
-## Tax & Assessment fields
+
+## Tax & Assessment Fields
 
 <ParamField body="assessedValues" param-type="nested" showLocation="false">
   The assessed value of the property. Each assessed value may contain:
@@ -2301,6 +2272,96 @@ The property data schema below lists all available fields in a property record. 
   </Expandable>
 </ParamField>
 
+<ParamField body="cbsaCode" param-type="string" showLocation="false">
+  The Core Based Statistical Area code for the property.
+
+  **Example:**
+
+  ```json
+  "cbsaCode": "19100"
+  ```
+</ParamField>
+
+<ParamField body="cbsaName" param-type="string" showLocation="false">
+  The Core Based Statistical Area name for the property.
+
+  **Example:**
+
+  ```json
+  "cbsaName": "Dallas-Fort Worth-Arlington, TX"
+  ```
+</ParamField>
+
+<ParamField body="censusBlock" param-type="string" showLocation="false">
+  The census block the property is associate to.
+
+  **Example:**
+
+  ```json
+  "censusBlock": 1012
+  ```
+</ParamField>
+
+<ParamField body="censusBlockGroup" param-type="string" showLocation="false">
+  The census group the property is associated to.
+
+  **Example:**
+
+  ```json
+  "censusBlockGroup": 4
+  ```
+</ParamField>
+
+<ParamField body="censusTract" param-type="string" showLocation="false">
+  The census tract the property is associated to.
+
+  **Example:**
+
+  ```json
+  "censusTract": 5102
+  ```
+</ParamField>
+
+<ParamField body="civilDivisionCode" param-type="text" showLocation="false">
+  The civil division code for the property.
+
+  **Example:**
+
+  ```json
+  "civilDivisionCode": 4
+  ```
+</ParamField>
+
+<ParamField body="civilDivisionName" param-type="string" showLocation="false">
+  The civil division name of the property.
+
+  **Example:**
+
+  ```json
+  "civilDivisionName": "SUMMERSVILLE"
+  ```
+</ParamField>
+
+<ParamField body="congressionalDistrictHouse" param-type="string" showLocation="false">
+  District of the property.
+
+  **Example:**
+
+  ```json
+  "congressionalDistrictHouse": "4"
+  ```
+</ParamField>
+
+<ParamField body="county" param-type="text" showLocation="false">
+  The county of the property record.
+
+  **Example:**
+
+  ```json
+  "county": "Hillsborough"
+  ```
+</ParamField>
+
 <ParamField body="countyFIPS" param-type="integer" showLocation="false">
   County FIPS # of the property.
 
@@ -2328,6 +2389,36 @@ The property data schema below lists all available fields in a property record. 
 
   ```json
   "legalRange": "08E"
+  ```
+</ParamField>
+
+<ParamField body="msaCode" param-type="string" showLocation="false">
+  The metropolitan statistical area code for the property.
+
+  **Example:**
+
+  ```json
+  "msaCode": "19100"
+  ```
+</ParamField>
+
+<ParamField body="msaName" param-type="string" showLocation="false">
+  The metropolitan statistical area name for the property.
+
+  **Example:**
+
+  ```json
+  "msaName": "Dallas-Fort Worth-Arlington, TX"
+  ```
+</ParamField>
+
+<ParamField body="municipality" param-type="string" showLocation="false">
+  The municipality associated with the property.
+
+  **Example:**
+
+  ```json
+  "municipality": "Dallas"
   ```
 </ParamField>
 
@@ -2428,117 +2519,48 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="censusBlock" param-type="string" showLocation="false">
-  The census block the property is associate to.
+
+## Top-Level Source URL Fields
+
+<ParamField body="domains" param-type="text" showLocation="false">
+  A list of source domains associated with the property record.
 
   **Example:**
 
   ```json
-  "censusBlock": 1012
+  "domains": ["www.redfin.com", "www.remax.com"]
   ```
 </ParamField>
 
-<ParamField body="censusBlockGroup" param-type="string" showLocation="false">
-  The census group the property is associated to.
+<ParamField body="imageURLs" param-type="keyword" showLocation="false">
+  A list of image URLs for this property.
 
   **Example:**
 
   ```json
-  "censusBlockGroup": 4
+  "imageURLs": ["http://image.rent.com/imgr/61bbc9f535f0e180bc804ac8f4c50067"]
   ```
 </ParamField>
 
-<ParamField body="censusTract" param-type="string" showLocation="false">
-  The census tract the property is associated to.
+<ParamField body="sourceURLs" param-type="keyword" showLocation="false" />
+
+<ParamField body="sourceURLsPerField" param-type="nested" showLocation="false">
+  Source URLs mapped to specific fields in the property record.
 
   **Example:**
 
   ```json
-  "censusTract": 5102
+  "sourceURLsPerField": [
+      {
+        "field": "capRate",
+        "sourceURL": "https://www.loopnet.com/listing/412-main-st-dallas-tx/31245001/"
+      }
+    ]
   ```
 </ParamField>
 
-<ParamField body="civilDivisionCode" param-type="text" showLocation="false">
-  The civil division code for the property.
 
-  **Example:**
-
-  ```json
-  "civilDivisionCode": 4
-  ```
-</ParamField>
-
-<ParamField body="civilDivisionName" param-type="string" showLocation="false">
-  The civil division name of the property.
-
-  **Example:**
-
-  ```json
-  "civilDivisionName": "SUMMERSVILLE"
-  ```
-</ParamField>
-
-<ParamField body="congressionalDistrictHouse" param-type="string" showLocation="false">
-  District of the property.
-
-  **Example:**
-
-  ```json
-  "congressionalDistrictHouse": "4"
-  ```
-</ParamField>
-
-<ParamField body="cbsaCode" param-type="string" showLocation="false">
-  The Core Based Statistical Area code for the property.
-
-  **Example:**
-
-  ```json
-  "cbsaCode": "19100"
-  ```
-</ParamField>
-
-<ParamField body="cbsaName" param-type="string" showLocation="false">
-  The Core Based Statistical Area name for the property.
-
-  **Example:**
-
-  ```json
-  "cbsaName": "Dallas-Fort Worth-Arlington, TX"
-  ```
-</ParamField>
-
-<ParamField body="msaCode" param-type="string" showLocation="false">
-  The metropolitan statistical area code for the property.
-
-  **Example:**
-
-  ```json
-  "msaCode": "19100"
-  ```
-</ParamField>
-
-<ParamField body="msaName" param-type="string" showLocation="false">
-  The metropolitan statistical area name for the property.
-
-  **Example:**
-
-  ```json
-  "msaName": "Dallas-Fort Worth-Arlington, TX"
-  ```
-</ParamField>
-
-<ParamField body="municipality" param-type="string" showLocation="false">
-  The municipality associated with the property.
-
-  **Example:**
-
-  ```json
-  "municipality": "Dallas"
-  ```
-</ParamField>
-
-## Transactions fields
+## Transactions Fields
 
 <ParamField body="instrumentNumber" param-type="string" showLocation="false">
   Instrument # of the property.
