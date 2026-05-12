@@ -869,6 +869,15 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
+<ParamField body="numUnit" param-type="integer" required="false" deprecated="false">
+  The number of units available in this property.
+
+  **Example:**
+
+  ```json
+  "numUnit": 1
+  ```
+</ParamField>
 <ParamField body="occupancy" param-type="float" required="false" deprecated="false">
   The occupancy percentage for the property.
 
@@ -878,6 +887,8 @@ The property data schema below lists all available fields in a property record. 
   "occupancy": 92.5
   ```
 </ParamField>
+
+
 
 <ParamField body="parking" param-type="text" required="false" deprecated="false">
   A list of details regarding parking at this property.
@@ -931,6 +942,16 @@ The property data schema below lists all available fields in a property record. 
 
   ```json
   "phones": ["(214) 555-0182"]
+  ```
+</ParamField>
+
+<ParamField body="propertyType" param-type="text" required="false" deprecated="false">
+  A classification for the property type. See possible values [here](/docs/possible-values-for-property-fields).
+
+  **Example:**
+
+  ```json
+  "propertyType": "Condo"
   ```
 </ParamField>
 
@@ -1714,25 +1735,7 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="numUnit" param-type="integer" required="false" deprecated="false">
-  The number of units available in this property.
 
-  **Example:**
-
-  ```json
-  "numUnit": 1
-  ```
-</ParamField>
-
-<ParamField body="propertyType" param-type="text" required="false" deprecated="false">
-  A classification for the property type. See possible values [here](/docs/possible-values-for-property-fields).
-
-  **Example:**
-
-  ```json
-  "propertyType": "Condo"
-  ```
-</ParamField>
 
 <ParamField body="roofing" param-type="text" required="false" deprecated="false">
   A list of materials the roof of the property is made from.
