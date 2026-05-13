@@ -5,7 +5,7 @@ The business data schema below lists all available fields in a business record. 
 
 ## Business Operation Fields
 
-<ParamField body="hours" param-type="nested" showLocation="false">
+<ParamField body="hours" param-type="nested" showLocation={false}>
   The hours of operation for this business location.
 
   **Example:**
@@ -26,7 +26,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="isClosed" param-type="boolean" showLocation="false">
+<ParamField body="isClosed" param-type="boolean" showLocation={false}>
   A `true` or `false` value for whether or not the business location is closed.
 
   **Example:**
@@ -36,7 +36,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="productsOrServices" param-type="text" showLocation="false">
+<ParamField body="productsOrServices" param-type="text" showLocation={false}>
   A list of products or services offered by this business.
 
   **Example:**
@@ -53,7 +53,7 @@ The business data schema below lists all available fields in a business record. 
 
 
 
-<ParamField body="yearIncorporated" param-type="integer" showLocation="false">
+<ParamField body="yearIncorporated" param-type="integer" showLocation={false}>
   The year the business was incorporated.
 
   **Example:**
@@ -63,7 +63,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="yearOpened" param-type="integer" showLocation="false">
+<ParamField body="yearOpened" param-type="integer" showLocation={false}>
   The year the business opened.
 
   **Example:**
@@ -75,7 +75,7 @@ The business data schema below lists all available fields in a business record. 
 
 ## Contact Fields
 
-<ParamField body="emails" param-type="text" showLocation="false">
+<ParamField body="emails" param-type="text" showLocation={false}>
   A list of emails belonging to the business.
 
   **Example:**
@@ -87,7 +87,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="facebookPageURL" param-type="text" showLocation="false">
+<ParamField body="facebookPageURL" param-type="text" showLocation={false}>
   A URL pointing to the Facebook page for the business.
 
   **Example:**
@@ -97,7 +97,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="faxes" param-type="text" showLocation="false">
+<ParamField body="faxes" param-type="text" showLocation={false}>
   A list of fax numbers for the business.
 
   **Example:**
@@ -109,7 +109,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="phones" param-type="keyword" showLocation="false">
+<ParamField body="phones" param-type="keyword" showLocation={false}>
   A list of phone numbers for the business.
 
   **Example:**
@@ -122,7 +122,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="twitter" param-type="text" showLocation="false">
+<ParamField body="twitter" param-type="text" showLocation={false}>
   The twitter username for the business.
 
   **Example:**
@@ -132,7 +132,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="websites" param-type="keyword" showLocation="false">
+<ParamField body="websites" param-type="keyword" showLocation={false}>
   A list of websites for the business.
 
   **Example:**
@@ -147,7 +147,7 @@ The business data schema below lists all available fields in a business record. 
 
 ## Firmographic Fields
 
-<ParamField body="categories" param-type="text" showLocation="false">
+<ParamField body="categories" param-type="text" showLocation={false}>
   A list of category keywords used for this business across multiple sources.
 
   **Example:**
@@ -162,7 +162,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="claimed" param-type="keyword" showLocation="false">
+<ParamField body="claimed" param-type="keyword" showLocation={false}>
   A list of websites where the business location has been claimed by the business' owner.
 
   **Example:**
@@ -175,7 +175,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="numEmployeesMax" param-type="integer" showLocation="false">
+<ParamField body="numEmployeesMax" param-type="integer" showLocation={false}>
   The upper bound on the number of people employed by this business.
 
   **Example:**
@@ -185,7 +185,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="numEmployeesMin" param-type="integer" showLocation="false">
+<ParamField body="numEmployeesMin" param-type="integer" showLocation={false}>
   The lower bound on the number of people possibly employed by this business.
 
   **Example:**
@@ -195,7 +195,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="people" param-type="nested" showLocation="false">
+<ParamField body="people" param-type="nested" showLocation={false}>
   A list of known people associated with or employed by this business.
 
   **Example:**
@@ -218,7 +218,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="primaryCategories" param-type="text" showLocation="false">
+<ParamField body="primaryCategories" param-type="text" showLocation={false}>
   A list of standardized categories to which this business belongs. Category values can be found [here](/docs/possible-values-for-business-fields).
 
   **Example:**
@@ -230,7 +230,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="revenueCurrency" param-type="keyword" showLocation="false">
+<ParamField body="revenueCurrency" param-type="keyword" showLocation={false}>
   The currency associated with the revenue fields.
 
   **Example:**
@@ -240,7 +240,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="revenueMax" param-type="integer" showLocation="false">
+<ParamField body="revenueMax" param-type="integer" showLocation={false}>
   The maximum known value of the business' annual revenue.
 
   **Example:**
@@ -250,7 +250,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="revenueMin" param-type="integer" showLocation="false">
+<ParamField body="revenueMin" param-type="integer" showLocation={false}>
   The minimum known value of the business' annual revenue.
 
   **Example:**
@@ -262,7 +262,7 @@ The business data schema below lists all available fields in a business record. 
 
 ## Geographic Fields
 
-<ParamField body="address" param-type="text" showLocation="false">
+<ParamField body="address" param-type="text" showLocation={false}>
   The physical street address for this business location.
 
   **Example:**
@@ -272,7 +272,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="city" param-type="text" showLocation="false">
+<ParamField body="city" param-type="text" showLocation={false}>
   The city of this business location.
 
   **Example:**
@@ -282,7 +282,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="country" param-type="text" showLocation="false">
+<ParamField body="country" param-type="text" showLocation={false}>
   The two-letter country code for the business location's country.
 
   **Example:**
@@ -292,7 +292,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="geoLocation" param-type="geo_shape" showLocation="false">
+<ParamField body="geoLocation" param-type="geo_shape" showLocation={false}>
   A location value that stores the latitude and longitude in a format that allows geospatial querying.
 
   The value is stored as Well-Known Text format, which resembles an `(x, y)` value, i.e. `(longitude latitude)`.
@@ -304,7 +304,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="latitude" param-type="text" showLocation="false">
+<ParamField body="latitude" param-type="text" showLocation={false}>
   The latitude coordinates for this business location.
 
   **Example:**
@@ -314,7 +314,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="longitude" param-type="text" showLocation="false">
+<ParamField body="longitude" param-type="text" showLocation={false}>
   The longitude coordinates for this business location.
 
   **Example:**
@@ -324,7 +324,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="neighborhoods" param-type="text" showLocation="false">
+<ParamField body="neighborhoods" param-type="text" showLocation={false}>
   A list of neighborhoods where this business is located. Sometimes an area can belong to multiple neighborhoods, which is why this field is a list.
 
   **Example:**
@@ -337,7 +337,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="postalCode" param-type="keyword" showLocation="false">
+<ParamField body="postalCode" param-type="keyword" showLocation={false}>
   The postal or zip code of the business' location.
 
   **Example:**
@@ -347,7 +347,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="province" param-type="text" showLocation="false">
+<ParamField body="province" param-type="text" showLocation={false}>
   The province or state for this business location.
 
   **Example:**
@@ -359,7 +359,7 @@ The business data schema below lists all available fields in a business record. 
 
 ## Generic Fields
 
-<ParamField body="dateAdded" param-type="date" showLocation="false">
+<ParamField body="dateAdded" param-type="date" showLocation={false}>
   The date this business was first added to the business database.
 
   **Example:**
@@ -369,7 +369,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="dateUpdated" param-type="date" showLocation="false">
+<ParamField body="dateUpdated" param-type="date" showLocation={false}>
   The most recent date this business was updated or seen by our system.
 
   **Example:**
@@ -379,7 +379,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="descriptions" param-type="nested" showLocation="false">
+<ParamField body="descriptions" param-type="nested" showLocation={false}>
   A list of descriptions for this business from various sources.
 
   **Example:**
@@ -397,7 +397,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="features" param-type="nested" showLocation="false">
+<ParamField body="features" param-type="nested" showLocation={false}>
   A list of features associated with this business location. The feature list can be collected from specific feature sections available on listings for this business. It can also serve as a catch-all field for miscellaneous characteristics of this business that don't make sense to include as top-level fields.
 
   **Example:**
@@ -422,7 +422,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="keys" param-type="keyword" showLocation="false">
+<ParamField body="keys" param-type="keyword" showLocation={false}>
   A list of internal Datafiniti identifiers for this business. The `keys` field is used to merge raw data from individual sources into the master Datafiniti record. [Learn how this works](/docs/how-business-records-are-merged)
 
   **Example:**
@@ -434,7 +434,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="languagesSpoken" param-type="text" showLocation="false">
+<ParamField body="languagesSpoken" param-type="text" showLocation={false}>
   A list of the languages spoken at this business.
 
   **Example:**
@@ -447,7 +447,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="name" param-type="text" showLocation="false">
+<ParamField body="name" param-type="text" showLocation={false}>
   The business location's name.
 
   **Example:**
@@ -457,7 +457,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="paymentTypes" param-type="text" showLocation="false">
+<ParamField body="paymentTypes" param-type="text" showLocation={false}>
   A list of payment options accepted by the business.
 
   **Example:**
@@ -471,7 +471,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="sic" param-type="text" showLocation="false">
+<ParamField body="sic" param-type="text" showLocation={false}>
   The SIC code for the business. [Learn more about SIC codes](https://en.wikipedia.org/wiki/Standard_Industrial_Classification).
 
   **Example:**
@@ -483,7 +483,7 @@ The business data schema below lists all available fields in a business record. 
 
 ## Hospitality Fields
 
-<ParamField body="numRoom" param-type="integer" showLocation="false">
+<ParamField body="numRoom" param-type="integer" showLocation={false}>
   The number of rooms available at this business. This field typically shows for hotels or other similar businesses.
 
   **Example:**
@@ -493,7 +493,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="rooms" param-type="nested" showLocation="false">
+<ParamField body="rooms" param-type="nested" showLocation={false}>
   A list of room types available at the business' location. This field is typically associated with hotels and other similar businesses.
 
   **Example:**
@@ -526,7 +526,7 @@ The business data schema below lists all available fields in a business record. 
 
 ## Restaurant Fields
 
-<ParamField body="cuisines" param-type="text" showLocation="false">
+<ParamField body="cuisines" param-type="text" showLocation={false}>
   A list of cuisines offered by this business location. This field will only show for restaurants or other eating locations.
 
   **Example:**
@@ -540,7 +540,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="menuPageURL" param-type="keyword" showLocation="false">
+<ParamField body="menuPageURL" param-type="keyword" showLocation={false}>
   A URL pointing to the menu for the business. This field will only show for restaurants or other eating locations.
 
   **Example:**
@@ -550,7 +550,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="menus" param-type="nested" showLocation="false">
+<ParamField body="menus" param-type="nested" showLocation={false}>
   A list of menu items offered by the business. This field will only show for restaurants or other eating locations.
 
   **Example:**
@@ -586,7 +586,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="priceRangeCurrency" param-type="keyword" showLocation="false">
+<ParamField body="priceRangeCurrency" param-type="keyword" showLocation={false}>
   The currency associated with the price range fields.
 
   **Example:**
@@ -596,7 +596,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="priceRangeMax" param-type="float" showLocation="false">
+<ParamField body="priceRangeMax" param-type="float" showLocation={false}>
   The upper bound of the business' price range. This field is typically used for retail businesses.
 
   **Example:**
@@ -606,7 +606,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="priceRangeMin" param-type="float" showLocation="false">
+<ParamField body="priceRangeMin" param-type="float" showLocation={false}>
   The lower bound of the business' price range. This field is typically used for retail businesses.
 
   **Example:**
@@ -618,7 +618,7 @@ The business data schema below lists all available fields in a business record. 
 
 ## Reviews Fields
 
-<ParamField body="reviews" param-type="nested" showLocation="false">
+<ParamField body="reviews" param-type="nested" showLocation={false}>
   A list of reviews for this business location.
 
   **Example:**
@@ -652,7 +652,7 @@ The business data schema below lists all available fields in a business record. 
 
 ## SourceURL Fields
 
-<ParamField body="domains" param-type="domain" showLocation="false">
+<ParamField body="domains" param-type="domain" showLocation={false}>
   A list of each unique domain found in the `sourceURLs` field.
 
   **Example:**
@@ -666,7 +666,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="imageURLs" param-type="text" showLocation="false">
+<ParamField body="imageURLs" param-type="text" showLocation={false}>
   A list of image URLs associated with this business.
 
   **Example:**
@@ -679,7 +679,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="sourceURLs" param-type="keyword" showLocation="false">
+<ParamField body="sourceURLs" param-type="keyword" showLocation={false}>
   A list of URLs used to generate data for this business location.
 
   **Example:**
