@@ -517,40 +517,45 @@
                             "path": "docs/dimensions-normalization"
                           },
                           {
-                            "title": "Taxonomy 1 Level",
-                            "path": "docs/taxonomy-1-level"
-                          },
-                          {
-                            "title": "Taxonomy 2 Levels",
-                            "path": "docs/taxonomy-2-levels"
-                          },
-                          {
-                            "title": "Taxonomy 3 Levels",
-                            "path": "docs/taxonomy-3-levels"
-                          },
-                          {
-                            "title": "Taxonomy 4 Levels",
-                            "path": "docs/taxonomy-4-levels"
-                          },
-                          {
-                            "title": "Taxonomy 5 Levels",
-                            "path": "docs/taxonomy-5-levels"
-                          },
-                          {
-                            "title": "Taxonomy 6 Levels",
-                            "path": "docs/taxonomy-6-levels"
-                          },
-                          {
-                            "title": "Taxonomy 7 Levels",
-                            "path": "docs/taxonomy-7-levels"
-                          },
-                          {
-                            "title": "Taxonomy 8 Levels",
-                            "path": "docs/taxonomy-8-levels"
-                          },
-                          {
-                            "title": "Taxonomy 9 Levels",
-                            "path": "docs/taxonomy-9-levels"
+                            "group": "Taxonomy",
+                            "pages": [
+                              {
+                                "title": "Taxonomy 1 Level",
+                                "path": "docs/taxonomy-1-level"
+                              },
+                              {
+                                "title": "Taxonomy 2 Levels",
+                                "path": "docs/taxonomy-2-levels"
+                              },
+                              {
+                                "title": "Taxonomy 3 Levels",
+                                "path": "docs/taxonomy-3-levels"
+                              },
+                              {
+                                "title": "Taxonomy 4 Levels",
+                                "path": "docs/taxonomy-4-levels"
+                              },
+                              {
+                                "title": "Taxonomy 5 Levels",
+                                "path": "docs/taxonomy-5-levels"
+                              },
+                              {
+                                "title": "Taxonomy 6 Levels",
+                                "path": "docs/taxonomy-6-levels"
+                              },
+                              {
+                                "title": "Taxonomy 7 Levels",
+                                "path": "docs/taxonomy-7-levels"
+                              },
+                              {
+                                "title": "Taxonomy 8 Levels",
+                                "path": "docs/taxonomy-8-levels"
+                              },
+                              {
+                                "title": "Taxonomy 9 Levels",
+                                "path": "docs/taxonomy-9-levels"
+                              }
+                            ]
                           }
                         ]
                       },
