@@ -6,7 +6,7 @@ The business data schema below lists all available fields in a business record. 
 
 ## Business Operation Fields
 
-<ParamField body="hours" param-type="nested" required="false" deprecated="false">
+<ParamField body="hours" param-type="nested" showLocation={false}>
   The hours of operation for this business location.
 
   **Example:**
@@ -27,7 +27,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="isClosed" param-type="boolean" required="false" deprecated="false">
+<ParamField body="isClosed" param-type="boolean" showLocation={false}>
   A `true` or `false` value for whether or not the business location is closed.
 
   **Example:**
@@ -37,7 +37,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="languagesSpoken" param-type="text" required="false" deprecated="false">
+<ParamField body="languagesSpoken" param-type="text" showLocation={false}>
   A list of the languages spoken at this business.
 
   **Example:**
@@ -50,7 +50,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="paymentTypes" param-type="text" required="false" deprecated="false">
+<ParamField body="paymentTypes" param-type="text" showLocation={false}>
   A list of payment options accepted by the business.
 
   **Example:**
@@ -64,7 +64,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="productsOrServices" param-type="text" required="false" deprecated="false">
+<ParamField body="productsOrServices" param-type="text" showLocation={false}>
   A list of products or services offered by this business.
 
   **Example:**
@@ -79,7 +79,7 @@ The business data schema below lists all available fields in a business record. 
 
 ## Classification Fields
 
-<ParamField body="categories" param-type="text" required="false" deprecated="false">
+<ParamField body="categories" param-type="text" showLocation={false}>
   A list of category keywords used for this business across multiple sources.
 
   **Example:**
@@ -94,7 +94,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="name" param-type="text" required="false" deprecated="false">
+<ParamField body="name" param-type="text" showLocation={false}>
   The business location's name.
 
   **Example:**
@@ -104,7 +104,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="primaryCategories" param-type="text" required="false" deprecated="false">
+<ParamField body="primaryCategories" param-type="text" showLocation={false}>
   A list of standardized categories to which this business belongs. Category values can be found [here](/docs/possible-values-for-business-fields).
 
   **Example:**
@@ -116,7 +116,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="sic" param-type="text" required="false" deprecated="false">
+<ParamField body="sic" param-type="text" showLocation={false}>
   The SIC code for the business. [Learn more about SIC codes](https://en.wikipedia.org/wiki/Standard_Industrial_Classification).
 
   **Example:**
@@ -126,7 +126,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="yearIncorporated" param-type="integer" required="false" deprecated="false">
+<ParamField body="yearIncorporated" param-type="integer" showLocation={false}>
   The year the business was incorporated.
 
   **Example:**
@@ -136,7 +136,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="yearOpened" param-type="integer" required="false" deprecated="false">
+<ParamField body="yearOpened" param-type="integer" showLocation={false}>
   The year the business opened.
 
   **Example:**
@@ -148,7 +148,7 @@ The business data schema below lists all available fields in a business record. 
 
 ## Contact Fields
 
-<ParamField body="emails" param-type="text" required="false" deprecated="false">
+<ParamField body="emails" param-type="text" showLocation={false}>
   A list of emails belonging to the business.
 
   **Example:**
@@ -160,7 +160,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="facebookPageURL" param-type="text" required="false" deprecated="false">
+<ParamField body="facebookPageURL" param-type="text" showLocation={false}>
   A URL pointing to the Facebook page for the business.
 
   **Example:**
@@ -170,7 +170,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="faxes" param-type="text" required="false" deprecated="false">
+<ParamField body="faxes" param-type="text" showLocation={false}>
   A list of fax numbers for the business.
 
   **Example:**
@@ -182,7 +182,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="phones" param-type="keyword" required="false" deprecated="false">
+<ParamField body="phones" param-type="keyword" showLocation={false}>
   A list of phone numbers for the business.
 
   **Example:**
@@ -195,7 +195,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="twitter" param-type="text" required="false" deprecated="false">
+<ParamField body="twitter" param-type="text" showLocation={false}>
   The twitter username for the business.
 
   **Example:**
@@ -205,7 +205,7 @@ The business data schema below lists all available fields in a business record. 
   ```
 </ParamField>
 
-<ParamField body="websites" param-type="keyword" required="false" deprecated="false">
+<ParamField body="websites" param-type="keyword" showLocation={false}>
   A list of websites for the business.
 
   **Example:**
@@ -220,147 +220,147 @@ The business data schema below lists all available fields in a business record. 
 
 ## Firmographic Fields
 
-<ParamField body="numEmployeesMax" param-type="integer" required="false" deprecated="false">
+<ParamField body="numEmployeesMax" param-type="integer" showLocation={false}>
   The upper bound on the number of people employed by this business.
 </ParamField>
 
-<ParamField body="numEmployeesMin" param-type="integer" required="false" deprecated="false">
+<ParamField body="numEmployeesMin" param-type="integer" showLocation={false}>
   The lower bound on the number of people possibly employed by this business.
 </ParamField>
 
-<ParamField body="people" param-type="nested" required="false" deprecated="false">
+<ParamField body="people" param-type="nested" showLocation={false}>
   A list of known people associated with or employed by this business.
 </ParamField>
 
-<ParamField body="revenueCurrency" param-type="keyword" required="false" deprecated="false">
+<ParamField body="revenueCurrency" param-type="keyword" showLocation={false}>
   The currency associated with the revenue fields.
 </ParamField>
 
-<ParamField body="revenueMax" param-type="integer" required="false" deprecated="false">
+<ParamField body="revenueMax" param-type="integer" showLocation={false}>
   The maximum known value of the business' annual revenue.
 </ParamField>
 
-<ParamField body="revenueMin" param-type="integer" required="false" deprecated="false">
+<ParamField body="revenueMin" param-type="integer" showLocation={false}>
   The minimum known value of the business' annual revenue.
 </ParamField>
 
 ## Geographic Fields
 
-<ParamField body="address" param-type="text" required="false" deprecated="false">
+<ParamField body="address" param-type="text" showLocation={false}>
   The physical street address for this business location.
 </ParamField>
 
-<ParamField body="city" param-type="text" required="false" deprecated="false">
+<ParamField body="city" param-type="text" showLocation={false}>
   The city of this business location.
 </ParamField>
 
-<ParamField body="country" param-type="text" required="false" deprecated="false">
+<ParamField body="country" param-type="text" showLocation={false}>
   The two-letter country code for the business location's country.
 </ParamField>
 
-<ParamField body="geoLocation" param-type="geo_shape" required="false" deprecated="false">
+<ParamField body="geoLocation" param-type="geo_shape" showLocation={false}>
   A location value that stores the latitude and longitude in a format that allows geospatial querying.
 </ParamField>
 
-<ParamField body="latitude" param-type="text" required="false" deprecated="false">
+<ParamField body="latitude" param-type="text" showLocation={false}>
   The latitude coordinates for this business location.
 </ParamField>
 
-<ParamField body="longitude" param-type="text" required="false" deprecated="false">
+<ParamField body="longitude" param-type="text" showLocation={false}>
   The longitude coordinates for this business location.
 </ParamField>
 
-<ParamField body="neighborhoods" param-type="text" required="false" deprecated="false">
+<ParamField body="neighborhoods" param-type="text" showLocation={false}>
   A list of neighborhoods where this business is located.
 </ParamField>
 
-<ParamField body="postalCode" param-type="keyword" required="false" deprecated="false">
+<ParamField body="postalCode" param-type="keyword" showLocation={false}>
   The postal or zip code of the business' location.
 </ParamField>
 
-<ParamField body="province" param-type="text" required="false" deprecated="false">
+<ParamField body="province" param-type="text" showLocation={false}>
   The province or state for this business location.
 </ParamField>
 
 ## Generic Fields
 
-<ParamField body="dateAdded" param-type="date" required="false" deprecated="false">
+<ParamField body="dateAdded" param-type="date" showLocation={false}>
   The date this business was first added to the business database.
 </ParamField>
 
-<ParamField body="dateUpdated" param-type="date" required="false" deprecated="false">
+<ParamField body="dateUpdated" param-type="date" showLocation={false}>
   The most recent date this business was updated or seen by our system.
 </ParamField>
 
-<ParamField body="descriptions" param-type="nested" required="false" deprecated="false">
+<ParamField body="descriptions" param-type="nested" showLocation={false}>
   A list of descriptions for this business from various sources.
 </ParamField>
 
-<ParamField body="features" param-type="nested" required="false" deprecated="false">
+<ParamField body="features" param-type="nested" showLocation={false}>
   A list of features associated with this business location.
 </ParamField>
 
-<ParamField body="keys" param-type="keyword" required="false" deprecated="false">
+<ParamField body="keys" param-type="keyword" showLocation={false}>
   A list of internal Datafiniti identifiers for this business.
 </ParamField>
 
 ## Hospitality Fields
 
-<ParamField body="numRoom" param-type="integer" required="false" deprecated="false">
+<ParamField body="numRoom" param-type="integer" showLocation={false}>
   The number of rooms available at this business.
 </ParamField>
 
-<ParamField body="rooms" param-type="nested" required="false" deprecated="false">
+<ParamField body="rooms" param-type="nested" showLocation={false}>
   A list of room types available at the business' location.
 </ParamField>
 
 ## Restaurant Fields
 
-<ParamField body="cuisines" param-type="text" required="false" deprecated="false">
+<ParamField body="cuisines" param-type="text" showLocation={false}>
   A list of cuisines offered by this business location.
 </ParamField>
 
-<ParamField body="menuPageURL" param-type="keyword" required="false" deprecated="false">
+<ParamField body="menuPageURL" param-type="keyword" showLocation={false}>
   A URL pointing to the menu for the business.
 </ParamField>
 
-<ParamField body="menus" param-type="nested" required="false" deprecated="false">
+<ParamField body="menus" param-type="nested" showLocation={false}>
   A list of menu items offered by the business.
 </ParamField>
 
-<ParamField body="priceRangeCurrency" param-type="keyword" required="false" deprecated="false">
+<ParamField body="priceRangeCurrency" param-type="keyword" showLocation={false}>
   The currency associated with the price range fields.
 </ParamField>
 
-<ParamField body="priceRangeMax" param-type="float" required="false" deprecated="false">
+<ParamField body="priceRangeMax" param-type="float" showLocation={false}>
   The upper bound of the business' price range.
 </ParamField>
 
-<ParamField body="priceRangeMin" param-type="float" required="false" deprecated="false">
+<ParamField body="priceRangeMin" param-type="float" showLocation={false}>
   The lower bound of the business' price range.
 </ParamField>
 
 ## Reviews Fields
 
-<ParamField body="reviews" param-type="nested" required="false" deprecated="false">
+<ParamField body="reviews" param-type="nested" showLocation={false}>
   A list of reviews for this business location.
 </ParamField>
 
 ## SourceURL Fields
 
-<ParamField body="claimed" param-type="keyword" required="false" deprecated="false">
+<ParamField body="claimed" param-type="keyword" showLocation={false}>
   A list of websites where the business location has been claimed by the business' owner.
 </ParamField>
 
-<ParamField body="domains" param-type="domain" required="false" deprecated="false">
+<ParamField body="domains" param-type="domain" showLocation={false}>
   A list of each unique domain found in the `sourceURLs` field.
 </ParamField>
 
-<ParamField body="imageURLs" param-type="text" required="false" deprecated="false">
+<ParamField body="imageURLs" param-type="text" showLocation={false}>
   A list of image URLs associated with this business.
 </ParamField>
 
-<ParamField body="sourceURLs" param-type="keyword" required="false" deprecated="false">
+<ParamField body="sourceURLs" param-type="keyword" showLocation={false}>
   A list of URLs used to generate data for this business location.
 </ParamField>
 
