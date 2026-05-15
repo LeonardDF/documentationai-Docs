@@ -309,16 +309,6 @@ The people data schema below lists all available Fields in a people record.  Not
   ```
 </ParamField>
 
-<ParamField body="domains" param-type="domain" required="false" deprecated="false" show-location="false">
-  A list of each unique domain found in the `sourceURLs` field.
-
-  **Example:**
-
-  ```json
-  "domains": ["datafiniti.co"]
-  ```
-</ParamField>
-
 <ParamField body="interests" param-type="text" required="false" deprecated="false" show-location="false">
   The personal interests of the person.
 
@@ -496,7 +486,7 @@ The people data schema below lists all available Fields in a people record.  Not
 ## Property & Asset Fields
 
 <ParamField body="mostRecentPropertyPurchaseDate" param-type="date" required="false" deprecated="false" show-location="false">
-  The most recent purchase date of the owner of the property.
+  The purchase date of the most recent property in relation to this person.
 
   **Example:**
 
@@ -506,7 +496,7 @@ The people data schema below lists all available Fields in a people record.  Not
 </ParamField>
 
 <ParamField body="mostRecentPropertyPurchaseKey" param-type="keyword" required="false" deprecated="false" show-location="false">
-  The most recent matching property key to the Datafiniti property database.
+  The most recent matching property key to the Datafiniti property database. Typically the currently owned property in regards to this person.
 
   **Example:**
 
@@ -571,7 +561,18 @@ The people data schema below lists all available Fields in a people record.  Not
   ```
 </ParamField>
 
-## SourceURL Fields
+## Source Fields
+
+<ParamField body="domains" param-type="domain" required="false" deprecated="false" show-location="false">
+  A list of each unique domain found in the `sourceURLs` field.
+
+  **Example:**
+
+  ```json
+  "domains": ["datafiniti.co"]
+  ```
+</ParamField>
+
 
 <ParamField body="mostRecentProfileImageURL" param-type="text" required="false" deprecated="false" show-location="false">
   The person's most recent professional profile picture on their social network.
