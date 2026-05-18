@@ -653,6 +653,48 @@ The product data schema below lists all available fields in a product record. No
   ```
 </ParamField>
 
+## Product Branding Fields
+
+<ParamField body="brand" param-type="text" required="false" deprecated="false" show-location="false">
+  The brand name of this product as presented by the data source.
+
+  **Example:**
+
+  ```json
+  "brand": "Sumsung Electronics"
+  ```
+</ParamField>
+
+<ParamField body="canonicalBrand" param-type="text" required="false" deprecated="false" show-location="false">
+  The canonical brand name after normalization of the name from the source.
+
+  **Example:**
+
+  ```json
+  "canonicalBrand": "Sumsung"
+  ```
+</ParamField>
+
+<ParamField body="manufacturer" param-type="text" required="false" deprecated="false" show-location="false">
+  The manufacturer of this product.
+
+  **Example:**
+
+  ```json
+  "manufacturer": "Worthington"
+  ```
+</ParamField>
+
+<ParamField body="name" param-type="text" required="false" deprecated="false" show-location="false">
+  The product's name.
+
+  **Example:**
+
+  ```json
+  "name": "Worthington 20-lb Tank"
+  ```
+</ParamField>
+
 ## Product Identifier Fields
 
 <ParamField body="asins" param-type="keyword" required="false" deprecated="false" show-location="false">
@@ -804,48 +846,6 @@ The product data schema below lists all available fields in a product record. No
 
   ```json
   "upce": "425261"
-  ```
-</ParamField>
-
-## Product Identity Fields
-
-<ParamField body="brand" param-type="text" required="false" deprecated="false" show-location="false">
-  The brand name of this product as presented by the data source.
-
-  **Example:**
-
-  ```json
-  "brand": "Sumsung Electronics"
-  ```
-</ParamField>
-
-<ParamField body="canonicalBrand" param-type="text" required="false" deprecated="false" show-location="false">
-  The canonical brand name after normalization of the name from the source.
-
-  **Example:**
-
-  ```json
-  "canonicalBrand": "Sumsung"
-  ```
-</ParamField>
-
-<ParamField body="manufacturer" param-type="text" required="false" deprecated="false" show-location="false">
-  The manufacturer of this product.
-
-  **Example:**
-
-  ```json
-  "manufacturer": "Worthington"
-  ```
-</ParamField>
-
-<ParamField body="name" param-type="text" required="false" deprecated="false" show-location="false">
-  The product's name.
-
-  **Example:**
-
-  ```json
-  "name": "Worthington 20-lb Tank"
   ```
 </ParamField>
 
