@@ -451,6 +451,16 @@ The product data schema below lists all available fields in a product record. No
   </Expandable>
 </ParamField>
 
+<ParamField body="name" param-type="text" required="false" deprecated="false" show-location="false">
+  The product's name.
+
+  **Example:**
+
+  ```json
+  "name": "Worthington 20-lb Tank"
+  ```
+</ParamField>
+
 ## Pricing Fields
 
 <ParamField body="mostRecentPriceAvailability" param-type="text" required="false" deprecated="false" show-location="false">
@@ -490,6 +500,142 @@ The product data schema below lists all available fields in a product record. No
 
   ```json
   "mostRecentPriceDate": "2022-03-29T19:26:49.157Z"
+  ```
+</ParamField>
+
+<ParamField body="mostRecentPriceColor" param-type="text" required="false" deprecated="false" show-location="false">
+  The most recent color(s) available for this product when being sold at this price.
+
+  **Example:**
+
+  ```json
+  "mostRecentPriceColor": "Torrid - coral with shimmer"
+  ```
+</ParamField>
+
+<ParamField body="mostRecentPriceCondition" param-type="keyword" required="false" deprecated="false" show-location="false">
+  The condition most recently scraped of the product when being sold at this price.
+
+  **Example:**
+
+  ```json
+  "mostRecentPriceCondition": "Used"
+  ```
+</ParamField>
+
+<ParamField body="mostRecentPriceIsSale" param-type="boolean" required="false" deprecated="false" show-location="false">
+  A true/false for whether or not this price is a sale/discounted price.
+
+  **Example:**
+
+  ```json
+  "mostRecentPriceIsSale": "true"
+  ```
+</ParamField>
+
+<ParamField body="mostRecentPriceSize" param-type="text" required="false" deprecated="false" show-location="false">
+  The size associated with this mostRecentPrice.
+
+  **Example:**
+
+  ```json
+  "mostRecentPriceSize": "M"
+  ```
+</ParamField>
+
+<ParamField body="mostRecentPriceByDomain" param-type="nested" required="false" deprecated="false" show-location="false">
+  A list of prices of this product by each domain source. These are typically third-party merchants found on e-commerce websites.
+
+  **Example:**
+
+  ```json
+  "mostRecentPriceByDomain": [
+    {
+      "amount": 79.95,
+      "availability": "true",
+      "currency": "USD",
+      "isSale": "true",
+      "domain": "www.nordstrom.com",
+      "sourceURL": "https://www.nordstrom.com/s/sea-level-multifit-cross-front-bikini-top/5746068",
+      "date": "2022-03-29T16:43:23.440Z",
+      "firstDateSeen": "2022-03-29T16:59:38.617Z"
+    },
+    {
+      "amount": 89.95,
+      "availability": "true",
+      "currency": "USD",
+      "isSale": "false",
+      "domain": "www.sephora.com",
+      "sourceURL": "https://www.sephora.com/s/5746068",
+      "date": "2022-03-29T16:40:43.440Z"
+    }
+  ]
+  ```
+
+  <Expandable title="Sub-fields" default-open="false">
+    <ParamField body="mostRecentPriceByDomain.amount" param-type="text" required="false" deprecated="false" show-location="false">
+      The price amount of the product by this domain.
+    </ParamField>
+
+    <ParamField body="mostRecentPriceByDomain.availability" param-type="keyword" required="false" deprecated="false" show-location="false">
+      A true or false if this product is available at this price.
+    </ParamField>
+
+    <ParamField body="mostRecentPriceByDomain.currency" param-type="text" required="false" deprecated="false" show-location="false">
+      The currency listed for amount.
+    </ParamField>
+
+    <ParamField body="mostRecentPriceByDomain.color" param-type="keyword" required="false" deprecated="false" show-location="false">
+      The color associated with this price.
+    </ParamField>
+
+    <ParamField body="mostRecentPriceByDomain.condition" param-type="keyword" required="false" deprecated="false" show-location="false">
+      The condition of the product when being sold at this price.
+    </ParamField>
+
+    <ParamField body="mostRecentPriceByDomain.date" param-type="date" required="false" deprecated="false" show-location="false">
+      The date when this price was seen.
+    </ParamField>
+
+    <ParamField body="mostRecentPriceByDomain.domain" param-type="domain" required="false" deprecated="false" show-location="false">
+      The domain sourceURL of the product's price.
+    </ParamField>
+
+    <ParamField body="mostRecentPriceByDomain.firstDateSeen" param-type="date" required="false" deprecated="false" show-location="false">
+      The date of when the record was first scraped by Datafiniti.
+    </ParamField>
+
+    <ParamField body="mostRecentPriceByDomain.isSale" param-type="boolean" required="false" deprecated="false" show-location="false">
+      A true/false for whether or not this price is a sale/discounted price.
+    </ParamField>
+
+    <ParamField body="mostRecentPriceByDomain.size" param-type="text" required="false" deprecated="false" show-location="false">
+      The size associated with this price.
+    </ParamField>
+
+    <ParamField body="mostRecentPriceByDomain.sourceURLs" param-type="text" required="false" deprecated="false" show-location="false">
+      A list of URLs.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="mostRecentPriceDomain" param-type="domain" required="false" deprecated="false" show-location="false">
+  The domain of the most recent price scraped by Datafiniti.
+
+  **Example:**
+
+  ```json
+  "mostRecentPriceDomain": "www.nordstrom.com"
+  ```
+</ParamField>
+
+<ParamField body="mostRecentPriceSourceURL" param-type="keyword" required="false" deprecated="false" show-location="false">
+  The most recent URL used to generate data for this product.
+
+  **Example:**
+
+  ```json
+  "mostRecentPriceSourceURL": "https://www.nordstrom.com/s/ara-gloria-gore-tex-waterproof-bootie-women/5684497"
   ```
 </ParamField>
 
@@ -703,46 +849,6 @@ The product data schema below lists all available fields in a product record. No
   ```
 </ParamField>
 
-<ParamField body="mostRecentPriceColor" param-type="text" required="false" deprecated="false" show-location="false">
-  The most recent color(s) available for this product.
-
-  **Example:**
-
-  ```json
-  "mostRecentPriceColor": "Torrid - coral with shimmer"
-  ```
-</ParamField>
-
-<ParamField body="mostRecentPriceCondition" param-type="keyword" required="false" deprecated="false" show-location="false">
-  The condition most recently scraped of the product when being sold at this price.
-
-  **Example:**
-
-  ```json
-  "mostRecentPriceCondition": "Used"
-  ```
-</ParamField>
-
-<ParamField body="mostRecentPriceIsSale" param-type="boolean" required="false" deprecated="false" show-location="false">
-  A true/false for whether or not this price is a sale/discounted price.
-
-  **Example:**
-
-  ```json
-  "mostRecentPriceIsSale": "true"
-  ```
-</ParamField>
-
-<ParamField body="mostRecentPriceSize" param-type="text" required="false" deprecated="false" show-location="false">
-  The size associated with this mostRecentPrice.
-
-  **Example:**
-
-  ```json
-  "mostRecentPriceSize": "M"
-  ```
-</ParamField>
-
 <ParamField body="sizes" param-type="text" required="false" deprecated="false" show-location="false">
   A list of sizes available for this product.
 
@@ -796,16 +902,6 @@ The product data schema below lists all available fields in a product record. No
 
   ```json
   "manufacturer": "Worthington"
-  ```
-</ParamField>
-
-<ParamField body="name" param-type="text" required="false" deprecated="false" show-location="false">
-  The product's name.
-
-  **Example:**
-
-  ```json
-  "name": "Worthington 20-lb Tank"
   ```
 </ParamField>
 
@@ -1086,102 +1182,6 @@ The product data schema below lists all available fields in a product record. No
   "imageURLs": [
     "https://i5.images.com/asr.jpeg"
   ]
-  ```
-</ParamField>
-
-<ParamField body="mostRecentPriceByDomain" param-type="nested" required="false" deprecated="false" show-location="false">
-  A list of prices of this product by each domain source. These are typically third-party merchants found on e-commerce websites.
-
-  **Example:**
-
-  ```json
-  "mostRecentPriceByDomain": [
-    {
-      "amount": 79.95,
-      "availability": "true",
-      "currency": "USD",
-      "isSale": "true",
-      "domain": "www.nordstrom.com",
-      "sourceURL": "https://www.nordstrom.com/s/sea-level-multifit-cross-front-bikini-top/5746068",
-      "date": "2022-03-29T16:43:23.440Z",
-      "firstDateSeen": "2022-03-29T16:59:38.617Z"
-    },
-    {
-      "amount": 89.95,
-      "availability": "true",
-      "currency": "USD",
-      "isSale": "false",
-      "domain": "www.sephora.com",
-      "sourceURL": "https://www.sephora.com/s/5746068",
-      "date": "2022-03-29T16:40:43.440Z"
-    }
-  ]
-  ```
-
-  <Expandable title="Sub-fields" default-open="false">
-    <ParamField body="mostRecentPriceByDomain.amount" param-type="text" required="false" deprecated="false" show-location="false">
-      The price amount of the product by this domain.
-    </ParamField>
-
-    <ParamField body="mostRecentPriceByDomain.availability" param-type="keyword" required="false" deprecated="false" show-location="false">
-      A true or false if this product is available at this price.
-    </ParamField>
-
-    <ParamField body="mostRecentPriceByDomain.currency" param-type="text" required="false" deprecated="false" show-location="false">
-      The currency listed for amount.
-    </ParamField>
-
-    <ParamField body="mostRecentPriceByDomain.color" param-type="keyword" required="false" deprecated="false" show-location="false">
-      The color associated with this price.
-    </ParamField>
-
-    <ParamField body="mostRecentPriceByDomain.condition" param-type="keyword" required="false" deprecated="false" show-location="false">
-      The condition of the product when being sold at this price.
-    </ParamField>
-
-    <ParamField body="mostRecentPriceByDomain.date" param-type="date" required="false" deprecated="false" show-location="false">
-      The date when this price was seen.
-    </ParamField>
-
-    <ParamField body="mostRecentPriceByDomain.domain" param-type="domain" required="false" deprecated="false" show-location="false">
-      The domain sourceURL of the product's price.
-    </ParamField>
-
-    <ParamField body="mostRecentPriceByDomain.firstDateSeen" param-type="date" required="false" deprecated="false" show-location="false">
-      The date of when the record was first scraped by Datafiniti.
-    </ParamField>
-
-    <ParamField body="mostRecentPriceByDomain.isSale" param-type="boolean" required="false" deprecated="false" show-location="false">
-      A true/false for whether or not this price is a sale/discounted price.
-    </ParamField>
-
-    <ParamField body="mostRecentPriceByDomain.size" param-type="text" required="false" deprecated="false" show-location="false">
-      The size associated with this price.
-    </ParamField>
-
-    <ParamField body="mostRecentPriceByDomain.sourceURLs" param-type="text" required="false" deprecated="false" show-location="false">
-      A list of URLs.
-    </ParamField>
-  </Expandable>
-</ParamField>
-
-<ParamField body="mostRecentPriceDomain" param-type="domain" required="false" deprecated="false" show-location="false">
-  The domain of the most recent price scraped by Datafiniti.
-
-  **Example:**
-
-  ```json
-  "mostRecentPriceDomain": "www.nordstrom.com"
-  ```
-</ParamField>
-
-<ParamField body="mostRecentPriceSourceURL" param-type="keyword" required="false" deprecated="false" show-location="false">
-  The most recent URL used to generate data for this product.
-
-  **Example:**
-
-  ```json
-  "mostRecentPriceSourceURL": "https://www.nordstrom.com/s/ara-gloria-gore-tex-waterproof-bootie-women/5684497"
   ```
 </ParamField>
 
