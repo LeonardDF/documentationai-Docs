@@ -92,6 +92,125 @@ The product data schema below lists all available fields in a product record. No
   ]
   ```
 </ParamField>
+<ParamField body="taxonomy" param-type="taxonomy" required="false" deprecated="false" show-location="false">
+  Hierarchical classification(s) of a product.
+
+  **Example:**
+
+  ```json
+  "taxonomy": [
+    "automotive > motorcycle & powersports > parts > wheels & tires > tires & accessories > tires & inner tubes > motorcycle & scooter > motorcycle > street"
+  ]
+  ```
+</ParamField>
+
+<ParamField body="taxonomyLevel1" param-type="keyword" required="false" deprecated="false" show-location="false">
+  Top level classification of a product.
+
+  **Example:**
+
+  ```json
+  "taxonomyLevel1": [
+    "automotive"
+  ]
+  ```
+</ParamField>
+
+<ParamField body="taxonomyLevel2" param-type="keyword" required="false" deprecated="false" show-location="false">
+  Second-level classification of a product.
+
+  **Example:**
+
+  ```json
+  "taxonomyLevel2": [
+    "motorcycle & powersports"
+  ]
+  ```
+</ParamField>
+
+<ParamField body="taxonomyLevel3" param-type="keyword" required="false" deprecated="false" show-location="false">
+  Third-level classification of a product.
+
+  **Example:**
+
+  ```json
+  "taxonomyLevel3": [
+    "parts"
+  ]
+  ```
+</ParamField>
+
+<ParamField body="taxonomyLevel4" param-type="keyword" required="false" deprecated="false" show-location="false">
+  Fourth-level classification of a product.
+
+  **Example:**
+
+  ```json
+  "taxonomyLevel4": [
+    "wheels & tires"
+  ]
+  ```
+</ParamField>
+
+<ParamField body="taxonomyLevel5" param-type="keyword" required="false" deprecated="false" show-location="false">
+  Fifth-level classification of a product.
+
+  **Example:**
+
+  ```json
+  "taxonomyLevel5": [
+    "tires & accessories"
+  ]
+  ```
+</ParamField>
+
+<ParamField body="taxonomyLevel6" param-type="keyword" required="false" deprecated="false" show-location="false">
+  Sixth-level classification of a product.
+
+  **Example:**
+
+  ```json
+  "taxonomyLevel6": [
+    "tires & inner tubes"
+  ]
+  ```
+</ParamField>
+
+<ParamField body="taxonomyLevel7" param-type="keyword" required="false" deprecated="false" show-location="false">
+  Seventh-level classification of a product.
+
+  **Example:**
+
+  ```json
+  "taxonomyLevel7": [
+    "motorcycle & scooter"
+  ]
+  ```
+</ParamField>
+
+<ParamField body="taxonomyLevel8" param-type="keyword" required="false" deprecated="false" show-location="false">
+  Eighth-level classification of a product.
+
+  **Example:**
+
+  ```json
+  "taxonomyLevel8": [
+    "motorcycle"
+  ]
+  ```
+</ParamField>
+
+<ParamField body="taxonomyLevel9" param-type="keyword" required="false" deprecated="false" show-location="false">
+  Ninth-level classification of a product.
+
+  **Example:**
+
+  ```json
+  "taxonomyLevel9": [
+    "street"
+  ]
+  ```
+</ParamField>
 
 ## Financing Fields
 
@@ -1117,128 +1236,6 @@ The product data schema below lists all available fields in a product record. No
   "websiteIDs": [
     "domain.com-123",
     "website.com-4567"
-  ]
-  ```
-</ParamField>
-
-## Taxonomy Fields
-
-<ParamField body="taxonomy" param-type="taxonomy" required="false" deprecated="false" show-location="false">
-  Hierarchical classification(s) of a product.
-
-  **Example:**
-
-  ```json
-  "taxonomy": [
-    "automotive > motorcycle & powersports > parts > wheels & tires > tires & accessories > tires & inner tubes > motorcycle & scooter > motorcycle > street"
-  ]
-  ```
-</ParamField>
-
-<ParamField body="taxonomyLevel1" param-type="keyword" required="false" deprecated="false" show-location="false">
-  Top level classification of a product.
-
-  **Example:**
-
-  ```json
-  "taxonomyLevel1": [
-    "automotive"
-  ]
-  ```
-</ParamField>
-
-<ParamField body="taxonomyLevel2" param-type="keyword" required="false" deprecated="false" show-location="false">
-  Second level classification of a product.
-
-  **Example:**
-
-  ```json
-  "taxonomyLevel2": [
-    "motorcycle & powersports"
-  ]
-  ```
-</ParamField>
-
-<ParamField body="taxonomyLevel3" param-type="keyword" required="false" deprecated="false" show-location="false">
-  Third level classification of a product.
-
-  **Example:**
-
-  ```json
-  "taxonomyLevel3": [
-    "parts"
-  ]
-  ```
-</ParamField>
-
-<ParamField body="taxonomyLevel4" param-type="keyword" required="false" deprecated="false" show-location="false">
-  Fourth level classification of a product.
-
-  **Example:**
-
-  ```json
-  "taxonomyLevel4": [
-    "wheels & tires"
-  ]
-  ```
-</ParamField>
-
-<ParamField body="taxonomyLevel5" param-type="keyword" required="false" deprecated="false" show-location="false">
-  Fifth level classification of a product.
-
-  **Example:**
-
-  ```json
-  "taxonomyLevel5": [
-    "tires & accessories"
-  ]
-  ```
-</ParamField>
-
-<ParamField body="taxonomyLevel6" param-type="keyword" required="false" deprecated="false" show-location="false">
-  Sixth level classification of a product.
-
-  **Example:**
-
-  ```json
-  "taxonomyLevel6": [
-    "tires & inner tubes"
-  ]
-  ```
-</ParamField>
-
-<ParamField body="taxonomyLevel7" param-type="keyword" required="false" deprecated="false" show-location="false">
-  Seventh level classification of a product.
-
-  **Example:**
-
-  ```json
-  "taxonomyLevel7": [
-    "motorcycle & scooter"
-  ]
-  ```
-</ParamField>
-
-<ParamField body="taxonomyLevel8" param-type="keyword" required="false" deprecated="false" show-location="false">
-  Eighth level classification of a product.
-
-  **Example:**
-
-  ```json
-  "taxonomyLevel8": [
-    "motorcycle"
-  ]
-  ```
-</ParamField>
-
-<ParamField body="taxonomyLevel9" param-type="keyword" required="false" deprecated="false" show-location="false">
-  Ninth level classification of a product.
-
-  **Example:**
-
-  ```json
-  "taxonomyLevel9": [
-    "street"
   ]
   ```
 </ParamField>
