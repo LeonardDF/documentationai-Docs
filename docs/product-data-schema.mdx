@@ -3,55 +3,6 @@ title: Product Data Schema
 ---
 The product data schema below lists all available fields in a product record. Note that actual product records may not have every field present.
 
-## Availability Fields
-
-<ParamField body="mostRecentPriceAvailability" param-type="text" required="false" deprecated="false" show-location="false">
-  The product's availability that is based on the most recent price.
-
-  **Example:**
-
-  ```json
-  "mostRecentPriceAvailability": "true"
-  ```
-</ParamField>
-
-<ParamField body="quantities" param-type="nested" required="false" deprecated="false" show-location="false">
-  A list of available quantities for this product. Quantities indicate how many units of the product are available from a specific source at a given time.
-
-  Quantity objects may contain:
-
-  **Example:**
-
-  ```json
-  "quantities": [
-    {
-      "dateSeen": [
-        "2013-06-02T16:00:00Z",
-        "2014-05-01T14:00:00Z"
-      ],
-      "sourceURLs": [
-        "http://www.website.com/4567"
-      ],
-      "value": 20
-    }
-  ]
-  ```
-
-  <Expandable title="Sub-fields" default-open="false">
-    <ParamField body="quantities.dateSeen" param-type="date" required="false" deprecated="false" show-location="false">
-      A list of dates when this quantity was seen.
-    </ParamField>
-
-    <ParamField body="quantities.sourceURLs" param-type="keyword" required="false" deprecated="false" show-location="false">
-      A list of URLs where this quantity was seen.
-    </ParamField>
-
-    <ParamField body="quantities.value" param-type="text" required="false" deprecated="false" show-location="false">
-      The actual quantity value.
-    </ParamField>
-  </Expandable>
-</ParamField>
-
 ## Classification Fields
 
 <ParamField body="categories" param-type="text" required="false" deprecated="false" show-location="false">
@@ -436,8 +387,6 @@ The product data schema below lists all available fields in a product record. No
 <ParamField body="merchants" param-type="nested" required="false" deprecated="false" show-location="false">
   A list of merchants selling this product. These are typically third-party merchants found on e-commerce websites.
 
-  Merchant objects can contain:
-
   **Example:**
 
   ```json
@@ -504,8 +453,18 @@ The product data schema below lists all available fields in a product record. No
 
 ## Pricing Fields
 
+<ParamField body="mostRecentPriceAvailability" param-type="text" required="false" deprecated="false" show-location="false">
+  The product's availability based on the most recent price.
+
+  **Example:**
+
+  ```json
+  "mostRecentPriceAvailability": "true"
+  ```
+</ParamField>
+
 <ParamField body="mostRecentPriceAmount" param-type="float" required="false" deprecated="false" show-location="false">
-  The product's most recent price amount scraped.
+  The product's most recent price amount that was scraped.
 
   **Example:**
 
@@ -654,6 +613,43 @@ The product data schema below lists all available fields in a product record. No
 
     <ParamField body="prices.warranty" param-type="text" required="false" deprecated="false" show-location="false">
       The warranty associated with this price.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="quantities" param-type="nested" required="false" deprecated="false" show-location="false">
+  A list of available quantities for this product. Quantities indicate how many units of the product are available from a specific source at a given time.
+
+  Quantity objects may contain:
+
+  **Example:**
+
+  ```json
+  "quantities": [
+    {
+      "dateSeen": [
+        "2013-06-02T16:00:00Z",
+        "2014-05-01T14:00:00Z"
+      ],
+      "sourceURLs": [
+        "http://www.website.com/4567"
+      ],
+      "value": 20
+    }
+  ]
+  ```
+
+  <Expandable title="Sub-fields" default-open="false">
+    <ParamField body="quantities.dateSeen" param-type="date" required="false" deprecated="false" show-location="false">
+      A list of dates when this quantity was seen.
+    </ParamField>
+
+    <ParamField body="quantities.sourceURLs" param-type="keyword" required="false" deprecated="false" show-location="false">
+      A list of URLs where this quantity was seen.
+    </ParamField>
+
+    <ParamField body="quantities.value" param-type="text" required="false" deprecated="false" show-location="false">
+      The actual quantity value.
     </ParamField>
   </Expandable>
 </ParamField>
