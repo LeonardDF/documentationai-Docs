@@ -44,17 +44,6 @@ The product data schema below lists all available fields in a product record. No
   ```
 </ParamField>
 
-<ParamField body="sdsURLs" param-type="keyword" required="false" deprecated="false" show-location="false">
-  A list of URLs that lead to SDS for the given record.
-
-  **Example:**
-
-  ```json
-  "sdsURLs": [
-    "https://images.homedepot-static.com/catalog/pdfImages/8c/8c72c7b4-1d29-41a3-b8ba-43699e42d44b.pdf"
-  ]
-  ```
-</ParamField>
 
 <ParamField body="taxonomy" param-type="taxonomy" required="false" deprecated="false" show-location="false">
   Hierarchical classification(s) of a product.
@@ -858,6 +847,18 @@ The product data schema below lists all available fields in a product record. No
     "Fruit Punch",
     "Berry",
     "Grape"
+  ]
+  ```
+</ParamField>
+
+<ParamField body="sdsURLs" param-type="keyword" required="false" deprecated="false" show-location="false">
+  A list of URLs that lead to SDS for the given record.
+
+  **Example:**
+
+  ```json
+  "sdsURLs": [
+    "https://images.homedepot-static.com/catalog/pdfImages/8c/8c72c7b4-1d29-41a3-b8ba-43699e42d44b.pdf"
   ]
   ```
 </ParamField>
