@@ -16,14 +16,66 @@ The property data schema below lists all available fields in a property record. 
   ```json
   "brokers": [
       {
-        "name": "Rackel Atkins",
+        "agent": "Rackel Atkins",
         "company": "Compass Recom",
         "dateSeen": "2023-10-23T19:20:50.418Z",
         "emails": ["mavhovsepia@pearsonrealty.com"],
-        "phones": ["(713) 948-6666"]
+        "licenseNumber": "TX-123456",
+        "licenseType": "Broker",
+        "phones": ["(713) 948-6666"],
+        "people_key": "rackel/atkins/1080154715",
+        "role": "Listing Agent",
+        "sourceURLs": ["https://www.redfin.com/listing/412-main-st-dallas-tx/31245001/"],
+        "websites": ["https://www.compassrecom.com"]
       }
     ]
   ```
+
+  <Expandable title="Sub-fields" default-open="false">
+    <ParamField body="brokers.agent" param-type="text" showLocation="false">
+      The name of the broker agent.
+    </ParamField>
+
+    <ParamField body="brokers.company" param-type="text" showLocation="false">
+      The company the broker is associated with.
+    </ParamField>
+
+    <ParamField body="brokers.dateSeen" param-type="date" showLocation="false">
+      The date when this broker was seen for this property.
+    </ParamField>
+
+    <ParamField body="brokers.emails" param-type="text" showLocation="false">
+      A list of email addresses associated with the broker.
+    </ParamField>
+
+    <ParamField body="brokers.licenseNumber" param-type="text" showLocation="false">
+      The license number of the broker.
+    </ParamField>
+
+    <ParamField body="brokers.licenseType" param-type="text" showLocation="false">
+      The type of license held by the broker.
+    </ParamField>
+
+    <ParamField body="brokers.phones" param-type="text" showLocation="false">
+      A list of phone numbers associated with the broker.
+    </ParamField>
+
+    <ParamField body="brokers.people_key" param-type="keyword" showLocation="false">
+      The corresponding key that links to Datafiniti's people data record.
+    </ParamField>
+
+    <ParamField body="brokers.role" param-type="text" showLocation="false">
+      The role of the broker in relation to the property listing.
+    </ParamField>
+
+    <ParamField body="brokers.sourceURLs" param-type="keyword" showLocation="false">
+      A list of source URLs where this broker information was found.
+    </ParamField>
+
+    <ParamField body="brokers.websites" param-type="keyword" showLocation="false">
+      A list of websites associated with the broker.
+    </ParamField>
+  </Expandable>
 </ParamField>
 
 <ParamField body="mlsNumber" param-type="keyword" showLocation="false">
