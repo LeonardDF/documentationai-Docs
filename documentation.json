@@ -2198,5 +2198,10 @@
     "robots:index": true,
     "robots:follow": true
   },
-  "initialRoute": "home"
+  "initialRoute": "home",
+  "integrations": {
+    "gtm": {
+      "tagId": "GTM-N886Q4F"
+    }
+  }
 }
