@@ -28,6 +28,26 @@ This Markdown file documents the **Address Abbreviation & Normalization Toolkit*
 
 - **Datafiniti Tie-in**: Enhances queries like `address:"123 Main ST" AND postalCode:"12345*"` for better matches and deduplication.
 
+### Examples
+
+<Callout kind="info" collapsed="false">
+  If you are using a USPS / US address, the **province** and **country** fields are abbreviated to a 2-character standardization.
+</Callout>
+
+#### US Address Examples
+
+- `742 Evergreen Terrace, Springfield, California, United States` → `742 Evergreen Ter, Springfield, CA, US`
+
+- `1600 Pennsylvania Avenue, Washington, District of Columbia, United States` → `1600 Pennsylvania Ave, Washington, DC, US`
+
+- `221 Baker Street, Houston, Texas, United States` → `221 Baker St, Houston, TX, US`
+
+#### International Address Examples
+
+- `10 Downing St, London, United Kingdom` → `10 Downing St, London, GB`
+
+- `1 Maple Ln, Toronto, Ontario, Canada` → `1 Maple Ln, Toronto, ON, CA`
+
 ### Countries
 
 | Country                                      | Normalized Term |
