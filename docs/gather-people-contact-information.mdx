@@ -1,7 +1,6 @@
 ---
 title: Gather people contact information
 ---
-
 ## Introduction
 
 By providing a general lead's name we can search our people database to see if any contact information is available.
@@ -38,9 +37,9 @@ If a matching record comes back, it will include the company that currently empl
  }
 ```
 
-## Matching your lead to targeted area
+## Matching your lead to the targeted area
 
-As you match each person and find their area that they reside, your can enhance your query to hone your record result to the demographic of that specific person.
+As you match each person and find their area that they reside, you can enhance your query to hone your record result to the demographic of that specific person.
 
 ```json
 {
@@ -66,10 +65,77 @@ You can also search via the email of the person you are looking for. Utilizing o
 
 Here are example bulk download files of our previous query:
 
-* [Denver leads CSV](https://drive.google.com/file/d/1YSttkeS83HVXPMn5IDt89XRaVPhOeU_L/view?usp=share_link)
-* [Denver leads JSON](https://drive.google.com/file/d/1a2rcHQp4GMK8Gki6PXbtfGOS1s5GU4Ed/view?usp=share_link)
+- [Denver leads CSV](https://drive.google.com/file/d/1YSttkeS83HVXPMn5IDt89XRaVPhOeU_L/view?usp=share_link)
+
+- [Denver leads JSON](https://drive.google.com/file/d/1a2rcHQp4GMK8Gki6PXbtfGOS1s5GU4Ed/view?usp=share_link)
+
+## Looking up a person via peopleKey from property data
+
+Property data can include a `peopleKey` that links directly to a matching record in the people database. Depending on the property subfield, you may find this identifier in places such as `owners.peopleKey`, `people.peopleKey`, or `brokers.people_key`. Once you have that value, search the people database by matching it against the `keys` field.
+
+### Step 1: Find the peopleKey in property data
+
+Start by searching property data for Nathan Sandel and require that a `peopleKey` exists on the owner record.
+
+```json
+{
+  "query": "owners.firstName:Nathan AND owners.lastName:Sandel AND owners.peopleKey:*",
+  "num_records": 1
+}
+```
+
+A matching property record may include an owner entry like this:
+
+```json
+{
+  "owners": [
+    {
+      "firstName": "Nathan",
+      "lastName": "Sandel",
+      "peopleKey": "nathan/sandel/us/tx/78704/412southcongressave"
+    }
+  ]
+}
+```
+
+### Step 2: Search people data using the peopleKey
+
+Use the `peopleKey` value from the property result to query the people database through the `keys` field.
+
+```json
+{
+  "query": "keys:\"nathan/sandel/us/tx/78704/412southcongressave\"",
+  "num_records": 1
+}
+```
+
+A matching people record may look like this:
+
+```json
+{
+  "firstName": "Nathan",
+  "lastName": "Sandel",
+  "keys": [
+    "nathan/sandel/us/tx/78704/412southcongressave"
+  ],
+  "phoneNumbers": [
+    "+1-512-555-0184"
+  ],
+  "emails": [
+    "nathan.sandel@austinholdings.com"
+  ],
+  "country": "US",
+  "province": "TX",
+  "city": "Austin"
+}
+```
+
+### Field name differences in property data
+
+The field name varies depending on where the identifier appears in property data. `owners.peopleKey` and `people.peopleKey` use camelCase, while `brokers.people_key` uses snake\_case. All of these values link to the same `keys` field in people data.
+
+For a full walkthrough, see [Accessing owners, brokers, & other people data](/docs/accessing-owners-brokers-and-other-people).
 
 ### Conclusion
 
 With the knowledge of how to pull records with business-specific categories, you can now pull targeted area leads for your outreach.
-
