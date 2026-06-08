@@ -48,9 +48,9 @@ Use the Datafiniti Property Data SDK for Python to authenticate with the Propert
   </Step>
 </Steps>
 
-# Features
+## Features
 
-## Search by address
+### Search by address
 
 Look up detailed property records by street address and ZIP code. Use this to quickly retrieve property details like city, state, and match count without writing raw API queries.
 
@@ -104,7 +104,7 @@ else:
   The `search_by_address` method abstracts away the raw query syntax. You only need to provide a street address and an optional `postal_code` to narrow results.
 </Callout>
 
-## Count
+### Count
 
 Get the total number of properties matching a query without downloading any records. Use this to check result sizes before running larger searches or to build dashboards with aggregate counts.
 
@@ -122,18 +122,18 @@ print(f"Properties found: {count:,}")
 
 #### Code breakdown
 
-| Section | What it does |
-| ------- | ------------ |
-| `from datafiniti.property import PropertyDataSDK` | Imports the `PropertyDataSDK` class from the `datafiniti.property` module. |
-| `sdk = PropertyDataSDK.from_env()` | Creates a client instance using the `DATAFINITI_API_KEY` environment variable. |
+| Section                                                   | What it does                                                                                         |
+| --------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `from datafiniti.property import PropertyDataSDK`         | Imports the `PropertyDataSDK` class from the `datafiniti.property` module.                           |
+| `sdk = PropertyDataSDK.from_env()`                        | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.                       |
 | `sdk.count('country:US AND mostRecentStatus:"For Sale"')` | Returns the total number of US properties currently listed "For Sale" without fetching full records. |
-| `f"Properties found: {count:,}"` | Formats the count with comma separators for readability (e.g., `1,234,567`). |
+| `f"Properties found: {count:,}"`                          | Formats the count with comma separators for readability (e.g., `1,234,567`).                         |
 
 <Callout kind="info" collapsed="false">
   The `count` method accepts the same query syntax as `search` but only returns the total number of matching records — no data is downloaded.
 </Callout>
 
-## Geolocation
+### Geolocation
 
 Search for properties within a specified radius of a geographic coordinate. Use this to find nearby listings, build location-based filters, or analyze property markets in a target area.
 
@@ -178,25 +178,25 @@ for prop in records:
 
 #### Code breakdown
 
-| Section | What it does |
-| ------- | ------------ |
-| `from datafiniti.property import PropertyDataSDK` | Imports the `PropertyDataSDK` class from the `datafiniti.property` module. |
-| `sdk = PropertyDataSDK.from_env()` | Creates a client instance using the `DATAFINITI_API_KEY` environment variable. |
+| Section                                                                   | What it does                                                                                          |
+| ------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `from datafiniti.property import PropertyDataSDK`                         | Imports the `PropertyDataSDK` class from the `datafiniti.property` module.                            |
+| `sdk = PropertyDataSDK.from_env()`                                        | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.                        |
 | `sdk.geolocation(longitude, latitude, distance, unit, num_records, view)` | Searches for properties within a radius of the given coordinate. Returns up to `num_records` results. |
-| `longitude`, `latitude` | The center point of the search area (downtown Austin, TX in this example). |
-| `distance=10, unit="mi"` | Defines the search radius — 10 miles. Supported units: `m`, `mi`, `ft`, `yd`, `mm`, `km`, `NM`, `cm`. |
-| `view=[...]` | A custom view specifying which fields to return for each record, reducing response size. |
-| `response.get('num_found')` | Returns the total number of properties within the search radius. |
-| `response.get("records", [])` | Retrieves the list of matching property records. |
-| `for prop in records:` | Iterates through each result and prints the address, city, postal code, status, and coordinates. |
+| `longitude`, `latitude`                                                   | The center point of the search area (downtown Austin, TX in this example).                            |
+| `distance=10, unit="mi"`                                                  | Defines the search radius — 10 miles. Supported units: `m`, `mi`, `ft`, `yd`, `mm`, `km`, `NM`, `cm`. |
+| `view=[...]`                                                              | A custom view specifying which fields to return for each record, reducing response size.              |
+| `response.get('num_found')`                                               | Returns the total number of properties within the search radius.                                      |
+| `response.get("records", [])`                                             | Retrieves the list of matching property records.                                                      |
+| `for prop in records:`                                                    | Iterates through each result and prints the address, city, postal code, status, and coordinates.      |
 
 <Callout kind="info" collapsed="false">
   The `view` parameter lets you control exactly which fields are returned. This reduces payload size and speeds up responses when you only need specific property attributes.
 </Callout>
 
-## Paginate
+### Paginate
 
-Iterate through large result sets page by page without loading everything into memory at once. Use this to process thousands of records efficiently or to cap retrieval at a specific number.
+Iterate through large result sets page by page without loading everything into memory at once. Use this to process thousands of records efficiently or to cap the number of retrievals at a specific limit.
 
 ```python
 from datafiniti.property import PropertyDataSDK
@@ -221,22 +221,22 @@ print(f"\nTotal Retrieved: {records_seen}")
 
 #### Code breakdown
 
-| Section | What it does |
-| ------- | ------------ |
-| `from datafiniti.property import PropertyDataSDK` | Imports the `PropertyDataSDK` class from the `datafiniti.property` module. |
-| `sdk = PropertyDataSDK.from_env()` | Creates a client instance using the `DATAFINITI_API_KEY` environment variable. |
-| `sdk.paginate(query, page_size, max_records)` | Returns a generator that yields individual property records across multiple API pages. |
-| `query="country:US"` | The search query — in this case, all US properties. |
-| `page_size=10` | Fetches 10 records per API request. |
-| `max_records=25` | Stops after retrieving 25 total records, even if more are available. |
-| `for property_record in sdk.paginate(...)` | Iterates through each yielded record one at a time without loading the full result set into memory. |
-| `property_record.get('address', 'Unknown Address')` | Safely reads the address field with a fallback default if the field is missing. |
+| Section                                             | What it does                                                                                        |
+| --------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `from datafiniti.property import PropertyDataSDK`   | Imports the `PropertyDataSDK` class from the `datafiniti.property` module.                          |
+| `sdk = PropertyDataSDK.from_env()`                  | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.                      |
+| `sdk.paginate(query, page_size, max_records)`       | Returns a generator that yields individual property records across multiple API pages.              |
+| `query="country:US"`                                | The search query — in this case, all US properties.                                                 |
+| `page_size=10`                                      | Fetches 10 records per API request.                                                                 |
+| `max_records=25`                                    | Stops after retrieving 25 total records, even if more are available.                                |
+| `for property_record in sdk.paginate(...)`          | Iterates through each yielded record one at a time without loading the full result set into memory. |
+| `property_record.get('address', 'Unknown Address')` | Safely reads the address field with a fallback default if the field is missing.                     |
 
 <Callout kind="info" collapsed="false">
   The `paginate` method is a generator — it handles API pagination automatically behind the scenes. Set `max_records` to limit total retrieval, or omit it to iterate through all matching results.
 </Callout>
 
-## Views
+### Views
 
 Control which fields are returned in API responses using custom inline views or premade named views. Use this to reduce payload size, speed up requests, and tailor results to specific use cases — such as flagging e-commerce orders shipping to vacant properties.
 
@@ -349,17 +349,17 @@ if __name__ == "__main__":
 
 #### Code breakdown
 
-| Section | What it does |
-| ------- | ------------ |
-| `from datafiniti.property import PropertyDataSDK` | Imports the `PropertyDataSDK` class from the `datafiniti.property` module. |
-| `PROPERTY_VIEW = [...]` | Defines a custom inline view — a list of field objects specifying exactly which fields to return per record. |
-| `ON_MARKET_STATUSES` | A set of status values considered "on market" for comparison logic. |
-| `market_status(record)` | Helper function that checks both sale and rental statuses to determine if a property is on or off market. |
+| Section                                                    | What it does                                                                                                            |
+| ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `from datafiniti.property import PropertyDataSDK`          | Imports the `PropertyDataSDK` class from the `datafiniti.property` module.                                              |
+| `PROPERTY_VIEW = [...]`                                    | Defines a custom inline view — a list of field objects specifying exactly which fields to return per record.            |
+| `ON_MARKET_STATUSES`                                       | A set of status values considered "on market" for comparison logic.                                                     |
+| `market_status(record)`                                    | Helper function that checks both sale and rental statuses to determine if a property is on or off market.               |
 | `check_address(sdk, address, city, province, postal_code)` | Builds a compound query from address components and searches with the custom view, returning the first match or `None`. |
-| `sdk.search(query, num_records=1, view=PROPERTY_VIEW)` | Executes the search with the inline view — only the 8 specified fields are returned. |
-| `addresses = [...]` | Sample shipping addresses to check against property records. |
-| `for entry in addresses:` | Iterates through each address, queries the API, and prints the property status. |
-| `if label == "Off Market":` | Flags addresses where the property appears vacant or off market — a potential fraud signal. |
+| `sdk.search(query, num_records=1, view=PROPERTY_VIEW)`     | Executes the search with the inline view — only the 8 specified fields are returned.                                    |
+| `addresses = [...]`                                        | Sample shipping addresses to check against property records.                                                            |
+| `for entry in addresses:`                                  | Iterates through each address, queries the API, and prints the property status.                                         |
+| `if label == "Off Market":`                                | Flags addresses where the property appears vacant or off market — a potential fraud signal.                             |
 
 <Callout kind="info" collapsed="false">
   You can use either a custom inline view (a list of field objects) or a premade named view (a string like `"residential"` or `"default"`). Custom views give you precise control over the response payload; named views are convenient presets for common use cases.
