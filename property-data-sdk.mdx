@@ -135,6 +135,16 @@ print(f"Properties found: {count:,}")
   The `count` method accepts the same query syntax as `search` but only returns the total number of matching records — no data is downloaded.
 </Callout>
 
+#### Understanding the query syntax
+
+The query string `'country:US AND mostRecentStatus:"For Sale"'` uses Datafiniti's query language. Here's what you need to know:
+
+| Question                                                        | Answer                                                                                                                                                                                                                                |
+| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| What is the format?                                             | See the <a href="https://docs.datafiniti.co/docs/constructing-property-queries" target="_blank" rel="noopener noreferrer">Constructing Property Queries</a> guide for the complete field reference, operators, and advanced examples. |
+| How do I handle multi-word string values?                       | Wrap them in exact quotes: `mostRecentStatus:"For Sale"`.                                                                                                                                                                             |
+| What fields can I query & what is the full list of field names? | Any field in the [Property Data Schema](https://docs.datafiniti.co/docs/property-data-schema) — `address`, `city`, `province`, `postalCode`, `propertyType`, `mostRecentStatus`, `numBedroom`, `lotSizeValue`, and many more.         |
+
 ### Geolocation
 
 Search for properties within a specified radius of a geographic coordinate. Use this to find nearby listings, build location-based filters, or analyze property markets in a target area.
@@ -238,9 +248,19 @@ print(f"\nTotal Retrieved: {records_seen}")
   The `paginate` method is a generator — it handles API pagination automatically behind the scenes. Set `max_records` to limit total retrieval, or omit it to iterate through all matching results.
 </Callout>
 
+#### Understanding the query syntax
+
+The `query` parameter uses Datafiniti's query language. Here's what you need to know:
+
+| Question                           | Answer                                                                                                                                                                                                                                |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| What is the format?                | See the <a href="https://docs.datafiniti.co/docs/constructing-property-queries" target="_blank" rel="noopener noreferrer">Constructing Property Queries</a> guide for the complete field reference, operators, and advanced examples. |
+| How do I handle multi-word values? | Wrap them in quotes: `mostRecentStatus:"For Sale"`.                                                                                                                                                                                   |
+| What fields can I query?           | Any field in the [Property Data Schema](https://docs.datafiniti.co/docs/property-data-schema) — `address`, `city`, `province`, `postalCode`, `propertyType`, `mostRecentStatus`, `numBedroom`, `lotSizeValue`, and many more.         |
+
 ### Views
 
-Control which fields are returned in API responses using custom inline views or premade named views. Use this to reduce payload size, speed up requests, and tailor results to specific use cases — such as flagging e-commerce orders shipping to vacant properties.
+Control which fields are returned in API responses using custom inline views or premade named views. Use this to reduce payload size, speed up requests, and tailor results to specific use cases — such as flagging e-commerce orders shipping to vacant properties. For a full list of available property data views, see [Property Data Views](https://docs.datafiniti.co/docs/property-data-views).
 
 ```python
 """
@@ -365,5 +385,10 @@ if __name__ == "__main__":
 
 <Callout kind="info" collapsed="false">
   You can use either a custom inline view (a list of field objects) or a premade named view (a string like `"residential"` or `"default"`). Custom views give you precise control over the response payload; named views are convenient presets for common use cases.
+</Callout>
+
+<Callout kind="alert" collapsed="false">
+  **Handling Normalizing addresses before querying.** \
+  Datafiniti stores addresses using standard abbreviations. By default using the address field will attempt to convert non-normalized terms to normalized values. Like `"Ave"` not `"Avenue"`, `"St"` not `"Street"`, `"Dr"` not `"Drive"`, `"Ln"` not `"Lane"`, `"Rd"` not `"Road"`. Queries with unabbreviated designations may return zero results. For more details, see [Normalized Address Data](https://docs.datafiniti.co/docs/normalized-address-data).
 </Callout>
 
