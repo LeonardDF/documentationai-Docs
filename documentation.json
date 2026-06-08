@@ -323,6 +323,15 @@
                             "path": "docs/pagination-property"
                           }
                         ]
+                      },
+                      {
+                        "group": "Property Data SDK",
+                        "pages": [
+                          {
+                            "title": "Property Data SDK",
+                            "path": "property-data-sdk"
+                          }
+                        ]
                       }
                     ],
                     "openapi": "reference/openapi.yaml"
