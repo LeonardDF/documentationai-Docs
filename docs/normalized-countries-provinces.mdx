@@ -5,6 +5,20 @@ title: Normalized Countries & Provinces
 
 Datafiniti runs a normalization process across our entire property database. We normalize our countries and provinces converting them into 2 character abbreviations. Seen in the table below.
 
+<Callout kind="tip" collapsed="false">
+  **Fuzzy Matching**
+
+  Please note that if you are using the `address` field in your property data query, it defaults to fuzzy matching for exact, full, or partial addresses. Meaning for an address like *1100 Congress Ave., Austin, TX 78701,* the following queries would be acceptable:
+
+  - 1100 Congress Ave
+
+  - 1100 Congress Avenue
+
+  - 1100 Congress Ave, Austin
+
+  - 1100 Congress Ave, Austin, TX 78701
+</Callout>
+
 ### Normalized Terms for Countries & Provinces
 
 For a more detailed overview on how Datafiniti's approach to normalizing street addresses and how this process enhances the usability and consistency of address-related data. \

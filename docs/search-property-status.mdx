@@ -1,20 +1,19 @@
 ---
 title: Search on property statuses
 ---
-
 ## Introduction
 
-Datafiniti's property data can be used to verify or enrich data that you have for existing properties. If you have an area of property but want more specific data about its statuses on the market, you can use the following guide as a starting point.
+Datafiniti's property data can be used to verify or enrich data that you have for existing properties. If you have an area of property but want more specific data about its status on the market, you can use the following guide as a starting point.
 
-<Callout kind="info">
+<Callout kind="info" collapsed="false">
   **Status Types**
 
-We recommend users view our possible status type values page [here ](/docs/possible-values-for-property-fields)to determine the exact string to search property data for.
+  We recommend users view our possible status type values page [here ](/docs/possible-values-for-property-fields)to determine the exact string to search property data for.
 </Callout>
 
 ## Search "for sale" property
 
-Let's say you are looking for single-family dwelling for sale in Sacramento, California.\
+Let's say you are looking for a single-family dwelling for sale in Sacramento, California.\
 Here is an example of how to do that.
 
 ```json
@@ -24,8 +23,22 @@ Here is an example of how to do that.
 }
 ```
 
-<Callout kind="info">
+<Callout kind="info" collapsed="false">
   The AI assistant can help explain the query, break down the request body, and suggest ways to refine your search, but it does not execute live Datafiniti API calls from within the docs. To test this use case in real time, open the Properties API reference and run the request with your own API token in your preferred client, such as Postman, cURL, or your application code. This gives you a live response from the API using your account, query parameters, and filters.
+</Callout>
+
+<Callout kind="tip" collapsed="false">
+  **Fuzzy Matching**
+
+  The `address` field defaults to fuzzy matching for exact, full, or partial addresses. This means the following queries would all return matching results:
+
+  - `address:\"2815 Manor Rd\"`
+
+  - `address:\"2815 Manor Road\"`
+
+  - `address:\"2815 Manor Rd, Austin\"`
+
+  For more details on how fuzzy matching and address normalization work, see <a href="/docs/normalized-address-data" target="_blank" rel="noopener noreferrer">Normalized Property Addresses</a>.
 </Callout>
 
 This will pull the 1 record for a single-family dwelling for sale in Sacramento, California.
@@ -43,10 +56,10 @@ You can use our property status / mostRecentStatus data fields to find single-fa
 
 This will pull 2 records for sold SFD properties in the Sacramento Area.
 
-<Callout kind="info">
+<Callout kind="info" collapsed="false">
   **mostRecentStatus vs statusHistory**
 
-Please note that **mostRecentStatus** is a field that frequently is updated. For historical status data please use/search via the **statusHistory** field.
+  Please note that **mostRecentStatus** is a field that frequently is updated. For historical status data please use/search via the **statusHistory** field.
 </Callout>
 
 ## Search for specific address
@@ -60,14 +73,6 @@ You can search for the status of a specific address by using the following query
 ```
 
 If your specific address is found with the mostRecentStatus you are searching for, you can guarantee the property's is correct.
-
-<Callout kind="info" collapsed>
-  **Address normalization**
-
-Datafiniti normalizes street designations to standardized abbreviations. For exact matching, use the normalized form of the address when searching Datafiniti property data. Learn more in [Normalized Property Addresses](/docs/normalized-address-data).
-</Callout>
-
-<br />
 
 ## Search for historical data of sold commercial property
 
@@ -93,10 +98,10 @@ In this example we are going to search for one property that has been delisted o
 }
 ```
 
-<Callout kind="alert">
+<Callout kind="alert" collapsed="false">
   **Off Market vs Delisted**
 
-Datafiniti uses Off Market for generally stating that the property is off the market. Delisted will be post fixed with the specific reason why the property is off the market.
+  Datafiniti uses Off Market for generally stating that the property is off the market. Delisted will be post fixed with the specific reason why the property is off the market.
 </Callout>
 
 ## Search for recently changed property status
@@ -110,20 +115,20 @@ Let's say that you want to find the most recent "For Sale" property as it hits t
 }
 ```
 
-<Callout kind="info">
+<Callout kind="info" collapsed="false">
   **mostRecentStatusDate vs mostRecentStatusFirstDateSeen**
 
-`mostRecentStatusFirstDateSeen` is the date for the 1st time Datafiniti scrape and found the status change. `mostRecentStatusDate `is the status date listed by the source listing. Because of this distinguished difference you may see `mostRecentStatusDate` older than `mostRecentStatusFirstDateSeen`.
+  `mostRecentStatusFirstDateSeen` is the date for the 1st time Datafiniti scrape and found the status change. `mostRecentStatusDate `is the status date listed by the source listing. Because of this distinguished difference you may see `mostRecentStatusDate` older than `mostRecentStatusFirstDateSeen`.
 </Callout>
 
 ## Example Records
 
 Here are example bulk download files of our previous query:
 
-* [Delisted Sacramento, CA CSV](https://drive.google.com/file/d/1VvCBRc9PACAo-GHPyyP2iGi7SkT76dAZ/view?usp=share_link)
-* [Delisted Sacramento, CA Json](https://drive.google.com/file/d/11cL8HU5hHws5J9WnkOkG-shSCkvqqVQ2/view?usp=share_link)
+- [Delisted Sacramento, CA CSV](https://drive.google.com/file/d/1VvCBRc9PACAo-GHPyyP2iGi7SkT76dAZ/view?usp=share_link)
+
+- [Delisted Sacramento, CA Json](https://drive.google.com/file/d/11cL8HU5hHws5J9WnkOkG-shSCkvqqVQ2/view?usp=share_link)
 
 ### Conclusion
 
 With the tools to target specific areas of the property, you now have the capability to find delisted in any area you choose.
-

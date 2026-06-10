@@ -1,7 +1,6 @@
 ---
 title: Find rental rates for properties
 ---
-
 ## Introduction
 
 Determining what kind of rental income an apartment building or multi-family home can produce is a significant factor in deciding to invest in or underwrite a rental property.  Datafiniti can provide current and historical rental rates for any given property.
@@ -17,14 +16,21 @@ To search for a specific property, start by searching for that property's addres
 }
 ```
 
-<Callout kind="info">
-  **Address normalization**
+<Callout kind="tip" collapsed="false">
+  **Fuzzy Matching**
 
-Datafiniti uses standardized street name normalization. Converting `street` to `st`, `drive` to `dr`, etc, you can learn more about our address normalization here: [Normalized Property Addresses](/docs/normalized-address-data)\
-If you wish to exactly match addresses to Datafiniti's property data, you will need to use this normalization method.
+  The `address` field defaults to fuzzy matching for exact, full, or partial addresses. This means the following queries would all return matching results:
+
+  - `address:\"7325 SW 82nd St\"`
+
+  - `address:\"7325 SW 82nd Street\"`
+
+  - `address:\"7325 Southwest 82nd Street\"`
+
+  For more details on how fuzzy matching and address normalization work, see <a href="/docs/normalized-address-data" target="_blank" rel="noopener noreferrer">Normalized Property Addresses</a>.
 </Callout>
 
-<br />
+
 
 ## Analyzing the property matches
 
@@ -116,18 +122,18 @@ The above query will return a response like so (abbreviated record shown):
 
 There are a couple important things to understand about this response:
 
-**The `num_found` is 22.** This means there are 22 matching properties at this address.  This makes sense, because the address is the location of an apartment complex with multiple units.  Datafiniti has split out each unit into separate records.
+**The&#x20;****`num_found`****&#x20;is 22.** This means there are 22 matching properties at this address.  This makes sense, because the address is the location of an apartment complex with multiple units.  Datafiniti has split out each unit into separate records.
 
-**The rental prices are available in the `prices` array.**  Looking through the list of prices, we can see various objects.  Each one contains a specific price and the date when that price was seen.  We can use this information to determine the rentable value of the property.  By looking at all the properties' prices, we can determine how much income could be generated from this complex.
+**The rental prices are available in the&#x20;****`prices`****&#x20;array.**  Looking through the list of prices, we can see various objects.  Each one contains a specific price and the date when that price was seen.  We can use this information to determine the rentable value of the property.  By looking at all the properties' prices, we can determine how much income could be generated from this complex.
 
 ## Find the most recent rental price
 
 While we have a historical record of rental prices in the `prices` field, we also have a field dedicated to the most recent rental price amount. This field being `mostRecentRentalPriceAmount`. Let see what that looks like in comparison to this historical data.
 
-<Callout kind="alert">
+<Callout kind="alert" collapsed="false">
   **mostRecentRentalPriceAmount vs mostRecentPriceAmount**
 
-Please note that `mostRecentPriceAmount `no longer contains a rental price if `mostRecentRentalListPriceAmount` is populated in the record.
+  Please note that `mostRecentPriceAmount `no longer contains a rental price if `mostRecentRentalListPriceAmount` is populated in the record.
 </Callout>
 
 We will update the previous query to show properties with `mostRecentRentalPriceAmount `populated:
@@ -174,8 +180,6 @@ You can also find the `mostRecentRentalListPriceAmount `in our prices field.
                     "pricePerSquareFoot": 5.32
                 },
 ```
-
-<br />
 
 ## Rental history of a property
 
@@ -226,22 +230,28 @@ You can track the rental history of a property by utilizing the `rentalStatuses`
 
 There are a number of other fields returned for each property that can be useful when determining the value of a rental property.  Any of these fields may affect an investment or underwriting decision:
 
-* `floorSizeValue` and `floorSizeUnit` - These show the size of the individual units.
-* `numBathroom` and `numBedroom`
-* `numFloor`
-* `parking`
-* `petPolicy`
-* `propertyTaxes`
-* `yearBuilt`
+- `floorSizeValue` and `floorSizeUnit` - These show the size of the individual units.
+
+- `numBathroom` and `numBedroom`
+
+- `numFloor`
+
+- `parking`
+
+- `petPolicy`
+
+- `propertyTaxes`
+
+- `yearBuilt`
 
 ### Example Records
 
 Here are example bulk download files of our previous query:
 
-* [Miami rental property data CSV](https://drive.google.com/file/d/1ud8Ba2A_3MCz4LCFXVMq1nuraLy92wsF/view?usp=share_link)
-* [Miami rental property data Json](https://drive.google.com/file/d/1chlqgJCWZKNG9OGhz48fM2HOMEs_Tkac/view?usp=share_link)
+- [Miami rental property data CSV](https://drive.google.com/file/d/1ud8Ba2A_3MCz4LCFXVMq1nuraLy92wsF/view?usp=share_link)
+
+- [Miami rental property data Json](https://drive.google.com/file/d/1chlqgJCWZKNG9OGhz48fM2HOMEs_Tkac/view?usp=share_link)
 
 ### Conclusion
 
 With multiple records from the same area, you can compare and find rental property that fits into your use case. Compare Price, search availability, and look up move in dates using this report.
-

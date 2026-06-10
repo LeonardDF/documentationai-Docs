@@ -85,12 +85,30 @@ You can use an exact search to search for specific addresses
 
 ```json
 {
-  "query":"address:\"3900 Eventide Ave\" AND city:(\"Sacramento\") AND postalCode:95835 AND province:(\"CA\") AND country:\"US\"" }
+	"query":"address:\"3900 Eventide Ave\" AND city:(\"Sacramento\") AND postalCode:95835 AND province:(\"CA\") AND country:\"US\"" }
 ```
 
 <Callout kind="info" collapsed="false">
   **Address normalization** — Datafiniti normalizes street designations to standardized abbreviations, such as converting `street` to `st` and `drive` to `dr`. Use normalized forms when you need an exact match against Datafiniti property data. Learn more in [Normalized Property Addresses](/docs/normalized-address-data).
 </Callout>
+
+## Fuzzy Matching
+
+When using the `address` field in your property data query, it defaults to fuzzy matching for exact, full, or partial addresses. Meaning for an address like *1100 Congress Ave., Austin, TX 78701,* the following queries would be acceptable:
+
+- 1100 Congress Ave
+
+- 1100 Congress Avenue
+
+- 1100 Congress Ave, Austin
+
+- 1100 Congress Ave, Austin, TX 78701
+
+```java wrap="true"
+{
+	"query": "address:\"100 Congress Ave, Austin, Texas 78701\" 
+}
+```
 
 ## Wildcards
 
