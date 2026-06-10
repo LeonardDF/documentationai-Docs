@@ -59,11 +59,16 @@ This query targets US and Illinois properties above or equal to 500000$. Along w
   please note your field's data type when inputting your value in the search query. price will not accept commas (,) in the value.
 </Callout>
 
-<Callout kind="info" collapsed="false">
-  **Address normalization**
+<Callout kind="tip" collapsed="false">
+  **Fuzzy Matching**
 
-  Datafiniti uses standardized street name normalization. Converting `street` to `st`, `drive` to `dr`, etc, you can learn more about our address normalization here: [Normalized Property Addresses](/docs/normalized-address-data)\
-  If you wish to exactly match addresses to Datafiniti's property data, you will need to use this normalization method.
+  The `address` field defaults to fuzzy matching for exact, full, or partial addresses. This means the following queries would all return matching results:
+
+  - `address:\"2815 Manor Rd\"`
+  - `address:\"2815 Manor Road\"`
+  - `address:\"2815 Manor Rd, Austin\"`
+
+  For more details on how fuzzy matching and address normalization work, see [Normalized Property Addresses](/docs/normalized-address-data).
 </Callout>
 
 ## Search an Entire MLS Market

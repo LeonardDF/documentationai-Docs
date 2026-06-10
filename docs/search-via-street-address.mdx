@@ -22,17 +22,15 @@ Since street addresses can be broken down into many parts, we will query based o
 </Callout>
 
 <Callout kind="tip" collapsed="false">
-  **Address Normalization**
+  **Fuzzy Matching**
 
-  Datafiniti normalizes street designations to standardized abbreviations such as `st` for `street` and `dr` for `drive`.
+  The `address` field defaults to fuzzy matching for exact, full, or partial addresses. This means the following queries would all return matching results:
 
-  Use normalized forms when you need an exact match against Datafiniti property data. Learn more in [Normalized Property Addresses](/docs/normalized-address-data).
-</Callout>
+  - `address:\"2815 Manor Rd\"`
+  - `address:\"2815 Manor Road\"`
+  - `address:\"2815 Manor Rd, Austin\"`
 
-<Callout kind="info" collapsed="false">
-  **State Abbreviations**
-
-  Datafiniti runs an address normalization process across our entire property database. We normalize our addresses to a 2-character abbreviation USPS standard. You can find out more about this process [here](/docs/normalized-address-data).
+  For more details on how fuzzy matching and address normalization work, see [Normalized Property Addresses](/docs/normalized-address-data).
 </Callout>
 
 ## Search for Unit
