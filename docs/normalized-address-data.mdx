@@ -5,6 +5,20 @@ title: Normalized Property Addresses
 
 Datafiniti normalizes all street addresses in our property database.  We convert common street designations to 2-3 character abbreviations.  These conversions are shown below.
 
+<Callout kind="tip" collapsed="false">
+  Fuzzy Matching
+
+  Please note that if you are using the `address` field in your property data query, it defaults to fuzzy matching for exact, full, or partial addresses. Meaning for an address like *1100 Congress Ave., Austin, TX 78701,* the following queries would be acceptable:
+
+  - 1100 Congress Ave
+
+  - 1100 Congress Avenue
+
+  - 1100 Congress Ave, Austin
+
+  - 1100 Congress Ave.*., Austin, TX 78701*
+</Callout>
+
 ### Property Search API Example
 
 Let's say you want to search for the following address:
@@ -24,7 +38,7 @@ In this case, we will need to abbreviate **suffix street name** `Avenue` to Data
 
 For a more detailed overview on how Datafiniti's approach to normalizing street addresses and how this process enhances the usability and consistency of address-related data. \
 \
-The <a href="https://github.com/datafiniti/use-cases/tree/main/Datafiniti%20Integration%20Use%20Cases/Datafiniti%20Normalization" target="_blank" rel="noopener noreferrer">Datafiniti GitHub repo</a>  provides tools to standardize addresses by abbreviating street suffixes (e.g., "Street" → "ST", "Avenue" → "AVE"), directional terms (e.g., "North" → "N"), and regions, improving data consistency and API query performance (especially for Datafiniti).
+The <a href="https://github.com/datafiniti/use-cases/tree/main/Datafiniti%20Integration%20Use%20Cases/Datafiniti%20Normalization" target="_blank" rel="noopener noreferrer">Datafiniti GitHub Repo</a>  provides tools to standardize addresses by abbreviating street suffixes (e.g., "Street" → "ST", "Avenue" → "AVE"), directional terms (e.g., "North" → "N"), and regions, improving data consistency and API query performance (especially for Datafiniti).
 
 #### **Code Implementations**
 
