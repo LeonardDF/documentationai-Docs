@@ -1,9 +1,11 @@
 ---
 title: Normalized Property Addresses
 ---
-## Address Normalization
+#
 
-Datafiniti normalizes all street addresses in our property database.  We convert common street designations to 2-3 character abbreviations.  These conversions are shown below.
+## Address Normalization & Fuzzy Matching
+
+Datafiniti normalizes all street addresses in our property database by converting common street designations to 2-3 character abbreviations (shown below). However, because the `address` field defaults to **fuzzy matching**, you do not need to abbreviate your query to match our normalized format — exact, full, or partial addresses will all return results.
 
 <Callout kind="tip" collapsed="false">
   **Fuzzy Matching**
@@ -23,22 +25,22 @@ Datafiniti normalizes all street addresses in our property database.  We convert
 
 Let's say you want to search for the following address:
 
-- 3407 Pennsylvania Avenue,  Austin, TX 78721
+- 3407 Pennsylvania Avenue,  Austin, TX 78721
 
-In this case, we will need to abbreviate **suffix street name** `Avenue` to Datafiniti's normalization. For this example we will use the following property search API query to show how `Avenue` would be abbreviated to `Ave`. Below is what address you would need to use in the API query. For a full list of possible values Datafiniti normalizes, see [Possible Values for Property Fields](/docs/possible-values-for-property-fields).
+Because the `address` field defaults to fuzzy matching, you could query this address using either the full term `Avenue` or its abbreviated form `Ave` — both are acceptable. The example below uses the abbreviated form `Ave`, which matches how the address is stored in our database. For a full list of the abbreviations Datafiniti uses, see [Possible Values for Property Fields](/docs/possible-values-for-property-fields).
 
 ```json
 {
-  "query":"address:\"3407 Pennsylvania Ave\" AND city:Austin AND province:TX AND postalCode:78721",
+  "query":"address:"3407 Pennsylvania Ave" AND city:Austin AND province:TX AND postalCode:78721",
   "num_records":1
 }
 ```
 
 ### Normalized Terms for Street Addresses Code
 
-For a more detailed overview on how Datafiniti's approach to normalizing street addresses and how this process enhances the usability and consistency of address-related data. \
-\
-The <a href="https://github.com/datafiniti/use-cases/tree/main/Datafiniti%20Integration%20Use%20Cases/Datafiniti%20Normalization" target="_blank" rel="noopener noreferrer">Datafiniti GitHub Repo</a>  provides tools to standardize addresses by abbreviating street suffixes (e.g., "Street" → "ST", "Avenue" → "AVE"), directional terms (e.g., "North" → "N"), and regions, improving data consistency and API query performance (especially for Datafiniti).
+While fuzzy matching means abbreviating your queries is optional, standardizing addresses before querying can still improve match quality and consistency — particularly for bulk processing and deduplication workflows.
+
+The <a href="https://github.com/datafiniti/use-cases/tree/main/Datafiniti%20Integration%20Use%20Cases/Datafiniti%20Normalization" target="_blank" rel="noopener noreferrer">Datafiniti GitHub Repo</a> provides tools to standardize addresses by abbreviating street suffixes (e.g., "Street" → "ST", "Avenue" → "AVE"), directional terms (e.g., "North" → "N"), and regions, improving data consistency and API query performance (especially when combined with Datafiniti's fuzzy matching).
 
 #### **Code Implementations**
 
@@ -51,239 +53,237 @@ The <a href="https://github.com/datafiniti/use-cases/tree/main/Datafiniti%20Inte
 
 - **Dictionaries**: Covers US/Canada street suffixes, directions; extensible.
 
-- **Java Example**: `abbreviateAddress("123 Main Street, Alberta, Northwest")` → `"123 Main ST, AB, NW"`.
+- **Datafiniti Tie-in**: Queries like `address:"123 Main ST" AND postalCode:"12345*"` benefit from fuzzy matching, with standardized terms further improving match rates and deduplication.
 
-- **Python Example**: `normalize_address("123 Main Street Unit 5 North")` → `"123 Main St UNIT 5 N"`.
+### Street address abbreviations
 
-- **Datafiniti Tie-in**: Enhances queries like `address:"123 Main ST" AND postalCode:"12345*"` for better matches and deduplication.
+Fuzzy matching on the address field accepts both the full address term and its abbreviated form. The table below shows how each term is stored in the Datafiniti database.
 
-#### Street address abbreviations
-
-| Address Term | Normalized Term |
-| ------------ | --------------- |
-| ALLEY        | ALY             |
-| ANNEX        | ANX             |
-| ARCADE       | ARC             |
-| AVENUE       | AVE             |
-| BAYOO        | BYU             |
-| BEACH        | BCH             |
-| BEND         | BND             |
-| BLUFF        | BLF             |
-| BLUFFS       | LFS             |
-| BOTTOM       | BTM             |
-| BOULEVARD    | BLVD            |
-| BRANCH       | BR              |
-| BRIDGE       | BRG             |
-| BROOK        | BRK             |
-| BROOKS       | BRKS            |
-| BURG         | BG              |
-| BURGS        | BGS             |
-| BYPASS       | BYP             |
-| CAMP         | CP              |
-| CANYON       | CYN             |
-| CAPE         | CPE             |
-| CAUSEWAY     | CSWY            |
-| CENTER       | CTR             |
-| CENTERS      | CTRS            |
-| CIRCLE       | CIR             |
-| CIRCLES      | CIRS            |
-| CLIFF        | CLF             |
-| CLIFFS       | CLFS            |
-| CLUB         | CLB             |
-| COMMON       | CMN             |
-| CORNER       | COR             |
-| CORNERS      | CORS            |
-| COURSE       | CRSE            |
-| COURT        | CT              |
-| COURTS       | CTS             |
-| COVE         | CV              |
-| COVES        | CVS             |
-| CREEK        | CRK             |
-| CRESCENT     | CRES            |
-| CREST        | CRST            |
-| CROSSING     | XING            |
-| CROSSROAD    | XRD             |
-| CURVE        | CURV            |
-| DALE         | DL              |
-| DAM          | DM              |
-| DIVIDE       | DV              |
-| DRIVE        | DR              |
-| DRIVES       | DRS             |
-| ESTATE       | EST             |
-| ESTATES      | ESTS            |
-| EXPRESSWAY   | EXPY            |
-| EXTENSION    | EXT             |
-| EXTENSIONS   | EXTS            |
-| FALL         | FALL            |
-| FALLS        | FLS             |
-| FERRY        | FRY             |
-| FIELD        | FLD             |
-| FIELDS       | FLDS            |
-| FLAT         | FLT             |
-| FLATS        | FLTS            |
-| FORD         | FRD             |
-| FORDS        | FRDS            |
-| FOREST       | FRST            |
-| FORGE        | FRG             |
-| FORGES       | FRGS            |
-| FORK         | FRK             |
-| FORKS        | FRKS            |
-| FORT         | FT              |
-| FREEWAY      | FWY             |
-| GARDEN       | GDN             |
-| GARDENS      | GDNS            |
-| GATEWAY      | GTWY            |
-| GLEN         | GLN             |
-| GLENS        | GLNS            |
-| GREEN        | GRN             |
-| GREENS       | GRNS            |
-| GROVE        | GRV             |
-| GROVES       | GRVS            |
-| HARBOR       | HBR             |
-| HARBORS      | HBRS            |
-| HAVEN        | HVN             |
-| HEIGHTS      | HTS             |
-| HIGHWAY      | HWY             |
-| HILL         | HL              |
-| HILLS        | HLS             |
-| HOLLOW       | HOLW            |
-| INLET        | INLT            |
-| INTERSTATE   | I               |
-| ISLAND       | IS              |
-| ISLANDS      | ISS             |
-| ISLE         | ISLE            |
-| JUNCTION     | JCT             |
-| JUNCTIONS    | JCTS            |
-| KEY          | KY              |
-| KEYS         | KYS             |
-| KNOLL        | KNL             |
-| KNOLLS       | KNLS            |
-| LAKE         | LK              |
-| LAKES        | LKS             |
-| LAND         | LAND            |
-| LANDING      | LNDG            |
-| LANE         | LN              |
-| LIGHT        | LGT             |
-| LIGHTS       | LGTS            |
-| LOAF         | LF              |
-| LOCK         | LCK             |
-| LOCKS        | LCKS            |
-| LODGE        | LDG             |
-| LOOP         | LOOP            |
-| MALL         | MALL            |
-| MANOR        | MNR             |
-| MANORS       | MNRS            |
-| MEADOW       | MDW             |
-| MEADOWS      | MDWS            |
-| MEWS         | MEWS            |
-| MILL         | ML              |
-| MILLS        | MLS             |
-| MISSION      | MSN             |
-| MOORHEAD     | MHD             |
-| MOTORWAY     | MTWY            |
-| MOUNT        | MT              |
-| MOUNTAIN     | MTN             |
-| MOUNTAINS    | MTNS            |
-| NECK         | NCK             |
-| ORCHARD      | ORCH            |
-| OVAL         | OVAL            |
-| OVERPASS     | OPAS            |
-| PARK         | PARK            |
-| PARKS        | PARK            |
-| PARKWAY      | PKWY            |
-| PARKWAYS     | PKWY            |
-| PASS         | PASS            |
-| PASSAGE      | PSGE            |
-| PATH         | PATH            |
-| PIKE         | PIKE            |
-| PINE         | PNE             |
-| PINES        | PNES            |
-| PLACE        | PL              |
-| PLAIN        | PLN             |
-| PLAINS       | PLNS            |
-| PLAZA        | PLZ             |
-| POINT        | PT              |
-| POINTS       | PTS             |
-| PORT         | PRT             |
-| PORTS        | PRTS            |
-| PRAIRIE      | PR              |
-| RADIAL       | RADL            |
-| RAMP         | RAMP            |
-| RANCH        | RNCH            |
-| RAPID        | RPD             |
-| RAPIDS       | RPDS            |
-| REST         | RST             |
-| RIDGE        | RDG             |
-| RIDGES       | RDGS            |
-| RIVER        | RIV             |
-| ROAD         | RD              |
-| ROADS        | RDS             |
-| ROUTE        | RTE             |
-| ROW          | ROW             |
-| RUE          | RUE             |
-| RUN          | RUN             |
-| SHOAL        | SHL             |
-| SHOALS       | SHLS            |
-| SHORE        | SHR             |
-| SHORES       | SHRS            |
-| SKYWAY       | SKWY            |
-| SPRING       | SPG             |
-| SPRINGS      | SPGS            |
-| SPUR         | SPUR            |
-| SPURS        | SPUR            |
-| SQUARE       | SQ              |
-| SQUARES      | SQS             |
-| STATION      | STA             |
-| STREAM       | STRM            |
-| STREET       | ST              |
-| STREETS      | STS             |
-| SUMMIT       | SMT             |
-| THROUGHWAY   | TRWY            |
-| TRACE        | TRCE            |
-| TRACK        | TRAK            |
-| TRAIL        | TRL             |
-| TUNNEL       | TUNL            |
-| TURNPIKE     | TPKE            |
-| UNDERPASS    | UPAS            |
-| UNION        | UN              |
-| UNIONS       | UNS             |
-| VALLEY       | VLY             |
-| VALLEYS      | VLYS            |
-| VIADUCT      | VIA             |
-| VIEW         | VW              |
-| VIEWS        | VWS             |
-| VILLAGE      | VLG             |
-| VILLAGES     | VLGS            |
-| VILLE        | VL              |
-| VISTA        | VIS             |
-| WALK         | WALK            |
-| WALKS        | WALK            |
-| WALL         | WALL            |
-| WAY          | WAY             |
-| WAYS         | WAYS            |
-| WELL         | WL              |
-| WELLS        | WLS             |
-| APARTMENT    | APT             |
-| BASEMENT     | BSMT            |
-| BUILDING     | BLDG            |
-| DEPARTMENT   | DEPT            |
-| FLOOR        | FL              |
-| FRONT        | FRNT            |
-| HANGAR       | HNGR            |
-| LOBBY        | LBBY            |
-| LOT          | LOT             |
-| LOWER        | LOWR            |
-| OFFICE       | OFC             |
-| PENTHOUSE    | PH              |
-| PIER         | PIER            |
-| REAR         | REAR            |
-| ROOM         | RM              |
-| SIDE         | SIDE            |
-| SLIP         | SLIP            |
-| SPACE        | SPC             |
-| STOP         | STOP            |
-| SUITE        | STE             |
-| TRAILER      | TRLR            |
-| UNIT         | UNIT            |
-| UPPER        | UPPR            |
+| Address Term | Abbreviated Term |
+| ------------ | ---------------- |
+| ALLEY        | ALY              |
+| ANNEX        | ANX              |
+| ARCADE       | ARC              |
+| AVENUE       | AVE              |
+| BAYOO        | BYU              |
+| BEACH        | BCH              |
+| BEND         | BND              |
+| BLUFF        | BLF              |
+| BLUFFS       | LFS              |
+| BOTTOM       | BTM              |
+| BOULEVARD    | BLVD             |
+| BRANCH       | BR               |
+| BRIDGE       | BRG              |
+| BROOK        | BRK              |
+| BROOKS       | BRKS             |
+| BURG         | BG               |
+| BURGS        | BGS              |
+| BYPASS       | BYP              |
+| CAMP         | CP               |
+| CANYON       | CYN              |
+| CAPE         | CPE              |
+| CAUSEWAY     | CSWY             |
+| CENTER       | CTR              |
+| CENTERS      | CTRS             |
+| CIRCLE       | CIR              |
+| CIRCLES      | CIRS             |
+| CLIFF        | CLF              |
+| CLIFFS       | CLFS             |
+| CLUB         | CLB              |
+| COMMON       | CMN              |
+| CORNER       | COR              |
+| CORNERS      | CORS             |
+| COURSE       | CRSE             |
+| COURT        | CT               |
+| COURTS       | CTS              |
+| COVE         | CV               |
+| COVES        | CVS              |
+| CREEK        | CRK              |
+| CRESCENT     | CRES             |
+| CREST        | CRST             |
+| CROSSING     | XING             |
+| CROSSROAD    | XRD              |
+| CURVE        | CURV             |
+| DALE         | DL               |
+| DAM          | DM               |
+| DIVIDE       | DV               |
+| DRIVE        | DR               |
+| DRIVES       | DRS              |
+| ESTATE       | EST              |
+| ESTATES      | ESTS             |
+| EXPRESSWAY   | EXPY             |
+| EXTENSION    | EXT              |
+| EXTENSIONS   | EXTS             |
+| FALL         | FALL             |
+| FALLS        | FLS              |
+| FERRY        | FRY              |
+| FIELD        | FLD              |
+| FIELDS       | FLDS             |
+| FLAT         | FLT              |
+| FLATS        | FLTS             |
+| FORD         | FRD              |
+| FORDS        | FRDS             |
+| FOREST       | FRST             |
+| FORGE        | FRG              |
+| FORGES       | FRGS             |
+| FORK         | FRK              |
+| FORKS        | FRKS             |
+| FORT         | FT               |
+| FREEWAY      | FWY              |
+| GARDEN       | GDN              |
+| GARDENS      | GDNS             |
+| GATEWAY      | GTWY             |
+| GLEN         | GLN              |
+| GLENS        | GLNS             |
+| GREEN        | GRN              |
+| GREENS       | GRNS             |
+| GROVE        | GRV              |
+| GROVES       | GRVS             |
+| HARBOR       | HBR              |
+| HARBORS      | HBRS             |
+| HAVEN        | HVN              |
+| HEIGHTS      | HTS              |
+| HIGHWAY      | HWY              |
+| HILL         | HL               |
+| HILLS        | HLS              |
+| HOLLOW       | HOLW             |
+| INLET        | INLT             |
+| INTERSTATE   | I                |
+| ISLAND       | IS               |
+| ISLANDS      | ISS              |
+| ISLE         | ISLE             |
+| JUNCTION     | JCT              |
+| JUNCTIONS    | JCTS             |
+| KEY          | KY               |
+| KEYS         | KYS              |
+| KNOLL        | KNL              |
+| KNOLLS       | KNLS             |
+| LAKE         | LK               |
+| LAKES        | LKS              |
+| LAND         | LAND             |
+| LANDING      | LNDG             |
+| LANE         | LN               |
+| LIGHT        | LGT              |
+| LIGHTS       | LGTS             |
+| LOAF         | LF               |
+| LOCK         | LCK              |
+| LOCKS        | LCKS             |
+| LODGE        | LDG              |
+| LOOP         | LOOP             |
+| MALL         | MALL             |
+| MANOR        | MNR              |
+| MANORS       | MNRS             |
+| MEADOW       | MDW              |
+| MEADOWS      | MDWS             |
+| MEWS         | MEWS             |
+| MILL         | ML               |
+| MILLS        | MLS              |
+| MISSION      | MSN              |
+| MOORHEAD     | MHD              |
+| MOTORWAY     | MTWY             |
+| MOUNT        | MT               |
+| MOUNTAIN     | MTN              |
+| MOUNTAINS    | MTNS             |
+| NECK         | NCK              |
+| ORCHARD      | ORCH             |
+| OVAL         | OVAL             |
+| OVERPASS     | OPAS             |
+| PARK         | PARK             |
+| PARKS        | PARK             |
+| PARKWAY      | PKWY             |
+| PARKWAYS     | PKWY             |
+| PASS         | PASS             |
+| PASSAGE      | PSGE             |
+| PATH         | PATH             |
+| PIKE         | PIKE             |
+| PINE         | PNE              |
+| PINES        | PNES             |
+| PLACE        | PL               |
+| PLAIN        | PLN              |
+| PLAINS       | PLNS             |
+| PLAZA        | PLZ              |
+| POINT        | PT               |
+| POINTS       | PTS              |
+| PORT         | PRT              |
+| PORTS        | PRTS             |
+| PRAIRIE      | PR               |
+| RADIAL       | RADL             |
+| RAMP         | RAMP             |
+| RANCH        | RNCH             |
+| RAPID        | RPD              |
+| RAPIDS       | RPDS             |
+| REST         | RST              |
+| RIDGE        | RDG              |
+| RIDGES       | RDGS             |
+| RIVER        | RIV              |
+| ROAD         | RD               |
+| ROADS        | RDS              |
+| ROUTE        | RTE              |
+| ROW          | ROW              |
+| RUE          | RUE              |
+| RUN          | RUN              |
+| SHOAL        | SHL              |
+| SHOALS       | SHLS             |
+| SHORE        | SHR              |
+| SHORES       | SHRS             |
+| SKYWAY       | SKWY             |
+| SPRING       | SPG              |
+| SPRINGS      | SPGS             |
+| SPUR         | SPUR             |
+| SPURS        | SPUR             |
+| SQUARE       | SQ               |
+| SQUARES      | SQS              |
+| STATION      | STA              |
+| STREAM       | STRM             |
+| STREET       | ST               |
+| STREETS      | STS              |
+| SUMMIT       | SMT              |
+| THROUGHWAY   | TRWY             |
+| TRACE        | TRCE             |
+| TRACK        | TRAK             |
+| TRAIL        | TRL              |
+| TUNNEL       | TUNL             |
+| TURNPIKE     | TPKE             |
+| UNDERPASS    | UPAS             |
+| UNION        | UN               |
+| UNIONS       | UNS              |
+| VALLEY       | VLY              |
+| VALLEYS      | VLYS             |
+| VIADUCT      | VIA              |
+| VIEW         | VW               |
+| VIEWS        | VWS              |
+| VILLAGE      | VLG              |
+| VILLAGES     | VLGS             |
+| VILLE        | VL               |
+| VISTA        | VIS              |
+| WALK         | WALK             |
+| WALKS        | WALK             |
+| WALL         | WALL             |
+| WAY          | WAY              |
+| WAYS         | WAYS             |
+| WELL         | WL               |
+| WELLS        | WLS              |
+| APARTMENT    | APT              |
+| BASEMENT     | BSMT             |
+| BUILDING     | BLDG             |
+| DEPARTMENT   | DEPT             |
+| FLOOR        | FL               |
+| FRONT        | FRNT             |
+| HANGAR       | HNGR             |
+| LOBBY        | LBBY             |
+| LOT          | LOT              |
+| LOWER        | LOWR             |
+| OFFICE       | OFC              |
+| PENTHOUSE    | PH               |
+| PIER         | PIER             |
+| REAR         | REAR             |
+| ROOM         | RM               |
+| SIDE         | SIDE             |
+| SLIP         | SLIP             |
+| SPACE        | SPC              |
+| STOP         | STOP             |
+| SUITE        | STE              |
+| TRAILER      | TRLR             |
+| UNIT         | UNIT             |
+| UPPER        | UPPR             |
 
