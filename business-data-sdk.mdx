@@ -1,0 +1,352 @@
+---
+title: Business Data SDK
+---
+## Summary
+
+The Datafiniti Business Data SDK is a Python library that provides a clean, simple interface for searching, counting, and downloading business records from the Datafiniti Business Data API.
+
+The Business data SDK is a thin abstraction over the `/v4/businesses` endpoint, with built-in authentication, retry logic, query composition, and pagination. For the entire suite of examples and tools, you can download them <a href="https://pypi.org/project/datafiniti-sdk/#files" target="_blank" rel="noopener noreferrer">here</a>.&#x20;
+
+---
+
+# Installation
+
+```bash
+pip install datafiniti
+```
+
+The Business SDK is included in the unified `datafiniti` package alongside the People, Property, and Product SDKs.
+
+---
+
+## Authentication
+
+The SDK authenticates with a Bearer token. Set your API key as an environment variable:
+
+```bash
+export DATAFINITI_API_KEY="your_api_key_here"
+```
+
+Then initialize the SDK:
+
+```python
+from datafiniti import DatafinitiBusinessSDK
+
+sdk = DatafinitiBusinessSDK.from_env()
+```
+
+You can also import directly from the business module:
+
+```python
+from datafiniti.business import DatafinitiBusinessSDK
+```
+
+---
+
+# Quick Start
+
+Search for restaurants in Austin, TX:
+
+```python
+from datafiniti import DatafinitiBusinessSDK
+
+sdk = DatafinitiBusinessSDK.from_env()
+
+query = (
+    sdk.query()
+    .country("US")
+    .city("Austin")
+    .categories(["Restaurant"])
+    .build()
+)
+# → country:US AND city:"Austin" AND categories:("Restaurant")
+
+results = sdk.search(query, num_records=10)
+for record in results["records"]:
+    print(record["name"])
+```
+
+---
+
+## Building Queries
+
+`BusinessQuery` is a fluent query builder exposing fields relevant to the Business data type. Chain field methods and call `.build()` to produce a Datafiniti query string.
+
+```python
+query = (
+    sdk.query()
+    .country("US")
+    .city("Austin")
+    .categories(["Restaurant"])
+    .build()
+)
+```
+
+### Geolocation Search
+
+Search within a circular radius around a coordinate using `geo_location(longitude, latitude, radius, unit)`:
+
+```python
+query = (
+    sdk.query()
+    .geo_location(-97.7430600, 30.2671500, 10, "mi")
+    .build()
+)
+# → geoLocation:[-97.743060,30.26715,10,mi]
+```
+
+Supported units: `m`, `mi`, `ft`, `yd`, `mm`, `km`, `NM`, `cm`
+
+---
+
+# Core Methods
+
+## search()
+
+Runs a search against `POST /v4/businesses/search` and returns matching records.
+
+```python
+results = sdk.search(query, num_records=25)
+```
+
+### count()
+
+Returns the total number of records matching a query without downloading any records (runs a search with `num_records=0`).
+
+```python
+query = sdk.query().country("US").categories(["Restaurant"]).build()
+total = sdk.count(query)
+print(f"Total US restaurants: {total}")
+```
+
+## paginate()
+
+Iterates through all matching records via `POST /v4/businesses/paginate`, yielding records one at a time so you never hold the full result set in memory.
+
+```python
+query = sdk.query().country("US").province("TX").build()
+
+for record in sdk.paginate(query):
+    print(record["name"])
+```
+
+---
+
+## search\_by\_name()
+
+Search businesses by name without building a query manually:
+
+```python
+results = sdk.search_by_name("Torchy's Tacos")
+```
+
+## geolocation()
+
+Run a radius search directly from the SDK:
+
+```python
+results = sdk.geolocation(-97.7430600, 30.2671500, 10, "mi")
+```
+
+---
+
+---
+
+# Error Handling & Retries
+
+All API errors raise a shared `DatafinitiAPIError`:
+
+```python
+from datafiniti.errors import DatafinitiAPIError
+
+try:
+    results = sdk.search(query)
+except DatafinitiAPIError as e:
+    print(f"API request failed: {e}")
+```
+
+The SDK automatically retries transient failures with exponential backoff:
+
+- Retried status codes: 408, 429, 500, 502, 503, 504
+
+- Backoff schedule: 1s → 2s → 4s
+
+---
+
+## Responses
+
+Responses are returned as raw Python dictionaries. The Datafiniti schema evolves, so the SDK avoids rigid typed models until the schema is stable. Typed response models are planned for a future release.
+
+---
+
+# Examples
+
+The package ships with runnable examples under `examples/business/`:
+
+| Example                   | Description                     |
+| ------------------------- | ------------------------------- |
+| `count_query.py`          | Count US restaurants            |
+| `business_geolocation.py` | Radius search around Austin, TX |
+| `business_paginate.py`    | Paginate through TX businesses  |
+| `business_views.py`       | Swap named views per request    |
+
+<CodeGroup default-tab="3" show-lines="true" tabs={["business_geolocation.py","count_query.py","business_paginate.py","business_views.py"]}>
+  ```python business_geolocation.py
+  from datafiniti.business import DatafinitiBusinessSDK
+  from datafiniti.errors import DatafinitiAPIError
+
+
+  sdk = DatafinitiBusinessSDK.from_env()
+
+  try:
+      # Search for businesses within a 10-mile radius of Austin, TX
+      # geoLocation format: [Longitude, Latitude, Distance, Unit]
+      # Supported units: m, mi, ft, yd, mm, km, NM, cm
+      response = sdk.geolocation(
+          longitude=-97.7430600,
+          latitude=30.2671500,
+          distance=10,
+          unit="mi",
+          num_records=3,
+          view=[
+              {"name": "address"},
+              {"name": "city"},
+              {"name": "country"},
+              {"name": "latitude"},
+              {"name": "longitude"},
+              {"name": "geoLocation"},
+              {"name": "postalCode"},
+          ],
+      )
+
+      print("\n=== BUSINESS GEOLOCATION SEARCH ===")
+      print(f"Total matches: {response.get('num_found'):,}")
+
+      records = response.get("records", [])
+
+      for business in records:
+          print(
+              f"\n{business.get('name', 'Unknown Name')}"
+              f"\n{business.get('address')}, {business.get('city')} {business.get('postalCode')}"
+              f"\n--geoLocation: {business.get('geoLocation')}"
+          )
+  except DatafinitiAPIError as e:
+      print(f"\nAPI Error {e.status_code}: {e}")
+      for msg in e.errors:
+          print(f"  {msg}")
+
+  ```
+
+  ```python count_query.py
+  from datafiniti.business import DatafinitiBusinessSDK
+  from datafiniti.errors import DatafinitiAPIError
+
+
+  sdk = DatafinitiBusinessSDK.from_env()
+
+  try:
+      count = sdk.count("country:US AND categories:(restaurants)")
+      print("\n=== BUSINESS COUNT TEST ===")
+      print(f"Restaurants in the US: {count:,}")
+  except DatafinitiAPIError as e:
+      print(f"\nAPI Error {e.status_code}: {e}")
+      for msg in e.errors:
+          print(f"  {msg}")
+
+  ```
+
+  ```python business_paginate.py
+  from datafiniti.business import DatafinitiBusinessSDK
+  from datafiniti.errors import DatafinitiAPIError
+
+
+  sdk = DatafinitiBusinessSDK.from_env()
+
+  print("\n=== BUSINESS PAGINATION TEST ===")
+
+  records_seen = 0
+
+  try:
+      for business in sdk.paginate(
+          query='country:"US" AND province:"TX"',
+          #note that the query can be modified to any business data query
+
+          # page_size maps to the `limit` query param — how many records are returned per page (max 500).
+          # The SDK increments the `page` number automatically after each full page is consumed,
+          # so page 1 returns records 1–10, page 2 returns 11–20, and so on until max_records is reached
+          # or the API returns an empty page (no more results).
+          page_size=10,
+          max_records=50,  # stop after 50 total records (5 pages of 10)
+      ):
+          records_seen += 1
+          print(f"{records_seen}. {business.get('name', 'Unknown Name')}")
+      print(f"\nTotal Retrieved: {records_seen}")
+  except DatafinitiAPIError as e:
+      print(f"\nAPI Error {e.status_code}: {e}")
+      for msg in e.errors:
+          print(f"  {msg}")
+
+  ```
+
+  ```python business_views.py
+  from datafiniti.business import DatafinitiBusinessSDK
+  from datafiniti.errors import DatafinitiAPIError
+
+  # ---------------------------------------------------------------------------
+  # View options — swap the value of ACTIVE_VIEW to change what fields return.
+  #
+  # "default"               All fields from the Business Data Schema.
+  #                         In CSV format, multi-valued fields split into rows.
+  #
+  # "business_all_nested"   All fields; multi-valued fields kept in a single
+  #                         cell when using CSV format.
+  #
+  # "business_basic"        Reduced set: address, name, coordinates, websites.
+  #
+  # "business_flat_menus"   All fields; each menu entry split into its own row
+  #                         in CSV format.
+  #
+  # "business_flat_reviews" All fields; each review split into its own row
+  #                         in CSV format, other fields condensed.
+  #
+  # "business_no_reviews"   All fields except reviews; multi-valued fields
+  #                         kept nested in single cells.
+  #
+  # Reference: https://docs.datafiniti.co/docs/available-views-for-business-data-1
+  # ---------------------------------------------------------------------------
+
+  ACTIVE_VIEW = "business_flat_reviews"
+
+  sdk = DatafinitiBusinessSDK.from_env()
+
+  try:
+      response = sdk.search(
+          query='country:"US" AND province:"TX"',
+          num_records=5,
+          view=ACTIVE_VIEW,
+      )
+
+      print(f"\n=== BUSINESS VIEWS: {ACTIVE_VIEW} ===")
+      print(f"Total matches: {response.get('num_found'):,}\n")
+
+      for business in response.get("records", []):
+          print(f"Name:     {business.get('name', 'N/A')}")
+          print(f"Address:  {business.get('address', 'N/A')}, {business.get('city', 'N/A')} {business.get('postalCode', 'N/A')}")
+          print(f"Website:  {business.get('websites', ['N/A'])[0] if business.get('websites') else 'N/A'}")
+
+          # Fields unique to business_flat_reviews — each record represents one flattened review row.
+          # These fields are absent from business_basic and business_no_reviews.
+          reviews = business.get("reviews", [{}])
+          review = reviews[0] if reviews else {}
+          print(f"Rating:   {review.get('rating', 'N/A')}")
+          print(f"Review:   {review.get('text', 'N/A')}")
+          print(f"Date:     {review.get('date', 'N/A')}")
+          print()
+  except DatafinitiAPIError as e:
+      print(f"\nAPI Error {e.status_code}: {e}")
+      for msg in e.errors:
+          print(f"  {msg}")
+
+  ```
+</CodeGroup>
+
