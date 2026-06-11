@@ -769,10 +769,6 @@
                             "path": "docs/business-data-use-cases"
                           },
                           {
-                            "title": "Business Use Cases",
-                            "path": "docs/business-use-cases"
-                          },
-                          {
                             "title": "Discover revenue of businesses",
                             "path": "docs/discover-business-revenue"
                           },
