@@ -1,7 +1,6 @@
 ---
 title: Determine home values
 ---
-
 ## Introduction
 
 Many Datafiniti customers are interested in using our data to determine the value of a single home or the expected value of homes within a given area.  There are a couple ways to do this.
@@ -19,7 +18,7 @@ We will use this query for finding the Home’s Estimated Value:
 }
 ```
 
-<Callout kind="info">
+<Callout kind="info" collapsed="false">
   The AI assistant can help explain the query, break down the request body, and suggest ways to refine your search, but it does not execute live Datafiniti API calls from within the docs. To test this use case in real time, open the Properties API reference and run the request with your own API token in your preferred client, such as Postman, cURL, or your application code. This gives you a live response from the API using your account, query parameters, and filters.
 </Callout>
 
@@ -68,15 +67,24 @@ Response Example:
             "propertyType": "Single Family Dwelling",
             "sourceURLs": [
             ],
+			"yearBuilt":2021,
             "id": "SD2GrooB5p3ULnC0Gr8O"
-        }
+ }
 ```
+
+### Understanding the yearBuilt filter
+
+The `yearBuilt` field in the queries above (e.g., `yearBuilt:>=2018 AND yearBuilt:<=2022`) directly tells you the year the physical structure was originally constructed. This is how you can pinpoint exactly when a property was built — particularly useful for buildings and commercial residentials, rather than apartments where construction dates may be less precise or meaningful for comparison purposes.
+
+By filtering on `yearBuilt`, you ensure that comparable properties share a similar age and construction era, which is critical for accurate home valuations. A home built in 2020 will have different materials, code compliance, and depreciation characteristics than one built in 1980, all of which affect market value.
 
 Now you can use the most recent estimated price for comparison of the estimated value to recent sales person. This will allow you to calculate the following:
 
-* The average sale price of comparable homes.
-* The target home’s estimated price (estimatedPrices) to the recent sales.
-* Interpretation off the estimated price of the average sale price and if the listing price is over/undervalued.
+- The average sale price of comparable homes.
+
+- The target home’s estimated price (estimatedPrices) to the recent sales.
+
+- Interpretation off the estimated price of the average sale price and if the listing price is over/undervalued.
 
 In this case we can see for `"address": "6845 Avenue N Dr"` we can see the listed price as `319000`. However you can see the most recent estimated value from movoto is 306316. Meaning that you can see that the listing value is slightly overvalued, giving you the insight to bargain on this "for sale" property.
 
@@ -96,10 +104,10 @@ You can also download data for all the homes in a given area.  Let's start with 
 
 This query will match every single family home in the 78722 zip code that has been listed as for sale since January 1, 2023.  We can adjust the `dateUpdated` value to reflect any date range we want.
 
-<Callout kind="info">
+<Callout kind="info" collapsed="false">
   **Using credits**
 
-Your "num_records" sets your limit on how many credit to use. If your query is under the limit, Datafiniti will only charge property for the lower value. For more info on how to spend credits, you can read [How Credits Work](/docs/how-credits-work-api)
+  Your "num\_records" sets your limit on how many credit to use. If your query is under the limit, Datafiniti will only charge property for the lower value. For more info on how to spend credits, you can read [How Credits Work](/docs/how-credits-work-api)
 </Callout>
 
 Let's say we don't want to do a zip code-based search.  We want to do a search around a lat/long point:
@@ -134,11 +142,11 @@ Finally, if we want to download the entire data set, we do this:
 
 We can adjust the parameters here to set format to `JSON`.  We can also restrict the number of records to download by passing in additional `num_records` field.
 
-<Callout kind="info">
+<Callout kind="info" collapsed="false">
   **Address normalization**
 
-Datafiniti uses standardized street name normalization. Converting `street` to `st`, `drive` to `dr`, etc, you can learn more about our address normalization here: [Normalized Property Addresses](/docs/normalized-address-data)\
-If you wish to exactly match addresses to Datafiniti's property data, you will need to use this normalization method.
+  Datafiniti uses standardized street name normalization. Converting `street` to `st`, `drive` to `dr`, etc, you can learn more about our address normalization here: [Normalized Property Addresses](/docs/normalized-address-data)\
+  If you wish to exactly match addresses to Datafiniti's property data, you will need to use this normalization method.
 </Callout>
 
 ## Option 3: Find comparable homes to a single property
@@ -4353,10 +4361,10 @@ You can take each of those prices, average them, and determine an expected value
 
 Here are example bulk download files of our previous query:
 
-* [Home values JSON file](https://drive.google.com/file/d/1GiXpza-q2w02ydu35ivA-IzYaAUpISLx/view?usp=sharing)
-* [Home values CSV file](https://drive.google.com/file/d/1cEhzBjAuQW9WzpPqLHmNJjX_vVb2oT_h/view?usp=sharing)
+- [Home values JSON file](https://drive.google.com/file/d/1GiXpza-q2w02ydu35ivA-IzYaAUpISLx/view?usp=sharing)
+
+- [Home values CSV file](https://drive.google.com/file/d/1cEhzBjAuQW9WzpPqLHmNJjX_vVb2oT_h/view?usp=sharing)
 
 ## Conclusion
 
 Hopefully this will helps you understand how to use Datafiniti Property Data to determine values for homes.  There are several Datafiniti customers that take these approaches to help power business needs like lending, underwriting, and other investment decisions.  Now you can too!
-
