@@ -15,7 +15,7 @@ The Business data SDK is a thin abstraction over the `/v4/businesses` endpoint, 
 pip install datafiniti
 ```
 
-The Business SDK is included in the unified `datafiniti` package alongside the People, Property, and Product SDKs.
+The Business SDK is included in the unified `DataFiniti` package alongside the People, Property, and Product SDKs.
 
 ---
 
@@ -190,7 +190,7 @@ The package ships with runnable examples under `examples/business/`:
 | `business_paginate.py`    | Paginate through TX businesses  |
 | `business_views.py`       | Swap named views per request    |
 
-<CodeGroup default-tab="3" show-lines="true" tabs={["business_geolocation.py","count_query.py","business_paginate.py","business_views.py"]}>
+<CodeGroup show-lines="true" tabs={["business_geolocation.py","count_query.py","business_paginate.py","business_views.py"]}>
   ```python business_geolocation.py
   from datafiniti.business import DatafinitiBusinessSDK
   from datafiniti.errors import DatafinitiAPIError

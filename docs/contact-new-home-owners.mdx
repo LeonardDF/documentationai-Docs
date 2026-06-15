@@ -38,7 +38,9 @@ We can also use the `yearBuilt` field to find older homes:
 }
 ```
 
-By using a range query on `yearBuilt`, we can find every property that is no older than 2018.
+By using a range query on `yearBuilt`, we can find every property that was built no later than 2018.
+
+The `yearBuilt` field represents the actual year the physical structure was constructed. This is particularly useful for identifying buildings, commercial residentials, and other non-apartment properties, as it allows you to directly determine when the property was originally built. By filtering on this field, you can separate established homes from new construction and target owners of older properties who may be more likely to need services such as renovations, roofing, or upgrades.
 
 Here is a sample of what this transactional data may look like.
 
