@@ -463,6 +463,10 @@
                             "path": "docs/people-pagination"
                           }
                         ]
+                      },
+                      {
+                        "title": "People Data SDK",
+                        "path": "people-data-sdk"
                       }
                     ]
                   },
