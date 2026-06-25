@@ -7,7 +7,7 @@ The Datafiniti Product Data SDK is a lightweight Python wrapper around the Produ
 
 The SDK is published to PyPI as part of the unified `datafiniti-sdk` package, which bundles the Business, People, Property, and Product clients together.
 
-<CodeGroup default-tab="1" show-lines="true" tabs={["pip"]}>
+<CodeGroup show-lines="true" tabs={["pip"]}>
   ```bash pip
   pip install datafiniti-sdk
   ```
@@ -304,173 +304,11 @@ You can use either a custom inline view (a list of field objects) or a premade n
 
 Here are some Python examples built upon what we have just discussed. All scripts here should be ready to run as long as you have your `DATAFINITI_API_KEY` exported.
 
-<CodeGroup show-lines="true" tabs={["product_search.py","product_count.py","product_full_query.py","product_paginate.py"]}>
-  ```python product_search.py
-  from datafiniti.product import DatafinitiProductSDK
-  from datafiniti.errors import DatafinitiAPIError
-
-  # ---------------------------------------------------------------------------
-  # Product lookups — swap SEARCH_MODE to try different query strategies.
-  #
-  #   "by_name"   Product name, optionally narrowed by brand.
-  #               Use when you have a product title and want matching records.
-  #
-  #   "by_gtin"   Exact GTIN (UPC, EAN, ISBN) match.
-  #               Use when you have a barcode and want the matching product.
-  #
-  #   "by_brand_mpn"  Brand + manufacturer part number.
-  #               Use to pinpoint a specific SKU within a brand's catalog.
-  #
-  # Reference: https://docs.datafiniti.co/docs/searching-by-gtin
-  # ---------------------------------------------------------------------------
-
-  SEARCH_MODE = "by_name"
-
-  sdk = DatafinitiProductSDK.from_env()
-
-  if SEARCH_MODE == "by_name":
-      query = sdk.query().name("iPhone 15").brand("Apple").build()
-  elif SEARCH_MODE == "by_gtin":
-      query = 'gtins:"885909950805"'
-  elif SEARCH_MODE == "by_brand_mpn":
-      query = 'brand:"Apple" AND mpn:"MTP63LL/A"'
-  else:
-      raise ValueError(f"Unknown SEARCH_MODE: {SEARCH_MODE}")
-
-  try:
-      response = sdk.search(query=query, num_records=10)
-
-      print(f"\n=== PRODUCT SEARCH: {SEARCH_MODE} ===")
-      print(f"Total matches: {response.get('num_found', 0):,}\n")
-
-      for product in response.get("records", []):
-          name = product.get("name", "N/A")
-          brand = product.get("brand", "N/A")
-          categories = product.get("primaryCategories", [])
-          gtins = product.get("gtins", [])
-          prices = product.get("prices", [])
-
-          print(f"Name: {name}")
-          print(f"Brand: {brand}")
-          print(f"Categories: {', '.join(categories) if categories else 'N/A'}")
-          print(f"GTIN: {gtins[0] if gtins else 'N/A'}")
-          if prices:
-              p = prices[0]
-              print(f"Price: {p.get('amountMin', 'N/A')} {p.get('currency', '')}")
-          print()
-
-  except DatafinitiAPIError as e:
-      print(f"\nAPI Error {e.status_code}: {e}")
-      for msg in e.errors:
-          print(f"  {msg}")
-  ```
-
-  ```python product_count.py
-  from datafiniti.product import DatafinitiProductSDK
-  from datafiniti.errors import DatafinitiAPIError
-
-  sdk = DatafinitiProductSDK.from_env()
-
-  try:
-      count = sdk.count('brand:"Apple"')
-      print("\n=== PRODUCT COUNT TEST ===")
-      print(f"Products found: {count:,}")
-  except DatafinitiAPIError as e:
-      print(f"\nAPI Error {e.status_code}: {e}")
-      for msg in e.errors:
-          print(f"  {msg}")
-  ```
-
-  ```python product_full_query.py
-  import json
-  from datafiniti.product import DatafinitiProductSDK
-  from datafiniti.errors import DatafinitiAPIError
-
-  sdk = DatafinitiProductSDK.from_env()
-
-  VIEW = [
-      {"flatten": False, "sub_fields": [], "name": "name"},
-      {"flatten": False, "sub_fields": [], "name": "brand"},
-      {"flatten": False, "sub_fields": [], "name": "gtins"},
-      {"flatten": False, "sub_fields": [], "name": "primaryCategories"},
-      {"flatten": True, "sub_fields": ["amountMin", "amountMax", "currency"], "name": "prices"},
-  ]
-
-  try:
-      query = (
-          sdk.query()
-          .brand("Apple")
-          .categories(["Cell Phones"])
-          .build()
-      )
-
-      response = sdk.search(query=query, num_records=5, view=VIEW)
-
-      print("\n=== PRODUCTS BY BRAND & CATEGORY ===")
-      print("Found:", response.get("num_found"))
-
-      records = response.get("records", [])
-
-      if records:
-          print(f"\n{len(records)} Record(s) Found:")
-          for i, record in enumerate(records):
-              print(f"\n--- Record {i + 1} ---")
-              print(json.dumps(record, indent=2))
-      else:
-          print("No records returned.")
-  except DatafinitiAPIError as e:
-      print(f"\nAPI Error {e.status_code}: {e}")
-      for msg in e.errors:
-          print(f"  {msg}")
-  ```
-
-  ```python product_paginate.py
-  from datafiniti.product import DatafinitiProductSDK
-  from datafiniti.errors import DatafinitiAPIError
-
-  sdk = DatafinitiProductSDK.from_env()
-
-  print("\n=== PRODUCT PAGINATION TEST ===")
-
-  records_seen = 0
-
-  try:
-      for product in sdk.paginate(
-          query='brand:"Apple" AND categories:"Cell Phones"',
-          # note that the query can be modified to any product data query
-
-          # page_size maps to the `limit` query param — how many records are returned per page (max 500).
-          # The SDK increments the `page` number automatically after each full page is consumed,
-          # so page 1 returns records 1–10, page 2 returns 11–20, and so on until max_records is reached
-          # or the API returns an empty page (no more results).
-          page_size=10,
-          max_records=50,  # stop after 50 total records (5 pages of 10)
-      ):
-          records_seen += 1
-          name = product.get("name", "Unknown Product")
-          brand = product.get("brand", "")
-          line = f"{records_seen}. {name}"
-          if brand:
-              line += f" — {brand}"
-          print(line)
-
-      print(f"\nTotal Retrieved: {records_seen}")
-  except DatafinitiAPIError as e:
-      print(f"\nAPI Error {e.status_code}: {e}")
-      for msg in e.errors:
-          print(f"  {msg}")
-  ```
-</CodeGroup>
-
 <Callout kind="note" collapsed="false">
   Every Product SDK method — `search`, `count`, `paginate`, and `query` — shares the same query language and view system as the Business, People, and Property SDKs. Once you know one, you know them all. For the full set of queryable fields, see the [Product Data Schema](/docs/product-data-schema).
 </Callout>
 
-## <a href="https://docs.datafiniti.co/people-data-sdk#code-examples" target="_blank" rel="noopener noreferrer">**Code Examples**</a>
-
-Here are some product data Python examples built upon what we have just discussed. All scripts here should be ready to run as long as you have your `DATAFINITI_API_KEY `exported`.`
-
-<CodeGroup default-tab="0" show-lines="true" tabs={["Product_Count.py","Product_Categories.py","Product_Paginate.py","Product_Pricelist.py","Product_Views.py"]}>
+<CodeGroup show-lines="true" tabs={["Product_Count.py","Product_Categories.py","Product_Paginate.py","Product_Pricelist.py","Product_Views.py"]}>
   ```python Product_Count.py
   from datafiniti.product import DatafinitiProductSDK
   from datafiniti.errors import DatafinitiAPIError
