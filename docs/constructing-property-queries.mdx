@@ -109,6 +109,36 @@ When using the `address` field in your property data query, it defaults to fuzzy
 	"query": "address:\"100 Congress Ave, Austin, Texas 78701\" 
 }
 ```
+### Address prerequisites
+
+- `address` field must start with a digit (no P.O. Box, rural route, etc.)
+- US-only — state must match a recognized US state abbreviation or name
+
+### Supported address formats
+
+| Format | Example |
+|--------|---------|
+| Comma after street, city+state+zip space-delimited | `1706 Sierra RD, Austin TX 78759` |
+| All fields comma-delimited | `1706 Sierra Road, Austin, TX, 78759` |
+| No commas at all (token-walks for street suffix) | `1706 Sierra Road Austin TX 78759` |
+| No zip | `1706 Sierra Rd, Austin, TX` |
+| Full state name, single-word | `1706 Sierra Rd, Austin, Texas` |
+| Full state name, multi-word | `350 Fifth Ave, New York, New York` |
+| ZIP+4 | `1706 Sierra Rd, Austin, TX 78759-1234` |
+
+### Ambiguous state/suffix 2-letter codes
+
+Some codes are valid both as street suffixes and state abbreviations (e.g., `CT` = Court or Connecticut, `LA` = Lane or Louisiana). The splitter requires at least one disambiguator to treat them as a state:
+- A zip code is present, OR
+- A comma appears before the state token
+
+Without a disambiguator, the code is left as a street suffix. `UNAMBIGUOUS_STATES` (`AL`, `OR`, `PA`, `WY`, `WA`) bypass this check but are still protected by a secondary guard: if splitting would leave the street portion as just a house number (< 2 tokens), the split is rejected.
+
+### Other behavior
+
+- Pre-existing `city`, `province`, `postalCode` fields are **never overwritten** — the split only populates missing fields.
+- The no-comma path uses street suffix abbreviation tables to find the boundary between street and city; if no suffix is found, it falls back to treating the last word as the city.
+- A bare house number without a street name (< 2 tokens remaining after extracting city/state) is treated as a failed parse, and the original string is returned unchanged.
 
 ## Wildcards
 
