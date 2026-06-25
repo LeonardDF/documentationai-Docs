@@ -679,6 +679,10 @@
                             "path": "docs/product-pagination"
                           }
                         ]
+                      },
+                      {
+                        "title": "Product Data SDK",
+                        "path": "product-data-sdk"
                       }
                     ]
                   },
