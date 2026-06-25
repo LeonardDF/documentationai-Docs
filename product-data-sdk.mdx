@@ -1,0 +1,817 @@
+---
+title: Product Data SDK
+---
+The Datafiniti Product Data SDK is a lightweight Python wrapper around the Product Data API. It handles authentication, query construction, and pagination so you can fetch product records — names, brands, prices, categories, and more — without writing raw API requests.
+
+## Installation
+
+The SDK is published to PyPI as part of the unified `datafiniti-sdk` package, which bundles the Business, People, Property, and Product clients together.
+
+<CodeGroup default-tab="1" show-lines="true" tabs={["pip"]}>
+  ```bash pip
+  pip install datafiniti-sdk
+  ```
+</CodeGroup>
+
+## Authentication
+
+All SDK classes require a Datafiniti API key. Set it once as an environment variable and the client will pick it up automatically, or pass it directly when you instantiate the client.
+
+<CodeGroup show-lines="true" tabs={["Environment variable","Direct"]}>
+  ```bash "Environment variable"
+  export DATAFINITI_API_KEY="YOUR_API_KEY"
+  ```
+
+  ```python Direct
+  from datafiniti import DatafinitiProductSDK
+
+  sdk = DatafinitiProductSDK(api_key="API_KEY_HERE")
+  ```
+</CodeGroup>
+
+<Callout kind="note" collapsed="false">
+  If you use the environment variable approach, initialize the client with `DatafinitiProductSDK.from_env()`. You can also import directly from the product module with `from datafiniti.product import DatafinitiProductSDK`.
+</Callout>
+
+## Features
+
+### Search by name
+
+Look up product records by product name, optionally narrowing by brand. Use this to quickly retrieve product details without writing raw API queries.
+
+```python
+from datafiniti.product import DatafinitiProductSDK
+
+sdk = DatafinitiProductSDK.from_env()
+
+# Search by product name — optionally narrow by brand
+results = sdk.search_by_name("iPhone 15", brand="Apple", num_records=10)
+
+print("\n=== NAME SEARCH TEST ===")
+print("Matches:", results.get("num_found"))
+
+records = results.get("records", [])
+
+if records:
+    product = records[0]
+    print("\nProduct:")
+    print(product.get("name"))
+    print(product.get("brand"))
+    print(product.get("primaryCategories"))
+else:
+    print("No product found.")
+```
+
+#### Code breakdown
+
+| Section                                                      | What it does                                                                      |
+| ------------------------------------------------------------ | --------------------------------------------------------------------------------- |
+| `from datafiniti.product import DatafinitiProductSDK`        | Imports the `DatafinitiProductSDK` class from the `datafiniti.product` module.    |
+| `sdk = DatafinitiProductSDK.from_env()`                      | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.    |
+| `sdk.search_by_name("iPhone 15", brand, num_records)`        | Queries the Product Data API for records matching the given product name.         |
+| `results.get("num_found")`                                   | Returns the total number of products that matched the query.                      |
+| `results.get("records", [])`                                 | Retrieves the list of product records, defaulting to an empty list if none exist. |
+| `records[0]`                                                 | Accesses the first (best-match) product record from the results.                  |
+| `.get("name")`, `.get("brand")`, `.get("primaryCategories")` | Safely reads individual fields from the product record.                           |
+
+The `search_by_name` method abstracts away the raw query syntax. You only need to provide a product name and an optional `brand` to narrow results.
+
+### Count
+
+Get the total number of products matching a query without downloading any records. Use this to check result sizes before running larger searches or to build dashboards with aggregate counts.
+
+```python
+from datafiniti.product import DatafinitiProductSDK
+
+sdk = DatafinitiProductSDK.from_env()
+
+count = sdk.count('brand:"Apple"')
+
+print("\n=== COUNT TEST ===")
+print(f"Products found: {count:,}")
+```
+
+#### Code breakdown
+
+| Section                                               | What it does                                                                      |
+| ----------------------------------------------------- | --------------------------------------------------------------------------------- |
+| `from datafiniti.product import DatafinitiProductSDK` | Imports the `DatafinitiProductSDK` class from the `datafiniti.product` module.    |
+| `sdk = DatafinitiProductSDK.from_env()`               | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.    |
+| `sdk.count('brand:"Apple"')`                          | Returns the total number of Apple-branded products without fetching full records. |
+| `f"Products found: {count:,}"`                        | Formats the count with comma separators for readability (e.g., 1,234,567).        |
+
+The `count` method accepts the same query syntax as `search` but only returns the total number of matching records — no data is downloaded.
+
+#### Understanding the query syntax
+
+The query string `'brand:"Apple"'` uses Datafiniti's query language. Here's what you need to know:
+
+| Question                                                        | Answer                                                                                                                                                                  |
+| --------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| What is the format?                                             | See the [Constructing Product Queries](/docs/constructing-product-queries) guide for the complete field reference, operators, and advanced examples.                    |
+| How do I handle multi-word string values?                       | Wrap them in exact quotes: `brand:"Stanley Black & Decker"`.                                                                                                            |
+| What fields can I query & what is the full list of field names? | Any field in the [Product Data Schema](/docs/product-data-schema) — `name`, `brand`, `gtins`, `mpn`, `sku`, `primaryCategories`, `categories`, `prices`, and many more. |
+
+### Build a query
+
+Compose a product query using the fluent query builder. Chain field methods — such as brand, category, or GTIN — and call `.build()` to produce a Datafiniti query string.
+
+```python
+from datafiniti.product import DatafinitiProductSDK
+
+sdk = DatafinitiProductSDK.from_env()
+
+# Build a product query without writing raw syntax
+query = (
+    sdk.query()
+    .brand("Apple")
+    .categories(["Cell Phones"])
+    .build()
+)
+
+results = sdk.search(query, num_records=10)
+
+print("\n=== QUERY BUILDER TEST ===")
+print(f"Total matches: {results.get('num_found'):,}")
+
+for product in results.get("records", []):
+    print(f"{product.get('name')} — {product.get('brand')}")
+```
+
+#### Code breakdown
+
+| Section                                               | What it does                                                                      |
+| ----------------------------------------------------- | --------------------------------------------------------------------------------- |
+| `from datafiniti.product import DatafinitiProductSDK` | Imports the `DatafinitiProductSDK` class from the `datafiniti.product` module.    |
+| `sdk = DatafinitiProductSDK.from_env()`               | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.    |
+| `sdk.query()`                                         | Returns a fluent `ProductQuery` builder for composing a query without raw syntax. |
+| `.brand(...).categories(...)`                         | Chains field methods to add constraints to the query.                             |
+| `.build()`                                            | Produces the final Datafiniti query string from the chained fields.               |
+| `sdk.search(query, num_records=10)`                   | Executes the search and returns up to `num_records` matching records.             |
+
+`ProductQuery` is a fluent query builder exposing fields relevant to the Product data type. Chain field methods and call `.build()` to produce a Datafiniti query string you can pass to `search`, `count`, or `paginate`.
+
+### Search by GTIN
+
+Search directly with a raw query to look up products by GTIN (UPC, EAN, ISBN, and other global trade item numbers). Use this when you have a barcode or product identifier and want to retrieve the matching product record.
+
+```python
+from datafiniti.product import DatafinitiProductSDK
+
+sdk = DatafinitiProductSDK.from_env()
+
+# Search by GTIN (UPC, EAN, ISBN, etc.)
+results = sdk.search('gtins:"885909950805"', num_records=1)
+
+print("\n=== GTIN SEARCH ===")
+for product in results.get("records", []):
+    print(f"{product.get('name')} — {product.get('brand')}")
+    print(f"--gtins: {product.get('gtins')}")
+    print(f"--categories: {product.get('primaryCategories')}")
+```
+
+#### Code breakdown
+
+| Section                                               | What it does                                                                   |
+| ----------------------------------------------------- | ------------------------------------------------------------------------------ |
+| `from datafiniti.product import DatafinitiProductSDK` | Imports the `DatafinitiProductSDK` class from the `datafiniti.product` module. |
+| `sdk = DatafinitiProductSDK.from_env()`               | Creates a client instance using the `DATAFINITI_API_KEY` environment variable. |
+| `sdk.search('gtins:"885909950805"', num_records=1)`   | Looks up a product by an exact GTIN value.                                     |
+| `results.get("records", [])`                          | Retrieves the list of matching product records.                                |
+
+The `gtins` field covers UPC, EAN, ISBN, and other global trade item numbers, all normalized into a single searchable field. This makes it the most reliable way to match a physical product to its Datafiniti record.
+
+### Paginate
+
+Iterate through large result sets page by page without loading everything into memory at once. Use this to process thousands of records efficiently or to cap the number of retrievals at a specific limit.
+
+```python
+from datafiniti.product import DatafinitiProductSDK
+
+sdk = DatafinitiProductSDK.from_env()
+
+print("\n=== PAGINATION TEST ===")
+
+records_seen = 0
+
+for product in sdk.paginate(
+    query='brand:"Apple"',
+    page_size=10,
+    max_records=50,
+):
+    records_seen += 1
+    print(f"{records_seen}. {product.get('name', 'Unknown Product')}")
+
+print(f"\nTotal Retrieved: {records_seen}")
+```
+
+#### Code breakdown
+
+| Section                                               | What it does                                                                                        |
+| ----------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `from datafiniti.product import DatafinitiProductSDK` | Imports the `DatafinitiProductSDK` class from the `datafiniti.product` module.                      |
+| `sdk = DatafinitiProductSDK.from_env()`               | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.                      |
+| `sdk.paginate(query, page_size, max_records)`         | Returns a generator that yields individual product records across multiple API pages.               |
+| `query='brand:"Apple"'`                               | The search query — in this case, all Apple-branded products.                                        |
+| `page_size=10`                                        | Fetches 10 records per API request.                                                                 |
+| `max_records=50`                                      | Stops after retrieving 50 total records, even if more are available.                                |
+| `for product in sdk.paginate(...)`                    | Iterates through each yielded record one at a time without loading the full result set into memory. |
+| `product.get('name', 'Unknown Product')`              | Safely reads the name field with a fallback default if the field is missing.                        |
+
+The `paginate` method is a generator — it handles API pagination automatically behind the scenes. Set `max_records` to limit total retrieval, or omit it to iterate through all matching results.
+
+#### Understanding the query syntax
+
+The query parameter uses Datafiniti's query language. Here's what you need to know:
+
+| Question                           | Answer                                                                                                                                                                  |
+| ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| What is the format?                | See the [Constructing Product Queries](/docs/constructing-product-queries) guide for the complete field reference, operators, and advanced examples.                    |
+| How do I handle multi-word values? | Wrap them in quotes: `brand:"Stanley Black & Decker"`.                                                                                                                  |
+| What fields can I query?           | Any field in the [Product Data Schema](/docs/product-data-schema) — `name`, `brand`, `gtins`, `mpn`, `sku`, `primaryCategories`, `categories`, `prices`, and many more. |
+
+### Views
+
+Control which fields are returned in API responses using custom inline views or premade named views. Use this to reduce payload size, speed up requests, and tailor results to specific use cases — such as building a lightweight pricing feed. For a full list of available product data views, see [Product Data Views](/docs/available-views-for-product-data).
+
+```python
+"""
+Product Views Example: Lightweight Pricing Feed
+
+Uses a custom view to fetch only the fields needed to build a price-tracking
+feed — name, brand, GTIN, and prices — keeping the response small and fast.
+"""
+
+from datafiniti.product import DatafinitiProductSDK
+
+# ---------------------------------------------------------------------------
+# View options
+#
+# OPTION 1 (used below): Custom inline view
+#   Pass a list of field objects directly in the request. No setup required.
+#   Each object can set "flatten" and "sub_fields" to control nested output.
+#
+# OPTION 2: Premade (named) view — pass a string instead of a list.
+#   "default"            All fields (same as omitting view entirely).
+#   "product_pricesFlat" All fields; one row per price entry.
+#   "product_reviewsFlat" All fields; one row per review.
+#     Example: sdk.search(query, view="product_pricesFlat", num_records=10)
+#   Reference: https://docs.datafiniti.co/docs/available-views-for-product-data
+# ---------------------------------------------------------------------------
+
+PRODUCT_VIEW = [
+    {"flatten": False, "sub_fields": [], "name": "name"},
+    {"flatten": False, "sub_fields": [], "name": "brand"},
+    {"flatten": False, "sub_fields": [], "name": "gtins"},
+    {"flatten": True, "sub_fields": ["amountMin", "amountMax", "currency"], "name": "prices"},
+]
+
+sdk = DatafinitiProductSDK.from_env()
+
+results = sdk.search(
+    query='brand:"Apple" AND categories:"Cell Phones"',
+    num_records=5,
+    view=PRODUCT_VIEW,
+)
+
+print("\n=== PRODUCT VIEWS ===")
+print(f"Total matches: {results.get('num_found'):,}\n")
+
+for product in results.get("records", []):
+    prices = product.get("prices", [])
+    price = prices[0] if prices else {}
+    print(f"Name: {product.get('name', 'N/A')}")
+    print(f"Brand: {product.get('brand', 'N/A')}")
+    print(f"GTIN: {product.get('gtins', ['N/A'])[0] if product.get('gtins') else 'N/A'}")
+    print(f"Price: {price.get('amountMin', 'N/A')} {price.get('currency', '')}")
+    print()
+```
+
+#### Code breakdown
+
+| Section                                                    | What it does                                                                                                         |
+| ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `from datafiniti.product import DatafinitiProductSDK`      | Imports the `DatafinitiProductSDK` class from the `datafiniti.product` module.                                       |
+| `PRODUCT_VIEW = [...]`                                     | Defines a custom inline view — a list of field objects specifying exactly which fields to return per record.         |
+| `{"flatten": True, "sub_fields": [...], "name": "prices"}` | A single field object. `flatten` and `sub_fields` control how nested/multi-valued fields like `prices` are returned. |
+| `sdk.search(query, num_records=5, view=PRODUCT_VIEW)`      | Executes the search with the inline view — only the specified fields are returned.                                   |
+| `query='brand:"Apple" AND categories:"Cell Phones"'`       | Limits results to Apple products in the Cell Phones category.                                                        |
+| `for product in results.get("records", []):`               | Iterates through each result and prints the name, brand, GTIN, and price.                                            |
+
+You can use either a custom inline view (a list of field objects) or a premade named view (a string like `"product_pricesFlat"` or `"default"`). Custom views give you precise control over the response payload; named views are convenient presets for common use cases.
+
+## Code Examples
+
+Here are some Python examples built upon what we have just discussed. All scripts here should be ready to run as long as you have your `DATAFINITI_API_KEY` exported.
+
+<CodeGroup show-lines="true" tabs={["product_search.py","product_count.py","product_full_query.py","product_paginate.py"]}>
+  ```python product_search.py
+  from datafiniti.product import DatafinitiProductSDK
+  from datafiniti.errors import DatafinitiAPIError
+
+  # ---------------------------------------------------------------------------
+  # Product lookups — swap SEARCH_MODE to try different query strategies.
+  #
+  #   "by_name"   Product name, optionally narrowed by brand.
+  #               Use when you have a product title and want matching records.
+  #
+  #   "by_gtin"   Exact GTIN (UPC, EAN, ISBN) match.
+  #               Use when you have a barcode and want the matching product.
+  #
+  #   "by_brand_mpn"  Brand + manufacturer part number.
+  #               Use to pinpoint a specific SKU within a brand's catalog.
+  #
+  # Reference: https://docs.datafiniti.co/docs/searching-by-gtin
+  # ---------------------------------------------------------------------------
+
+  SEARCH_MODE = "by_name"
+
+  sdk = DatafinitiProductSDK.from_env()
+
+  if SEARCH_MODE == "by_name":
+      query = sdk.query().name("iPhone 15").brand("Apple").build()
+  elif SEARCH_MODE == "by_gtin":
+      query = 'gtins:"885909950805"'
+  elif SEARCH_MODE == "by_brand_mpn":
+      query = 'brand:"Apple" AND mpn:"MTP63LL/A"'
+  else:
+      raise ValueError(f"Unknown SEARCH_MODE: {SEARCH_MODE}")
+
+  try:
+      response = sdk.search(query=query, num_records=10)
+
+      print(f"\n=== PRODUCT SEARCH: {SEARCH_MODE} ===")
+      print(f"Total matches: {response.get('num_found', 0):,}\n")
+
+      for product in response.get("records", []):
+          name = product.get("name", "N/A")
+          brand = product.get("brand", "N/A")
+          categories = product.get("primaryCategories", [])
+          gtins = product.get("gtins", [])
+          prices = product.get("prices", [])
+
+          print(f"Name: {name}")
+          print(f"Brand: {brand}")
+          print(f"Categories: {', '.join(categories) if categories else 'N/A'}")
+          print(f"GTIN: {gtins[0] if gtins else 'N/A'}")
+          if prices:
+              p = prices[0]
+              print(f"Price: {p.get('amountMin', 'N/A')} {p.get('currency', '')}")
+          print()
+
+  except DatafinitiAPIError as e:
+      print(f"\nAPI Error {e.status_code}: {e}")
+      for msg in e.errors:
+          print(f"  {msg}")
+  ```
+
+  ```python product_count.py
+  from datafiniti.product import DatafinitiProductSDK
+  from datafiniti.errors import DatafinitiAPIError
+
+  sdk = DatafinitiProductSDK.from_env()
+
+  try:
+      count = sdk.count('brand:"Apple"')
+      print("\n=== PRODUCT COUNT TEST ===")
+      print(f"Products found: {count:,}")
+  except DatafinitiAPIError as e:
+      print(f"\nAPI Error {e.status_code}: {e}")
+      for msg in e.errors:
+          print(f"  {msg}")
+  ```
+
+  ```python product_full_query.py
+  import json
+  from datafiniti.product import DatafinitiProductSDK
+  from datafiniti.errors import DatafinitiAPIError
+
+  sdk = DatafinitiProductSDK.from_env()
+
+  VIEW = [
+      {"flatten": False, "sub_fields": [], "name": "name"},
+      {"flatten": False, "sub_fields": [], "name": "brand"},
+      {"flatten": False, "sub_fields": [], "name": "gtins"},
+      {"flatten": False, "sub_fields": [], "name": "primaryCategories"},
+      {"flatten": True, "sub_fields": ["amountMin", "amountMax", "currency"], "name": "prices"},
+  ]
+
+  try:
+      query = (
+          sdk.query()
+          .brand("Apple")
+          .categories(["Cell Phones"])
+          .build()
+      )
+
+      response = sdk.search(query=query, num_records=5, view=VIEW)
+
+      print("\n=== PRODUCTS BY BRAND & CATEGORY ===")
+      print("Found:", response.get("num_found"))
+
+      records = response.get("records", [])
+
+      if records:
+          print(f"\n{len(records)} Record(s) Found:")
+          for i, record in enumerate(records):
+              print(f"\n--- Record {i + 1} ---")
+              print(json.dumps(record, indent=2))
+      else:
+          print("No records returned.")
+  except DatafinitiAPIError as e:
+      print(f"\nAPI Error {e.status_code}: {e}")
+      for msg in e.errors:
+          print(f"  {msg}")
+  ```
+
+  ```python product_paginate.py
+  from datafiniti.product import DatafinitiProductSDK
+  from datafiniti.errors import DatafinitiAPIError
+
+  sdk = DatafinitiProductSDK.from_env()
+
+  print("\n=== PRODUCT PAGINATION TEST ===")
+
+  records_seen = 0
+
+  try:
+      for product in sdk.paginate(
+          query='brand:"Apple" AND categories:"Cell Phones"',
+          # note that the query can be modified to any product data query
+
+          # page_size maps to the `limit` query param — how many records are returned per page (max 500).
+          # The SDK increments the `page` number automatically after each full page is consumed,
+          # so page 1 returns records 1–10, page 2 returns 11–20, and so on until max_records is reached
+          # or the API returns an empty page (no more results).
+          page_size=10,
+          max_records=50,  # stop after 50 total records (5 pages of 10)
+      ):
+          records_seen += 1
+          name = product.get("name", "Unknown Product")
+          brand = product.get("brand", "")
+          line = f"{records_seen}. {name}"
+          if brand:
+              line += f" — {brand}"
+          print(line)
+
+      print(f"\nTotal Retrieved: {records_seen}")
+  except DatafinitiAPIError as e:
+      print(f"\nAPI Error {e.status_code}: {e}")
+      for msg in e.errors:
+          print(f"  {msg}")
+  ```
+</CodeGroup>
+
+<Callout kind="note" collapsed="false">
+  Every Product SDK method — `search`, `count`, `paginate`, and `query` — shares the same query language and view system as the Business, People, and Property SDKs. Once you know one, you know them all. For the full set of queryable fields, see the [Product Data Schema](/docs/product-data-schema).
+</Callout>
+
+## <a href="https://docs.datafiniti.co/people-data-sdk#code-examples" target="_blank" rel="noopener noreferrer">**Code Examples**</a>
+
+Here are some product data Python examples built upon what we have just discussed. All scripts here should be ready to run as long as you have your `DATAFINITI_API_KEY `exported`.`
+
+<CodeGroup default-tab="0" show-lines="true" tabs={["Product_Count.py","Product_Categories.py","Product_Paginate.py","Product_Pricelist.py","Product_Views.py"]}>
+  ```python Product_Count.py
+  from datafiniti.product import DatafinitiProductSDK
+  from datafiniti.errors import DatafinitiAPIError
+
+
+  sdk = DatafinitiProductSDK.from_env()
+
+  try:
+      count = sdk.count("brand:*")
+      print("\n=== PRODUCT COUNT TEST ===")
+      print(f"Products found: {count:,}")
+  except DatafinitiAPIError as e:
+      print(f"\nAPI Error {e.status_code}: {e}")
+      for msg in e.errors:
+          print(f"  {msg}")
+
+  ```
+
+  ```python Product_Categories.py
+  """
+  Categories example: match products by category and inspect the `categories`
+  field on the Datafiniti Product API.
+
+  Every product carries a `categories` field — a list of the raw category labels
+  sellers and retailers have applied to it. You can search against this field to
+  pull products of a certain type. This script builds a small wine database by
+  matching `categories:wines`, then prints each product's brand, name, and the
+  full list of categories so you can see exactly how products get classified.
+
+  A note from the guide: category labels are messy real-world data. Searching
+  `categories:wine` (singular) also returns ice buckets and accessories, while
+  `categories:wines` (plural) does a much better job of returning actual wine
+  products. Inspecting the `categories` field, as this script does, is how you
+  discover which label works best for your use case.
+
+  See: https://docs.datafiniti.co/docs/build-a-database-of-wines
+  """
+
+  from datafiniti.product import DatafinitiProductSDK
+  from datafiniti.errors import DatafinitiAPIError
+
+
+  # Build the SDK client from environment variables. `from_env()` reads your
+  # Datafiniti API token from the environment (DATAFINITI_API_TOKEN) so you don't
+  # have to hardcode credentials in the script.
+  sdk = DatafinitiProductSDK.from_env()
+
+  print("\n=== PRODUCTS BY CATEGORY: WINES ===")
+
+  records_seen = 0
+
+  try:
+      # paginate() yields one product record (a dict) at a time, fetching more
+      # pages from the API as needed.
+      #
+      #   query       - "categories:wines" matches any product whose categories
+      #                 field contains the label "wines". This is the core of
+      #                 category-based matching. The "-categories:(...)" clause
+      #                 uses the minus operator to exclude products labeled as
+      #                 vinegars, oils, liqueur, gin, or tequila, which otherwise
+      #                 slip in alongside wines.
+      #   page_size   - records requested per API call.
+      #   max_records - stop after 10 products, even if the query matches more.
+      for product_record in sdk.paginate(
+          query="categories:wines AND -categories:(vinegars OR oils OR liqueur OR gin OR tequila)",
+          page_size=10,
+          max_records=10,
+      ):
+          records_seen += 1
+
+          # Use .get() with defaults so missing fields don't raise a KeyError.
+          name = product_record.get("name", "Unknown Product")
+          if len(name) > 75:
+              name = name[:72] + "..."
+          brand = product_record.get("brand", "Unknown Brand")
+
+          # `categories` comes back as a list of label strings. Join them into a
+          # single comma-separated line for display. Fall back to an empty list so
+          # the join works even when the field is absent.
+          categories = product_record.get("categories", [])
+          category_list = ", ".join(categories) if categories else "None"
+
+          print(f"\n{records_seen}. {name}")
+          print(f"   Brand:       {brand}")
+          print(f"   Categories:  {category_list}")
+
+      print(f"\nTotal Retrieved: {records_seen}")
+  except DatafinitiAPIError as e:
+      # Raised when the API rejects the request (bad token, malformed query, rate
+      # limit, etc.). `status_code` is the HTTP status; `errors` is a list of
+      # human-readable messages explaining what went wrong.
+      print(f"\nAPI Error {e.status_code}: {e}")
+      for msg in e.errors:
+          print(f"  {msg}")
+
+  ```
+
+  ```python Product_Paginate.py
+  """
+  Pagination example: pull pet food pricing data from the Datafiniti Product API.
+
+  The Datafiniti product database can match millions of records, far more than a
+  single API response returns. `paginate()` handles that for you by requesting one
+  page at a time and yielding records as it goes, so you can loop over a large
+  result set without managing offsets or page tokens yourself.
+  """
+
+  from datafiniti.product import DatafinitiProductSDK
+  from datafiniti.errors import DatafinitiAPIError
+
+
+  # Build the SDK client from environment variables. `from_env()` reads your
+  # Datafiniti API token from the environment (DATAFINITI_API_TOKEN) so you don't
+  # have to hardcode credentials in the script.
+  sdk = DatafinitiProductSDK.from_env()
+
+  print("\n=== PET FOOD PRICING PAGINATION TEST ===")
+
+  # Running tally of how many records we've printed across all pages.
+  records_seen = 0
+
+  try:
+      # paginate() returns a generator. Each loop iteration gives you one product
+      # record (a dict), automatically fetching the next page from the API behind
+      # the scenes once the current page is exhausted.
+      #
+      #   query       - Datafiniti query syntax. This one matches products in the
+      #                 "pet supplies" taxonomy, categorized as food, that have
+      #                 pricing data ("prices:*" means the prices field exists).
+      #   page_size   - how many records to request per API call (per page).
+      #   max_records - safety cap on total records pulled, so the loop stops even
+      #                 if the query matches far more. Useful while testing.
+      for product_record in sdk.paginate(
+          query='taxonomy:"pet supplies" AND categories:food AND prices:*',
+          page_size=10,
+          max_records=25,
+      ):
+          records_seen += 1
+          # Each record is a dict of product fields. Use .get() so a missing field
+          # falls back to a default instead of raising a KeyError.
+          print(f"{records_seen}. {product_record.get('name', 'Unknown Product')}")
+      print(f"\nTotal Retrieved: {records_seen}")
+  except DatafinitiAPIError as e:
+      # Raised when the API rejects the request (bad token, malformed query, rate
+      # limit, etc.). `status_code` is the HTTP status; `errors` is a list of
+      # human-readable messages explaining what went wrong.
+      print(f"\nAPI Error {e.status_code}: {e}")
+      for msg in e.errors:
+          print(f"  {msg}")
+
+  ```
+
+  ```python Product_Pricelist.py
+  """
+  Pricing recommendations example: pull a list of products with their latest
+  price and availability from the Datafiniti Product API.
+
+  Each product record carries a set of "most recent price" fields that summarize
+  the latest pricing Datafiniti has seen for that product, so you don't have to
+  dig through the full historical `prices` array yourself. This script fetches up
+  to 10 electronics products that have pricing data and prints each one's
+  availability and most recent price.
+
+  See: https://docs.datafiniti.co/docs/provide-personalized-pricing-recommendations
+  """
+
+  from datafiniti.product import DatafinitiProductSDK
+  from datafiniti.errors import DatafinitiAPIError
+
+
+  # Build the SDK client from environment variables. `from_env()` reads your
+  # Datafiniti API token from the environment (DATAFINITI_API_TOKEN) so you don't
+  # have to hardcode credentials in the script.
+  sdk = DatafinitiProductSDK.from_env()
+
+  print("\n=== PRODUCT PRICING LIST ===")
+
+  records_seen = 0
+
+  try:
+      # paginate() yields one product record (a dict) at a time, fetching more
+      # pages from the API as needed.
+      #
+      #   query       - matches products categorized as electronics that have
+      #                 pricing data ("prices:*" means the prices field exists).
+      #   page_size   - records requested per API call.
+      #   max_records - stop after 10 products, even if the query matches more.
+      for product_record in sdk.paginate(
+          query="categories:electronics AND prices:*",
+          page_size=10,
+          max_records=10,
+      ):
+          records_seen += 1
+
+          # Pull the product name and the "most recent price" summary fields.
+          # Use .get() with defaults so missing fields don't raise a KeyError.
+          name = product_record.get("name", "Unknown Product")
+          # Truncate long product names to 75 characters, ending with "..." so the
+          # output stays readable.
+          if len(name) > 75:
+              name = name[:72] + "..."
+          brand = product_record.get("brand", "Unknown Brand")
+          availability = product_record.get(
+              "mostRecentPriceAvailability", "Unknown"
+          )
+          amount = product_record.get("mostRecentPriceAmount")
+          currency = product_record.get("mostRecentPriceCurrency", "USD")
+          price_date = product_record.get("mostRecentPriceDate", "N/A")
+
+          # Format the price only when we actually have an amount.
+          if amount is not None:
+              price = f"{amount} {currency}"
+          else:
+              price = "No price available"
+
+          print(f"\n{records_seen}. {name}")
+          print(f"   Brand:         {brand}")
+          print(f"   Availability:  {availability}")
+          print(f"   Latest Price:  {price}")
+          print(f"   Price Date:    {price_date}")
+
+      print(f"\nTotal Retrieved: {records_seen}")
+  except DatafinitiAPIError as e:
+      # Raised when the API rejects the request (bad token, malformed query, rate
+      # limit, etc.). `status_code` is the HTTP status; `errors` is a list of
+      # human-readable messages explaining what went wrong.
+      print(f"\nAPI Error {e.status_code}: {e}")
+      for msg in e.errors:
+          print(f"  {msg}")
+
+  ```
+
+  ```python Product_Views.py
+  """
+  Product Views Example: Custom View On the Fly
+
+  A "view" lets you control exactly which fields the Datafiniti API returns for
+  each product, instead of getting the full product schema back. This keeps
+  responses small and focused on just the data you care about.
+
+  This script builds a custom view inline (no setup required) to fetch a handful
+  of fields for SteelSeries computer peripherals on Amazon that have reviews,
+  then prints each product's brand, identifiers, colors, and latest pricing.
+
+  References:
+  https://docs.datafiniti.co/docs/product_all
+  https://docs.datafiniti.co/docs/creating-a-custom-product-view-on-the-fly
+  """
+
+  import json
+
+  from datafiniti.product import DatafinitiProductSDK
+  from datafiniti.errors import DatafinitiAPIError
+
+  # ---------------------------------------------------------------------------
+  # View options
+  #
+  # OPTION 1 (used below): Custom inline view
+  #   Pass a list of field objects directly in the request. No setup required.
+  #   - Simple fields are referenced by name only, e.g. {"name": "brand"}.
+  #   - Nested/complex fields (like the prices array) use "flatten": True plus a
+  #     "sub_fields" list naming the nested properties you want.
+  #
+  # OPTION 2: Premade (named) view — pass a string instead of a list.
+  #   "default"  All fields in the product schema (same as omitting view).
+  #   Example: sdk.search(query, view="default", num_records=10)
+  #   Reference: https://docs.datafiniti.co/docs/product_all
+  # ---------------------------------------------------------------------------
+
+  PRODUCT_VIEW = [
+      {"name": "brand"},
+      {"name": "name"},
+      {"name": "manufacturerNumber"},
+      {"name": "colors"},
+      {"name": "mostRecentPriceAmount"},
+      # Flatten the nested prices array and keep only a few sub-fields.
+      {"name": "prices", "flatten": True, "sub_fields": [
+          {"name": "amountMin"},
+          {"name": "amountMax"},
+          {"name": "currency"},
+          {"name": "availability"},
+          {"name": "isSale"},
+      ]},
+  ]
+
+  QUERY = 'domains:amazon AND categories:"Computer Peripherals" AND brand:"SteelSeries" AND reviews:*'
+
+
+  def format_list(value):
+      """Render a list field as a comma-separated string, or 'N/A' if empty."""
+      if isinstance(value, list) and value:
+          return ", ".join(str(v) for v in value)
+      return "N/A"
+
+
+  if __name__ == "__main__":
+      # Build the SDK client from environment variables. `from_env()` reads your
+      # Datafiniti API key from the environment (DATAFINITI_API_KEY).
+      sdk = DatafinitiProductSDK.from_env()
+
+      print("\n=== PRODUCT CUSTOM VIEW ===\n")
+
+      # Show the exact request search() will send, so you can see how the query,
+      # view, and other parameters are assembled into the API call. This mirrors
+      # the payload built inside the SDK (see BaseDatafinitiSDK.search).
+      request_url = f"{sdk.BASE_URL}/search"
+      request_payload = {
+          "query": QUERY,
+          "num_records": 10,
+          "format": "JSON",
+          "view": PRODUCT_VIEW,
+      }
+
+      try:
+          # search() returns one response containing up to num_records products.
+          # Passing `view` limits the returned fields to those in PRODUCT_VIEW.
+          response = sdk.search(QUERY, num_records=10, view=PRODUCT_VIEW)
+          records = response.get("records", [])
+
+          if not records:
+              print("No products found.")
+
+          for i, product in enumerate(records, start=1):
+              name = product.get("name", "Unknown Product")
+              if len(name) > 75:
+                  name = name[:72] + "..."
+
+              print(f"{i}. {name}")
+              print(f"   Brand:           {product.get('brand', 'N/A')}")
+              print(f"   Mfr Number:      {product.get('manufacturerNumber', 'N/A')}")
+              print(f"   Colors:          {format_list(product.get('colors'))}")
+              print(f"   Latest Price:    {product.get('mostRecentPriceAmount', 'N/A')}")
+              print()
+      except DatafinitiAPIError as e:
+          # Raised when the API rejects the request (bad key, malformed query,
+          # rate limit, etc.). `status_code` is the HTTP status; `errors` is a
+          # list of human-readable messages explaining what went wrong.
+          print(f"\nAPI Error {e.status_code}: {e}")
+          for msg in e.errors:
+              print(f"  {msg}")
+
+  ```
+</CodeGroup>
+
