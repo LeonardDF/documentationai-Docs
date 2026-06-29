@@ -527,7 +527,7 @@
                           },
                           {
                             "title": "Product Categories",
-                            "path": "product-raw-categories"
+                            "path": "product-categories"
                           },
                           {
                             "title": "Dimensions Normalization",
