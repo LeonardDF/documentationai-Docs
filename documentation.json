@@ -514,6 +514,10 @@
                             "path": "docs/product-data-schema"
                           },
                           {
+                            "title": "Product Categories",
+                            "path": "product-categories"
+                          },
+                          {
                             "title": "Product Field Type Breakdown",
                             "path": "docs/product-field-type-breakdown"
                           },
@@ -524,10 +528,6 @@
                           {
                             "title": "Possible Values for Product Fields",
                             "path": "docs/possible-values-for-product-fields"
-                          },
-                          {
-                            "title": "Product Categories",
-                            "path": "product-categories"
                           },
                           {
                             "title": "Dimensions Normalization",
