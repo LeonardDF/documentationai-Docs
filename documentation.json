@@ -537,6 +537,10 @@
                             "group": "Taxonomy",
                             "pages": [
                               {
+                                "title": "Taxonomy",
+                                "path": "taxonomy"
+                              },
+                              {
                                 "title": "Taxonomy 1 Level",
                                 "path": "docs/taxonomy-1-level"
                               },
