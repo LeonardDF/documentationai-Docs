@@ -526,6 +526,10 @@
                             "path": "docs/possible-values-for-product-fields"
                           },
                           {
+                            "title": "Product Categories",
+                            "path": "product-raw-categories"
+                          },
+                          {
                             "title": "Dimensions Normalization",
                             "path": "docs/dimensions-normalization"
                           },
