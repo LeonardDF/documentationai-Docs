@@ -7,6 +7,16 @@ description: Download the complete list of product category values used in Dataf
 
 Product records include a `categories` field that contains category keywords collected from multiple sources. This page provides the full list of all possible category values used in the dataset. The `categories` field is defined in the [Product Data Schema](/docs/product-data-schema).
 
+<Callout kind="info">
+
+### Categories vs Taxonomy
+
+The `categories` field stores a flat, unstandardized list of keywords collected from multiple merchant sources — different merchants may use different terms for the same product. The taxonomy fields (`taxonomyLevel1` through `taxonomyLevel9`) use a structured, standardized hierarchy with up to 9 levels of depth.
+
+Use `categories` when you want to match the exact terms used on merchant listings. Use the taxonomy fields when you need consistent hierarchical classification for filtering, reporting, or analysis. For the full taxonomy reference, see [Taxonomy](/taxonomy).
+
+</Callout>
+
 ## Current count
 
 The dataset currently contains 2,241,950 unique category values. Datafiniti updates this number monthly as new products are added and existing categories are refined.
