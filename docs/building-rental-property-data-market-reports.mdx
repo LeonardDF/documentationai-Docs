@@ -31,6 +31,65 @@ Understanding the rental market requires more than just a snapshot of current li
 This field lists on-rent events—useful for tracking when a property shifted rental modes or listing activity.\
 java.datafiniti.co
 
+## Find the Most Recent Price and Rental Status
+
+Datafiniti provides pre-computed top-level fields that surface the most recent rental price and rental status for each property record. Instead of sorting through the `prices` and `rentalStatuses` arrays manually, you can query and use these convenience fields directly to quickly identify a property's latest rental activity.
+
+### Most Recent Rental Price Fields
+
+The following top-level fields capture the most recent rental price data from the `prices` array:
+
+```json
+{
+  "mostRecentRentalListPriceAmount": 6500,
+  "mostRecentRentalListPriceDate": "2024-06-13T11:03:33.663Z",
+  "mostRecentRentalPriceAmount": 8940,
+  "mostRecentRentalPriceDate": "2024-02-28T23:40:24.123Z",
+  "mostRecentRentalPriceDomain": "www.apartmentguide.com",
+  "mostRecentRentalPriceFirstDateSeen": "2024-02-28T08:09:11.463Z",
+  "mostRecentRentalPricePeriod": "Per Month",
+  "mostRecentRentalPriceSourceURL": "https://www.apartmentguide.com/apartments/Florida/Miami/sample-listing/"
+}
+```
+
+- **`mostRecentRentalListPriceAmount`** — The most recent "rental list" price from the `prices` field.
+- **`mostRecentRentalListPriceDate`** — The date of the most recent "rental list" price.
+- **`mostRecentRentalPriceAmount`** — The most recent rental price amount.
+- **`mostRecentRentalPriceDate`** — The date of the most recent rental price.
+- **`mostRecentRentalPriceDomain`** — The domain of the source that provided the most recent rental price.
+- **`mostRecentRentalPriceFirstDateSeen`** — The first date Datafiniti saw the most recent rental price.
+- **`mostRecentRentalPricePeriod`** — The billing period for the most recent rental price (e.g., "Per Month").
+- **`mostRecentRentalPriceSourceURL`** — The source URL for the most recent rental price.
+
+### Most Recent Rental Status Fields
+
+The following top-level fields capture the most recent rental status from the `rentalStatuses` array:
+
+```json
+{
+  "mostRecentRentalStatus": "Rental",
+  "mostRecentRentalStatusDate": "2025-08-23T00:00:00.000Z",
+  "mostRecentRentalStatusFirstDateSeen": "2024-09-11T00:00:00.000Z"
+}
+```
+
+- **`mostRecentRentalStatus`** — The most recent value for `rentalStatuses.type` (e.g., "Rental", "Short Term Rental").
+- **`mostRecentRentalStatusDate`** — The most recent rental status date listed by the source.
+- **`mostRecentRentalStatusFirstDateSeen`** — The most recent rental status first seen by Datafiniti.
+
+### Example: Querying Properties with Recent Rental Prices
+
+To find properties that have a recent rental price, query for records where `mostRecentRentalPriceAmount` exists:
+
+```json
+{
+  "query": "country:US AND province:TX AND mostRecentRentalPriceAmount:*",
+  "num_records": 5
+}
+```
+
+Each result will return the `mostRecent*` fields alongside the full property record, letting you quickly access the latest rental price, its source, and the current rental status without parsing the full `prices` or `rentalStatuses` arrays.
+
 ## How to Use RentalStatuses to Compare Properties
 
 ### 1. Retrieve Rental Statuses
