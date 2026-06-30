@@ -511,8 +511,7 @@
                         "pages": [
                           {
                             "title": "Product Data Schema",
-                            "path": "docs/product-data-schema",
-                            "content-width": "wide"
+                            "path": "docs/product-data-schema"
                           },
                           {
                             "title": "Product Field Type Breakdown",
