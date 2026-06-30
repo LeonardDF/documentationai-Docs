@@ -6,21 +6,24 @@ description: >-
 ---
 ## Product classification
 
-Datafiniti classifies product records with two complementary systems: a flat `categories` field and a hierarchical taxonomy with up to 9 levels of depth. Both systems are defined in the [Product Data Schema](/docs/product-data-schema) and support different ways to query, filter, and analyze product data.
+Datafiniti classifies product records with three complementary systems: a flat `categories` field, standardized `primaryCategories` and `secondaryCategories` fields, and a hierarchical taxonomy with up to 9 levels of depth. All three systems are defined in the [Product Data Schema](/docs/product-data-schema) and support different ways to query, filter, and analyze product data.
 
 <Callout kind="tip" collapsed="false">
   ### Categories vs Taxonomy
 
   The `categories` field stores a flat, unstandardized list of keywords collected from multiple merchant sources. Different merchants may use different terms for the same product, which results in more than 2 million unique category values.
 
+  The `primaryCategories` and `secondaryCategories` fields provide a standardized middle ground between the raw `categories` field and the full taxonomy. Use them when you need consistent top-level and second-level categories without the full 9-level hierarchy. Accepted values for both fields are listed on [Possible Values for Product Fields](/docs/possible-values-for-product-fields).\
+
+
   The taxonomy fields, `taxonomyLevel1` through `taxonomyLevel9`, use a structured, standardized hierarchy with up to 9 levels of depth. Each level narrows the product's classification progressively.
 
-  Use `categories` when you want to match the exact terms used on merchant listings. Use the taxonomy fields when you need consistent hierarchical classification for filtering, reporting, or analysis.
+  Use `categories` when you want to match the exact terms used on merchant listings. Use `primaryCategories` and `secondaryCategories` when you need standardized categories with less depth. Use the taxonomy fields when you need consistent hierarchical classification for filtering, reporting, or analysis.
 </Callout>
 
 ## Product category values
 
-Product records include a `categories` field that contains category keywords collected from multiple sources. The `categories` field is defined in the [Product Data Schema](/docs/product-data-schema).
+Product records include a `categories` field that contains category keywords collected from multiple sources. The `categories` field is defined in the [Product Data Schema](/docs/product-data-schema). For standardized top-level and second-level categories, see the [`primaryCategories`](#standardized-categories)[ and ](#standardized-categories)[`secondaryCategories`](#standardized-categories) fields.
 
 ### Current count
 
@@ -35,6 +38,23 @@ The dataset currently contains 2,241,950 unique category values. Datafiniti upda
 Download the complete JSON file of category values from Google Drive:
 
 - [Product category values JSON file](https://drive.google.com/file/d/1UDalHEWOfOfoScE_Bpc7RQRxc95xqUiS/view?usp=sharing)
+
+## Standardized categories
+
+Product records also include `primaryCategories` and `secondaryCategories` fields for standardized category values. `primaryCategories` contains top-level categories such as `Electronics` or `Home & Garden`, and `secondaryCategories` contains second-level categories beneath the primary, such as `Cell Phones` under `Electronics`.
+
+Accepted values for both fields are listed on [Possible Values for Product Fields](/docs/possible-values-for-product-fields). Use these fields when you need standardized categories for filtering and analysis but do not need the full depth of the 9-level taxonomy.
+
+The following example shows how these fields appear in a product record:
+
+```json
+{
+  "primaryCategories": ["Electronics"],
+  "secondaryCategories": ["Cell Phones"]
+}
+```
+
+See the [Product Data Schema](/docs/product-data-schema) for the full schema definition.
 
 ## Taxonomy values
 
