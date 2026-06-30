@@ -13,8 +13,7 @@ Datafiniti classifies product records with three complementary systems: a flat `
 
   The `categories` field stores a flat, unstandardized list of keywords collected from multiple merchant sources. Different merchants may use different terms for the same product, which results in more than 2 million unique category values.
 
-  The `primaryCategories` and `secondaryCategories` fields provide a standardized middle ground between the raw `categories` field and the full taxonomy. Use them when you need consistent top-level and second-level categories without the full 9-level hierarchy. Accepted values for both fields are listed on [Possible Values for Product Fields](/docs/possible-values-for-product-fields).\
-
+  The `primaryCategories` and `secondaryCategories` fields provide a standardized middle ground between the raw `categories` field and the full taxonomy. Use them when you need consistent top-level and second-level categories without the full 9-level hierarchy. Accepted values for both fields are listed on [Possible Values for Product Fields](/docs/possible-values-for-product-fields).
 
   The taxonomy fields, `taxonomyLevel1` through `taxonomyLevel9`, use a structured, standardized hierarchy with up to 9 levels of depth. Each level narrows the product's classification progressively.
 
@@ -23,7 +22,44 @@ Datafiniti classifies product records with three complementary systems: a flat `
 
 ## Product category values
 
-Product records include a `categories` field that contains category keywords collected from multiple sources. The `categories` field is defined in the [Product Data Schema](/docs/product-data-schema). For standardized top-level and second-level categories, see the [`primaryCategories`](#standardized-categories)[ and ](#standardized-categories)[`secondaryCategories`](#standardized-categories) fields.
+Product records include a `categories` field that contains category keywords collected from multiple sources. The `categories` field is defined in the [Product Data Schema](/docs/product-data-schema). Because Datafiniti collects these values from many merchants, a single product can carry multiple category labels at once. Some labels overlap, and some use different terminology for the same concept.
+
+For example, a single wine product might include category values like these:
+
+```json
+{
+  "categories": [
+    "Grocery",
+    "Wine",
+    "All White Wines",
+    "Wine, Beer & Liquor",
+    "White Wines",
+    "Alcohol",
+    "Beverages",
+    "Food & Beverage"
+    // ...additional category values may also be present
+  ]
+}
+```
+
+[`primaryCategories` and `secondaryCategories`](#standardized-categories) standardize those raw values into consistent top-level and second-level classifications. For the same product, the raw categories might look like this alongside their standardized equivalents:
+
+```json
+{
+  "categories": [
+    "Grocery",
+    "Wine",
+    "All White Wines",
+    "Wine, Beer & Liquor",
+    "White Wines",
+    "Alcohol",
+    "Beverages",
+    "Food & Beverage"
+  ],
+  "primaryCategories": ["Food Beverages & Tobacco"],
+  "secondaryCategories": ["Alcoholic Beverages"]
+}
+```
 
 ### Current count
 
