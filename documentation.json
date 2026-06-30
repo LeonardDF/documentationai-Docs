@@ -511,7 +511,8 @@
                         "pages": [
                           {
                             "title": "Product Data Schema",
-                            "path": "docs/product-data-schema"
+                            "path": "docs/product-data-schema",
+                            "content-width": "wide"
                           },
                           {
                             "title": "Product Field Type Breakdown",
@@ -534,8 +535,7 @@
                             "pages": [
                               {
                                 "title": "Product Categorization",
-                                "path": "product-categorization",
-                                "content-width": "wide"
+                                "path": "product-categorization"
                               },
                               {
                                 "title": "Taxonomy 1 Level",
