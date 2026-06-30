@@ -534,7 +534,8 @@
                             "pages": [
                               {
                                 "title": "Product Categorization",
-                                "path": "product-categorization"
+                                "path": "product-categorization",
+                                "content-width": "wide"
                               },
                               {
                                 "title": "Taxonomy 1 Level",
