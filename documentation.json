@@ -514,10 +514,6 @@
                             "path": "docs/product-data-schema"
                           },
                           {
-                            "title": "Product Categories",
-                            "path": "product-categories"
-                          },
-                          {
                             "title": "Product Field Type Breakdown",
                             "path": "docs/product-field-type-breakdown"
                           },
@@ -534,11 +530,11 @@
                             "path": "docs/dimensions-normalization"
                           },
                           {
-                            "group": "Taxonomy",
+                            "group": "Product Categorization",
                             "pages": [
                               {
-                                "title": "Taxonomy",
-                                "path": "taxonomy"
+                                "title": "Product Categorization",
+                                "path": "product-categorization"
                               },
                               {
                                 "title": "Taxonomy 1 Level",

@@ -1,0 +1,46 @@
+---
+title: Product Categorization
+description: >-
+  Understand Datafiniti's categories field and nine-level taxonomy system for
+  product data, with links to every taxonomy reference table.
+---
+## Product classification
+
+Datafiniti classifies product records with two complementary systems: a flat `categories` field and a hierarchical taxonomy with up to 9 levels of depth. Both systems are defined in the [Product Data Schema](/docs/product-data-schema) and support different ways to query, filter, and analyze product data.
+
+<Callout kind="tip" collapsed="false">
+  ### Categories vs Taxonomy
+
+  The `categories` field stores a flat, unstandardized list of keywords collected from multiple merchant sources. Different merchants may use different terms for the same product, which results in more than 2 million unique category values.
+
+  The taxonomy fields, `taxonomyLevel1` through `taxonomyLevel9`, use a structured, standardized hierarchy with up to 9 levels of depth. Each level narrows the product's classification progressively.
+
+  Use `categories` when you want to match the exact terms used on merchant listings. Use the taxonomy fields when you need consistent hierarchical classification for filtering, reporting, or analysis.
+</Callout>
+
+## Product category values
+
+Product records include a `categories` field that contains category keywords collected from multiple sources. The `categories` field is defined in the [Product Data Schema](/docs/product-data-schema).
+
+### Current count
+
+The dataset currently contains 2,241,950 unique category values. Datafiniti updates this number monthly as new products are added and existing categories are refined.
+
+<Callout kind="info" collapsed="false">
+  Datafiniti updates the category count monthly.
+</Callout>
+
+### Download the full category list
+
+Download the complete JSON file of category values from Google Drive:
+
+- [Product category values JSON file](https://drive.google.com/file/d/1UDalHEWOfOfoScE_Bpc7RQRxc95xqUiS/view?usp=sharing)
+
+## Taxonomy values
+
+Datafiniti classifies product records with a hierarchical taxonomy system that supports up to 9 levels of depth. The taxonomy provides a structured, multi-level classification path such as `automotive > motorcycle & powersports > parts > wheels & tires > tires & accessories > tires & inner tubes > motorcycle & scooter > motorcycle > street`, which makes product filtering and category-based queries more precise. Each level is available as a separate queryable field, from `taxonomyLevel1` through `taxonomyLevel9`, as defined in the [Product Data Schema](/docs/product-data-schema).
+
+The reference tables below list every possible value at each taxonomy level. Select a level to see all available classification values for that depth.
+
+<CollectionList node="versions:v4.0/tabs:Guides/groups:Datafiniti API/groups:Product Data/groups:Product Data Schema/groups:Product Categorization" layout="list" cols="1" />
+
