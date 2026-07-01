@@ -611,6 +611,10 @@
                         ]
                       },
                       {
+                        "title": "How Product Records Are Sourced",
+                        "path": "how-product-records-are-sourced"
+                      },
+                      {
                         "title": "How Product Records Are Merged",
                         "path": "docs/how-product-records-are-merged"
                       },
