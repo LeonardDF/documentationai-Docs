@@ -1,4 +1,51 @@
 ---
 title: How Product Records Are Sourced
+description: >-
+  Learn how Datafiniti collects, normalizes, and merges product data from dozens
+  of e-commerce sources into unified product records you can query via API.
 ---
+## How Product Records Are Sourced
 
+Datafiniti builds its product database by continuously crawling e-commerce websites and product listing pages across the web. A custom-built scraping engine visits retail sites, extracts product data from listing pages, normalizes it into a standard schema, and merges records from multiple sources into unified product records. Every record traces back to its original sources through the `sourceURLs` and `domains` fields.
+
+### The sourcing pipeline
+
+Datafiniti processes product data through a four-step pipeline:
+
+1. **Crawling** — Datafiniti's scraping engine systematically visits product listing pages of e-commerce websites. Each page is parsed to extract raw product attributes such as name, price, brand, descriptions, images, reviews, availability, and identifiers like UPC, EAN, ISBN, ASIN, and SKU.
+
+2. **Normalization** — Raw data from different sites comes in varying formats. Datafiniti runs it through a normalization pipeline that standardizes field formats. For example, dimension strings are converted into a consistent `Height x Width x Depth` format, brand names are normalized into a `canonicalBrand` field, and currency and date values are standardized.
+
+3. **Merging** — Records are merged using internal `keys` generated from unique identifiers. When two records from different sources share at least one key value, such as the same UPC or the same brand plus manufacturer number combination, they are combined into a single unified record. A single Datafiniti product record may contain prices, descriptions, and reviews from multiple retailers. For more detail, see [How Product Records Are Merged](/docs/how-product-records-are-merged).
+
+4. **Continuous Refresh** — Datafiniti continuously re-crawls existing sources to capture updated pricing, availability, and new reviews. The `dateAdded` and `dateUpdated` fields on each record track when data was first collected and last refreshed. You can also trigger real-time updates through the Targeted Updates endpoint to force a refresh of specific records.
+
+### Source traceability
+
+Every product record includes source attribution fields so you can see where the data came from and how it was assembled.
+
+- **`domains`** — A list of each unique domain found across the `sourceURLs`
+
+- **`merchants`** — A list of third-party merchants selling the product. This field is populated whenever a product listing comes from a marketplace that allows third-party sellers (e.g., Amazon, Walmart Marketplace). Each merchant entry can include the seller's name, address, phone number, availability, and whether they are a private seller.
+
+- **`sourceURLs`** — A list of all URLs used to generate data for the product
+
+- **`websiteIDs`** — Website-specific identifiers tied to individual retailers
+
+See the [product data schema](/docs/product-data-schema) for the full field reference.
+
+### Custom product crawls
+
+<Callout kind="tip" collapsed="false">
+  **Custom Product Crawls Available**
+
+  Don't see a source you need? Datafiniti can custom-build product crawls for your specific data requirements. Whether you need coverage from a niche retailer, a specialized marketplace, or a proprietary data source, our team can set up a tailored crawl to feed new data into our database.
+
+  [Schedule a call](https://meetings-na2.hubspot.com/sdeysarkar) with our team to discuss your needs, or email us at [support@datafiniti.co](mailto:support@datafiniti.co) to get started.
+</Callout>
+
+### Full list of product data sources
+
+Datafiniti continuously adds and updates product data sources across dozens of e-commerce websites. For the complete, up-to-date list of all product data sources, [view the full source list on Google Drive](https://drive.google.com/file/d/1UDalHEWOfOfoScE_Bpc7RQRxc95xqUiS/view?usp=sharing).
+
+Check our [changelog](/changelog) for the latest source additions and updates, or reach out to [support@datafiniti.co](mailto:support@datafiniti.co) to request a specific source.

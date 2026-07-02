@@ -612,15 +612,16 @@
                       },
                       {
                         "group": "How Product Records Are Sourced",
-                        "pages": []
-                      },
-                      {
-                        "title": "How Product Records Are Sourced",
-                        "path": "how-product-records-are-sourced"
-                      },
-                      {
-                        "title": "How Product Records Are Merged",
-                        "path": "docs/how-product-records-are-merged"
+                        "pages": [
+                          {
+                            "title": "How Product Records Are Sourced",
+                            "path": "how-product-records-are-sourced"
+                          },
+                          {
+                            "title": "How Product Records Are Merged",
+                            "path": "docs/how-product-records-are-merged"
+                          }
+                        ]
                       },
                       {
                         "group": "Use Cases for Product Data",
