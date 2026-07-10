@@ -1220,6 +1220,10 @@
                     "group": "2026",
                     "pages": [
                       {
+                        "title": "July 2026",
+                        "path": "july-2026"
+                      },
+                      {
                         "title": "June 2026",
                         "path": "june-2026"
                       },
