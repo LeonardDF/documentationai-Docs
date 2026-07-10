@@ -27,10 +27,12 @@ Since street addresses can be broken down into many parts, we will query based o
   The `address` field defaults to fuzzy matching for exact, full, or partial addresses. This means the following queries would all return matching results:
 
   - `address:\"2815 Manor Rd\"`
+
   - `address:\"2815 Manor Road\"`
+
   - `address:\"2815 Manor Rd, Austin\"`
 
-  For more details on how fuzzy matching and address normalization work, see [Normalized Property Addresses](/docs/normalized-address-data).
+  For more details on how fuzzy matching and address normalization work, including address prerequisites, supported formats, ambiguous state/suffix codes, and other behavior, see [Constructing Property Queries — Fuzzy Matching](/docs/constructing-property-queries#fuzzy-matching).
 </Callout>
 
 ## Search for Unit
@@ -86,5 +88,5 @@ Here are example bulk download files of our previous query:
 
 - [Apartment data CSV](https://drive.google.com/file/d/16ud0GybJA913hqghD7E29tE0gEo0cQli/view?usp=share_link)
 
-- [Apartment data JSONf](https://drive.google.com/file/d/1m2h3JivD1gXBmTxPzAO7OAQKbCrNGByK/view?usp=share_link)
+- [Apartment data JSON](https://drive.google.com/file/d/1m2h3JivD1gXBmTxPzAO7OAQKbCrNGByK/view?usp=share_link)
 

@@ -1,0 +1,521 @@
+---
+title: People Data SDK
+---
+Install, authenticate, and make your first people searches with the Datafiniti People Data SDK for Python.
+
+## Get started with the Python SDK
+
+You can use the [Datafiniti People Data SDK](https://pypi.org/project/datafiniti-sdk/) for Python to authenticate with the People Data API and run common people searches, including name lookup, contact info queries, filtering, counting, and pagination.
+
+The SDK is available on PyPI at [https://pypi.org/project/datafiniti-sdk/](https://pypi.org/project/datafiniti-sdk/).
+
+<Callout kind="info" collapsed="false">
+  Use Python 3.9 or later and `requests` version `2.31.0` or later.
+</Callout>
+
+### Installation
+
+<Steps>
+  <Step title="Install the SDK" icon="package" title-type="p">
+    Run `pip install` to add the Datafiniti People Data SDK to your environment.
+
+    ```bash
+    pip install datafiniti-sdk
+    ```
+
+    After the command finishes, `pip` reports that the package was installed successfully. The People SDK is included in the unified `datafiniti` package alongside the Business, Property, and Product SDKs.
+  </Step>
+</Steps>
+
+### Authentication
+
+<Steps>
+  <Step title="Configure your API key" icon="lock" title-type="p">
+    Authenticate by setting the `DATAFINITI_API_KEY` environment variable or by passing your API key directly when you create the client.
+
+    <CodeGroup show-lines="true" tabs={[]}>
+      ```bash
+      export DATAFINITI_API_KEY="YOUR_API_KEY"
+      ```
+
+      ```python
+      from datafiniti import DatafinitiPeopleSDK
+
+      sdk = DatafinitiPeopleSDK(api_key="df_example_9xmk7q2r")
+      ```
+    </CodeGroup>
+
+    If you use the environment variable approach, initialize the client with `DatafinitiPeopleSDK.from_env()`. You can also import directly from the people module with `from datafiniti.people import DatafinitiPeopleSDK`.
+  </Step>
+</Steps>
+
+## Features
+
+### Search by name
+
+Look up people records by first and last name, optionally narrowing by city. Use this to quickly retrieve people details without writing raw API queries.
+
+```python
+from datafiniti.people import DatafinitiPeopleSDK
+
+sdk = DatafinitiPeopleSDK.from_env()
+
+# Search by name — first and last name are required separately
+results = sdk.search_by_name("John", "Smith", city="Austin", num_records=10)
+
+print("
+=== NAME SEARCH TEST ===")
+print("Matches:", results.get("num_found"))
+
+records = results.get("records", [])
+
+if records:
+    person = records[0]
+    print("
+Person:")
+    print(person.get("firstName"))
+    print(person.get("lastName"))
+    print(person.get("city"))
+else:
+    print("No person found.")
+```
+
+#### Code breakdown
+
+| Section                                                  | What it does                                                                     |
+| -------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `from datafiniti.people import DatafinitiPeopleSDK`      | Imports the `DatafinitiPeopleSDK` class from the `datafiniti.people` module.     |
+| `sdk = DatafinitiPeopleSDK.from_env()`                   | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.   |
+| `sdk.search_by_name("John", "Smith", city, num_records)` | Queries the People Data API for records matching the given first and last name.  |
+| `results.get("num_found")`                               | Returns the total number of people that matched the query.                       |
+| `results.get("records", [])`                             | Retrieves the list of people records, defaulting to an empty list if none exist. |
+| `records[0]`                                             | Accesses the first (best-match) people record from the results.                  |
+| `.get("firstName")`, `.get("lastName")`, `.get("city")`  | Safely reads individual fields from the people record.                           |
+
+<Callout kind="info" collapsed="false">
+  The `search_by_name` method abstracts away the raw query syntax. First and last name are passed separately, and you can optionally provide `city` and `num_records` to narrow and limit results.
+</Callout>
+
+### Count
+
+Get the total number of people matching a query without downloading any records. Use this to check result sizes before running larger searches or to build dashboards with aggregate counts.
+
+```python
+from datafiniti.people import DatafinitiPeopleSDK
+
+sdk = DatafinitiPeopleSDK.from_env()
+
+count = sdk.count('firstName:"John" AND lastName:"Smith" AND country:US')
+
+print("
+=== COUNT TEST ===")
+print(f"People found: {count:,}")
+```
+
+#### Code breakdown
+
+| Section                                                             | What it does                                                                          |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| `from datafiniti.people import DatafinitiPeopleSDK`                 | Imports the `DatafinitiPeopleSDK` class from the `datafiniti.people` module.          |
+| `sdk = DatafinitiPeopleSDK.from_env()`                              | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.        |
+| `sdk.count('firstName:"John" AND lastName:"Smith" AND country:US')` | Returns the total number of US people named John Smith without fetching full records. |
+| `f"People found: {count:,}"`                                        | Formats the count with comma separators for readability (e.g., `1,234,567`).          |
+
+<Callout kind="info" collapsed="false">
+  The `count` method accepts the same query syntax as `search` but only returns the total number of matching records — no data is downloaded.
+</Callout>
+
+#### Understanding the query syntax
+
+The query string `'firstName:"John" AND lastName:"Smith" AND country:US'` uses Datafiniti's query language. Here's what you need to know:
+
+| Question                                                        | Answer                                                                                                                                                                                                                            |
+| --------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| What is the format?                                             | See the <a href="https://docs.datafiniti.co/docs/constructing-people-queries" target="_blank" rel="noopener noreferrer">Constructing People Queries</a> guide for the complete field reference, operators, and advanced examples. |
+| How do I handle multi-word string values?                       | Wrap them in exact quotes: `firstName:"John"`.                                                                                                                                                                                    |
+| What fields can I query & what is the full list of field names? | Any field in the [People Data Schema](https://docs.datafiniti.co/docs/people-data-schema) — `firstName`, `lastName`, `emails`, `city`, `province`, `country`, `jobTitle`, `keys`, and many more.                                  |
+
+### Build a query
+
+Compose a contact info query using the fluent query builder. Chain field methods — such as name, location, email, or `peopleKey` — and call `.build()` to produce a Datafiniti query string.
+
+```python
+from datafiniti.people import DatafinitiPeopleSDK
+
+sdk = DatafinitiPeopleSDK.from_env()
+
+# Build a contact info query — search by name, email, or peopleKey
+query = (
+    sdk.query()
+    .first_name("Joe")
+    .last_name("Curry")
+    .country("US")
+    .province("CO")
+    .city("Denver")
+    .build()
+)
+
+results = sdk.search(query, num_records=10)
+
+print("
+=== QUERY BUILDER TEST ===")
+print(f"Total matches: {results.get('num_found'):,}")
+
+for person in results.get("records", []):
+    print(f"{person.get('firstName')} {person.get('lastName')} — {person.get('city')}")
+```
+
+#### Code breakdown
+
+| Section                                             | What it does                                                                     |
+| --------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `from datafiniti.people import DatafinitiPeopleSDK` | Imports the `DatafinitiPeopleSDK` class from the `datafiniti.people` module.     |
+| `sdk = DatafinitiPeopleSDK.from_env()`              | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.   |
+| `sdk.query()`                                       | Returns a fluent `PeopleQuery` builder for composing a query without raw syntax. |
+| `.first_name(...).last_name(...).country(...)`      | Chains field methods to add constraints to the query.                            |
+| `.province("CO").city("Denver")`                    | Narrows results to a specific province and city.                                 |
+| `.build()`                                          | Produces the final Datafiniti query string from the chained fields.              |
+| `sdk.search(query, num_records=10)`                 | Executes the search and returns up to `num_records` matching records.            |
+
+<Callout kind="info" collapsed="false">
+  `PeopleQuery` is a fluent query builder exposing fields relevant to the People data type. Chain field methods and call `.build()` to produce a Datafiniti query string you can pass to `search`, `count`, or `paginate`.
+</Callout>
+
+### Search by email and peopleKey
+
+Search directly with a raw query to look up people by email address or by `peopleKey`. The `peopleKey` is cross-referenced from property data, letting you connect a person to a known property record.
+
+```python
+from datafiniti.people import DatafinitiPeopleSDK
+
+sdk = DatafinitiPeopleSDK.from_env()
+
+# Search by email
+results = sdk.search('emails:"someone@example.com"', num_records=1)
+
+# Search by peopleKey (cross-referenced from property data)
+results = sdk.search('keys:"nathan/sandel/us/tx/78704/412southcongressave"', num_records=1)
+
+print("
+=== EMAIL & KEY SEARCH ===")
+for person in results.get("records", []):
+    print(f"{person.get('firstName')} {person.get('lastName')}")
+    print(f"--emails: {person.get('emails')}")
+    print(f"--keys: {person.get('keys')}")
+```
+
+#### Code breakdown
+
+| Section                                                                   | What it does                                                                   |
+| ------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| `from datafiniti.people import DatafinitiPeopleSDK`                       | Imports the `DatafinitiPeopleSDK` class from the `datafiniti.people` module.   |
+| `sdk = DatafinitiPeopleSDK.from_env()`                                    | Creates a client instance using the `DATAFINITI_API_KEY` environment variable. |
+| `sdk.search('emails:"someone@example.com"', num_records=1)`               | Looks up a person by an exact email address.                                   |
+| `sdk.search('keys:"nathan/sandel/us/tx/78704/412southcongressave"', ...)` | Looks up a person by `peopleKey`, cross-referenced from property data.         |
+| `results.get("records", [])`                                              | Retrieves the list of matching people records.                                 |
+
+<Callout kind="info" collapsed="false">
+  The `keys` field links people records to property records. You can pull a `peopleKey` from a property record and use it here to retrieve the associated person — a convenient way to connect the People and Property data types.
+</Callout>
+
+### Paginate
+
+Iterate through large result sets page by page without loading everything into memory at once. Use this to process thousands of records efficiently or to cap the number of retrievals at a specific limit.
+
+```python
+from datafiniti.people import DatafinitiPeopleSDK
+
+sdk = DatafinitiPeopleSDK.from_env()
+
+print("
+=== PAGINATION TEST ===")
+
+records_seen = 0
+
+# Paginate through large result sets
+for person in sdk.paginate(
+    query="country:US AND jobTitle:*",
+    page_size=10,
+    max_records=50,
+):
+    records_seen += 1
+    print(person.get("firstName"), person.get("lastName"), person.get("jobTitle"))
+
+print(f"
+Total Retrieved: {records_seen}")
+```
+
+#### Code breakdown
+
+| Section                                             | What it does                                                                                        |
+| --------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `from datafiniti.people import DatafinitiPeopleSDK` | Imports the `DatafinitiPeopleSDK` class from the `datafiniti.people` module.                        |
+| `sdk = DatafinitiPeopleSDK.from_env()`              | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.                      |
+| `sdk.paginate(query, page_size, max_records)`       | Returns a generator that yields individual people records across multiple API pages.                |
+| `query="country:US AND jobTitle:*"`                 | The search query — all US people that have any job title (`*` matches any value).                   |
+| `page_size=10`                                      | Fetches 10 records per API request.                                                                 |
+| `max_records=50`                                    | Stops after retrieving 50 total records, even if more are available.                                |
+| `for person in sdk.paginate(...)`                   | Iterates through each yielded record one at a time without loading the full result set into memory. |
+| `person.get("firstName")`, `.get("jobTitle")`       | Safely reads individual fields from each people record.                                             |
+
+<Callout kind="info" collapsed="false">
+  The `paginate` method is a generator — it handles API pagination automatically behind the scenes. Set `max_records` to limit total retrieval, or omit it to iterate through all matching results.
+</Callout>
+
+#### Understanding the query syntax
+
+The `query` parameter uses Datafiniti's query language. Here's what you need to know:
+
+| Question                           | Answer                                                                                                                                                                                                                            |
+| ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| What is the format?                | See the <a href="https://docs.datafiniti.co/docs/constructing-people-queries" target="_blank" rel="noopener noreferrer">Constructing People Queries</a> guide for the complete field reference, operators, and advanced examples. |
+| How do I handle multi-word values? | Wrap them in quotes: `firstName:"John"`.                                                                                                                                                                                          |
+| What fields can I query?           | Any field in the [People Data Schema](https://docs.datafiniti.co/docs/people-data-schema) — `firstName`, `lastName`, `emails`, `city`, `province`, `country`, `jobTitle`, `keys`, and many more.                                  |
+
+### Views
+
+Control which fields are returned in API responses using custom inline views or premade named views. Use this to reduce payload size, speed up requests, and tailor results to specific use cases. For a full list of available people data views, see [People Data Views](https://docs.datafiniti.co/docs/available-views-for-people-data).
+
+```python
+"""
+People Views Example: Limit Returned Fields
+
+Uses a custom view to fetch only the fields needed to build a lightweight
+contact list — first name, last name, email, city, and country — for people
+who represent properties in a target market.
+"""
+
+from datafiniti.people import DatafinitiPeopleSDK
+
+# ---------------------------------------------------------------------------
+# View options
+#
+# OPTION 1 (used below): Custom inline view
+#   Pass a list of field objects directly in the request. No setup required.
+#   Each object can set "flatten" and "sub_fields" to control nested output.
+#
+# OPTION 2: Premade (named) view — pass a string instead of a list.
+#   "default"   All fields (same as omitting view entirely).
+#   Reference: https://docs.datafiniti.co/docs/available-views-for-people-data
+# ---------------------------------------------------------------------------
+
+PEOPLE_VIEW = [
+    {"flatten": False, "sub_fields": [], "name": "firstName"},
+    {"flatten": False, "sub_fields": [], "name": "lastName"},
+    {"flatten": False, "sub_fields": [], "name": "emails"},
+    {"flatten": False, "sub_fields": [], "name": "city"},
+    {"flatten": False, "sub_fields": [], "name": "country"},
+]
+
+sdk = DatafinitiPeopleSDK.from_env()
+
+results = sdk.search(
+    query="country:US AND province:TX AND city:kingwood AND propertiesRepresented:*",
+    num_records=5,
+    view=PEOPLE_VIEW,
+)
+
+print("
+=== PEOPLE VIEWS ===")
+print(f"Total matches: {results.get('num_found'):,}
+")
+
+for person in results.get("records", []):
+    print(f"Name:    {person.get('firstName', 'N/A')} {person.get('lastName', 'N/A')}")
+    print(f"Email:   {person.get('emails', ['N/A'])[0] if person.get('emails') else 'N/A'}")
+    print(f"City:    {person.get('city', 'N/A')}")
+    print(f"Country: {person.get('country', 'N/A')}")
+    print()
+```
+
+#### Code breakdown
+
+| Section                                                  | What it does                                                                                                 |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `from datafiniti.people import DatafinitiPeopleSDK`      | Imports the `DatafinitiPeopleSDK` class from the `datafiniti.people` module.                                 |
+| `PEOPLE_VIEW = [...]`                                    | Defines a custom inline view — a list of field objects specifying exactly which fields to return per record. |
+| `{"flatten": False, "sub_fields": [], "name": "emails"}` | A single field object. `flatten` and `sub_fields` control how nested/multi-valued fields are returned.       |
+| `sdk.search(query, num_records=5, view=PEOPLE_VIEW)`     | Executes the search with the inline view — only the 5 specified fields are returned.                         |
+| `query="...propertiesRepresented:*"`                     | Limits results to people who represent at least one property (`*` matches any value).                        |
+| `for person in results.get("records", []):`              | Iterates through each result and prints the name, email, city, and country.                                  |
+
+<Callout kind="info" collapsed="false">
+  You can use either a custom inline view (a list of field objects) or a premade named view (a string like `"default"`). Custom views give you precise control over the response payload; named views are convenient presets for common use cases.
+</Callout>
+
+## Code Examples
+
+Here are some Python examples built upon what we have just discussed. All scripts here should be ready to run as long as you have your `DATAFINITI_API_KEY `exported`. `
+
+<CodeGroup default-tab="3" show-lines="true" tabs={["Contact_info.py","people_count.py","people_full_query.py","people_paginate.py"]}>
+  ```text Contact_info.py
+  from datafiniti.people import DatafinitiPeopleSDK
+  from datafiniti.errors import DatafinitiAPIError
+
+  # ---------------------------------------------------------------------------
+  # Contact info lookups — swap SEARCH_MODE to try different query strategies.
+  #
+  # "by_name"       firstName + lastName, optionally narrowed by location.
+  #                 Use when you have a person's name and want their contact details.
+  #
+  # "by_email"      Exact email address match.
+  #                 Useful for enriching a known email with additional profile data.
+  #
+  # "by_people_key" people key cross-referenced from Datafiniti property data.
+  #                 Use when you have a peopleKey from a property record and want
+  #                 the matching person's contact information.
+  #
+  # Reference: https://docs.datafiniti.co/docs/gather-people-contact-information
+  # ---------------------------------------------------------------------------
+
+  SEARCH_MODE = "by_name"
+
+  sdk = DatafinitiPeopleSDK.from_env()
+
+  if SEARCH_MODE == "by_name":
+      query = sdk.query().first_name("Joe").last_name("Curry").country("US").province("CO").city("Denver").build()
+  elif SEARCH_MODE == "by_email":
+      query = 'emails:"ctrivedi@remax.net"'
+  elif SEARCH_MODE == "by_people_key":
+      query = 'keys:"nathan/sandel/us/tx/78704/412southcongressave"'
+  else:
+      raise ValueError(f"Unknown SEARCH_MODE: {SEARCH_MODE}")
+
+  try:
+      response = sdk.search(query=query, num_records=10)
+
+      print(f"\n=== PEOPLE CONTACT INFO: {SEARCH_MODE} ===")
+      print(f"Total matches: {response.get('num_found', 0):,}\n")
+
+      for person in response.get("records", []):
+          first = person.get("firstName", "")
+          last = person.get("lastName", "")
+          city = person.get("city", "N/A")
+          province = person.get("province", "N/A")
+          country = person.get("country", "N/A")
+          gender = person.get("gender", "N/A")
+
+          emails = person.get("emails", [])
+          phones = person.get("phoneNumbers", [])
+          keys = person.get("keys", [])
+
+          print(f"Name:     {first} {last}")
+          print(f"Location: {city}, {province}, {country}")
+          print(f"Gender:   {gender}")
+          print(f"Emails:   {', '.join(emails) if emails else 'N/A'}")
+          print(f"Phones:   {', '.join(phones) if phones else 'N/A'}")
+          print(f"Keys:     {keys[0] if keys else 'N/A'}")
+          print()
+
+  except DatafinitiAPIError as e:
+      print(f"\nAPI Error {e.status_code}: {e}")
+      for msg in e.errors:
+          print(f"  {msg}")
+
+  ```
+
+  ```text people_count.py
+  from datafiniti.people import DatafinitiPeopleSDK
+  from datafiniti.errors import DatafinitiAPIError
+
+
+  sdk = DatafinitiPeopleSDK.from_env()
+
+  try:
+      count = sdk.count("country:US")
+      print("\n=== PEOPLE COUNT TEST ===")
+      print(f"People found: {count:,}")
+  except DatafinitiAPIError as e:
+      print(f"\nAPI Error {e.status_code}: {e}")
+      for msg in e.errors:
+          print(f"  {msg}")
+
+  ```
+
+  ```text people_full_query.py
+  import json
+  from datafiniti.people import DatafinitiPeopleSDK
+  from datafiniti.errors import DatafinitiAPIError
+
+
+  sdk = DatafinitiPeopleSDK.from_env()
+
+  VIEW = [
+      {"flatten": False, "sub_fields": [], "name": "address"},
+      {"flatten": False, "sub_fields": [], "name": "city"},
+      {"flatten": False, "sub_fields": [], "name": "country"},
+      {"flatten": False, "sub_fields": [], "name": "emails"},
+      {"flatten": False, "sub_fields": [], "name": "firstName"},
+      {"flatten": False, "sub_fields": [], "name": "lastName"},
+  ]
+
+  try:
+      response = sdk.search(
+          query="country:US AND province:TX AND city:kingwood AND propertiesRepresented:*",
+          num_records=5,
+          view=VIEW,
+      )
+
+      print("\n=== BROKERS IN YOUR AREA ===")
+      print("Found:", response.get("num_found"))
+
+      records = response.get("records", [])
+
+      if records:
+          print(f"\n{len(records)} Record(s) Found:")
+          for i, record in enumerate(records):
+              print(f"\n--- Record {i + 1} ---")
+              print(json.dumps(record, indent=2))
+      else:
+          print("No records returned.")
+  except DatafinitiAPIError as e:
+      print(f"\nAPI Error {e.status_code}: {e}")
+      for msg in e.errors:
+          print(f"  {msg}")
+
+  ```
+
+  ```text people_paginate.py
+  from datafiniti.people import DatafinitiPeopleSDK
+  from datafiniti.errors import DatafinitiAPIError
+
+
+  sdk = DatafinitiPeopleSDK.from_env()
+
+  print("\n=== PEOPLE PAGINATION TEST ===")
+
+  records_seen = 0
+
+  try:
+      for person in sdk.paginate(
+          query='country:US AND jobTitle:* AND -jobTitle:(realtor OR "real estate")',
+          # note that the query can be modified to any people data query
+
+          # page_size maps to the `limit` query param — how many records are returned per page (max 500).
+          # The SDK increments the `page` number automatically after each full page is consumed,
+          # so page 1 returns records 1–10, page 2 returns 11–20, and so on until max_records is reached
+          # or the API returns an empty page (no more results).
+          page_size=10,
+          max_records=50,  # stop after 50 total records (5 pages of 10)
+      ):
+          records_seen += 1
+          first = person.get("firstName", "")
+          last = person.get("lastName", "")
+          city = person.get("city", "N/A")
+          province = person.get("province", "")
+          job_title = person.get("jobTitle", "")
+          location = f"{city}, {province}" if province else city
+          line = f"{records_seen}. {first} {last} — {location}"
+          if job_title:
+              line += f", {job_title}"
+          print(line)
+
+      print(f"\nTotal Retrieved: {records_seen}")
+  except DatafinitiAPIError as e:
+      print(f"\nAPI Error {e.status_code}: {e}")
+      for msg in e.errors:
+          print(f"  {msg}")
+
+  ```
+</CodeGroup>
+

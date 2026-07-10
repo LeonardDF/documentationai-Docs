@@ -1723,6 +1723,26 @@ Learn more about integrating Autotrace into your property data searches.
   ```
 </Response>
 
+## Common questions
+
+<ExpandableGroup>
+  <Expandable title="What is the owner of this house/property?">
+
+  The `owners` field array in Datafiniti's property data contains the historical list of property owners, including names, transaction dates, and a `peopleKey` that links each owner to a people record. This applies to any property type — residential, commercial, or land. To find the owner of a specific property, search the Property Data API using the address combined with `owners:*` to ensure only records with owner data are returned. You can also use the `transactions` field to find buyer and seller names from sale records. To enrich owner data with contact information such as phone or email, use the `peopleKey` to look up the linked people record. See [Search for owner data by address](#search-for-owner-data-by-address) and [Accessing data on owners](#accessing-data-on-owners) for the full walkthrough.
+
+  </Expandable>
+  <Expandable title="What is the people connected to this house?">
+
+  The `people` field array in property data lists individuals linked to the property with a `title` such as `Owner`, their name, and a `peopleKey` for cross-referencing the people database. Brokers appear in the `brokers` field array with similar linking via `brokers.peopleKey`. You can also use AutoTrace to automatically populate people data directly into your property search results. See [Accessing the broker data](#accessing-the-broker-data) and [Using AutoTrace to populate people data](#using-autotrace-to-populate-people-data) for details.
+
+  </Expandable>
+  <Expandable title="How do I find the broker or agent for a property?">
+
+  The `brokers` field array in property data contains the agent name, company, and contact details for brokers associated with a property. Each broker entry may include a `peopleKey` that links to a full people record with phone numbers, email addresses, and license information. To find brokers for properties in a specific area, search the Property Data API filtering on `brokers.peopleKey:*`. See [Accessing the broker data](#accessing-the-broker-data) for the step-by-step walkthrough.
+
+  </Expandable>
+</ExpandableGroup>
+
 ## Example Records
 
 Here are example bulk download AutoTrace files of our previous query:

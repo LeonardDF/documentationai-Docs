@@ -24,6 +24,21 @@ The business data schema below lists all available fields in a business record. 
     }
   ]
   ```
+
+  <Expandable title="Sub-fields">
+    <ParamField body="hours.day" param-type="text" required="false" deprecated="false" show-location="false">
+      The day(s) for this hour of operation.
+    </ParamField>
+    <ParamField body="hours.dept" param-type="text" required="false" deprecated="false" show-location="false">
+      The department or business unit related to this hour of operation.
+    </ParamField>
+    <ParamField body="hours.hour" param-type="text" required="false" deprecated="false" show-location="false">
+      The hours of operation.
+    </ParamField>
+    <ParamField body="hours.meal" param-type="text" required="false" deprecated="false" show-location="false">
+      The meal period associated with this hour of operation.
+    </ParamField>
+  </Expandable>
 </ParamField>
 
 <ParamField body="isClosed" param-type="boolean" required="false" deprecated="false" show-location="false">
@@ -229,6 +244,18 @@ The business data schema below lists all available fields in a business record. 
 
 <ParamField body="people" param-type="nested" required="false" deprecated="false" show-location="false">
   A list of known people associated with or employed by this business.
+
+  <Expandable title="Sub-fields">
+    <ParamField body="people.dateSeen" param-type="text" required="false" deprecated="false" show-location="false">
+      A list of dates when this person was seen.
+    </ParamField>
+    <ParamField body="people.name" param-type="text" required="false" deprecated="false" show-location="false">
+      The person's name.
+    </ParamField>
+    <ParamField body="people.title" param-type="text" required="false" deprecated="false" show-location="false">
+      The person's title.
+    </ParamField>
+  </Expandable>
 </ParamField>
 
 <ParamField body="revenueCurrency" param-type="keyword" required="false" deprecated="false" show-location="false">
@@ -293,10 +320,31 @@ The business data schema below lists all available fields in a business record. 
 
 <ParamField body="descriptions" param-type="nested" required="false" deprecated="false" show-location="false">
   A list of descriptions for this business from various sources.
+
+  <Expandable title="Sub-fields">
+    <ParamField body="descriptions.dateSeen" param-type="text" required="false" deprecated="false" show-location="false">
+      A list of dates when this description has been seen for this business.
+    </ParamField>
+    <ParamField body="descriptions.sourceURLs" param-type="text" required="false" deprecated="false" show-location="false">
+      A list of source URLs where this specific description was seen.
+    </ParamField>
+    <ParamField body="descriptions.value" param-type="text" required="false" deprecated="false" show-location="false">
+      A unique description for this business.
+    </ParamField>
+  </Expandable>
 </ParamField>
 
 <ParamField body="features" param-type="nested" required="false" deprecated="false" show-location="false">
   A list of features associated with this business location.
+
+  <Expandable title="Sub-fields">
+    <ParamField body="features.key" param-type="text" required="false" deprecated="false" show-location="false">
+      A label for this feature.
+    </ParamField>
+    <ParamField body="features.value" param-type="text" required="false" deprecated="false" show-location="false">
+      A list of possible values for this feature.
+    </ParamField>
+  </Expandable>
 </ParamField>
 
 <ParamField body="keys" param-type="keyword" required="false" deprecated="false" show-location="false">
@@ -311,6 +359,27 @@ The business data schema below lists all available fields in a business record. 
 
 <ParamField body="rooms" param-type="nested" required="false" deprecated="false" show-location="false">
   A list of room types available at the business' location.
+
+  <Expandable title="Sub-fields">
+    <ParamField body="rooms.amountMin" param-type="float" required="false" deprecated="false" show-location="false">
+      The minimum price value listed for the room.
+    </ParamField>
+    <ParamField body="rooms.amountMax" param-type="float" required="false" deprecated="false" show-location="false">
+      The maximum price value listed.
+    </ParamField>
+    <ParamField body="rooms.capacity" param-type="integer" required="false" deprecated="false" show-location="false">
+      The maximum number of people that can occupy this room.
+    </ParamField>
+    <ParamField body="rooms.currency" param-type="keyword" required="false" deprecated="false" show-location="false">
+      The currency listed for amountMin and amountMax.
+    </ParamField>
+    <ParamField body="rooms.dateSeen" param-type="text" required="false" deprecated="false" show-location="false">
+      A list of dates when this room was seen.
+    </ParamField>
+    <ParamField body="rooms.roomType" param-type="text" required="false" deprecated="false" show-location="false">
+      A classification for the type of room.
+    </ParamField>
+  </Expandable>
 </ParamField>
 
 # Restaurant Fields
@@ -325,6 +394,33 @@ The business data schema below lists all available fields in a business record. 
 
 <ParamField body="menus" param-type="nested" required="false" deprecated="false" show-location="false">
   A list of menu items offered by the business.
+
+  <Expandable title="Sub-fields">
+    <ParamField body="menus.amountMin" param-type="float" required="false" deprecated="false" show-location="false">
+      The minimum price value of the item.
+    </ParamField>
+    <ParamField body="menus.amountMax" param-type="float" required="false" deprecated="false" show-location="false">
+      The maximum price value of the item. This is typically the same as amountMin, except in cases where a price range is listed.
+    </ParamField>
+    <ParamField body="menus.category" param-type="text" required="false" deprecated="false" show-location="false">
+      The menu section this item belongs to.
+    </ParamField>
+    <ParamField body="menus.currency" param-type="keyword" required="false" deprecated="false" show-location="false">
+      The currency listed for amountMin and amountMax.
+    </ParamField>
+    <ParamField body="menus.dateSeen" param-type="text" required="false" deprecated="false" show-location="false">
+      A list of dates when this item was seen.
+    </ParamField>
+    <ParamField body="menus.description" param-type="text" required="false" deprecated="false" show-location="false">
+      A description for the item.
+    </ParamField>
+    <ParamField body="menus.name" param-type="text" required="false" deprecated="false" show-location="false">
+      The item's name on the menu.
+    </ParamField>
+    <ParamField body="menus.sourceURLs" param-type="text" required="false" deprecated="false" show-location="false">
+      A list of URLs where this item was seen.
+    </ParamField>
+  </Expandable>
 </ParamField>
 
 <ParamField body="priceRangeCurrency" param-type="keyword" required="false" deprecated="false" show-location="false">
@@ -343,6 +439,45 @@ The business data schema below lists all available fields in a business record. 
 
 <ParamField body="reviews" param-type="nested" required="false" deprecated="false" show-location="false">
   A list of reviews for this business location.
+
+  <Expandable title="Sub-fields">
+    <ParamField body="reviews.date" param-type="date" required="false" deprecated="false" show-location="false">
+      The date the review was posted.
+    </ParamField>
+    <ParamField body="reviews.dateAdded" param-type="date" required="false" deprecated="false" show-location="false">
+      The date the review was added to Datafiniti.
+    </ParamField>
+    <ParamField body="reviews.dateSeen" param-type="text" required="false" deprecated="false" show-location="false">
+      A list of dates when the review was seen by Datafiniti.
+    </ParamField>
+    <ParamField body="reviews.doRecommend" param-type="boolean" required="false" deprecated="false" show-location="false">
+      A true/false for whether or not the reviewer recommends the business.
+    </ParamField>
+    <ParamField body="reviews.id" param-type="keyword" required="false" deprecated="false" show-location="false">
+      The website ID associated with this review.
+    </ParamField>
+    <ParamField body="reviews.rating" param-type="float" required="false" deprecated="false" show-location="false">
+      A 1 to 5 star value for the review.
+    </ParamField>
+    <ParamField body="reviews.sourceURLs" param-type="keyword" required="false" deprecated="false" show-location="false">
+      A list of URLs where this review was seen.
+    </ParamField>
+    <ParamField body="reviews.text" param-type="text" required="false" deprecated="false" show-location="false">
+      The full (or available) text of the review.
+    </ParamField>
+    <ParamField body="reviews.title" param-type="text" required="false" deprecated="false" show-location="false">
+      The review's title.
+    </ParamField>
+    <ParamField body="reviews.userCity" param-type="text" required="false" deprecated="false" show-location="false">
+      The reviewer's city.
+    </ParamField>
+    <ParamField body="reviews.username" param-type="text" required="false" deprecated="false" show-location="false">
+      The reviewer's username.
+    </ParamField>
+    <ParamField body="reviews.userProvince" param-type="text" required="false" deprecated="false" show-location="false">
+      The reviewer's province or state.
+    </ParamField>
+  </Expandable>
 </ParamField>
 
 # Source Fields

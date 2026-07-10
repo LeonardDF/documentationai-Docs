@@ -328,7 +328,7 @@
                         "group": "Property Data SDK",
                         "pages": [
                           {
-                            "title": "Property Data SDK",
+                            "title": "Python - Property Data SDK",
                             "path": "property-data-sdk"
                           }
                         ]
@@ -463,6 +463,10 @@
                             "path": "docs/people-pagination"
                           }
                         ]
+                      },
+                      {
+                        "title": "People Data SDK",
+                        "path": "people-data-sdk"
                       }
                     ]
                   },
@@ -526,8 +530,12 @@
                             "path": "docs/dimensions-normalization"
                           },
                           {
-                            "group": "Taxonomy",
+                            "group": "Product Categorization",
                             "pages": [
+                              {
+                                "title": "Product Categorization",
+                                "path": "product-categorization"
+                              },
                               {
                                 "title": "Taxonomy 1 Level",
                                 "path": "docs/taxonomy-1-level"
@@ -603,8 +611,17 @@
                         ]
                       },
                       {
-                        "title": "How Product Records Are Merged",
-                        "path": "docs/how-product-records-are-merged"
+                        "group": "How Product Records Are Sourced",
+                        "pages": [
+                          {
+                            "title": "How Product Records Are Sourced",
+                            "path": "how-product-records-are-sourced"
+                          },
+                          {
+                            "title": "How Product Records Are Merged",
+                            "path": "docs/how-product-records-are-merged"
+                          }
+                        ]
                       },
                       {
                         "group": "Use Cases for Product Data",
@@ -675,6 +692,10 @@
                             "path": "docs/product-pagination"
                           }
                         ]
+                      },
+                      {
+                        "title": "Product Data SDK",
+                        "path": "product-data-sdk"
                       }
                     ]
                   },
@@ -769,10 +790,6 @@
                             "path": "docs/business-data-use-cases"
                           },
                           {
-                            "title": "Business Use Cases",
-                            "path": "docs/business-use-cases"
-                          },
-                          {
                             "title": "Discover revenue of businesses",
                             "path": "docs/discover-business-revenue"
                           },
@@ -787,6 +804,15 @@
                           {
                             "title": "Find local restaurants using geoLocation",
                             "path": "docs/find-local-restaurants-using-geolocation"
+                          }
+                        ]
+                      },
+                      {
+                        "group": "Business Data SDK",
+                        "pages": [
+                          {
+                            "title": "Business Data SDK",
+                            "path": "business-data-sdk"
                           }
                         ]
                       },
