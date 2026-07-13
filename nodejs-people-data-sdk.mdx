@@ -1,0 +1,392 @@
+---
+title: Node.js - People Data SDK
+---
+Install, authenticate, and make your first people searches with the Datafiniti People Data SDK for Node.js.
+
+## Get started with the Node.js SDK
+
+You can use the [Datafiniti SDK](https://www.npmjs.com/package/datafiniti-sdk) for Node.js to authenticate with the People Data API and run common people searches, including name lookup, location filtering, counting, and pagination.
+
+The SDK is available on npm at [https://www.npmjs.com/package/datafiniti-sdk](https://www.npmjs.com/package/datafiniti-sdk). It ships a client for each Datafiniti dataset — this guide covers the `PeopleClient`.
+
+<Callout kind="info" collapsed="false">
+  Use Node.js 18 or later. The SDK has zero runtime dependencies — it uses Node's built-in `fetch`. It ships as a dual ESM + CommonJS build with full TypeScript type definitions.
+</Callout>
+
+### Installation
+
+<Steps>
+  <Step title="Install the SDK" icon="package" title-type="p">
+    Run `npm install` to add the Datafiniti SDK to your project.
+
+    ```bash
+    npm install datafiniti-sdk
+    ```
+
+    After the command finishes, `npm` reports that the package was added to your `package.json`.
+  </Step>
+</Steps>
+
+### Authentication
+
+<Steps>
+  <Step title="Configure your API key" icon="lock" title-type="p">
+    Authenticate by setting the `DATAFINITI_API_KEY` environment variable or by passing your API key directly when you create the client.
+
+    <CodeGroup show-lines="true">
+      ```bash
+      export DATAFINITI_API_KEY="YOUR_API_KEY"
+      ```
+
+      ```ts
+      import { PeopleClient } from "datafiniti-sdk";
+
+      const sdk = new PeopleClient({ apiKey: "df_example_9xmk7q2r" });
+      ```
+    </CodeGroup>
+
+    If you use the environment variable approach, initialize the client with `PeopleClient.fromEnv()`.
+  </Step>
+</Steps>
+
+## Features
+
+### Search by name
+
+Look up people records by first and last name, optionally narrowing by city. Use this to quickly retrieve contact details and match counts without writing raw API queries.
+
+```ts
+import { PeopleClient } from "datafiniti-sdk";
+
+const sdk = PeopleClient.fromEnv();
+
+const response = await sdk.searchByName("Jane", "Smith", {
+  city: "Seattle",
+});
+
+console.log("\n=== NAME SEARCH TEST ===");
+console.log("Matches:", response.num_found);
+
+const records = response.records ?? [];
+
+if (records.length) {
+  const person = records[0];
+  console.log("\nPerson:");
+  console.log(person.name);
+  console.log(person.firstName, person.lastName);
+  console.log(person.city, person.province);
+} else {
+  console.log("No person found.");
+}
+```
+
+#### Code breakdown
+
+| Section                                              | What it does                                                                         |
+| ---------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| `import { PeopleClient } from "datafiniti-sdk"`      | Imports the `PeopleClient` class from the `datafiniti-sdk` package.                  |
+| `const sdk = PeopleClient.fromEnv()`                 | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.       |
+| `sdk.searchByName(firstName, lastName, { city })`    | Queries the People Data API for records matching the given name (and optional city). |
+| `response.num_found`                                 | Returns the total number of people that matched the query.                           |
+| `response.records ?? []`                             | Retrieves the list of people records, defaulting to an empty array if none exist.    |
+| `records[0]`                                         | Accesses the first (best-match) people record from the results.                      |
+| `person.name`, `person.firstName`, `person.province` | Reads individual fields from the people record.                                      |
+
+<Callout kind="info" collapsed="false">
+  The `searchByName` method abstracts away the raw query syntax. Provide a first and last name, plus an optional `city` and `country` (defaults to `US`), to narrow results.
+</Callout>
+
+### Count
+
+Get the total number of people matching a query without downloading any records. Use this to check result sizes before running larger searches or to build dashboards with aggregate counts.
+
+```ts
+import { PeopleClient } from "datafiniti-sdk";
+
+const sdk = PeopleClient.fromEnv();
+
+const count = await sdk.count('country:US AND lastName:"Smith"');
+
+console.log("\n=== COUNT TEST ===");
+console.log(`People found: ${count.toLocaleString()}`);
+```
+
+#### Code breakdown
+
+| Section                                              | What it does                                                                                    |
+| ---------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `import { PeopleClient } from "datafiniti-sdk"`      | Imports the `PeopleClient` class from the `datafiniti-sdk` package.                             |
+| `const sdk = PeopleClient.fromEnv()`                 | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.                  |
+| `await sdk.count('country:US AND lastName:"Smith"')` | Returns the total number of US people records with the last name "Smith" without fetching them. |
+| `count.toLocaleString()`                             | Formats the count with comma separators for readability (e.g., `1,234,567`).                    |
+
+<Callout kind="info" collapsed="false">
+  The `count` method accepts the same query syntax as `search` but only returns the total number of matching records — no data is downloaded.
+</Callout>
+
+#### Understanding the query syntax
+
+The query string `'country:US AND lastName:"Smith"'` uses Datafiniti's query language. Here's what you need to know:
+
+| Question                                                        | Answer                                                                                                                                                                                            |
+| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| What is the format?                                             | See the [Constructing People Queries](https://docs.datafiniti.co/docs/constructing-people-queries) guide for the complete field reference, operators, and advanced examples.                      |
+| How do I handle multi-word string values?                       | Wrap them in exact quotes: `city:"San Francisco"`.                                                                                                                                                |
+| What fields can I query & what is the full list of field names? | Any field in the [People Data Schema](https://docs.datafiniti.co/docs/people-data-schema) — `firstName`, `lastName`, `name`, `city`, `province`, `postalCode`, `phones`, `emails`, and many more. |
+
+<Callout kind="info" collapsed="false">
+  Prefer building queries with the typed query builder over hand-writing strings. `sdk.query().country("US").lastName("Smith").build()` produces the same query while catching typos at compile time.
+</Callout>
+
+### Filter by location
+
+Build a compound query with the typed query builder to find people in a specific country, state, city, or postal code. Use this to segment records by geography or to combine location filters with a name.
+
+```ts
+import { PeopleClient } from "datafiniti-sdk";
+
+const sdk = PeopleClient.fromEnv();
+
+// Chain builder methods to assemble a query, then pass it to search.
+const query = sdk
+  .query()
+  .country("US")
+  .province("CA")
+  .city("San Francisco")
+  .lastName("Nguyen")
+  .build();
+
+const response = await sdk.search({ query, numRecords: 5 });
+
+console.log("\n=== LOCATION FILTER SEARCH ===");
+console.log(`Total matches: ${(response.num_found ?? 0).toLocaleString()}`);
+
+const records = response.records ?? [];
+
+for (const person of records) {
+  console.log(
+    `\n${person.name}` +
+      ` — ${person.city}, ${person.province} ${person.postalCode}`
+  );
+}
+```
+
+#### Code breakdown
+
+| Section                                                             | What it does                                                                                                                                 |
+| ------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `import { PeopleClient } from "datafiniti-sdk"`                     | Imports the `PeopleClient` class from the `datafiniti-sdk` package.                                                                          |
+| `const sdk = PeopleClient.fromEnv()`                                | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.                                                               |
+| `sdk.query()`                                                       | Returns a typed `PeopleQuery` builder.                                                                                                       |
+| `.country("US").province("CA").city("San Francisco").lastName(...)` | Chains filters that are combined with `AND`. Available fields: `country`, `province`, `city`, `postalCode`, `name`, `firstName`, `lastName`. |
+| `.build()`                                                          | Compiles the chained filters into a query string.                                                                                            |
+| `sdk.search({ query, numRecords: 5 })`                              | Runs the search and returns up to 5 matching records.                                                                                        |
+| `response.num_found`                                                | Returns the total number of people matching the location filter.                                                                             |
+| `for (const person of records)`                                     | Iterates through each result and prints the name and location.                                                                               |
+
+<Callout kind="info" collapsed="false">
+  The builder also exposes `.hasField("emails")` to require a field be present, `.updatedAfter("2024-01-01")` to limit to recently updated records, and `.raw("...")` to inject any custom sub-expression.
+</Callout>
+
+### Paginate
+
+Iterate through large result sets page by page without loading everything into memory at once. Use this to process thousands of records efficiently or to cap the number of retrievals at a specific limit.
+
+```ts
+import { PeopleClient } from "datafiniti-sdk";
+
+const sdk = PeopleClient.fromEnv();
+
+console.log("\n=== PAGINATION TEST ===");
+
+let recordsSeen = 0;
+
+for await (const person of sdk.paginate({
+  query: 'country:US AND province:"NY"',
+  pageSize: 100,
+  maxRecords: 250,
+})) {
+  recordsSeen += 1;
+  console.log(`${recordsSeen}. ${person.name ?? "Unknown Name"}`);
+}
+
+console.log(`\nTotal Retrieved: ${recordsSeen}`);
+```
+
+#### Code breakdown
+
+| Section                                         | What it does                                                                                        |
+| ----------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `import { PeopleClient } from "datafiniti-sdk"` | Imports the `PeopleClient` class from the `datafiniti-sdk` package.                                 |
+| `const sdk = PeopleClient.fromEnv()`            | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.                      |
+| `sdk.paginate({ query, pageSize, maxRecords })` | Returns an async iterator that yields individual people records across multiple API pages.          |
+| `query: 'country:US AND province:"NY"'`         | The search query — in this case, all people records in New York.                                    |
+| `pageSize: 100`                                 | Fetches 100 records per API request.                                                                |
+| `maxRecords: 250`                               | Stops after retrieving 250 total records, even if more are available.                               |
+| `for await (const person of sdk.paginate(...))` | Iterates through each yielded record one at a time without loading the full result set into memory. |
+| `person.name ?? "Unknown Name"`                 | Reads the name field with a fallback default if the field is missing.                               |
+
+<Callout kind="info" collapsed="false">
+  The `paginate` method is an async generator — it handles API pagination automatically behind the scenes. Set `maxRecords` to limit total retrieval, or omit it to iterate through all matching results.
+</Callout>
+
+#### Understanding the query syntax
+
+The `query` option uses Datafiniti's query language. Here's what you need to know:
+
+| Question                           | Answer                                                                                                                                                                                            |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| What is the format?                | See the [Constructing People Queries](https://docs.datafiniti.co/docs/constructing-people-queries) guide for the complete field reference, operators, and advanced examples.                      |
+| How do I handle multi-word values? | Wrap them in quotes: `city:"San Francisco"`.                                                                                                                                                      |
+| What fields can I query?           | Any field in the [People Data Schema](https://docs.datafiniti.co/docs/people-data-schema) — `firstName`, `lastName`, `name`, `city`, `province`, `postalCode`, `phones`, `emails`, and many more. |
+
+### Views
+
+Control which fields are returned in API responses using custom inline views or premade named views. Use this to reduce payload size, speed up requests, and tailor results to specific use cases — such as enriching a contact list with only phone numbers and email addresses. For a full list of available people data views, see [People Data Views](https://docs.datafiniti.co/docs/people-data-views).
+
+```ts
+/**
+ * People Views Example: Contact Enrichment
+ *
+ * Uses a custom view to fetch only the fields needed to enrich a contact
+ * list — phones and emails — for a set of known names. Requesting a narrow
+ * view keeps responses small and fast when you only need contact details.
+ *
+ * Reference: https://docs.datafiniti.co/docs/using-a-custom-people-view
+ */
+
+import { PeopleClient, type DatafinitiRecord } from "datafiniti-sdk";
+
+// ---------------------------------------------------------------------------
+// View options
+//
+// OPTION 1 (used below): Custom inline view
+//   Pass an array of field objects directly in the request. No setup required.
+//
+// OPTION 2: Premade (named) view — pass a string instead of an array.
+//   "default"  All fields (same as omitting view entirely).
+//   Example: sdk.search({ query, view: "default", numRecords: 10 })
+//   Reference: https://docs.datafiniti.co/docs/people-data-views
+// ---------------------------------------------------------------------------
+
+const PEOPLE_VIEW = [
+  { name: "name" },
+  { name: "firstName" },
+  { name: "lastName" },
+  { name: "city" },
+  { name: "province" },
+  { name: "phones" },
+  { name: "emails" },
+];
+
+function formatList(value: unknown): string {
+  return Array.isArray(value) && value.length ? value.join(", ") : "N/A";
+}
+
+async function lookupContact(
+  sdk: PeopleClient,
+  firstName: string,
+  lastName: string,
+  city: string
+): Promise<DatafinitiRecord | null> {
+  const query = sdk
+    .query()
+    .firstName(firstName)
+    .lastName(lastName)
+    .city(city)
+    .country("US")
+    .build();
+
+  const response = await sdk.search({ query, numRecords: 1, view: PEOPLE_VIEW });
+  const records = response.records ?? [];
+  return records.length ? records[0] : null;
+}
+
+async function main() {
+  // Known contacts to enrich with phone and email data.
+  const contacts = [
+    { firstName: "Jane",  lastName: "Smith",   city: "Seattle" },
+    { firstName: "Carlos", lastName: "Nguyen", city: "San Francisco" },
+    { firstName: "Priya", lastName: "Patel",   city: "Austin" },
+  ];
+
+  const sdk = PeopleClient.fromEnv();
+
+  console.log("\n=== CONTACT ENRICHMENT ===\n");
+
+  for (const contact of contacts) {
+    console.log(`${contact.firstName} ${contact.lastName}, ${contact.city}`);
+
+    const record = await lookupContact(
+      sdk,
+      contact.firstName,
+      contact.lastName,
+      contact.city
+    );
+
+    if (record === null) {
+      console.log("  No people record found.\n");
+      continue;
+    }
+
+    console.log(`  Name:    ${record.name ?? "N/A"}`);
+    console.log(`  City:    ${record.city ?? "N/A"}`);
+    console.log(`  Phones:  ${formatList(record.phones)}`);
+    console.log(`  Emails:  ${formatList(record.emails)}`);
+    console.log();
+  }
+}
+
+main();
+```
+
+#### Code breakdown
+
+| Section                                                                | What it does                                                                                                                 |
+| ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `import { PeopleClient, type DatafinitiRecord } from "datafiniti-sdk"` | Imports the `PeopleClient` class and the `DatafinitiRecord` type from the `datafiniti-sdk` package.                          |
+| `const PEOPLE_VIEW = [...]`                                            | Defines a custom inline view — an array of field objects specifying exactly which fields to return per record.               |
+| `formatList(value)`                                                    | Helper that joins an array field (like `phones` or `emails`) into a readable string, or returns `"N/A"`.                     |
+| `lookupContact(sdk, firstName, lastName, city)`                        | Builds a compound query with the typed query builder and searches with the custom view, returning the first match or `null`. |
+| `sdk.search({ query, numRecords: 1, view: PEOPLE_VIEW })`              | Executes the search with the inline view — only the specified fields are returned.                                           |
+| `contacts`                                                             | Known names to enrich with contact data.                                                                                     |
+| `for (const contact of contacts)`                                      | Iterates through each contact, queries the API, and prints the enriched details.                                             |
+
+<Callout kind="info" collapsed="false">
+  You can use either a custom inline view (an array of field objects) or a premade named view (a string like `"default"`). Custom views give you precise control over the response payload; named views are convenient presets for common use cases.
+</Callout>
+
+### Error handling
+
+Wrap SDK calls in a `try/catch` to handle API errors. The SDK throws a typed `DatafinitiApiError` when the API returns an error response or a request fails after its automatic retries.
+
+```ts
+import { PeopleClient, DatafinitiApiError } from "datafiniti-sdk";
+
+const sdk = PeopleClient.fromEnv();
+
+try {
+  const response = await sdk.search({ query: "country:US", numRecords: 5 });
+  console.log(`Matches: ${response.num_found}`);
+} catch (err) {
+  if (err instanceof DatafinitiApiError) {
+    console.error(`API error ${err.statusCode}: ${err.message}`, err.errors);
+  } else {
+    throw err;
+  }
+}
+```
+
+#### Code breakdown
+
+| Section                                                             | What it does                                                                                        |
+| ------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `import { PeopleClient, DatafinitiApiError } from "datafiniti-sdk"` | Imports the client class and the typed error class from the `datafiniti-sdk` package.               |
+| `try { ... } catch (err) { ... }`                                   | Runs the search and catches any error the SDK throws.                                               |
+| `err instanceof DatafinitiApiError`                                 | Narrows the error to the SDK's typed API error so its fields are safely accessible.                 |
+| `err.statusCode`, `err.message`, `err.errors`                       | The HTTP status code, a human-readable message, and the array of error details returned by the API. |
+
+<Callout kind="info" collapsed="false">
+  The client automatically retries retryable failures (HTTP 408, 429, 5xx, and network errors) up to `maxRetries` times (default 3). You can tune `maxRetries` and `timeoutMs` when constructing the client: `new PeopleClient({ apiKey, maxRetries: 5, timeoutMs: 90000 })`.
+</Callout>
+

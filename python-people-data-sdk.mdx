@@ -1,5 +1,5 @@
 ---
-title: People Data SDK
+title: Python - People Data SDK
 ---
 Install, authenticate, and make your first people searches with the Datafiniti People Data SDK for Python.
 
@@ -33,7 +33,7 @@ The SDK is available on PyPI at [https://pypi.org/project/datafiniti-sdk/](https
   <Step title="Configure your API key" icon="lock" title-type="p">
     Authenticate by setting the `DATAFINITI_API_KEY` environment variable or by passing your API key directly when you create the client.
 
-    <CodeGroup show-lines="true" tabs={[]}>
+    <CodeGroup show-lines="true">
       ```bash
       export DATAFINITI_API_KEY="YOUR_API_KEY"
       ```
@@ -129,11 +129,11 @@ print(f"People found: {count:,}")
 
 The query string `'firstName:"John" AND lastName:"Smith" AND country:US'` uses Datafiniti's query language. Here's what you need to know:
 
-| Question                                                        | Answer                                                                                                                                                                                                                            |
-| --------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| What is the format?                                             | See the <a href="https://docs.datafiniti.co/docs/constructing-people-queries" target="_blank" rel="noopener noreferrer">Constructing People Queries</a> guide for the complete field reference, operators, and advanced examples. |
-| How do I handle multi-word string values?                       | Wrap them in exact quotes: `firstName:"John"`.                                                                                                                                                                                    |
-| What fields can I query & what is the full list of field names? | Any field in the [People Data Schema](https://docs.datafiniti.co/docs/people-data-schema) — `firstName`, `lastName`, `emails`, `city`, `province`, `country`, `jobTitle`, `keys`, and many more.                                  |
+| Question                                                        | Answer                                                                                                                                                                                           |
+| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| What is the format?                                             | See the [Constructing People Queries](https://docs.datafiniti.co/docs/constructing-people-queries) guide for the complete field reference, operators, and advanced examples.                     |
+| How do I handle multi-word string values?                       | Wrap them in exact quotes: `firstName:"John"`.                                                                                                                                                   |
+| What fields can I query & what is the full list of field names? | Any field in the [People Data Schema](https://docs.datafiniti.co/docs/people-data-schema) — `firstName`, `lastName`, `emails`, `city`, `province`, `country`, `jobTitle`, `keys`, and many more. |
 
 ### Build a query
 
@@ -266,11 +266,11 @@ Total Retrieved: {records_seen}")
 
 The `query` parameter uses Datafiniti's query language. Here's what you need to know:
 
-| Question                           | Answer                                                                                                                                                                                                                            |
-| ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| What is the format?                | See the <a href="https://docs.datafiniti.co/docs/constructing-people-queries" target="_blank" rel="noopener noreferrer">Constructing People Queries</a> guide for the complete field reference, operators, and advanced examples. |
-| How do I handle multi-word values? | Wrap them in quotes: `firstName:"John"`.                                                                                                                                                                                          |
-| What fields can I query?           | Any field in the [People Data Schema](https://docs.datafiniti.co/docs/people-data-schema) — `firstName`, `lastName`, `emails`, `city`, `province`, `country`, `jobTitle`, `keys`, and many more.                                  |
+| Question                           | Answer                                                                                                                                                                                           |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| What is the format?                | See the [Constructing People Queries](https://docs.datafiniti.co/docs/constructing-people-queries) guide for the complete field reference, operators, and advanced examples.                     |
+| How do I handle multi-word values? | Wrap them in quotes: `firstName:"John"`.                                                                                                                                                         |
+| What fields can I query?           | Any field in the [People Data Schema](https://docs.datafiniti.co/docs/people-data-schema) — `firstName`, `lastName`, `emails`, `city`, `province`, `country`, `jobTitle`, `keys`, and many more. |
 
 ### Views
 
@@ -347,7 +347,7 @@ for person in results.get("records", []):
 
 Here are some Python examples built upon what we have just discussed. All scripts here should be ready to run as long as you have your `DATAFINITI_API_KEY `exported`. `
 
-<CodeGroup default-tab="3" show-lines="true" tabs={["Contact_info.py","people_count.py","people_full_query.py","people_paginate.py"]}>
+<CodeGroup show-lines="true" tabs={["Contact_info.py","people_count.py","people_full_query.py","people_paginate.py"]}>
   ```text Contact_info.py
   from datafiniti.people import DatafinitiPeopleSDK
   from datafiniti.errors import DatafinitiAPIError
