@@ -1,6 +1,3 @@
----
-title: Node.js - Property Data SDK
----
 # Node.js - Property Data SDK
 
 Install, authenticate, and make your first property searches with the Datafiniti Property Data SDK for Node.js.
@@ -87,7 +84,7 @@ if (records.length) {
 <Callout kind="info" collapsed="false" color="#3b82f6">
   Address Field Fuzzy Matching
 
-  Know that you can attempt to match the full address within the address, and Datafiniti's property search API will attempt to fuzzy match it. For more on how that process works, you can read more [here](https://docs.datafiniti.co/docs/normalized-address-data).
+  Note that you can pass the full address in the address field, and Datafiniti's property search API will attempt to fuzzy match it. For more on how that process works, see [Normalized Address Data](https://docs.datafiniti.co/docs/normalized-address-data).
 </Callout>
 
 #### Code breakdown
@@ -422,8 +419,98 @@ main();
 </Callout>
 
 <Callout kind="alert" collapsed="false">
-  **Handling Normalizing addresses before querying.** \
-  Datafiniti stores addresses using standard abbreviations. By default using the address field will attempt to convert non-normalized terms to normalized values. Like `"Ave"` not `"Avenue"`, `"St"` not `"Street"`, `"Dr"` not `"Drive"`, `"Ln"` not `"Lane"`, `"Rd"` not `"Road"`. Queries with unabbreviated designations may return zero results. For more details, see [Normalized Address Data](https://docs.datafiniti.co/docs/normalized-address-data).
+  **Normalize addresses before querying.** \
+  Datafiniti stores addresses using standard abbreviations. By default, the address field will attempt to convert non-normalized terms to normalized values — for example, `"Ave"` instead of `"Avenue"`, `"St"` instead of `"Street"`, `"Dr"` instead of `"Drive"`, `"Ln"` instead of `"Lane"`, `"Rd"` instead of `"Road"`. Queries with unabbreviated designations may return zero results. For more details, see [Normalized Address Data](https://docs.datafiniti.co/docs/normalized-address-data).
+</Callout>
+
+### Search by MLS number
+
+Look up MLS listings by `mlsNumber` when you already know the listing identifier. Start with a single MLS number and province to find one record, then expand to multiple MLS numbers with additional filters such as price, ownership, and broker data. For query patterns and market-level exports, see [Search for MLS Property Data](https://docs.datafiniti.co/docs/search-for-mls-property-data).
+
+```ts
+import { PropertyClient } from "datafiniti-sdk";
+
+const sdk = PropertyClient.fromEnv();
+
+const view = [
+  { name: "address" },
+  { name: "city" },
+  { name: "province" },
+  { name: "postalCode" },
+  { name: "mlsNumber" },
+  { name: "mostRecentStatus" },
+  { name: "mostRecentSaleListPriceAmount" },
+  { name: "brokers" },
+];
+
+const singleQuery = 'country:US AND province:IL AND mlsNumber:"09073511"';
+const singleResponse = await sdk.search({
+  query: singleQuery,
+  numRecords: 1,
+  view,
+});
+
+console.log("\n=== SINGLE MLS SEARCH ===");
+console.log("Matches:", singleResponse.num_found);
+
+const singleRecords = singleResponse.records ?? [];
+
+for (const property of singleRecords) {
+  const brokers = Array.isArray(property.brokers)
+    ? property.brokers.map((broker) => broker?.agent).filter(Boolean).join(", ")
+    : "N/A";
+
+  console.log(`\n${property.address}, ${property.city}, ${property.province} ${property.postalCode}`);
+  console.log(`MLS Number: ${property.mlsNumber ?? "N/A"}`);
+  console.log(`Status: ${property.mostRecentStatus ?? "N/A"}`);
+  console.log(`List Price: ${property.mostRecentSaleListPriceAmount ?? "N/A"}`);
+  console.log(`Agents: ${brokers || "N/A"}`);
+}
+
+const advancedQuery =
+  "country:US AND people.title:owner AND prices.amountMin:>=500000 AND brokers.agent:* AND province:IL AND mlsNumber:(09073511 OR 09505465)";
+const advancedResponse = await sdk.search({
+  query: advancedQuery,
+  numRecords: 10,
+  view,
+});
+
+console.log("\n=== MULTI MLS SEARCH WITH FILTERS ===");
+console.log("Matches:", advancedResponse.num_found);
+
+const advancedRecords = advancedResponse.records ?? [];
+
+for (const property of advancedRecords) {
+  const brokers = Array.isArray(property.brokers)
+    ? property.brokers.map((broker) => broker?.agent).filter(Boolean).join(", ")
+    : "N/A";
+
+  console.log(`\n${property.address}, ${property.city}, ${property.province} ${property.postalCode}`);
+  console.log(`MLS Number: ${property.mlsNumber ?? "N/A"}`);
+  console.log(`Status: ${property.mostRecentStatus ?? "N/A"}`);
+  console.log(`List Price: ${property.mostRecentSaleListPriceAmount ?? "N/A"}`);
+  console.log(`Agents: ${brokers || "N/A"}`);
+}
+```
+
+#### Code breakdown
+
+| Section                                                           | What it does                                                                                                 |
+| ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `import { PropertyClient } from "datafiniti-sdk"`                 | Imports the `PropertyClient` class from the `datafiniti-sdk` package.                                        |
+| `const sdk = PropertyClient.fromEnv()`                            | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.                               |
+| `const view = [...]`                                              | Defines a custom inline view so each response only returns address, MLS, pricing, status, and broker fields. |
+| `singleQuery`                                                     | Searches for one MLS listing in Illinois by combining `country`, `province`, and `mlsNumber`.                |
+| `sdk.search({ query: singleQuery, numRecords: 1, view })`         | Runs the single-record MLS lookup and limits the response to one result.                                     |
+| `singleResponse.num_found`                                        | Returns the total number of records that matched the single MLS query.                                       |
+| `singleResponse.records ?? []`                                    | Safely reads the returned records and falls back to an empty array if none matched.                          |
+| `advancedQuery`                                                   | Searches multiple MLS numbers with `OR` and adds owner, minimum price, broker, and province filters.         |
+| `sdk.search({ query: advancedQuery, numRecords: 10, view })`      | Runs the advanced MLS search and returns up to 10 matching records.                                          |
+| `advancedResponse.num_found` and `advancedResponse.records ?? []` | Shows the total match count and safely iterates through the advanced search results.                         |
+| `Array.isArray(property.brokers) ...`                             | Extracts agent names from the `brokers` array and formats them for readable console output.                  |
+
+<Callout kind="info" collapsed="false">
+  For the full guide on searching MLS numbers and downloading entire MLS markets — including filtering by state, postal code, and neighborhood — see [Search for MLS Property Data](https://docs.datafiniti.co/docs/search-for-mls-property-data).
 </Callout>
 
 ### Error handling
