@@ -1,0 +1,549 @@
+# Node.js - Property Data SDK
+
+Install, authenticate, and make your first property searches with the Datafiniti Property Data SDK for Node.js.
+
+## Get started with the Node.js SDK
+
+You can use the [Datafiniti Property Data SDK](https://www.npmjs.com/package/datafiniti-sdk) for Node.js to authenticate with the Property Data API and run common property searches, including address lookup, geolocation queries, filtering, counting, and pagination.
+
+The SDK is available on npm at [https://www.npmjs.com/package/datafiniti-sdk](https://www.npmjs.com/package/datafiniti-sdk).
+
+<Callout kind="info" collapsed="false">
+  Use Node.js 18 or later. The SDK has zero runtime dependencies — it uses Node's built-in `fetch`. It ships as a dual ESM + CommonJS build with full TypeScript type definitions.
+</Callout>
+
+### Installation
+
+<Steps>
+  <Step title="Install the SDK" icon="package" title-type="p">
+    Run `npm install` to add the Datafiniti Property Data SDK to your project.
+
+    ```bash
+    npm install datafiniti-sdk
+    ```
+
+    After the command finishes, `npm` reports that the package was added to your `package.json`.
+  </Step>
+</Steps>
+
+### Authentication
+
+<Steps>
+  <Step title="Configure your API key" icon="lock" title-type="p">
+    Authenticate by setting the `DATAFINITI_API_KEY` environment variable or by passing your API key directly when you create the client.
+
+    <CodeGroup show-lines="true">
+      ```bash
+      export DATAFINITI_API_KEY="YOUR_API_KEY"
+      ```
+
+      ```ts
+      import { PropertyClient } from "datafiniti-sdk";
+
+      const sdk = new PropertyClient({ apiKey: "df_example_9xmk7q2r" });
+      ```
+    </CodeGroup>
+
+    If you use the environment variable approach, initialize the client with `PropertyClient.fromEnv()`.
+  </Step>
+</Steps>
+
+## Features
+
+### Search by address
+
+Look up detailed property records by street address and ZIP code. Use this to quickly retrieve property details like city, state, and match count without writing raw API queries.
+
+```ts
+import { PropertyClient } from "datafiniti-sdk";
+
+const sdk = PropertyClient.fromEnv();
+
+const response = await sdk.searchByAddress("712 liard river rd", {
+  postalCode: "78634",
+});
+
+console.log("\n=== ADDRESS SEARCH TEST ===");
+console.log("Matches:", response.num_found);
+
+const records = response.records ?? [];
+
+if (records.length) {
+  const property = records[0];
+  console.log("\nProperty:");
+  console.log(property.address);
+  console.log(property.city);
+  console.log(property.province);
+} else {
+  console.log("No property found.");
+}
+```
+
+####
+
+<Callout kind="info" collapsed="false" color="#3b82f6">
+  Address Field Fuzzy Matching
+
+  Note that you can pass the full address in the address field, and Datafiniti's property search API will attempt to fuzzy match it. For more on how that process works, see [Normalized Address Data](https://docs.datafiniti.co/docs/normalized-address-data).
+</Callout>
+
+#### Code breakdown
+
+| Section                                                  | What it does                                                                              |
+| -------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `import { PropertyClient } from "datafiniti-sdk"`        | Imports the `PropertyClient` class from the `datafiniti-sdk` package.                     |
+| `const sdk = PropertyClient.fromEnv()`                   | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.            |
+| `sdk.searchByAddress(address, { postalCode })`           | Queries the Property Data API for records matching the given street address and ZIP code. |
+| `response.num_found`                                     | Returns the total number of properties that matched the query.                            |
+| `response.records ?? []`                                 | Retrieves the list of property records, defaulting to an empty array if none exist.       |
+| `records[0]`                                             | Accesses the first (best-match) property record from the results.                         |
+| `property.address`, `property.city`, `property.province` | Reads individual fields from the property record.                                         |
+
+<Callout kind="info" collapsed="false">
+  The `searchByAddress` method abstracts away the raw query syntax. You only need to provide a street address and an optional `postalCode` to narrow results.
+</Callout>
+
+### Count
+
+Get the total number of properties matching a query without downloading any records. Use this to check result sizes before running larger searches or to build dashboards with aggregate counts.
+
+```ts
+import { PropertyClient } from "datafiniti-sdk";
+
+const sdk = PropertyClient.fromEnv();
+
+const count = await sdk.count('country:US AND mostRecentStatus:"For Sale"');
+
+console.log("\n=== COUNT TEST ===");
+console.log(`Properties found: ${count.toLocaleString()}`);
+```
+
+#### Code breakdown
+
+| Section                                                         | What it does                                                                                         |
+| --------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `import { PropertyClient } from "datafiniti-sdk"`               | Imports the `PropertyClient` class from the `datafiniti-sdk` package.                                |
+| `const sdk = PropertyClient.fromEnv()`                          | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.                       |
+| `await sdk.count('country:US AND mostRecentStatus:"For Sale"')` | Returns the total number of US properties currently listed "For Sale" without fetching full records. |
+| `count.toLocaleString()`                                        | Formats the count with comma separators for readability (e.g., `1,234,567`).                         |
+
+<Callout kind="info" collapsed="false">
+  The `count` method accepts the same query syntax as `search` but only returns the total number of matching records — no data is downloaded.
+</Callout>
+
+#### Understanding the query syntax
+
+The query string `'country:US AND mostRecentStatus:"For Sale"'` uses Datafiniti's query language. Here's what you need to know:
+
+| Question                                                        | Answer                                                                                                                                                                                                                        |
+| --------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| What is the format?                                             | See the [Constructing Property Queries](https://docs.datafiniti.co/docs/constructing-property-queries) guide for the complete field reference, operators, and advanced examples.                                              |
+| How do I handle multi-word string values?                       | Wrap them in exact quotes: `mostRecentStatus:"For Sale"`.                                                                                                                                                                     |
+| What fields can I query & what is the full list of field names? | Any field in the [Property Data Schema](https://docs.datafiniti.co/docs/property-data-schema) — `address`, `city`, `province`, `postalCode`, `propertyType`, `mostRecentStatus`, `numBedroom`, `lotSizeValue`, and many more. |
+
+<Callout kind="info" collapsed="false">
+  Prefer building queries with the typed query builder over hand-writing strings. `sdk.query().country("US").mostRecentStatus("For Sale").build()` produces the same query while catching typos at compile time.
+</Callout>
+
+### Geolocation
+
+Search for properties within a specified radius of a geographic coordinate. Use this to find nearby listings, build location-based filters, or analyze property markets in a target area.
+
+```ts
+import { PropertyClient } from "datafiniti-sdk";
+
+const sdk = PropertyClient.fromEnv();
+
+// Search for properties within 10 miles of downtown Austin, TX
+// geoLocation format: [Longitude, Latitude, Distance, Unit]
+// Supported units: m, mi, ft, yd, mm, km, NM, cm
+const response = await sdk.geolocation({
+  longitude: -97.7430600,
+  latitude: 30.2671500,
+  distance: 10,
+  unit: "mi",
+  numRecords: 5,
+  view: [
+    { name: "address" },
+    { name: "city" },
+    { name: "country" },
+    { name: "geoLocation" },
+    { name: "mostRecentStatus" },
+    { name: "mostRecentStatusDate" },
+    { name: "mostRecentStatusFirstDateSeen" },
+    { name: "postalCode" },
+  ],
+});
+
+console.log("\n=== GEOLOCATION SEARCH ===");
+console.log(`Total matches: ${(response.num_found ?? 0).toLocaleString()}`);
+
+const records = response.records ?? [];
+
+for (const prop of records) {
+  console.log(
+    `\n${prop.address}, ${prop.city} ${prop.postalCode}` +
+      ` — ${prop.mostRecentStatus}` +
+      `\n--geoLocation: ${prop.geoLocation}`
+  );
+}
+```
+
+#### Code breakdown
+
+| Section                                                                      | What it does                                                                                          |
+| ---------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `import { PropertyClient } from "datafiniti-sdk"`                            | Imports the `PropertyClient` class from the `datafiniti-sdk` package.                                 |
+| `const sdk = PropertyClient.fromEnv()`                                       | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.                        |
+| `sdk.geolocation({ longitude, latitude, distance, unit, numRecords, view })` | Searches for properties within a radius of the given coordinate. Returns up to `numRecords` results.  |
+| `longitude`, `latitude`                                                      | The center point of the search area (downtown Austin, TX in this example).                            |
+| `distance: 10, unit: "mi"`                                                   | Defines the search radius — 10 miles. Supported units: `m`, `mi`, `ft`, `yd`, `mm`, `km`, `NM`, `cm`. |
+| `view: [...]`                                                                | A custom view specifying which fields to return for each record, reducing response size.              |
+| `response.num_found`                                                         | Returns the total number of properties within the search radius.                                      |
+| `response.records ?? []`                                                     | Retrieves the list of matching property records.                                                      |
+| `for (const prop of records)`                                                | Iterates through each result and prints the address, city, postal code, status, and coordinates.      |
+
+<Callout kind="info" collapsed="false">
+  The `view` parameter lets you control exactly which fields are returned. This reduces payload size and speeds up responses when you only need specific property attributes.
+</Callout>
+
+### Paginate
+
+Iterate through large result sets page by page without loading everything into memory at once. Use this to process thousands of records efficiently or to cap the number of retrievals at a specific limit.
+
+```ts
+import { PropertyClient } from "datafiniti-sdk";
+
+const sdk = PropertyClient.fromEnv();
+
+console.log("\n=== PAGINATION TEST ===");
+
+let recordsSeen = 0;
+
+for await (const property of sdk.paginate({
+  query: "country:US",
+  pageSize: 10,
+  maxRecords: 25,
+})) {
+  recordsSeen += 1;
+  console.log(`${recordsSeen}. ${property.address ?? "Unknown Address"}`);
+}
+
+console.log(`\nTotal Retrieved: ${recordsSeen}`);
+```
+
+#### Code breakdown
+
+| Section                                           | What it does                                                                                        |
+| ------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `import { PropertyClient } from "datafiniti-sdk"` | Imports the `PropertyClient` class from the `datafiniti-sdk` package.                               |
+| `const sdk = PropertyClient.fromEnv()`            | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.                      |
+| `sdk.paginate({ query, pageSize, maxRecords })`   | Returns an async iterator that yields individual property records across multiple API pages.        |
+| `query: "country:US"`                             | The search query — in this case, all US properties.                                                 |
+| `pageSize: 10`                                    | Fetches 10 records per API request.                                                                 |
+| `maxRecords: 25`                                  | Stops after retrieving 25 total records, even if more are available.                                |
+| `for await (const property of sdk.paginate(...))` | Iterates through each yielded record one at a time without loading the full result set into memory. |
+| `property.address ?? "Unknown Address"`           | Reads the address field with a fallback default if the field is missing.                            |
+
+<Callout kind="info" collapsed="false">
+  The `paginate` method is an async generator — it handles API pagination automatically behind the scenes. Set `maxRecords` to limit total retrieval, or omit it to iterate through all matching results.
+</Callout>
+
+#### Understanding the query syntax
+
+The `query` option uses Datafiniti's query language. Here's what you need to know:
+
+| Question                           | Answer                                                                                                                                                                                                                        |
+| ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| What is the format?                | See the [Constructing Property Queries](https://docs.datafiniti.co/docs/constructing-property-queries) guide for the complete field reference, operators, and advanced examples.                                              |
+| How do I handle multi-word values? | Wrap them in quotes: `mostRecentStatus:"For Sale"`.                                                                                                                                                                           |
+| What fields can I query?           | Any field in the [Property Data Schema](https://docs.datafiniti.co/docs/property-data-schema) — `address`, `city`, `province`, `postalCode`, `propertyType`, `mostRecentStatus`, `numBedroom`, `lotSizeValue`, and many more. |
+
+### Views
+
+Control which fields are returned in API responses using custom inline views or premade named views. Use this to reduce payload size, speed up requests, and tailor results to specific use cases — such as flagging e-commerce orders shipping to vacant properties. For a full list of available property data views, see [Property Data Views](https://docs.datafiniti.co/docs/property-data-views).
+
+```ts
+/**
+ * Property Views Example: E-Commerce Vacant House Check
+ *
+ * Uses a custom view to fetch only the fields needed to determine whether a
+ * shipping address matches a vacant or off-market property — a common signal
+ * for potentially fraudulent e-commerce orders.
+ *
+ * Reference: https://docs.datafiniti.co/docs/identify-e-commerce-orders-shipping-to-vacant-houses
+ */
+
+import { PropertyClient, type DatafinitiRecord } from "datafiniti-sdk";
+
+// ---------------------------------------------------------------------------
+// View options
+//
+// OPTION 1 (used below): Custom inline view
+//   Pass an array of field objects directly in the request. No setup required.
+//   Reference: https://docs.datafiniti.co/docs/using-a-custom-property-view
+//
+// OPTION 2: Premade (named) view — pass a string instead of an array.
+//   "default"               All fields (same as omitting view entirely).
+//                           Note: imageURLs and sourceURLs are excluded from
+//                           default; use a preset or custom view for those.
+//   "property_flat_prices"  All fields; one CSV row per price entry.
+//   "property_flat_reviews" All fields; one CSV row per review.
+//   "residential"           Residential-focused fields — includes absenteeOwner,
+//                           assessedValues, ownerName, statuses, transactions, etc.
+//   Example: sdk.search({ query, view: "residential", numRecords: 10 })
+//   Reference: https://docs.datafiniti.co/docs/available-views-for-property-data
+// ---------------------------------------------------------------------------
+
+const PROPERTY_VIEW = [
+  { name: "address" },
+  { name: "city" },
+  { name: "province" },
+  { name: "postalCode" },
+  { name: "mostRecentStatus" },
+  { name: "mostRecentStatusDate" },
+  { name: "mostRecentRentalStatus" },
+  { name: "mostRecentRentalStatusDate" },
+];
+
+const ON_MARKET_STATUSES = new Set([
+  "For Sale",
+  "Coming Soon",
+  "Pending",
+  "For Rent",
+  "For Sale or Rent",
+]);
+
+function marketStatus(record: DatafinitiRecord): [string, string] {
+  const sale = (record.mostRecentStatus as string) ?? "";
+  const rental = (record.mostRecentRentalStatus as string) ?? "";
+  if (ON_MARKET_STATUSES.has(sale)) {
+    return ["On Market", (record.mostRecentStatusDate as string) ?? "N/A"];
+  }
+  if (ON_MARKET_STATUSES.has(rental)) {
+    return ["On Market", (record.mostRecentRentalStatusDate as string) ?? "N/A"];
+  }
+  const date =
+    (record.mostRecentStatusDate as string) ||
+    (record.mostRecentRentalStatusDate as string) ||
+    "N/A";
+  return ["Off Market", date];
+}
+
+async function checkAddress(
+  sdk: PropertyClient,
+  address: string,
+  city: string,
+  province: string,
+  postalCode: string
+): Promise<DatafinitiRecord | null> {
+  const query = sdk
+    .query()
+    .address(address)
+    .city(city)
+    .province(province)
+    .postalCode(postalCode)
+    .country("US")
+    .build();
+
+  const response = await sdk.search({ query, numRecords: 1, view: PROPERTY_VIEW });
+  const records = response.records ?? [];
+  return records.length ? records[0] : null;
+}
+
+async function main() {
+  // Sample shipping addresses from incoming orders.
+  // Normalize street designations before querying — Datafiniti uses
+  // abbreviations: "Ave" not "Avenue", "St" not "Street", "Dr" not "Drive".
+  const addresses = [
+    { address: "200 Tennyson Ave",        city: "Pittsburgh", province: "PA", postalCode: "15213" },
+    { address: "4616 Howard Ln UNIT 550", city: "Austin",     province: "TX", postalCode: "78728" },
+    { address: "1023 Grassy Field Rd",    city: "Austin",     province: "TX", postalCode: "78737" },
+  ];
+
+  const sdk = PropertyClient.fromEnv();
+
+  console.log("\n=== VACANT HOUSE CHECK ===\n");
+
+  for (const entry of addresses) {
+    console.log(`${entry.address}, ${entry.city}, ${entry.province} ${entry.postalCode}`);
+
+    const record = await checkAddress(
+      sdk,
+      entry.address,
+      entry.city,
+      entry.province,
+      entry.postalCode
+    );
+
+    if (record === null) {
+      console.log("  No property record found.\n");
+      continue;
+    }
+
+    const [label, date] = marketStatus(record);
+    console.log(`  ID:                    ${record.id ?? "N/A"}`);
+    console.log(`  Address:               ${record.address ?? "N/A"}`);
+    console.log(`  City:                  ${record.city ?? "N/A"}`);
+    console.log(`  Province:              ${record.province ?? "N/A"}`);
+    console.log(`  Postal Code:           ${record.postalCode ?? "N/A"}`);
+    console.log(`  Most Recent Status:    ${record.mostRecentStatus ?? "N/A"}`);
+    console.log(`  Most Recent Rental:    ${record.mostRecentRentalStatus ?? "N/A"}`);
+    console.log(`  Status: ${label} (as of ${date})`);
+    if (label === "Off Market") {
+      console.log("  *** FLAGGED — property may be vacant ***");
+    }
+    console.log();
+  }
+}
+
+main();
+```
+
+#### Code breakdown
+
+| Section                                                                  | What it does                                                                                                                 |
+| ------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| `import { PropertyClient, type DatafinitiRecord } from "datafiniti-sdk"` | Imports the `PropertyClient` class and the `DatafinitiRecord` type from the `datafiniti-sdk` package.                        |
+| `const PROPERTY_VIEW = [...]`                                            | Defines a custom inline view — an array of field objects specifying exactly which fields to return per record.               |
+| `ON_MARKET_STATUSES`                                                     | A `Set` of status values considered "on market" for comparison logic.                                                        |
+| `marketStatus(record)`                                                   | Helper function that checks both sale and rental statuses to determine if a property is on or off market.                    |
+| `checkAddress(sdk, address, city, province, postalCode)`                 | Builds a compound query with the typed query builder and searches with the custom view, returning the first match or `null`. |
+| `sdk.search({ query, numRecords: 1, view: PROPERTY_VIEW })`              | Executes the search with the inline view — only the 8 specified fields are returned.                                         |
+| `addresses`                                                              | Sample shipping addresses to check against property records.                                                                 |
+| `for (const entry of addresses)`                                         | Iterates through each address, queries the API, and prints the property status.                                              |
+| `if (label === "Off Market")`                                            | Flags addresses where the property appears vacant or off market — a potential fraud signal.                                  |
+
+<Callout kind="info" collapsed="false">
+  You can use either a custom inline view (an array of field objects) or a premade named view (a string like `"residential"` or `"default"`). Custom views give you precise control over the response payload; named views are convenient presets for common use cases.
+</Callout>
+
+<Callout kind="alert" collapsed="false">
+  **Normalize addresses before querying.** \
+  Datafiniti stores addresses using standard abbreviations. By default, the address field will attempt to convert non-normalized terms to normalized values — for example, `"Ave"` instead of `"Avenue"`, `"St"` instead of `"Street"`, `"Dr"` instead of `"Drive"`, `"Ln"` instead of `"Lane"`, `"Rd"` instead of `"Road"`. Queries with unabbreviated designations may return zero results. For more details, see [Normalized Address Data](https://docs.datafiniti.co/docs/normalized-address-data).
+</Callout>
+
+### Search by MLS number
+
+Look up MLS listings by `mlsNumber` when you already know the listing identifier. Start with a single MLS number and province to find one record, then expand to multiple MLS numbers with additional filters such as price, ownership, and broker data. For query patterns and market-level exports, see [Search for MLS Property Data](https://docs.datafiniti.co/docs/search-for-mls-property-data).
+
+```ts
+import { PropertyClient } from "datafiniti-sdk";
+
+const sdk = PropertyClient.fromEnv();
+
+const view = [
+  { name: "address" },
+  { name: "city" },
+  { name: "province" },
+  { name: "postalCode" },
+  { name: "mlsNumber" },
+  { name: "mostRecentStatus" },
+  { name: "mostRecentSaleListPriceAmount" },
+  { name: "brokers" },
+];
+
+const singleQuery = 'country:US AND province:IL AND mlsNumber:"09073511"';
+const singleResponse = await sdk.search({
+  query: singleQuery,
+  numRecords: 1,
+  view,
+});
+
+console.log("\n=== SINGLE MLS SEARCH ===");
+console.log("Matches:", singleResponse.num_found);
+
+const singleRecords = singleResponse.records ?? [];
+
+for (const property of singleRecords) {
+  const brokers = Array.isArray(property.brokers)
+    ? property.brokers.map((broker) => broker?.agent).filter(Boolean).join(", ")
+    : "N/A";
+
+  console.log(`\n${property.address}, ${property.city}, ${property.province} ${property.postalCode}`);
+  console.log(`MLS Number: ${property.mlsNumber ?? "N/A"}`);
+  console.log(`Status: ${property.mostRecentStatus ?? "N/A"}`);
+  console.log(`List Price: ${property.mostRecentSaleListPriceAmount ?? "N/A"}`);
+  console.log(`Agents: ${brokers || "N/A"}`);
+}
+
+const advancedQuery =
+  "country:US AND people.title:owner AND prices.amountMin:>=500000 AND brokers.agent:* AND province:IL AND mlsNumber:(09073511 OR 09505465)";
+const advancedResponse = await sdk.search({
+  query: advancedQuery,
+  numRecords: 10,
+  view,
+});
+
+console.log("\n=== MULTI MLS SEARCH WITH FILTERS ===");
+console.log("Matches:", advancedResponse.num_found);
+
+const advancedRecords = advancedResponse.records ?? [];
+
+for (const property of advancedRecords) {
+  const brokers = Array.isArray(property.brokers)
+    ? property.brokers.map((broker) => broker?.agent).filter(Boolean).join(", ")
+    : "N/A";
+
+  console.log(`\n${property.address}, ${property.city}, ${property.province} ${property.postalCode}`);
+  console.log(`MLS Number: ${property.mlsNumber ?? "N/A"}`);
+  console.log(`Status: ${property.mostRecentStatus ?? "N/A"}`);
+  console.log(`List Price: ${property.mostRecentSaleListPriceAmount ?? "N/A"}`);
+  console.log(`Agents: ${brokers || "N/A"}`);
+}
+```
+
+#### Code breakdown
+
+| Section                                                           | What it does                                                                                                 |
+| ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `import { PropertyClient } from "datafiniti-sdk"`                 | Imports the `PropertyClient` class from the `datafiniti-sdk` package.                                        |
+| `const sdk = PropertyClient.fromEnv()`                            | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.                               |
+| `const view = [...]`                                              | Defines a custom inline view so each response only returns address, MLS, pricing, status, and broker fields. |
+| `singleQuery`                                                     | Searches for one MLS listing in Illinois by combining `country`, `province`, and `mlsNumber`.                |
+| `sdk.search({ query: singleQuery, numRecords: 1, view })`         | Runs the single-record MLS lookup and limits the response to one result.                                     |
+| `singleResponse.num_found`                                        | Returns the total number of records that matched the single MLS query.                                       |
+| `singleResponse.records ?? []`                                    | Safely reads the returned records and falls back to an empty array if none matched.                          |
+| `advancedQuery`                                                   | Searches multiple MLS numbers with `OR` and adds owner, minimum price, broker, and province filters.         |
+| `sdk.search({ query: advancedQuery, numRecords: 10, view })`      | Runs the advanced MLS search and returns up to 10 matching records.                                          |
+| `advancedResponse.num_found` and `advancedResponse.records ?? []` | Shows the total match count and safely iterates through the advanced search results.                         |
+| `Array.isArray(property.brokers) ...`                             | Extracts agent names from the `brokers` array and formats them for readable console output.                  |
+
+<Callout kind="info" collapsed="false">
+  For the full guide on searching MLS numbers and downloading entire MLS markets — including filtering by state, postal code, and neighborhood — see [Search for MLS Property Data](https://docs.datafiniti.co/docs/search-for-mls-property-data).
+</Callout>
+
+### Error handling
+
+Wrap SDK calls in a `try/catch` to handle API errors. The SDK throws a typed `DatafinitiApiError` when the API returns an error response or a request fails after its automatic retries.
+
+```ts
+import { PropertyClient, DatafinitiApiError } from "datafiniti-sdk";
+
+const sdk = PropertyClient.fromEnv();
+
+try {
+  const response = await sdk.search({ query: "country:US", numRecords: 5 });
+  console.log(`Matches: ${response.num_found}`);
+} catch (err) {
+  if (err instanceof DatafinitiApiError) {
+    console.error(`API error ${err.statusCode}: ${err.message}`, err.errors);
+  } else {
+    throw err;
+  }
+}
+```
+
+#### Code breakdown
+
+| Section                                                               | What it does                                                                                        |
+| --------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `import { PropertyClient, DatafinitiApiError } from "datafiniti-sdk"` | Imports the client class and the typed error class from the `datafiniti-sdk` package.               |
+| `try { ... } catch (err) { ... }`                                     | Runs the search and catches any error the SDK throws.                                               |
+| `err instanceof DatafinitiApiError`                                   | Narrows the error to the SDK's typed API error so its fields are safely accessible.                 |
+| `err.statusCode`, `err.message`, `err.errors`                         | The HTTP status code, a human-readable message, and the array of error details returned by the API. |
+
+<Callout kind="info" collapsed="false">
+  The client automatically retries retryable failures (HTTP 408, 429, 5xx, and network errors) up to `maxRetries` times (default 3). You can tune `maxRetries` and `timeoutMs` when constructing the client: `new PropertyClient({ apiKey, maxRetries: 5, timeoutMs: 90000 })`.
+</Callout>
+
