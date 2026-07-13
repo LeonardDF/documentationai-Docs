@@ -328,6 +328,10 @@
                         "group": "Property Data SDK",
                         "pages": [
                           {
+                            "title": "Node.js - Property Data SDK",
+                            "path": "nodejs-property-data-sdk"
+                          },
+                          {
                             "title": "Python - Property Data SDK",
                             "path": "property-data-sdk"
                           }
