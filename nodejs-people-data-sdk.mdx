@@ -3,7 +3,7 @@ title: Node.js - People Data SDK
 ---
 Install, authenticate, and make your first people searches with the Datafiniti People Data SDK for Node.js.
 
-## Get started with the Node.js SDK
+# Get started with the Node.js SDK
 
 You can use the [Datafiniti SDK](https://www.npmjs.com/package/datafiniti-sdk) for Node.js to authenticate with the People Data API and run common people searches, including name lookup, location filtering, counting, and pagination.
 
@@ -13,7 +13,7 @@ The SDK is available on npm at [https://www.npmjs.com/package/datafiniti-sdk](ht
   Use Node.js 18 or later. The SDK has zero runtime dependencies — it uses Node's built-in `fetch`. It ships as a dual ESM + CommonJS build with full TypeScript type definitions.
 </Callout>
 
-### Installation
+## Installation
 
 <Steps>
   <Step title="Install the SDK" icon="package" title-type="p">
@@ -27,7 +27,7 @@ The SDK is available on npm at [https://www.npmjs.com/package/datafiniti-sdk](ht
   </Step>
 </Steps>
 
-### Authentication
+## Authentication
 
 <Steps>
   <Step title="Configure your API key" icon="lock" title-type="p">
@@ -49,9 +49,9 @@ The SDK is available on npm at [https://www.npmjs.com/package/datafiniti-sdk](ht
   </Step>
 </Steps>
 
-## Features
+# Features
 
-### Search by name
+## Search by name
 
 Look up people records by first and last name, optionally narrowing by city. Use this to quickly retrieve contact details and match counts without writing raw API queries.
 
@@ -80,7 +80,7 @@ if (records.length) {
 }
 ```
 
-#### Code breakdown
+### Code breakdown
 
 | Section                                              | What it does                                                                         |
 | ---------------------------------------------------- | ------------------------------------------------------------------------------------ |
@@ -96,7 +96,7 @@ if (records.length) {
   The `searchByName` method abstracts away the raw query syntax. Provide a first and last name, plus an optional `city` and `country` (defaults to `US`), to narrow results.
 </Callout>
 
-### Count
+## Count
 
 Get the total number of people matching a query without downloading any records. Use this to check result sizes before running larger searches or to build dashboards with aggregate counts.
 
@@ -138,7 +138,7 @@ The query string `'country:US AND lastName:"Smith"'` uses Datafiniti's query lan
   Prefer building queries with the typed query builder over hand-writing strings. `sdk.query().country("US").lastName("Smith").build()` produces the same query while catching typos at compile time.
 </Callout>
 
-### Filter by location
+## Filter by location
 
 Build a compound query with the typed query builder to find people in a specific country, state, city, or postal code. Use this to segment records by geography or to combine location filters with a name.
 
@@ -188,7 +188,7 @@ for (const person of records) {
   The builder also exposes `.hasField("emails")` to require a field be present, `.updatedAfter("2024-01-01")` to limit to recently updated records, and `.raw("...")` to inject any custom sub-expression.
 </Callout>
 
-### Paginate
+## Paginate
 
 Iterate through large result sets page by page without loading everything into memory at once. Use this to process thousands of records efficiently or to cap the number of retrievals at a specific limit.
 
@@ -356,7 +356,7 @@ main();
   You can use either a custom inline view (an array of field objects) or a premade named view (a string like `"default"`). Custom views give you precise control over the response payload; named views are convenient presets for common use cases.
 </Callout>
 
-### Error handling
+# Error handling
 
 Wrap SDK calls in a `try/catch` to handle API errors. The SDK throws a typed `DatafinitiApiError` when the API returns an error response or a request fails after its automatic retries.
 
@@ -389,4 +389,3 @@ try {
 <Callout kind="info" collapsed="false">
   The client automatically retries retryable failures (HTTP 408, 429, 5xx, and network errors) up to `maxRetries` times (default 3). You can tune `maxRetries` and `timeoutMs` when constructing the client: `new PeopleClient({ apiKey, maxRetries: 5, timeoutMs: 90000 })`.
 </Callout>
-
