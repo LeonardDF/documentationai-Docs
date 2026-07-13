@@ -469,8 +469,17 @@
                         ]
                       },
                       {
-                        "title": "People Data SDK",
-                        "path": "people-data-sdk"
+                        "group": "People Data SDK",
+                        "pages": [
+                          {
+                            "title": "NodeJS - People Data SDK",
+                            "path": "nodejs-people-data-sdk"
+                          },
+                          {
+                            "title": "Python - People Data SDK",
+                            "path": "python-people-data-sdk"
+                          }
+                        ]
                       }
                     ]
                   },
