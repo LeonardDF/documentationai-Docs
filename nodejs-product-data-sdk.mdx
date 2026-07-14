@@ -1,0 +1,388 @@
+---
+title: Node.js - Product Data SDK
+---
+Install, authenticate, and make your first product searches with the Datafiniti Product Data SDK for Node.js.
+
+## Get started with the Node.js SDK
+
+You can use the [Datafiniti SDK](https://www.npmjs.com/package/datafiniti-sdk) for Node.js to authenticate with the Product Data API and run common product searches, including name lookup, brand and category filtering, price filtering, counting, and pagination.
+
+The SDK is available on npm at [https://www.npmjs.com/package/datafiniti-sdk](https://www.npmjs.com/package/datafiniti-sdk). It ships a client for each Datafiniti dataset — this guide covers the `ProductClient`.
+
+<Callout kind="info" collapsed="false">
+  Use Node.js 18 or later. The SDK has zero runtime dependencies — it uses Node's built-in `fetch`. It ships as a dual ESM + CommonJS build with full TypeScript type definitions.
+</Callout>
+
+### Installation
+
+<Steps>
+  <Step title="Install the SDK" icon="package" title-type="p">
+    Run `npm install` to add the Datafiniti SDK to your project.
+
+    ```bash
+    npm install datafiniti-sdk
+    ```
+
+    After the command finishes, `npm` reports that the package was added to your `package.json`.
+  </Step>
+</Steps>
+
+### Authentication
+
+<Steps>
+  <Step title="Configure your API key" icon="lock" title-type="p">
+    Authenticate by setting the `DATAFINITI_API_KEY` environment variable or by passing your API key directly when you create the client.
+
+    <CodeGroup show-lines="true">
+      ```bash
+      export DATAFINITI_API_KEY="YOUR_API_KEY"
+      ```
+
+      ```ts
+      import { ProductClient } from "datafiniti-sdk";
+
+      const sdk = new ProductClient({ apiKey: "df_example_9xmk7q2r" });
+      ```
+    </CodeGroup>
+
+    If you use the environment variable approach, initialize the client with `ProductClient.fromEnv()`.
+  </Step>
+</Steps>
+
+## Features
+
+### Search by name
+
+Look up product records by product name, optionally narrowing by brand. Use this to quickly retrieve product details and match counts without writing raw API queries.
+
+```ts
+import { ProductClient } from "datafiniti-sdk";
+
+const sdk = ProductClient.fromEnv();
+
+const response = await sdk.searchByName("AirPods Pro", {
+  brand: "Apple",
+});
+
+console.log("\n=== NAME SEARCH TEST ===");
+console.log("Matches:", response.num_found);
+
+const records = response.records ?? [];
+
+if (records.length) {
+  const product = records[0];
+  console.log("\nProduct:");
+  console.log(product.name);
+  console.log(product.brand);
+  console.log(product.categories);
+} else {
+  console.log("No product found.");
+}
+```
+
+#### Code breakdown
+
+| Section                                               | What it does                                                                           |
+| ----------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `import { ProductClient } from "datafiniti-sdk"`      | Imports the `ProductClient` class from the `datafiniti-sdk` package.                   |
+| `const sdk = ProductClient.fromEnv()`                 | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.         |
+| `sdk.searchByName(name, { brand })`                   | Queries the Product Data API for records matching the given name (and optional brand). |
+| `response.num_found`                                  | Returns the total number of products that matched the query.                           |
+| `response.records ?? []`                              | Retrieves the list of product records, defaulting to an empty array if none exist.     |
+| `records[0]`                                          | Accesses the first (best-match) product record from the results.                       |
+| `product.name`, `product.brand`, `product.categories` | Reads individual fields from the product record.                                       |
+
+<Callout kind="info" collapsed="false">
+  The `searchByName` method abstracts away the raw query syntax. Provide a product name plus an optional `brand` to narrow results.
+</Callout>
+
+### Count
+
+Get the total number of products matching a query without downloading any records. Use this to check result sizes before running larger searches or to build dashboards with aggregate counts.
+
+```ts
+import { ProductClient } from "datafiniti-sdk";
+
+const sdk = ProductClient.fromEnv();
+
+const count = await sdk.count('categories:"Laptops" AND brand:"Dell"');
+
+console.log("\n=== COUNT TEST ===");
+console.log(`Products found: ${count.toLocaleString()}`);
+```
+
+#### Code breakdown
+
+| Section                                                    | What it does                                                                              |
+| ---------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `import { ProductClient } from "datafiniti-sdk"`           | Imports the `ProductClient` class from the `datafiniti-sdk` package.                      |
+| `const sdk = ProductClient.fromEnv()`                      | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.            |
+| `await sdk.count('categories:"Laptops" AND brand:"Dell"')` | Returns the total number of Dell laptop products without fetching the records themselves. |
+| `count.toLocaleString()`                                   | Formats the count with comma separators for readability (e.g., `1,234,567`).              |
+
+<Callout kind="info" collapsed="false">
+  The `count` method accepts the same query syntax as `search` but only returns the total number of matching records — no data is downloaded.
+</Callout>
+
+#### Understanding the query syntax
+
+The query string `'categories:"Laptops" AND brand:"Dell"'` uses Datafiniti's query language. Here's what you need to know:
+
+| Question                                                        | Answer                                                                                                                                                                                 |
+| --------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| What is the format?                                             | See the [Constructing Product Queries](https://docs.datafiniti.co/docs/constructing-product-queries) guide for the complete field reference, operators, and advanced examples.         |
+| How do I handle multi-word string values?                       | Wrap them in exact quotes: `brand:"Dell"`.                                                                                                                                             |
+| What fields can I query & what is the full list of field names? | Any field in the [Product Data Schema](https://docs.datafiniti.co/docs/product-data-schema) — `name`, `brand`, `categories`, `prices.amountMin`, `manufacturer`, `upc`, and many more. |
+
+<Callout kind="info" collapsed="false">
+  Prefer building queries with the typed query builder over hand-writing strings. `sdk.query().categories("Laptops").brand("Dell").build()` produces the same query while catching typos at compile time.
+</Callout>
+
+### Filter by category and price
+
+Build a compound query with the typed query builder to find products by brand, category, and price range. Use this to segment a catalog or to surface products within a target price band.
+
+```ts
+import { ProductClient } from "datafiniti-sdk";
+
+const sdk = ProductClient.fromEnv();
+
+// Chain builder methods to assemble a query, then pass it to search.
+// priceRange filters on prices.amountMin: [min TO max].
+const query = sdk
+  .query()
+  .categories(["Laptops"])
+  .brand("Dell")
+  .priceRange(500, 1500)
+  .build();
+
+const response = await sdk.search({ query, numRecords: 5 });
+
+console.log("\n=== CATEGORY + PRICE SEARCH ===");
+console.log(`Total matches: ${(response.num_found ?? 0).toLocaleString()}`);
+
+const records = response.records ?? [];
+
+for (const product of records) {
+  console.log(`\n${product.brand} — ${product.name}`);
+}
+```
+
+#### Code breakdown
+
+| Section                                          | What it does                                                                                                               |
+| ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
+| `import { ProductClient } from "datafiniti-sdk"` | Imports the `ProductClient` class from the `datafiniti-sdk` package.                                                       |
+| `const sdk = ProductClient.fromEnv()`            | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.                                             |
+| `sdk.query()`                                    | Returns a typed `ProductQuery` builder.                                                                                    |
+| `.categories(["Laptops"])`                       | Filters to one or more categories. Pass a string or an array of strings.                                                   |
+| `.brand("Dell")`                                 | Filters to a specific brand.                                                                                               |
+| `.priceRange(500, 1500)`                         | Filters on `prices.amountMin` between 500 and 1500. Omit either bound to leave it open (`priceRange(500)` for 500 and up). |
+| `.build()`                                       | Compiles the chained filters into a query string.                                                                          |
+| `sdk.search({ query, numRecords: 5 })`           | Runs the search and returns up to 5 matching records.                                                                      |
+| `response.num_found`                             | Returns the total number of products matching the filters.                                                                 |
+| `for (const product of records)`                 | Iterates through each result and prints the brand and name.                                                                |
+
+<Callout kind="info" collapsed="false">
+  The builder also exposes `.hasField("prices")` to require a field be present, `.updatedAfter("2024-01-01")` to limit to recently updated records, and `.raw("...")` to inject any custom sub-expression.
+</Callout>
+
+### Paginate
+
+Iterate through large result sets page by page without loading everything into memory at once. Use this to process thousands of records efficiently or to cap the number of retrievals at a specific limit.
+
+```ts
+import { ProductClient } from "datafiniti-sdk";
+
+const sdk = ProductClient.fromEnv();
+
+console.log("\n=== PAGINATION TEST ===");
+
+let recordsSeen = 0;
+
+for await (const product of sdk.paginate({
+  query: 'categories:"Headphones"',
+  pageSize: 100,
+  maxRecords: 250,
+})) {
+  recordsSeen += 1;
+  console.log(`${recordsSeen}. ${product.name ?? "Unknown Product"}`);
+}
+
+console.log(`\nTotal Retrieved: ${recordsSeen}`);
+```
+
+#### Code breakdown
+
+| Section                                          | What it does                                                                                        |
+| ------------------------------------------------ | --------------------------------------------------------------------------------------------------- |
+| `import { ProductClient } from "datafiniti-sdk"` | Imports the `ProductClient` class from the `datafiniti-sdk` package.                                |
+| `const sdk = ProductClient.fromEnv()`            | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.                      |
+| `sdk.paginate({ query, pageSize, maxRecords })`  | Returns an async iterator that yields individual product records across multiple API pages.         |
+| `query: 'categories:"Headphones"'`               | The search query — in this case, all products in the Headphones category.                           |
+| `pageSize: 100`                                  | Fetches 100 records per API request.                                                                |
+| `maxRecords: 250`                                | Stops after retrieving 250 total records, even if more are available.                               |
+| `for await (const product of sdk.paginate(...))` | Iterates through each yielded record one at a time without loading the full result set into memory. |
+| `product.name ?? "Unknown Product"`              | Reads the name field with a fallback default if the field is missing.                               |
+
+<Callout kind="info" collapsed="false">
+  The `paginate` method is an async generator — it handles API pagination automatically behind the scenes. Set `maxRecords` to limit total retrieval, or omit it to iterate through all matching results.
+</Callout>
+
+#### Understanding the query syntax
+
+The `query` option uses Datafiniti's query language. Here's what you need to know:
+
+| Question                           | Answer                                                                                                                                                                                 |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| What is the format?                | See the [Constructing Product Queries](https://docs.datafiniti.co/docs/constructing-product-queries) guide for the complete field reference, operators, and advanced examples.         |
+| How do I handle multi-word values? | Wrap them in quotes: `brand:"Dell"`.                                                                                                                                                   |
+| What fields can I query?           | Any field in the [Product Data Schema](https://docs.datafiniti.co/docs/product-data-schema) — `name`, `brand`, `categories`, `prices.amountMin`, `manufacturer`, `upc`, and many more. |
+
+### Views
+
+Control which fields are returned in API responses using custom inline views or premade named views. Use this to reduce payload size, speed up requests, and tailor results to specific use cases — such as monitoring prices across merchants. For a full list of available product data views, see [Product Data Views](https://docs.datafiniti.co/docs/product-data-views).
+
+```ts
+/**
+ * Product Views Example: Price Monitoring
+ *
+ * Uses a custom view to fetch only the fields needed to compare prices across
+ * merchants for a set of products. Requesting a narrow view keeps responses
+ * small and fast when you only care about pricing.
+ *
+ * Reference: https://docs.datafiniti.co/docs/using-a-custom-product-view
+ */
+
+import { ProductClient, type DatafinitiRecord } from "datafiniti-sdk";
+
+// ---------------------------------------------------------------------------
+// View options
+//
+// OPTION 1 (used below): Custom inline view
+//   Pass an array of field objects directly in the request. No setup required.
+//
+// OPTION 2: Premade (named) view — pass a string instead of an array.
+//   "default"  All fields (same as omitting view entirely).
+//   Example: sdk.search({ query, view: "default", numRecords: 10 })
+//   Reference: https://docs.datafiniti.co/docs/product-data-views
+// ---------------------------------------------------------------------------
+
+const PRODUCT_VIEW = [
+  { name: "name" },
+  { name: "brand" },
+  { name: "categories" },
+  { name: "prices" },
+];
+
+interface PriceEntry {
+  amountMin?: string | number;
+  currency?: string;
+  merchant?: string;
+  condition?: string;
+}
+
+function lowestPrice(prices: unknown): PriceEntry | null {
+  if (!Array.isArray(prices) || prices.length === 0) return null;
+  const entries = prices as PriceEntry[];
+  return entries.reduce((lowest, entry) => {
+    const current = Number(entry.amountMin);
+    const best = Number(lowest.amountMin);
+    return Number.isFinite(current) && current < best ? entry : lowest;
+  });
+}
+
+async function checkPrices(sdk: ProductClient, name: string, brand: string) {
+  const query = sdk.query().name(name).brand(brand).build();
+  const response = await sdk.search({ query, numRecords: 1, view: PRODUCT_VIEW });
+  const records = response.records ?? [];
+  return records.length ? records[0] : null;
+}
+
+async function main() {
+  // Products to monitor for pricing.
+  const products = [
+    { name: "AirPods Pro",         brand: "Apple" },
+    { name: "Galaxy Buds2 Pro",    brand: "Samsung" },
+    { name: "WH-1000XM5",          brand: "Sony" },
+  ];
+
+  const sdk = ProductClient.fromEnv();
+
+  console.log("\n=== PRICE MONITORING ===\n");
+
+  for (const item of products) {
+    console.log(`${item.brand} ${item.name}`);
+
+    const record: DatafinitiRecord | null = await checkPrices(sdk, item.name, item.brand);
+
+    if (record === null) {
+      console.log("  No product record found.\n");
+      continue;
+    }
+
+    const best = lowestPrice(record.prices);
+    console.log(`  Name:   ${record.name ?? "N/A"}`);
+    if (best) {
+      console.log(`  Lowest: ${best.amountMin ?? "N/A"} ${best.currency ?? ""} at ${best.merchant ?? "N/A"} (${best.condition ?? "N/A"})`);
+    } else {
+      console.log("  Lowest: no pricing available");
+    }
+    console.log();
+  }
+}
+
+main();
+```
+
+#### Code breakdown
+
+| Section                                                                 | What it does                                                                                                        |
+| ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `import { ProductClient, type DatafinitiRecord } from "datafiniti-sdk"` | Imports the `ProductClient` class and the `DatafinitiRecord` type from the `datafiniti-sdk` package.                |
+| `const PRODUCT_VIEW = [...]`                                            | Defines a custom inline view — an array of field objects specifying exactly which fields to return per record.      |
+| `interface PriceEntry`                                                  | Describes the shape of a single price entry so the pricing logic is type-safe.                                      |
+| `lowestPrice(prices)`                                                   | Helper that scans the `prices` array and returns the entry with the lowest `amountMin`, or `null`.                  |
+| `checkPrices(sdk, name, brand)`                                         | Builds a query with the typed query builder and searches with the custom view, returning the first match or `null`. |
+| `sdk.search({ query, numRecords: 1, view: PRODUCT_VIEW })`              | Executes the search with the inline view — only the specified fields are returned.                                  |
+| `products`                                                              | Known products to monitor for pricing.                                                                              |
+| `for (const item of products)`                                          | Iterates through each product, queries the API, and prints the lowest available price.                              |
+
+<Callout kind="info" collapsed="false">
+  You can use either a custom inline view (an array of field objects) or a premade named view (a string like `"default"`). Custom views give you precise control over the response payload; named views are convenient presets for common use cases.
+</Callout>
+
+### Error handling
+
+Wrap SDK calls in a `try/catch` to handle API errors. The SDK throws a typed `DatafinitiApiError` when the API returns an error response or a request fails after its automatic retries.
+
+```ts
+import { ProductClient, DatafinitiApiError } from "datafiniti-sdk";
+
+const sdk = ProductClient.fromEnv();
+
+try {
+  const response = await sdk.search({ query: 'categories:"Laptops"', numRecords: 5 });
+  console.log(`Matches: ${response.num_found}`);
+} catch (err) {
+  if (err instanceof DatafinitiApiError) {
+    console.error(`API error ${err.statusCode}: ${err.message}`, err.errors);
+  } else {
+    throw err;
+  }
+}
+```
+
+#### Code breakdown
+
+| Section                                                              | What it does                                                                                        |
+| -------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `import { ProductClient, DatafinitiApiError } from "datafiniti-sdk"` | Imports the client class and the typed error class from the `datafiniti-sdk` package.               |
+| `try { ... } catch (err) { ... }`                                    | Runs the search and catches any error the SDK throws.                                               |
+| `err instanceof DatafinitiApiError`                                  | Narrows the error to the SDK's typed API error so its fields are safely accessible.                 |
+| `err.statusCode`, `err.message`, `err.errors`                        | The HTTP status code, a human-readable message, and the array of error details returned by the API. |
+
+<Callout kind="info" collapsed="false">
+  The client automatically retries retryable failures (HTTP 408, 429, 5xx, and network errors) up to `maxRetries` times (default 3). You can tune `maxRetries` and `timeoutMs` when constructing the client: `new ProductClient({ apiKey, maxRetries: 5, timeoutMs: 90000 })`.
+</Callout>
+
