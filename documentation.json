@@ -830,15 +830,6 @@
                         ]
                       },
                       {
-                        "group": "Business Data SDK",
-                        "pages": [
-                          {
-                            "title": "Business Data SDK",
-                            "path": "business-data-sdk"
-                          }
-                        ]
-                      },
-                      {
                         "group": "API Features",
                         "pages": [
                           {
@@ -856,6 +847,19 @@
                           {
                             "title": "Pagination",
                             "path": "docs/business-pagination"
+                          }
+                        ]
+                      },
+                      {
+                        "group": "Business Data SDK",
+                        "pages": [
+                          {
+                            "title": "Python - Business Data SDK",
+                            "path": "business-data-sdk"
+                          },
+                          {
+                            "title": "Nodejs - Business Data SDK",
+                            "path": "nodejs-business-data-sdk"
                           }
                         ]
                       }
