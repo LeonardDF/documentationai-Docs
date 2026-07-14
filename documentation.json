@@ -708,11 +708,16 @@
                       },
                       {
                         "group": "Product Data SDK",
-                        "pages": []
-                      },
-                      {
-                        "title": "Product Data SDK",
-                        "path": "product-data-sdk"
+                        "pages": [
+                          {
+                            "title": "Python - Product Data SDK",
+                            "path": "python-product-data-sdk"
+                          },
+                          {
+                            "title": "Node.js - Product Data SDK",
+                            "path": "nodejs-product-data-sdk"
+                          }
+                        ]
                       }
                     ]
                   },
