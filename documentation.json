@@ -833,12 +833,12 @@
                         "group": "Business Data SDK",
                         "pages": [
                           {
-                            "title": "Nodejs - Business Data SDK",
-                            "path": "nodejs-business-data-sdk"
-                          },
-                          {
                             "title": "Python - Business Data SDK",
                             "path": "business-data-sdk"
+                          },
+                          {
+                            "title": "Nodejs - Business Data SDK",
+                            "path": "nodejs-business-data-sdk"
                           }
                         ]
                       },
