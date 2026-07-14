@@ -382,7 +382,202 @@ main();
   You can use either a custom inline view (an array of field objects) or a premade named view (a string like `"default"`). Custom views give you precise control over the response payload; named views are convenient presets for common use cases.
 </Callout>
 
-### Error handling
+# Use case: Find competing restaurants near a location
+
+Assess restaurant competition around a specific location by combining quick counts, nearby search, full-result pagination, and export. This workflow mirrors the geolocation restaurant discovery pattern covered in [Find Local Restaurants Using GeoLocation](/docs/find-local-restaurants-using-geolocation), using downtown Austin, TX as the example search area.
+
+<Steps>
+  <Step title="Check the competition size" icon="bar-chart" title-type="p">
+    Start with a count so you know whether the market is small enough to inspect manually or large enough to require pagination. Because `count` works with the search query syntax rather than the geolocation helper, count restaurants in the target city before you fetch detailed records.
+
+    ```ts
+    import { BusinessClient } from "datafiniti-sdk";
+
+    const sdk = BusinessClient.fromEnv();
+
+    const query = sdk
+      .query()
+      .country("US")
+      .city("Austin")
+      .categories("Restaurant")
+      .build();
+
+    const total = await sdk.count(query);
+
+    console.log("\n=== COMPETITION SIZE ===");
+    console.log(`Restaurants in Austin: ${total.toLocaleString()}`);
+    ```
+
+    If the query is valid, the script prints a formatted total such as `Restaurants in Austin: 4,382`.
+
+    #### Code breakdown
+
+    | Section                                                                     | What it does                                                                          |
+    | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+    | `const sdk = BusinessClient.fromEnv()`                                      | Creates the business data client using the `DATAFINITI_API_KEY` environment variable. |
+    | `sdk.query().country("US").city("Austin").categories("Restaurant").build()` | Builds a typed query for restaurants in Austin, Texas.                                |
+    | `await sdk.count(query)`                                                    | Returns only the number of matching records, without downloading any business data.   |
+    | `total.toLocaleString()`                                                    | Formats the total for readable console output.                                        |
+  </Step>
+
+  <Step title="Find nearby restaurants" icon="map-pin" title-type="p">
+    Next, use geolocation to inspect the businesses closest to your target point. A custom view keeps the response focused on the fields most useful for competitor research.
+
+    ```ts
+    import { BusinessClient } from "datafiniti-sdk";
+
+    const sdk = BusinessClient.fromEnv();
+
+    const BUSINESS_VIEW = [
+      { name: "name" },
+      { name: "address" },
+      { name: "city" },
+      { name: "province" },
+      { name: "postalCode" },
+      { name: "categories" },
+      { name: "phones" },
+      { name: "rating" },
+    ];
+
+    const response = await sdk.geolocation({
+      longitude: -97.7431,
+      latitude: 30.2672,
+      distance: 5,
+      unit: "mi",
+      numRecords: 10,
+      view: BUSINESS_VIEW,
+    });
+
+    console.log("\n=== NEARBY RESTAURANTS ===");
+    console.log(`Matches: ${(response.num_found ?? 0).toLocaleString()}`);
+
+    for (const business of response.records ?? []) {
+      console.log(`${business.name} — ${business.address}, ${business.city}`);
+      console.log(`Categories: ${Array.isArray(business.categories) ? business.categories.join(", ") : "N/A"}`);
+      console.log(`Phones: ${Array.isArray(business.phones) ? business.phones.join(", ") : "N/A"}`);
+      console.log(`Rating: ${business.rating ?? "N/A"}`);
+      console.log();
+    }
+    ```
+
+    The response includes the closest matching businesses within five miles of downtown Austin. Restricting the view reduces payload size and keeps the output easy to scan.
+
+    #### Code breakdown
+
+    | Section                                                                      | What it does                                                             |
+    | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+    | `const BUSINESS_VIEW = [...]`                                                | Defines the exact business fields returned for each nearby match.        |
+    | `sdk.geolocation({ longitude, latitude, distance, unit, numRecords, view })` | Finds businesses within a five-mile radius of the specified coordinates. |
+    | `numRecords: 10`                                                             | Limits the first pass to the top 10 nearby businesses.                   |
+    | `response.records ?? []`                                                     | Safely reads the returned records, even when no matches are found.       |
+  </Step>
+
+  <Step title="Paginate through all results" icon="database" title-type="p">
+    When the first page shows useful results, switch to pagination to process the broader market. `paginate` uses the regular search query syntax, so combine category and city filters with the same custom view you used for the nearby check.
+
+    ```ts
+    import { BusinessClient } from "datafiniti-sdk";
+
+    const sdk = BusinessClient.fromEnv();
+
+    const BUSINESS_VIEW = [
+      { name: "name" },
+      { name: "address" },
+      { name: "city" },
+      { name: "province" },
+      { name: "postalCode" },
+      { name: "categories" },
+      { name: "phones" },
+      { name: "rating" },
+    ];
+
+    const query = sdk
+      .query()
+      .country("US")
+      .city("Austin")
+      .categories("Restaurant")
+      .build();
+
+    let recordsSeen = 0;
+
+    for await (const business of sdk.paginate({
+      query,
+      pageSize: 100,
+      maxRecords: 500,
+      view: BUSINESS_VIEW,
+    })) {
+      recordsSeen += 1;
+      console.log(`${recordsSeen}. ${business.name ?? "Unknown Restaurant"} — ${business.address ?? "No address"}`);
+    }
+
+    console.log(`\nTotal paginated records: ${recordsSeen}`);
+    ```
+
+    This pattern works well when you need more than the first page but do not want to hold the full dataset in memory at once.
+
+    #### Code breakdown
+
+    | Section                                               | What it does                                                    |
+    | ----------------------------------------------------- | --------------------------------------------------------------- |
+    | `const query = sdk.query()...build()`                 | Reuses the typed query builder to target restaurants in Austin. |
+    | `sdk.paginate({ query, pageSize, maxRecords, view })` | Streams matching business records across multiple API pages.    |
+    | `pageSize: 100`                                       | Fetches 100 records per request.                                |
+    | `maxRecords: 500`                                     | Stops after 500 records, even if more matches exist.            |
+    | `for await (const business of ...)`                   | Processes each result one record at a time.                     |
+  </Step>
+
+  <Step title="Export the results" icon="download" title-type="p">
+    After you confirm the dataset is useful, write the paginated results to disk for analysis in another tool. This example collects the streamed records and saves them as formatted JSON.
+
+    ```ts
+    import { writeFileSync } from "node:fs";
+    import { BusinessClient } from "datafiniti-sdk";
+
+    const sdk = BusinessClient.fromEnv();
+
+    const BUSINESS_VIEW = [
+      { name: "name" },
+      { name: "address" },
+      { name: "city" },
+      { name: "province" },
+      { name: "postalCode" },
+      { name: "categories" },
+      { name: "phones" },
+      { name: "rating" },
+    ];
+
+    const query = sdk
+      .query()
+      .country("US")
+      .city("Austin")
+      .categories("Restaurant")
+      .build();
+
+    const results = [];
+
+    for await (const business of sdk.paginate({
+      query,
+      pageSize: 100,
+      maxRecords: 500,
+      view: BUSINESS_VIEW,
+    })) {
+      results.push(business);
+    }
+
+    writeFileSync("austin-restaurants.json", JSON.stringify(results, null, 2));
+
+    console.log(`Exported ${results.length} restaurants to austin-restaurants.json`);
+    ```
+
+    When the export succeeds, the working directory contains `austin-restaurants.json` with one business record per array item.
+  </Step>
+</Steps>
+
+<Callout kind="info" collapsed="false">
+  For the complete guide on finding local restaurants with geolocation, see [Find Local Restaurants Using GeoLocation](/docs/find-local-restaurants-using-geolocation).
+</Callout>
+
+# Error handling
 
 Wrap SDK calls in a `try/catch` to handle API errors. The SDK throws a typed `DatafinitiApiError` when the API returns an error response or a request fails after its automatic retries.
 
@@ -403,7 +598,7 @@ try {
 }
 ```
 
-#### Code breakdown
+## Code breakdown
 
 | Section                                                               | What it does                                                                                        |
 | --------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
@@ -415,3 +610,4 @@ try {
 <Callout kind="info" collapsed="false">
   The client automatically retries retryable failures (HTTP 408, 429, 5xx, and network errors) up to `maxRetries` times (default 3). You can tune `maxRetries` and `timeoutMs` when constructing the client: `new BusinessClient({ apiKey, maxRetries: 5, timeoutMs: 90000 })`.
 </Callout>
+
