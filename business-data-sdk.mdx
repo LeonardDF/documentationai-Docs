@@ -1,11 +1,11 @@
 ---
-title: Business Data SDK
+title: Python - Business Data SDK
 ---
 ## Summary
 
 The Datafiniti Business Data SDK is a Python library that provides a clean, simple interface for searching, counting, and downloading business records from the Datafiniti Business Data API.
 
-The Business data SDK is a thin abstraction over the `/v4/businesses` endpoint, with built-in authentication, retry logic, query composition, and pagination. For the entire suite of examples and tools, you can download them <a href="https://pypi.org/project/datafiniti-sdk/#files" target="_blank" rel="noopener noreferrer">here</a>.&#x20;
+The Business data SDK is a thin abstraction over the `/v4/businesses` endpoint, with built-in authentication, retry logic, query composition, and pagination. For the entire suite of examples and tools, you can download them [here](https://pypi.org/project/datafiniti-sdk/#files).&#x20;
 
 ---
 
@@ -168,7 +168,6 @@ except DatafinitiAPIError as e:
 The SDK automatically retries transient failures with exponential backoff:
 
 - Retried status codes: 408, 429, 500, 502, 503, 504
-
 - Backoff schedule: 1s → 2s → 4s
 
 ---
