@@ -1,0 +1,417 @@
+---
+title: Node.js - Business Data SDK
+---
+Install, authenticate, and make your first business searches with the Datafiniti Business Data SDK for Node.js.
+
+## Get started with the Node.js SDK
+
+You can use the [Datafiniti SDK](https://www.npmjs.com/package/datafiniti-sdk) for Node.js to authenticate with the Business Data API and run common business searches, including name lookup, address lookup, geolocation queries, category filtering, counting, and pagination.
+
+The SDK is available on npm at [https://www.npmjs.com/package/datafiniti-sdk](https://www.npmjs.com/package/datafiniti-sdk). It ships a client for each Datafiniti dataset — this guide covers the `BusinessClient`.
+
+<Callout kind="info" collapsed="false">
+  Use Node.js 18 or later. The SDK has zero runtime dependencies — it uses Node's built-in `fetch`. It ships as a dual ESM + CommonJS build with full TypeScript type definitions.
+</Callout>
+
+### Installation
+
+<Steps>
+  <Step title="Install the SDK" icon="package" title-type="p">
+    Run `npm install` to add the Datafiniti SDK to your project.
+
+    ```bash
+    npm install datafiniti-sdk
+    ```
+
+    After the command finishes, `npm` reports that the package was added to your `package.json`.
+  </Step>
+</Steps>
+
+### Authentication
+
+<Steps>
+  <Step title="Configure your API key" icon="lock" title-type="p">
+    Authenticate by setting the `DATAFINITI_API_KEY` environment variable or by passing your API key directly when you create the client.
+
+    <CodeGroup show-lines="true">
+      ```bash
+      export DATAFINITI_API_KEY="YOUR_API_KEY"
+      ```
+
+      ```ts
+      import { BusinessClient } from "datafiniti-sdk";
+
+      const sdk = new BusinessClient({ apiKey: "df_example_9xmk7q2r" });
+      ```
+    </CodeGroup>
+
+    If you use the environment variable approach, initialize the client with `BusinessClient.fromEnv()`.
+  </Step>
+</Steps>
+
+## Features
+
+### Search by name
+
+Look up business records by name, optionally narrowing by city. Use this to quickly retrieve business details and match counts without writing raw API queries.
+
+```ts
+import { BusinessClient } from "datafiniti-sdk";
+
+const sdk = BusinessClient.fromEnv();
+
+const response = await sdk.searchByName("Starbucks", {
+  city: "Seattle",
+});
+
+console.log("\n=== NAME SEARCH TEST ===");
+console.log("Matches:", response.num_found);
+
+const records = response.records ?? [];
+
+if (records.length) {
+  const business = records[0];
+  console.log("\nBusiness:");
+  console.log(business.name);
+  console.log(business.address);
+  console.log(business.city, business.province);
+  console.log(business.categories);
+} else {
+  console.log("No business found.");
+}
+```
+
+#### Code breakdown
+
+| Section                                                    | What it does                                                                           |
+| ---------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `import { BusinessClient } from "datafiniti-sdk"`          | Imports the `BusinessClient` class from the `datafiniti-sdk` package.                  |
+| `const sdk = BusinessClient.fromEnv()`                     | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.         |
+| `sdk.searchByName(name, { city })`                         | Queries the Business Data API for records matching the given name (and optional city). |
+| `response.num_found`                                       | Returns the total number of businesses that matched the query.                         |
+| `response.records ?? []`                                   | Retrieves the list of business records, defaulting to an empty array if none exist.    |
+| `records[0]`                                               | Accesses the first (best-match) business record from the results.                      |
+| `business.name`, `business.address`, `business.categories` | Reads individual fields from the business record.                                      |
+
+<Callout kind="info" collapsed="false">
+  The `searchByName` method abstracts away the raw query syntax. Provide a business name plus an optional `city` and `country` (defaults to `US`) to narrow results.
+</Callout>
+
+### Search by address
+
+Look up business records by street address and ZIP code. Use this to identify the business operating at a specific location.
+
+```ts
+import { BusinessClient } from "datafiniti-sdk";
+
+const sdk = BusinessClient.fromEnv();
+
+const response = await sdk.searchByAddress("2200 E Cesar Chavez St", {
+  postalCode: "78702",
+});
+
+console.log("\n=== ADDRESS SEARCH TEST ===");
+console.log("Matches:", response.num_found);
+
+const records = response.records ?? [];
+
+if (records.length) {
+  const business = records[0];
+  console.log("\nBusiness:");
+  console.log(business.name);
+  console.log(business.address);
+  console.log(business.city, business.province, business.postalCode);
+} else {
+  console.log("No business found.");
+}
+```
+
+#### Code breakdown
+
+| Section                                              | What it does                                                                              |
+| ---------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `import { BusinessClient } from "datafiniti-sdk"`    | Imports the `BusinessClient` class from the `datafiniti-sdk` package.                     |
+| `const sdk = BusinessClient.fromEnv()`               | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.            |
+| `sdk.searchByAddress(address, { postalCode })`       | Queries the Business Data API for records matching the given street address and ZIP code. |
+| `response.num_found`                                 | Returns the total number of businesses that matched the query.                            |
+| `response.records ?? []`                             | Retrieves the list of business records, defaulting to an empty array if none exist.       |
+| `records[0]`                                         | Accesses the first (best-match) business record from the results.                         |
+| `business.name`, `business.address`, `business.city` | Reads individual fields from the business record.                                         |
+
+<Callout kind="info" collapsed="false">
+  The `searchByAddress` method takes a street address and an optional `postalCode` and `country` (defaults to `US`) to narrow results.
+</Callout>
+
+### Count
+
+Get the total number of businesses matching a query without downloading any records. Use this to check result sizes before running larger searches or to build dashboards with aggregate counts.
+
+```ts
+import { BusinessClient } from "datafiniti-sdk";
+
+const sdk = BusinessClient.fromEnv();
+
+const count = await sdk.count('country:US AND categories:"Coffee Shop"');
+
+console.log("\n=== COUNT TEST ===");
+console.log(`Businesses found: ${count.toLocaleString()}`);
+```
+
+#### Code breakdown
+
+| Section                                                      | What it does                                                                         |
+| ------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| `import { BusinessClient } from "datafiniti-sdk"`            | Imports the `BusinessClient` class from the `datafiniti-sdk` package.                |
+| `const sdk = BusinessClient.fromEnv()`                       | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.       |
+| `await sdk.count('country:US AND categories:"Coffee Shop"')` | Returns the total number of US coffee shops without fetching the records themselves. |
+| `count.toLocaleString()`                                     | Formats the count with comma separators for readability (e.g., `1,234,567`).         |
+
+<Callout kind="info" collapsed="false">
+  The `count` method accepts the same query syntax as `search` but only returns the total number of matching records — no data is downloaded.
+</Callout>
+
+#### Understanding the query syntax
+
+The query string `'country:US AND categories:"Coffee Shop"'` uses Datafiniti's query language. Here's what you need to know:
+
+| Question                                                        | Answer                                                                                                                                                                                      |
+| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| What is the format?                                             | See the [Constructing Business Queries](https://docs.datafiniti.co/docs/constructing-business-queries) guide for the complete field reference, operators, and advanced examples.            |
+| How do I handle multi-word string values?                       | Wrap them in exact quotes: `categories:"Coffee Shop"`.                                                                                                                                      |
+| What fields can I query & what is the full list of field names? | Any field in the [Business Data Schema](https://docs.datafiniti.co/docs/business-data-schema) — `name`, `address`, `city`, `province`, `postalCode`, `categories`, `phones`, and many more. |
+
+<Callout kind="info" collapsed="false">
+  Prefer building queries with the typed query builder over hand-writing strings. `sdk.query().country("US").categories("Coffee Shop").build()` produces the same query while catching typos at compile time.
+</Callout>
+
+### Geolocation
+
+Search for businesses within a specified radius of a geographic coordinate. Use this to build store locators, find nearby competitors, or analyze business density in a target area.
+
+```ts
+import { BusinessClient } from "datafiniti-sdk";
+
+const sdk = BusinessClient.fromEnv();
+
+// Search for businesses within 5 miles of downtown Austin, TX
+// geoLocation format: [Longitude, Latitude, Distance, Unit]
+// Supported units: m, mi, ft, yd, mm, km, NM, cm
+const response = await sdk.geolocation({
+  longitude: -97.7430600,
+  latitude: 30.2671500,
+  distance: 5,
+  unit: "mi",
+  numRecords: 5,
+  view: [
+    { name: "name" },
+    { name: "address" },
+    { name: "city" },
+    { name: "province" },
+    { name: "postalCode" },
+    { name: "categories" },
+    { name: "geoLocation" },
+  ],
+});
+
+console.log("\n=== GEOLOCATION SEARCH ===");
+console.log(`Total matches: ${(response.num_found ?? 0).toLocaleString()}`);
+
+const records = response.records ?? [];
+
+for (const business of records) {
+  console.log(
+    `\n${business.name} — ${business.address}, ${business.city} ${business.postalCode}` +
+      `\n--geoLocation: ${business.geoLocation}`
+  );
+}
+```
+
+#### Code breakdown
+
+| Section                                                                      | What it does                                                                                         |
+| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `import { BusinessClient } from "datafiniti-sdk"`                            | Imports the `BusinessClient` class from the `datafiniti-sdk` package.                                |
+| `const sdk = BusinessClient.fromEnv()`                                       | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.                       |
+| `sdk.geolocation({ longitude, latitude, distance, unit, numRecords, view })` | Searches for businesses within a radius of the given coordinate. Returns up to `numRecords` results. |
+| `longitude`, `latitude`                                                      | The center point of the search area (downtown Austin, TX in this example).                           |
+| `distance: 5, unit: "mi"`                                                    | Defines the search radius — 5 miles. Supported units: `m`, `mi`, `ft`, `yd`, `mm`, `km`, `NM`, `cm`. |
+| `view: [...]`                                                                | A custom view specifying which fields to return for each record, reducing response size.             |
+| `response.num_found`                                                         | Returns the total number of businesses within the search radius.                                     |
+| `for (const business of records)`                                            | Iterates through each result and prints the name, address, and coordinates.                          |
+
+<Callout kind="info" collapsed="false">
+  The `view` parameter lets you control exactly which fields are returned. This reduces payload size and speeds up responses when you only need specific business attributes.
+</Callout>
+
+### Paginate
+
+Iterate through large result sets page by page without loading everything into memory at once. Use this to process thousands of records efficiently or to cap the number of retrievals at a specific limit.
+
+```ts
+import { BusinessClient } from "datafiniti-sdk";
+
+const sdk = BusinessClient.fromEnv();
+
+console.log("\n=== PAGINATION TEST ===");
+
+let recordsSeen = 0;
+
+for await (const business of sdk.paginate({
+  query: 'country:US AND categories:"Restaurant"',
+  pageSize: 100,
+  maxRecords: 250,
+})) {
+  recordsSeen += 1;
+  console.log(`${recordsSeen}. ${business.name ?? "Unknown Business"}`);
+}
+
+console.log(`\nTotal Retrieved: ${recordsSeen}`);
+```
+
+#### Code breakdown
+
+| Section                                           | What it does                                                                                        |
+| ------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `import { BusinessClient } from "datafiniti-sdk"` | Imports the `BusinessClient` class from the `datafiniti-sdk` package.                               |
+| `const sdk = BusinessClient.fromEnv()`            | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.                      |
+| `sdk.paginate({ query, pageSize, maxRecords })`   | Returns an async iterator that yields individual business records across multiple API pages.        |
+| `query: 'country:US AND categories:"Restaurant"'` | The search query — in this case, all US restaurants.                                                |
+| `pageSize: 100`                                   | Fetches 100 records per API request.                                                                |
+| `maxRecords: 250`                                 | Stops after retrieving 250 total records, even if more are available.                               |
+| `for await (const business of sdk.paginate(...))` | Iterates through each yielded record one at a time without loading the full result set into memory. |
+| `business.name ?? "Unknown Business"`             | Reads the name field with a fallback default if the field is missing.                               |
+
+<Callout kind="info" collapsed="false">
+  The `paginate` method is an async generator — it handles API pagination automatically behind the scenes. Set `maxRecords` to limit total retrieval, or omit it to iterate through all matching results.
+</Callout>
+
+#### Understanding the query syntax
+
+The `query` option uses Datafiniti's query language. Here's what you need to know:
+
+| Question                           | Answer                                                                                                                                                                                      |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| What is the format?                | See the [Constructing Business Queries](https://docs.datafiniti.co/docs/constructing-business-queries) guide for the complete field reference, operators, and advanced examples.            |
+| How do I handle multi-word values? | Wrap them in quotes: `categories:"Coffee Shop"`.                                                                                                                                            |
+| What fields can I query?           | Any field in the [Business Data Schema](https://docs.datafiniti.co/docs/business-data-schema) — `name`, `address`, `city`, `province`, `postalCode`, `categories`, `phones`, and many more. |
+
+### Views
+
+Control which fields are returned in API responses using custom inline views or premade named views. Use this to reduce payload size, speed up requests, and tailor results to specific use cases — such as building a business directory with only contact and category data. For a full list of available business data views, see [Business Data Views](https://docs.datafiniti.co/docs/business-data-views).
+
+```ts
+/**
+ * Business Views Example: Directory Enrichment
+ *
+ * Uses a custom view to fetch only the fields needed to build a business
+ * directory — categories and phone numbers — for a set of businesses in a
+ * city. Requesting a narrow view keeps responses small and fast.
+ *
+ * Reference: https://docs.datafiniti.co/docs/using-a-custom-business-view
+ */
+
+import { BusinessClient, type DatafinitiRecord } from "datafiniti-sdk";
+
+// ---------------------------------------------------------------------------
+// View options
+//
+// OPTION 1 (used below): Custom inline view
+//   Pass an array of field objects directly in the request. No setup required.
+//
+// OPTION 2: Premade (named) view — pass a string instead of an array.
+//   "default"  All fields (same as omitting view entirely).
+//   Example: sdk.search({ query, view: "default", numRecords: 10 })
+//   Reference: https://docs.datafiniti.co/docs/business-data-views
+// ---------------------------------------------------------------------------
+
+const BUSINESS_VIEW = [
+  { name: "name" },
+  { name: "address" },
+  { name: "city" },
+  { name: "province" },
+  { name: "categories" },
+  { name: "phones" },
+];
+
+function formatList(value: unknown): string {
+  return Array.isArray(value) && value.length ? value.join(", ") : "N/A";
+}
+
+async function main() {
+  const sdk = BusinessClient.fromEnv();
+
+  // Find restaurants in Austin, TX and enrich each with categories + phones.
+  const query = sdk
+    .query()
+    .country("US")
+    .province("TX")
+    .city("Austin")
+    .categories("Restaurant")
+    .build();
+
+  const response = await sdk.search({ query, numRecords: 10, view: BUSINESS_VIEW });
+  const records: DatafinitiRecord[] = response.records ?? [];
+
+  console.log("\n=== BUSINESS DIRECTORY ===\n");
+
+  for (const business of records) {
+    console.log(`${business.name ?? "N/A"}`);
+    console.log(`  Address:    ${business.address ?? "N/A"}, ${business.city ?? "N/A"}, ${business.province ?? "N/A"}`);
+    console.log(`  Categories: ${formatList(business.categories)}`);
+    console.log(`  Phones:     ${formatList(business.phones)}`);
+    console.log();
+  }
+}
+
+main();
+```
+
+#### Code breakdown
+
+| Section                                                                   | What it does                                                                                                   |
+| ------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `import { BusinessClient, type DatafinitiRecord } from "datafiniti-sdk"`  | Imports the `BusinessClient` class and the `DatafinitiRecord` type from the `datafiniti-sdk` package.          |
+| `const BUSINESS_VIEW = [...]`                                             | Defines a custom inline view — an array of field objects specifying exactly which fields to return per record. |
+| `formatList(value)`                                                       | Helper that joins an array field (like `categories` or `phones`) into a readable string, or returns `"N/A"`.   |
+| `sdk.query().country("US").province("TX").city("Austin").categories(...)` | Builds a compound query with the typed query builder combining location and category filters.                  |
+| `sdk.search({ query, numRecords: 10, view: BUSINESS_VIEW })`              | Executes the search with the inline view — only the specified fields are returned.                             |
+| `response.records ?? []`                                                  | Safely reads the returned records and falls back to an empty array if none matched.                            |
+| `for (const business of records)`                                         | Iterates through each business and prints its address, categories, and phone numbers.                          |
+
+<Callout kind="info" collapsed="false">
+  You can use either a custom inline view (an array of field objects) or a premade named view (a string like `"default"`). Custom views give you precise control over the response payload; named views are convenient presets for common use cases.
+</Callout>
+
+### Error handling
+
+Wrap SDK calls in a `try/catch` to handle API errors. The SDK throws a typed `DatafinitiApiError` when the API returns an error response or a request fails after its automatic retries.
+
+```ts
+import { BusinessClient, DatafinitiApiError } from "datafiniti-sdk";
+
+const sdk = BusinessClient.fromEnv();
+
+try {
+  const response = await sdk.search({ query: 'country:US AND categories:"Restaurant"', numRecords: 5 });
+  console.log(`Matches: ${response.num_found}`);
+} catch (err) {
+  if (err instanceof DatafinitiApiError) {
+    console.error(`API error ${err.statusCode}: ${err.message}`, err.errors);
+  } else {
+    throw err;
+  }
+}
+```
+
+#### Code breakdown
+
+| Section                                                               | What it does                                                                                        |
+| --------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `import { BusinessClient, DatafinitiApiError } from "datafiniti-sdk"` | Imports the client class and the typed error class from the `datafiniti-sdk` package.               |
+| `try { ... } catch (err) { ... }`                                     | Runs the search and catches any error the SDK throws.                                               |
+| `err instanceof DatafinitiApiError`                                   | Narrows the error to the SDK's typed API error so its fields are safely accessible.                 |
+| `err.statusCode`, `err.message`, `err.errors`                         | The HTTP status code, a human-readable message, and the array of error details returned by the API. |
+
+<Callout kind="info" collapsed="false">
+  The client automatically retries retryable failures (HTTP 408, 429, 5xx, and network errors) up to `maxRetries` times (default 3). You can tune `maxRetries` and `timeoutMs` when constructing the client: `new BusinessClient({ apiKey, maxRetries: 5, timeoutMs: 90000 })`.
+</Callout>
