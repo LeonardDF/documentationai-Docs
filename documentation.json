@@ -707,6 +707,10 @@
                         ]
                       },
                       {
+                        "group": "Product Data SDK",
+                        "pages": []
+                      },
+                      {
                         "title": "Product Data SDK",
                         "path": "product-data-sdk"
                       }
