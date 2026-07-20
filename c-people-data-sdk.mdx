@@ -1,0 +1,507 @@
+---
+title: C# - People Data SDK
+---
+#
+
+Install, authenticate, and make your first people searches with the Datafiniti People Data SDK for C#.
+
+## Get started with the C# SDK
+
+You can use the [Datafiniti People Data SDK](https://www.nuget.org/packages/Datafiniti.Sdk) for C# to authenticate with the People Data API and run common people searches, including name lookup, contact info queries, filtering, counting, and pagination.
+
+The SDK is available on NuGet at [https://www.nuget.org/packages/Datafiniti.Sdk](https://www.nuget.org/packages/Datafiniti.Sdk).
+
+<Callout kind="info" collapsed="false">
+  Target .NET 8.0 or later. The People SDK lives in the `Datafiniti.People` namespace and shares the core client, options, and error types in `Datafiniti.Core`.
+</Callout>
+
+### Installation
+
+<Steps>
+  <Step title="Install the SDK" icon="package" title-type="p">
+    Add the Datafiniti SDK to your project with the .NET CLI.
+
+    ```bash
+    dotnet add package Datafiniti.Sdk
+    ```
+
+    After the command finishes, the package is restored into your project. The People SDK is included in the unified `Datafiniti.Sdk` package alongside the Business, Property, and Product SDKs.
+  </Step>
+</Steps>
+
+### Authentication
+
+<Steps>
+  <Step title="Configure your API key" icon="lock" title-type="p">
+    Authenticate by setting the `DATAFINITI_API_KEY` environment variable or by passing your API key directly through `DatafinitiClientOptions` when you create the client.
+
+    <CodeGroup show-lines="true">
+      ```bash
+      export DATAFINITI_API_KEY="YOUR_API_KEY"
+      ```
+
+      ```csharp
+      using Datafiniti.People;
+      using Datafiniti.Core;
+
+      var client = new PeopleClient(new DatafinitiClientOptions
+      {
+          ApiKey = "df_example_9xmk7q2r"
+      });
+      ```
+    </CodeGroup>
+
+    If you use the environment variable approach, initialize the client with `PeopleClient.FromEnvironment()`. The SDK reads `DATAFINITI_API_KEY` and throws if it is not set.
+  </Step>
+</Steps>
+
+## Features
+
+### Search by name
+
+Look up people records by name using `SearchByNameAsync`. Use this to quickly retrieve people details without writing raw API queries.
+
+```csharp
+using Datafiniti.People;
+
+var client = PeopleClient.FromEnvironment();
+
+// Search by name — pass the full name as a single string
+SearchResult results = await client.SearchByNameAsync("John Smith", numRecords: 10);
+
+Console.WriteLine("\n=== NAME SEARCH TEST ===");
+Console.WriteLine($"Matches: {results.NumFound}");
+
+var records = results.Records;
+
+if (records.Count > 0)
+{
+    var person = records[0];
+    Console.WriteLine("\nPerson:");
+    Console.WriteLine(person.GetProperty("firstName").GetString());
+    Console.WriteLine(person.GetProperty("lastName").GetString());
+    Console.WriteLine(person.GetProperty("city").GetString());
+}
+else
+{
+    Console.WriteLine("No person found.");
+}
+```
+
+#### Code breakdown
+
+| Section                                                  | What it does                                                                                     |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `using Datafiniti.People;`                               | Imports the `PeopleClient` and `PeopleQuery` types from the `Datafiniti.People` namespace.       |
+| `PeopleClient.FromEnvironment()`                         | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.                   |
+| `client.SearchByNameAsync("John Smith", numRecords: 10)` | Queries the People Data API for records matching the given name. Returns a `Task<SearchResult>`. |
+| `results.NumFound`                                       | Returns the total number of people that matched the query.                                       |
+| `results.Records`                                        | An `IReadOnlyList<JsonElement>` of matching people records.                                      |
+| `records[0]`                                             | Accesses the first (best-match) people record from the results.                                  |
+| `person.GetProperty("firstName").GetString()`            | Reads an individual field from the record's `JsonElement`.                                       |
+
+<Callout kind="info" collapsed="false">
+  `SearchByNameAsync` abstracts away the raw query syntax and accepts the name as a single string, with an optional `numRecords` to limit results. Records are returned as `System.Text.Json.JsonElement`, so read fields with `GetProperty(...)`.
+</Callout>
+
+### Count
+
+Get the total number of people matching a query without downloading any records. Use this to check result sizes before running larger searches or to build dashboards with aggregate counts.
+
+```csharp
+using Datafiniti.People;
+
+var client = PeopleClient.FromEnvironment();
+
+long count = await client.CountAsync("firstName:\"John\" AND lastName:\"Smith\" AND country:US");
+
+Console.WriteLine("\n=== COUNT TEST ===");
+Console.WriteLine($"People found: {count:N0}");
+```
+
+#### Code breakdown
+
+| Section                                                                         | What it does                                                                                                  |
+| ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `using Datafiniti.People;`                                                      | Imports the `PeopleClient` type from the `Datafiniti.People` namespace.                                       |
+| `PeopleClient.FromEnvironment()`                                                | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.                                |
+| `client.CountAsync("firstName:\"John\" AND lastName:\"Smith\" AND country:US")` | Returns the total number of US people named John Smith without fetching full records. Returns a `Task<long>`. |
+| `$"People found: {count:N0}"`                                                   | Formats the count with thousands separators for readability (e.g., `1,234,567`).                              |
+
+<Callout kind="info" collapsed="false">
+  `CountAsync` accepts the same query syntax as `SearchAsync` but only returns the total number of matching records — no data is downloaded.
+</Callout>
+
+#### Understanding the query syntax
+
+The query string `firstName:"John" AND lastName:"Smith" AND country:US` uses Datafiniti's query language. Here's what you need to know:
+
+| Question                                                        | Answer                                                                                                                                                                                           |
+| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| What is the format?                                             | See the [Constructing People Queries](https://docs.datafiniti.co/docs/constructing-people-queries) guide for the complete field reference, operators, and advanced examples.                     |
+| How do I handle multi-word string values?                       | Wrap them in exact quotes: `firstName:"John"`. In C# string literals, escape the quotes (`"firstName:\"John\""`) or use a verbatim/raw string literal.                                           |
+| What fields can I query & what is the full list of field names? | Any field in the [People Data Schema](https://docs.datafiniti.co/docs/people-data-schema) — `firstName`, `lastName`, `emails`, `city`, `province`, `country`, `jobTitle`, `keys`, and many more. |
+
+### Build a query
+
+Compose a query using the fluent `PeopleQuery` builder. Chain field methods — such as name and location — and call `.Build()` to produce a Datafiniti query string.
+
+```csharp
+using Datafiniti.People;
+
+var client = PeopleClient.FromEnvironment();
+
+// Build a query — chain field methods, then Build()
+string query = client.Query()
+    .FirstName("Joe")
+    .LastName("Curry")
+    .Country("US")
+    .Province("CO")
+    .City("Denver")
+    .Build();
+
+SearchResult results = await client.SearchAsync(query, numRecords: 10);
+
+Console.WriteLine("\n=== QUERY BUILDER TEST ===");
+Console.WriteLine($"Total matches: {results.NumFound:N0}");
+
+foreach (var person in results.Records)
+{
+    Console.WriteLine(
+        $"{person.GetProperty("firstName").GetString()} " +
+        $"{person.GetProperty("lastName").GetString()} — " +
+        $"{person.GetProperty("city").GetString()}");
+}
+```
+
+#### Code breakdown
+
+| Section                                      | What it does                                                                               |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `using Datafiniti.People;`                   | Imports the `PeopleClient` and `PeopleQuery` types from the `Datafiniti.People` namespace. |
+| `PeopleClient.FromEnvironment()`             | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.             |
+| `client.Query()`                             | Returns a fluent `PeopleQuery` builder for composing a query without raw syntax.           |
+| `.FirstName(...).LastName(...).Country(...)` | Chains field methods to add constraints to the query.                                      |
+| `.Province("CO").City("Denver")`             | Narrows results to a specific province and city.                                           |
+| `.Build()`                                   | Produces the final Datafiniti query string from the chained fields.                        |
+| `client.SearchAsync(query, numRecords: 10)`  | Executes the search and returns up to `numRecords` matching records.                       |
+
+<Callout kind="info" collapsed="false">
+  `PeopleQuery` is a fluent builder exposing fields relevant to the People data type: `FirstName`, `LastName`, `Name`, `Country`, `Province`, `City`, and `PostalCode`. Each method returns the builder so calls chain, and `.Build()` produces a Datafiniti query string you can pass to `SearchAsync`, `CountAsync`, or `PaginateAsync`. For fields the builder does not expose, use `.Raw(...)` or pass a raw query string directly.
+</Callout>
+
+### Search by email and peopleKey
+
+To look up people by email address or by `peopleKey`, pass a raw query string to `SearchAsync`. The `peopleKey` is cross-referenced from property data, letting you connect a person to a known property record.
+
+```csharp
+using Datafiniti.People;
+
+var client = PeopleClient.FromEnvironment();
+
+// Search by email
+SearchResult results = await client.SearchAsync("emails:\"someone@example.com\"", numRecords: 1);
+
+// Search by peopleKey (cross-referenced from property data)
+results = await client.SearchAsync("keys:\"nathan/sandel/us/tx/78704/412southcongressave\"", numRecords: 1);
+
+Console.WriteLine("\n=== EMAIL & KEY SEARCH ===");
+foreach (var person in results.Records)
+{
+    Console.WriteLine($"{person.GetProperty("firstName").GetString()} {person.GetProperty("lastName").GetString()}");
+    Console.WriteLine($"--emails: {person.GetProperty("emails")}");
+    Console.WriteLine($"--keys: {person.GetProperty("keys")}");
+}
+```
+
+#### Code breakdown
+
+| Section                                                                             | What it does                                                                   |
+| ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| `using Datafiniti.People;`                                                          | Imports the `PeopleClient` type from the `Datafiniti.People` namespace.        |
+| `PeopleClient.FromEnvironment()`                                                    | Creates a client instance using the `DATAFINITI_API_KEY` environment variable. |
+| `client.SearchAsync("emails:\"someone@example.com\"", numRecords: 1)`               | Looks up a person by an exact email address.                                   |
+| `client.SearchAsync("keys:\"nathan/sandel/us/tx/78704/412southcongressave\"", ...)` | Looks up a person by `peopleKey`, cross-referenced from property data.         |
+| `results.Records`                                                                   | The `IReadOnlyList<JsonElement>` of matching people records.                   |
+
+<Callout kind="info" collapsed="false">
+  The `keys` field links people records to property records. You can pull a `peopleKey` from a property record and use it here to retrieve the associated person — a convenient way to connect the People and Property data types. Because `emails` and `keys` are not exposed on the builder, pass them as a raw query string to `SearchAsync`.
+</Callout>
+
+### Paginate
+
+Iterate through large result sets page by page without loading everything into memory at once. `PaginateAsync` returns an `IAsyncEnumerable<JsonElement>`, so you consume it with `await foreach`.
+
+```csharp
+using Datafiniti.People;
+
+var client = PeopleClient.FromEnvironment();
+
+Console.WriteLine("\n=== PAGINATION TEST ===");
+
+int recordsSeen = 0;
+
+// Paginate through large result sets
+await foreach (var person in client.PaginateAsync(
+    query: "country:US AND jobTitle:*",
+    pageSize: 10))
+{
+    recordsSeen++;
+    Console.WriteLine(
+        $"{person.GetProperty("firstName").GetString()} " +
+        $"{person.GetProperty("lastName").GetString()} " +
+        $"{person.GetProperty("jobTitle").GetString()}");
+
+    if (recordsSeen >= 50) break; // stop after 50 total records
+}
+
+Console.WriteLine($"\nTotal Retrieved: {recordsSeen}");
+```
+
+#### Code breakdown
+
+| Section                                                       | What it does                                                                                                |
+| ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `using Datafiniti.People;`                                    | Imports the `PeopleClient` type from the `Datafiniti.People` namespace.                                     |
+| `PeopleClient.FromEnvironment()`                              | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.                              |
+| `client.PaginateAsync(query, pageSize)`                       | Returns an `IAsyncEnumerable<JsonElement>` that yields individual people records across multiple API pages. |
+| `query: "country:US AND jobTitle:*"`                          | The search query — all US people that have any job title (`*` matches any value).                           |
+| `pageSize: 10`                                                | Fetches 10 records per API request.                                                                         |
+| `if (recordsSeen >= 50) break;`                               | Stops after retrieving 50 total records, even if more are available.                                        |
+| `await foreach (var person in ...)`                           | Iterates through each yielded record one at a time without loading the full result set into memory.         |
+| `person.GetProperty("firstName")`, `.GetProperty("jobTitle")` | Reads individual fields from each record's `JsonElement`.                                                   |
+
+<Callout kind="info" collapsed="false">
+  `PaginateAsync` handles API pagination automatically behind the scenes and streams records as an async sequence. Break out of the `await foreach` to cap total retrieval, or let it run to iterate through all matching results.
+</Callout>
+
+#### Understanding the query syntax
+
+The `query` parameter uses Datafiniti's query language. Here's what you need to know:
+
+| Question                           | Answer                                                                                                                                                                                           |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| What is the format?                | See the [Constructing People Queries](https://docs.datafiniti.co/docs/constructing-people-queries) guide for the complete field reference, operators, and advanced examples.                     |
+| How do I handle multi-word values? | Wrap them in quotes: `firstName:"John"` (escape the quotes in a C# string literal).                                                                                                              |
+| What fields can I query?           | Any field in the [People Data Schema](https://docs.datafiniti.co/docs/people-data-schema) — `firstName`, `lastName`, `emails`, `city`, `province`, `country`, `jobTitle`, `keys`, and many more. |
+
+### Views
+
+Control which fields are returned in API responses using a premade named view. Pass the view name through the `view` parameter of `SearchAsync` (and `PaginateAsync`) to reduce payload size, speed up requests, and tailor results. For a full list of available people data views, see [People Data Views](https://docs.datafiniti.co/docs/available-views-for-people-data).
+
+```csharp
+using Datafiniti.People;
+
+// Uses a named view to shape the returned fields for a lightweight
+// contact list of people who represent properties in a target market.
+
+var client = PeopleClient.FromEnvironment();
+
+SearchResult results = await client.SearchAsync(
+    query: "country:US AND province:TX AND city:kingwood AND propertiesRepresented:*",
+    numRecords: 5,
+    view: "default");
+
+Console.WriteLine("\n=== PEOPLE VIEWS ===");
+Console.WriteLine($"Total matches: {results.NumFound:N0}\n");
+
+foreach (var person in results.Records)
+{
+    string first = person.TryGetProperty("firstName", out var f) ? f.GetString() : "N/A";
+    string last  = person.TryGetProperty("lastName", out var l) ? l.GetString() : "N/A";
+    string city  = person.TryGetProperty("city", out var c) ? c.GetString() : "N/A";
+    string country = person.TryGetProperty("country", out var co) ? co.GetString() : "N/A";
+
+    Console.WriteLine($"Name:    {first} {last}");
+    Console.WriteLine($"City:    {city}");
+    Console.WriteLine($"Country: {country}\n");
+}
+```
+
+#### Code breakdown
+
+| Section                                                     | What it does                                                                                    |
+| ----------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `using Datafiniti.People;`                                  | Imports the `PeopleClient` type from the `Datafiniti.People` namespace.                         |
+| `view: "default"`                                           | The named view to apply. Replace with any named view listed in the People Data Views reference. |
+| `client.SearchAsync(query, numRecords: 5, view: "default")` | Executes the search with the named view applied to the response.                                |
+| `query: "...propertiesRepresented:*"`                       | Limits results to people who represent at least one property (`*` matches any value).           |
+| `person.TryGetProperty("firstName", out var f)`             | Safely reads a field from the record's `JsonElement`, returning `false` if it is absent.        |
+
+<Callout kind="info" collapsed="false">
+  In the C# SDK the `view` parameter is a named-view string (for example `"default"`). Named views are convenient presets that control which fields appear in the response. See the People Data Views reference for the full list of available views.
+</Callout>
+
+## Code Examples
+
+Here are some C# examples built upon what we have just discussed. All snippets are ready to run as long as you have your `DATAFINITI_API_KEY` exported.
+
+<CodeGroup default-tab="0" show-lines="true" tabs={["Search_by_Name","Count","broker_in_an_area","Pagination"]}>
+  ```csharp Search_by_Name
+  using Datafiniti.People;
+  using Datafiniti.Core;
+
+  // ---------------------------------------------------------------------------
+  // Contact info lookups — swap searchMode to try different query strategies.
+  //
+  // "by_name"        Full name, optionally narrowed by location.
+  //                  Use when you have a person's name and want their details.
+  //
+  // "by_email"       Exact email address match.
+  //                  Useful for enriching a known email with profile data.
+  //
+  // "by_people_key"  peopleKey cross-referenced from Datafiniti property data.
+  //                  Use when you have a peopleKey from a property record and
+  //                  want the matching person's contact information.
+  //
+  // Reference: https://docs.datafiniti.co/docs/gather-people-contact-information
+  // ---------------------------------------------------------------------------
+
+  string searchMode = "by_name";
+
+  var client = PeopleClient.FromEnvironment();
+
+  string query = searchMode switch
+  {
+      "by_name" => client.Query()
+          .FirstName("Joe").LastName("Curry")
+          .Country("US").Province("CO").City("Denver")
+          .Build(),
+      "by_email" => "emails:\"ctrivedi@remax.net\"",
+      "by_people_key" => "keys:\"nathan/sandel/us/tx/78704/412southcongressave\"",
+      _ => throw new ArgumentException($"Unknown searchMode: {searchMode}")
+  };
+
+  try
+  {
+      SearchResult response = await client.SearchAsync(query, numRecords: 10);
+
+      Console.WriteLine($"\n=== PEOPLE CONTACT INFO: {searchMode} ===");
+      Console.WriteLine($"Total matches: {response.NumFound:N0}\n");
+
+      foreach (var person in response.Records)
+      {
+          string Get(string field) =>
+              person.TryGetProperty(field, out var v) ? v.ToString() : "N/A";
+
+          Console.WriteLine($"Name:     {Get("firstName")} {Get("lastName")}");
+          Console.WriteLine($"Location: {Get("city")}, {Get("province")}, {Get("country")}");
+          Console.WriteLine($"Gender:   {Get("gender")}");
+          Console.WriteLine($"Emails:   {Get("emails")}");
+          Console.WriteLine($"Phones:   {Get("phoneNumbers")}");
+          Console.WriteLine($"Keys:     {Get("keys")}\n");
+      }
+  }
+  catch (DatafinitiApiException e)
+  {
+      Console.WriteLine($"\nAPI Error {e.StatusCode}: {e.Message}");
+      Console.WriteLine(e.ResponseBody);
+  }
+  ```
+
+  ```csharp Count
+  using Datafiniti.People;
+  using Datafiniti.Core;
+
+  var client = PeopleClient.FromEnvironment();
+
+  try
+  {
+      long count = await client.CountAsync("country:US");
+      Console.WriteLine("\n=== PEOPLE COUNT TEST ===");
+      Console.WriteLine($"People found: {count:N0}");
+  }
+  catch (DatafinitiApiException e)
+  {
+      Console.WriteLine($"\nAPI Error {e.StatusCode}: {e.Message}");
+      Console.WriteLine(e.ResponseBody);
+  }
+  ```
+
+  ```csharp broker_in_an_area
+  using System.Text.Json;
+  using Datafiniti.People;
+  using Datafiniti.Core;
+
+  var client = PeopleClient.FromEnvironment();
+
+  try
+  {
+      SearchResult response = await client.SearchAsync(
+          query: "country:US AND province:TX AND city:kingwood AND propertiesRepresented:*",
+          numRecords: 5,
+          view: "default");
+
+      Console.WriteLine("\n=== BROKERS IN YOUR AREA ===");
+      Console.WriteLine($"Found: {response.NumFound}");
+
+      var records = response.Records;
+
+      if (records.Count > 0)
+      {
+          Console.WriteLine($"\n{records.Count} Record(s) Found:");
+          var opts = new JsonSerializerOptions { WriteIndented = true };
+          for (int i = 0; i < records.Count; i++)
+          {
+              Console.WriteLine($"\n--- Record {i + 1} ---");
+              Console.WriteLine(JsonSerializer.Serialize(records[i], opts));
+          }
+      }
+      else
+      {
+          Console.WriteLine("No records returned.");
+      }
+  }
+  catch (DatafinitiApiException e)
+  {
+      Console.WriteLine($"\nAPI Error {e.StatusCode}: {e.Message}");
+      Console.WriteLine(e.ResponseBody);
+  }
+  ```
+
+  ```csharp Pagination
+  using Datafiniti.People;
+  using Datafiniti.Core;
+
+  var client = PeopleClient.FromEnvironment();
+
+  Console.WriteLine("\n=== PEOPLE PAGINATION TEST ===");
+
+  int recordsSeen = 0;
+
+  try
+  {
+      // The query can be any people data query.
+      // pageSize maps to the API `limit` param — records per page (max 500).
+      // PaginateAsync advances pages automatically until you stop iterating
+      // or the API returns an empty page (no more results).
+      await foreach (var person in client.PaginateAsync(
+          query: "country:US AND jobTitle:* AND -jobTitle:(realtor OR \"real estate\")",
+          pageSize: 10))
+      {
+          recordsSeen++;
+
+          string Get(string field) =>
+              person.TryGetProperty(field, out var v) ? v.ToString() : "";
+
+          string city = Get("city");
+          string province = Get("province");
+          string location = string.IsNullOrEmpty(province) ? city : $"{city}, {province}";
+          string line = $"{recordsSeen}. {Get("firstName")} {Get("lastName")} — {location}";
+          string jobTitle = Get("jobTitle");
+          if (!string.IsNullOrEmpty(jobTitle)) line += $", {jobTitle}";
+          Console.WriteLine(line);
+
+          if (recordsSeen >= 50) break; // stop after 50 total records (5 pages of 10)
+      }
+
+      Console.WriteLine($"\nTotal Retrieved: {recordsSeen}");
+  }
+  catch (DatafinitiApiException e)
+  {
+      Console.WriteLine($"\nAPI Error {e.StatusCode}: {e.Message}");
+      Console.WriteLine(e.ResponseBody);
+  }
+  ```
+</CodeGroup>
+

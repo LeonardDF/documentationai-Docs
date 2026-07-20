@@ -476,6 +476,10 @@
                         "group": "People Data SDK",
                         "pages": [
                           {
+                            "title": "C# - People Data SDK",
+                            "path": "c-people-data-sdk"
+                          },
+                          {
                             "title": "NodeJS - People Data SDK",
                             "path": "nodejs-people-data-sdk"
                           },
