@@ -34,7 +34,7 @@ The SDK is available on PyPI at [https://pypi.org/project/datafiniti-sdk/](https
   <Step title="Configure your API key" icon="lock" title-type="p">
     Authenticate by setting the `DATAFINITI_API_KEY` environment variable or by passing your API key directly when you create the client.
 
-    <CodeGroup show-lines="true" tabs={[]}>
+    <CodeGroup show-lines="true">
       ```bash
       export DATAFINITI_API_KEY="YOUR_API_KEY"
       ```
@@ -82,12 +82,10 @@ else:
     print("No property found.")
 ```
 
-####
-
 <Callout kind="info" collapsed="false" color="#3b82f6">
   Address Field Fuzzy Matching
 
-  Know that you can attempt to match the full address within the address, and Datafiniti's property search API will attempt to fuzzy match it. For more on how that process works, you can read more <a href="https://docs.datafiniti.co/docs/normalized-address-data" target="_blank" rel="noopener noreferrer">here</a>.
+  Know that you can attempt to match the full address within the address, and Datafiniti's property search API will attempt to fuzzy match it. For more on how that process works, you can read more [here](https://docs.datafiniti.co/docs/normalized-address-data).
 </Callout>
 
 #### Code breakdown
@@ -139,11 +137,11 @@ print(f"Properties found: {count:,}")
 
 The query string `'country:US AND mostRecentStatus:"For Sale"'` uses Datafiniti's query language. Here's what you need to know:
 
-| Question                                                        | Answer                                                                                                                                                                                                                                |
-| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| What is the format?                                             | See the <a href="https://docs.datafiniti.co/docs/constructing-property-queries" target="_blank" rel="noopener noreferrer">Constructing Property Queries</a> guide for the complete field reference, operators, and advanced examples. |
-| How do I handle multi-word string values?                       | Wrap them in exact quotes: `mostRecentStatus:"For Sale"`.                                                                                                                                                                             |
-| What fields can I query & what is the full list of field names? | Any field in the [Property Data Schema](https://docs.datafiniti.co/docs/property-data-schema) — `address`, `city`, `province`, `postalCode`, `propertyType`, `mostRecentStatus`, `numBedroom`, `lotSizeValue`, and many more.         |
+| Question                                                        | Answer                                                                                                                                                                                                                        |
+| --------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| What is the format?                                             | See the [Constructing Property Queries](https://docs.datafiniti.co/docs/constructing-property-queries) guide for the complete field reference, operators, and advanced examples.                                              |
+| How do I handle multi-word string values?                       | Wrap them in exact quotes: `mostRecentStatus:"For Sale"`.                                                                                                                                                                     |
+| What fields can I query & what is the full list of field names? | Any field in the [Property Data Schema](https://docs.datafiniti.co/docs/property-data-schema) — `address`, `city`, `province`, `postalCode`, `propertyType`, `mostRecentStatus`, `numBedroom`, `lotSizeValue`, and many more. |
 
 ### Geolocation
 
@@ -252,11 +250,11 @@ print(f"\nTotal Retrieved: {records_seen}")
 
 The `query` parameter uses Datafiniti's query language. Here's what you need to know:
 
-| Question                           | Answer                                                                                                                                                                                                                                |
-| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| What is the format?                | See the <a href="https://docs.datafiniti.co/docs/constructing-property-queries" target="_blank" rel="noopener noreferrer">Constructing Property Queries</a> guide for the complete field reference, operators, and advanced examples. |
-| How do I handle multi-word values? | Wrap them in quotes: `mostRecentStatus:"For Sale"`.                                                                                                                                                                                   |
-| What fields can I query?           | Any field in the [Property Data Schema](https://docs.datafiniti.co/docs/property-data-schema) — `address`, `city`, `province`, `postalCode`, `propertyType`, `mostRecentStatus`, `numBedroom`, `lotSizeValue`, and many more.         |
+| Question                           | Answer                                                                                                                                                                                                                        |
+| ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| What is the format?                | See the [Constructing Property Queries](https://docs.datafiniti.co/docs/constructing-property-queries) guide for the complete field reference, operators, and advanced examples.                                              |
+| How do I handle multi-word values? | Wrap them in quotes: `mostRecentStatus:"For Sale"`.                                                                                                                                                                           |
+| What fields can I query?           | Any field in the [Property Data Schema](https://docs.datafiniti.co/docs/property-data-schema) — `address`, `city`, `province`, `postalCode`, `propertyType`, `mostRecentStatus`, `numBedroom`, `lotSizeValue`, and many more. |
 
 ### Views
 
