@@ -12,15 +12,10 @@ POST [https://api.datafiniti.co/v4/properties/search](https://api.datafiniti.co/
 Users can run Autotrace searches without extra query modifications. It's recommended to test different search parameters before running Autotrace as it will only return property data for records with `people.title:owner`. The parameter should reflect the following structure:
 
 - `query` - This selects which records should be matched. It's the same format as our search endpoint.
-
 - `num_records` - The number of records matching the query you want to be updated. If this parameter is not specified, all matching records will be updated.
-
 - `download` - Set this to "true" OR "false" to download the records to a file.
-
 - `format` - Specify either "json" or "csv" for your file format.
-
 - `auto_trace` - Set this to "true" OR "false" for whether or not to autotrace the property records matched by your `query`.
-
 - `only_traceable` - Boolean "true" OR "false" for whether the records return must have people data in the dataset.
 
 <Callout kind="info" collapsed="false">
@@ -430,11 +425,8 @@ Example output - simplified view of people
   Please note that there a mandatory fields that must be called when using a custom view.
 
   - `people.keys`
-
   - `transactions.buyerFirstName`
-
   - `transactions.buyerLastName`
-
   - `transactions.saleDate`
 
   Common error messages include:
@@ -460,4 +452,3 @@ Example output - simplified view of people
     Target homeowners likely to need roofing services based on property attributes.
   </Card>
 </Columns>
-

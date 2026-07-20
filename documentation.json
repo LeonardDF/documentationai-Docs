@@ -328,6 +328,10 @@
                         "group": "Property Data SDK",
                         "pages": [
                           {
+                            "title": "C# - Property Data SDK",
+                            "path": "c-property-data-sdk"
+                          },
+                          {
                             "title": "Python - Property Data SDK",
                             "path": "Python-Property-Data-SDK"
                           },

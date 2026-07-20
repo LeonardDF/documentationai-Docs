@@ -1,0 +1,228 @@
+---
+title: C# Property Data SDK
+---
+# C# Property Data SDK
+
+The Datafiniti C# SDK provides a strongly-typed .NET client for searching, counting, and paginating property records through the Datafiniti Property API (`/v4/properties`).
+
+<Callout kind="note" collapsed="false">
+  This SDK is published on NuGet as [`Datafiniti.Sdk`](https://www.nuget.org/packages/Datafiniti.Sdk). It targets modern .NET and exposes an async, fluent query-building API.
+</Callout>
+
+## Installation
+
+<CodeGroup show-lines="true" tabs={[".NET CLI","Package Manager","PackageReference"]}>
+  ```bash ".NET CLI"
+  dotnet add package Datafiniti.Sdk
+  ```
+
+  ```powershell "Package Manager"
+  Install-Package Datafiniti.Sdk
+  ```
+
+  ```xml PackageReference
+  <PackageReference Include="Datafiniti.Sdk" Version="0.1.*" />
+  ```
+</CodeGroup>
+
+## Authentication
+
+The SDK authenticates with a Bearer token. Set your API key in the `DATAFINITI_API_KEY` environment variable and construct the client with `FromEnvironment()`, or pass the key directly.
+
+<CodeGroup show-lines="true" tabs={["From environment","Explicit key"]}>
+  ```csharp "From environment"
+  using Datafiniti.Sdk;
+
+  var propertyClient = DatafinitiPropertyClient.FromEnvironment();
+  ```
+
+  ```csharp "Explicit key"
+  using Datafiniti.Sdk;
+
+  var propertyClient = new DatafinitiPropertyClient("YOUR_API_KEY");
+  ```
+</CodeGroup>
+
+## Quick start
+
+## Building queries
+
+The fluent `PropertyQuery` builder composes field filters into the Datafiniti query syntax. Call `Build()` to produce the final query string.
+
+```csharp
+var query = client.Query()
+    .Country("US")
+    .City("Austin")
+    .Province("TX")
+    .MostRecentStatus("For Sale")
+    .Build();
+// country:US AND city:"Austin" AND province:"TX" AND mostRecentStatus:("For Sale")
+```
+
+### Geolocation search
+
+Search within a circular radius around a coordinate. The longitude comes first, followed by latitude, radius, and unit.
+
+```csharp
+var query = client.Query()
+    .GeoLocation(longitude: -97.7430600, latitude: 30.2671500, radius: 10, unit: "mi")
+    .Build();
+// geoLocation:[-97.743060,30.26715,10,mi]
+```
+
+<Callout kind="note" collapsed="false">
+  Supported units: `m`, `mi`, `ft`, `yd`, `mm`, `km`, `NM`, `cm`.
+</Callout>
+
+### Address search
+
+```csharp
+var query = client.Query()
+    .SearchByAddress("1600 Pennsylvania Ave NW, Washington, DC")
+    .Build();
+```
+
+### For-sale convenience filter
+
+```csharp
+var query = client.Query()
+    .ForSale()
+    .Province("TX")
+    .Build();
+```
+
+## Core methods
+
+All request methods are asynchronous and return `Task<T>`.
+
+| Method                           | Description                                                      |
+| -------------------------------- | ---------------------------------------------------------------- |
+| `SearchAsync(query, numRecords)` | Runs a search and returns matching records.                      |
+| `CountAsync(query)`              | Returns the total match count (search with `numRecords = 0`).    |
+| `PaginateAsync(query)`           | Returns an `IAsyncEnumerable` that streams records across pages. |
+
+### Search
+
+```csharp
+var results = await client.SearchAsync(query, numRecords: 25);
+Console.WriteLine($"Returned {results.Records.Count} records");
+```
+
+### Count
+
+```csharp
+long total = await client.CountAsync(query);
+Console.WriteLine($"Total matches: {total}");
+```
+
+### Paginate
+
+```csharp
+await foreach (var record in client.PaginateAsync(query))
+{
+    Console.WriteLine(record["address"]);
+}
+```
+
+## Error handling
+
+Failed API requests throw `DatafinitiApiException`. The client automatically retries transient failures with exponential backoff.
+
+```csharp
+try
+{
+    var results = await client.SearchAsync(query);
+}
+catch (DatafinitiApiException ex)
+{
+    Console.WriteLine($"API error {ex.StatusCode}: {ex.Message}");
+}
+```
+
+<Callout kind="note" collapsed="false">
+  Retries are applied on HTTP `408`, `429`, `500`, `502`, `503`, and `504` with a `1s → 2s → 4s` backoff. Non-retryable errors surface immediately as a `DatafinitiApiException`.
+</Callout>
+
+## Example: Find property comps from transaction data
+
+Determining where the market sits can be done with relative ease. Datafiniti provides current and historical data for any given property, and the `transactions` field exposes the prices a property has sold for. This example walks through finding comparable sales ("comps") for an area.
+
+### Find a property with transaction data
+
+To find a property that has a transaction history, search its area and require a transaction price with a wildcard. This guarantees each returned record has a sale price.
+
+```csharp
+var query = client.Query()
+    .Country("US")
+    .Province("FL")
+    .HasTransactionPrice()   // transactions.price:*
+    .Build();
+// country:US AND province:FL AND transactions.price:*
+
+var results = await client.SearchAsync(query, numRecords: 1);
+```
+
+A matching record contains a `transactions` array like this:
+
+```json
+"transactions": [
+    {
+        "saleDate": "2022-12-20T00:00:00.000Z",
+        "documentType": "Warranty Deed",
+        "price": 17300,
+        "sellerLastName": "Dl Investors 1 Llc",
+        "loanType": "Conventional",
+        "parcelNumber": "09-44-25-15-0000D.0190"
+    }
+]
+```
+
+### Find property transactions within a date range
+
+To pull properties sold within a specific window, filter on `transactions.saleDate` with a range.
+
+```csharp
+var query = client.Query()
+    .Country("US")
+    .Province("FL")
+    .HasTransactionPrice()
+    .SaleDateBetween("2023-01-01", "2024-01-01")
+    .Build();
+// country:US AND province:FL AND transactions.price:* AND transactions.saleDate:[2023-01-01 TO 2024-01-01]
+
+var results = await client.SearchAsync(query, numRecords: 1);
+```
+
+### Compare comps in a specific area
+
+Narrow to a single postal code to compare comps within a focused area. This returns records with the sold price of each property.
+
+```csharp
+var query = client.Query()
+    .Country("US")
+    .Province("FL")
+    .HasTransactionPrice()
+    .PostalCode("33905")
+    .Build();
+// country:US AND province:FL AND transactions.price:* AND postalCode:33905
+
+var results = await client.SearchAsync(query, numRecords: 10);
+
+foreach (var record in results.Records)
+{
+    var transactions = record["transactions"];
+    Console.WriteLine($"{record["address"]}: {transactions}");
+}
+```
+
+<Callout kind="note" collapsed="false">
+  With multiple records from the same area, you can more accurately evaluate and price new for-sale houses against recently sold properties found in this data.
+</Callout>
+
+## Configuration reference
+
+| Setting  | Environment variable | Default                                   |
+| -------- | -------------------- | ----------------------------------------- |
+| API key  | `DATAFINITI_API_KEY` | — (required)                              |
+| Base URL | —                    | `https://api.datafiniti.co/v4/properties` |
+
