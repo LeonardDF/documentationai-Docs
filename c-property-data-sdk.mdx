@@ -82,6 +82,39 @@ var query = client.Query()
     .Build();
 ```
 
+### Fuzzy matching
+
+The `address` field uses fuzzy matching by default, so exact, full, and partial address variants can resolve to the same property. Searches such as `1100 Congress Ave`, `1100 Congress Avenue`, `1100 Congress Ave, Austin`, and `1100 Congress Ave, Austin, TX 78701` all match the same address when the parser can normalize them successfully.
+
+```csharp
+var query = client.Query()
+    .SearchByAddress("1100 Congress Ave, Austin, TX 78701")
+    .Build();
+// address:"1100 Congress Ave, Austin, TX 78701"
+```
+
+<Callout kind="info" collapsed="false">
+  Address matching works best when the source data is normalized. For the underlying normalized fields and matching behavior, see [Normalized address data](/docs/normalized-address-data).
+</Callout>
+
+#### Supported address formats
+
+| Format                                                           | Example                                                            |
+| ---------------------------------------------------------------- | ------------------------------------------------------------------ |
+| Comma after street with city, state, and ZIP separated by spaces | `1100 Congress Ave, Austin TX 78701`                               |
+| All fields comma-delimited                                       | `1100 Congress Ave, Austin, TX, 78701`                             |
+| No commas at all                                                 | `1100 Congress Ave Austin TX 78701`                                |
+| No ZIP                                                           | `1100 Congress Ave, Austin, TX`                                    |
+| Full state name, single word                                     | `1100 Congress Ave, Austin, Texas 78701`                           |
+| Full state name, multi-word                                      | `1100 Pennsylvania Ave NW, Washington, District of Columbia 20500` |
+| ZIP+4                                                            | `1100 Congress Ave, Austin, TX 78701-1234`                         |
+
+#### Ambiguous state/suffix codes
+
+Some two-letter codes are valid both as street suffixes and state abbreviations. For example, `CT` can mean Court or Connecticut, and `LA` can mean Lane or Louisiana.
+
+When the parser encounters one of these ambiguous codes, it needs a disambiguator to split the address correctly. Include either a ZIP code after the state token or a comma before the state token. Without one of those signals, the parser treats the code as a street suffix instead of a state.
+
 ### For-sale convenience filter
 
 ```csharp
