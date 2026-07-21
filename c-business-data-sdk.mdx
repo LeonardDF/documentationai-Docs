@@ -1,0 +1,526 @@
+---
+title: C# - Business Data SDK
+---
+Install, authenticate, and make your first business searches with the Datafiniti Business Data SDK for C#.
+
+## Get started with the C# SDK
+
+You can use the [Datafiniti Business Data SDK](https://www.nuget.org/packages/Datafiniti.Sdk) for C# to authenticate with the Business Data API and run common business searches, including name lookup, category and location filtering, geolocation radius search, counting, and pagination.
+
+The SDK is available on NuGet at [https://www.nuget.org/packages/Datafiniti.Sdk](https://www.nuget.org/packages/Datafiniti.Sdk).
+
+<Callout kind="info" collapsed="false">
+  Target .NET 8.0 or later. The Business SDK lives in the `Datafiniti.Business` namespace and shares the core client, options, and error types in `Datafiniti.Core`.
+</Callout>
+
+### Installation
+
+<Steps>
+  <Step title="Install the SDK" icon="package" title-type="p">
+    Add the Datafiniti SDK to your project with the .NET CLI.
+
+    ```bash
+    dotnet add package Datafiniti.Sdk
+    ```
+
+    After the command finishes, the package is restored into your project. The Business SDK is included in the unified `Datafiniti.Sdk` package alongside the People, Property, and Product SDKs.
+  </Step>
+</Steps>
+
+### Authentication
+
+<Steps>
+  <Step title="Configure your API key" icon="lock" title-type="p">
+    Authenticate by setting the `DATAFINITI_API_KEY` environment variable or by passing your API key directly through `DatafinitiClientOptions` when you create the client.
+
+    <CodeGroup show-lines="true">
+      ```bash
+      export DATAFINITI_API_KEY="YOUR_API_KEY"
+      ```
+
+      ```csharp
+      using Datafiniti.Business;
+      using Datafiniti.Core;
+
+      var client = new BusinessClient(new DatafinitiClientOptions
+      {
+          ApiKey = "df_example_9xmk7q2r"
+      });
+      ```
+    </CodeGroup>
+
+    If you use the environment variable approach, initialize the client with `BusinessClient.FromEnvironment()`. The SDK reads `DATAFINITI_API_KEY` and throws if it is not set.
+  </Step>
+</Steps>
+
+## Features
+
+### Search by name
+
+Look up business records by name using `SearchByNameAsync`. Use this to quickly retrieve business details without writing raw API queries.
+
+```csharp
+using Datafiniti.Business;
+
+var client = BusinessClient.FromEnvironment();
+
+// Search by name — pass the business name as a single string
+SearchResult results = await client.SearchByNameAsync("Sour Lake Ford", numRecords: 10);
+
+Console.WriteLine("\n=== NAME SEARCH TEST ===");
+Console.WriteLine($"Matches: {results.NumFound}");
+
+var records = results.Records;
+
+if (records.Count > 0)
+{
+    var business = records[0];
+    Console.WriteLine("\nBusiness:");
+    Console.WriteLine(business.GetProperty("name").GetString());
+    Console.WriteLine(business.GetProperty("city").GetString());
+    Console.WriteLine(business.GetProperty("province").GetString());
+}
+else
+{
+    Console.WriteLine("No business found.");
+}
+```
+
+#### Code breakdown
+
+| Section                                                      | What it does                                                                                       |
+| ------------------------------------------------------------ | -------------------------------------------------------------------------------------------------- |
+| `using Datafiniti.Business;`                                 | Imports the `BusinessClient` and `BusinessQuery` types from the `Datafiniti.Business` namespace.   |
+| `BusinessClient.FromEnvironment()`                           | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.                     |
+| `client.SearchByNameAsync("Sour Lake Ford", numRecords: 10)` | Queries the Business Data API for records matching the given name. Returns a `Task<SearchResult>`. |
+| `results.NumFound`                                           | Returns the total number of businesses that matched the query.                                     |
+| `results.Records`                                            | An `IReadOnlyList<JsonElement>` of matching business records.                                      |
+| `records[0]`                                                 | Accesses the first (best-match) business record from the results.                                  |
+| `business.GetProperty("name").GetString()`                   | Reads an individual field from the record's `JsonElement`.                                         |
+
+<Callout kind="info" collapsed="false">
+  `SearchByNameAsync` abstracts away the raw query syntax and accepts the name as a single string, with an optional `numRecords` to limit results. Records are returned as `System.Text.Json.JsonElement`, so read fields with `GetProperty(...)`.
+</Callout>
+
+### Count
+
+Get the total number of businesses matching a query without downloading any records. Use this to check result sizes before running larger searches or to build dashboards with aggregate counts.
+
+```csharp
+using Datafiniti.Business;
+
+var client = BusinessClient.FromEnvironment();
+
+long count = await client.CountAsync("categories:Restaurant AND country:US");
+
+Console.WriteLine("\n=== COUNT TEST ===");
+Console.WriteLine($"Businesses found: {count:N0}");
+```
+
+#### Code breakdown
+
+| Section                                                     | What it does                                                                                      |
+| ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `using Datafiniti.Business;`                                | Imports the `BusinessClient` type from the `Datafiniti.Business` namespace.                       |
+| `BusinessClient.FromEnvironment()`                          | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.                    |
+| `client.CountAsync("categories:Restaurant AND country:US")` | Returns the total number of US restaurants without fetching full records. Returns a `Task<long>`. |
+| `$"Businesses found: {count:N0}"`                           | Formats the count with thousands separators for readability (e.g., `1,234,567`).                  |
+
+<Callout kind="info" collapsed="false">
+  `CountAsync` accepts the same query syntax as `SearchAsync` but only returns the total number of matching records — no data is downloaded.
+</Callout>
+
+#### Understanding the query syntax
+
+The query string `categories:Restaurant AND country:US` uses Datafiniti's query language. Here's what you need to know:
+
+| Question                                                        | Answer                                                                                                                                                                                                        |
+| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| What is the format?                                             | See the [Constructing Business Queries](https://docs.datafiniti.co/docs/constructing-business-queries) guide for the complete field reference, operators, and advanced examples.                              |
+| How do I handle multi-word string values?                       | Wrap them in exact quotes: `city:"Sour Lake"`. In C# string literals, escape the quotes (`"city:\"Sour Lake\""`) or use a verbatim/raw string literal.                                                        |
+| What fields can I query & what is the full list of field names? | Any field in the [Business Data Schema](https://docs.datafiniti.co/docs/business-data-schema) — `name`, `categories`, `city`, `province`, `country`, `postalCode`, `revenueMin`, `revenueMax`, and many more. |
+
+### Build a query
+
+Compose a query using the fluent `BusinessQuery` builder. Chain field methods — such as name, categories, or location — and call `.Build()` to produce a Datafiniti query string.
+
+```csharp
+using Datafiniti.Business;
+
+var client = BusinessClient.FromEnvironment();
+
+// Build a query — chain field methods, then Build()
+string query = client.Query()
+    .Country("US")
+    .City("Austin")
+    .Categories(new[] { "Restaurant" })
+    .Build();
+// country:US AND city:"Austin" AND categories:("Restaurant")
+
+SearchResult results = await client.SearchAsync(query, numRecords: 10);
+
+Console.WriteLine("\n=== QUERY BUILDER TEST ===");
+Console.WriteLine($"Total matches: {results.NumFound:N0}");
+
+foreach (var business in results.Records)
+{
+    Console.WriteLine(
+        $"{business.GetProperty("name").GetString()} — " +
+        $"{business.GetProperty("city").GetString()}");
+}
+```
+
+#### Code breakdown
+
+| Section                                     | What it does                                                                                     |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `using Datafiniti.Business;`                | Imports the `BusinessClient` and `BusinessQuery` types from the `Datafiniti.Business` namespace. |
+| `BusinessClient.FromEnvironment()`          | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.                   |
+| `client.Query()`                            | Returns a fluent `BusinessQuery` builder for composing a query without raw syntax.               |
+| `.Country("US").City("Austin")`             | Chains location field methods to constrain the query.                                            |
+| `.Categories(new[] { "Restaurant" })`       | Filters by one or more business categories.                                                      |
+| `.Build()`                                  | Produces the final Datafiniti query string from the chained fields.                              |
+| `client.SearchAsync(query, numRecords: 10)` | Executes the search and returns up to `numRecords` matching records.                             |
+
+<Callout kind="info" collapsed="false">
+  `BusinessQuery` is a fluent builder exposing fields relevant to the Business data type: `Name`, `Categories`, `Country`, `Province`, `City`, `PostalCode`, and `GeoLocation`. Each method returns the builder so calls chain, and `.Build()` produces a Datafiniti query string you can pass to `SearchAsync`, `CountAsync`, or `PaginateAsync`. For fields the builder does not expose, use `.Raw(...)` or pass a raw query string directly.
+</Callout>
+
+### Geolocation search
+
+Search for businesses within a circular radius around a coordinate. You can either build a geolocation query with `BusinessQuery.GeoLocation(...)`, or call the client's `GeoLocationAsync(...)` convenience method directly. Longitude comes first, followed by latitude, radius, and unit.
+
+```csharp
+using Datafiniti.Business;
+
+var client = BusinessClient.FromEnvironment();
+
+// Option 1: convenience method on the client — runs the search directly
+SearchResult results = await client.GeoLocationAsync(
+    longitude: -97.7430600f,
+    latitude: 30.2671500f,
+    radius: 10f,
+    unit: "mi",
+    numRecords: 10);
+
+// Option 2: build the geolocation filter into a larger query
+string query = client.Query()
+    .GeoLocation(-97.7430600f, 30.2671500f, 10f, "mi")
+    .Categories(new[] { "Restaurant" })
+    .Build();
+// geoLocation:[-97.743060,30.26715,10,mi] AND categories:("Restaurant")
+
+Console.WriteLine($"Total matches: {results.NumFound:N0}");
+```
+
+#### Code breakdown
+
+| Section                                                                  | What it does                                                                                              |
+| ------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------- |
+| `client.GeoLocationAsync(longitude, latitude, radius, unit, numRecords)` | Runs a radius search around a coordinate and returns matching businesses. Returns a `Task<SearchResult>`. |
+| `client.Query().GeoLocation(longitude, latitude, radius, unit)`          | Adds a geolocation filter to a builder so it can be combined with other fields.                           |
+| `.Categories(new[] { "Restaurant" })`                                    | Combines the radius with a category filter.                                                               |
+| `10f`, `-97.7430600f`                                                    | The coordinate arguments are `float` (`single`), so use the `f` suffix on literals.                       |
+
+<Callout kind="info" collapsed="false">
+  Supported units: `m`, `mi`, `ft`, `yd`, `mm`, `km`, `NM`, `cm`. Use `GeoLocationAsync` for a quick radius search, or `GeoLocation` on the builder when you want to combine the radius with other filters like categories or revenue.
+</Callout>
+
+### Paginate
+
+Iterate through large result sets page by page without loading everything into memory at once. `PaginateAsync` returns an `IAsyncEnumerable<JsonElement>`, so you consume it with `await foreach`.
+
+```csharp
+using Datafiniti.Business;
+
+var client = BusinessClient.FromEnvironment();
+
+Console.WriteLine("\n=== PAGINATION TEST ===");
+
+int recordsSeen = 0;
+
+// Paginate through large result sets
+await foreach (var business in client.PaginateAsync(
+    query: "country:US AND province:TX AND categories:Restaurant",
+    pageSize: 10))
+{
+    recordsSeen++;
+    Console.WriteLine(
+        $"{business.GetProperty("name").GetString()} — " +
+        $"{business.GetProperty("city").GetString()}");
+
+    if (recordsSeen >= 50) break; // stop after 50 total records
+}
+
+Console.WriteLine($"\nTotal Retrieved: {recordsSeen}");
+```
+
+#### Code breakdown
+
+| Section                                                         | What it does                                                                                                  |
+| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `using Datafiniti.Business;`                                    | Imports the `BusinessClient` type from the `Datafiniti.Business` namespace.                                   |
+| `BusinessClient.FromEnvironment()`                              | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.                                |
+| `client.PaginateAsync(query, pageSize)`                         | Returns an `IAsyncEnumerable<JsonElement>` that yields individual business records across multiple API pages. |
+| `query: "country:US AND province:TX AND categories:Restaurant"` | The search query — all Texas restaurants in the US.                                                           |
+| `pageSize: 10`                                                  | Fetches 10 records per API request.                                                                           |
+| `if (recordsSeen >= 50) break;`                                 | Stops after retrieving 50 total records, even if more are available.                                          |
+| `await foreach (var business in ...)`                           | Iterates through each yielded record one at a time without loading the full result set into memory.           |
+
+<Callout kind="info" collapsed="false">
+  `PaginateAsync` handles API pagination automatically behind the scenes and streams records as an async sequence. Break out of the `await foreach` to cap total retrieval, or let it run to iterate through all matching results.
+</Callout>
+
+### Views
+
+Control which fields are returned in API responses using a premade named view. Pass the view name through the `view` parameter of `SearchAsync` (and `PaginateAsync`) to reduce payload size, speed up requests, and tailor results. For a full list of available business data views, see [Business Data Views](https://docs.datafiniti.co/docs/available-views-for-business-data).
+
+```csharp
+using Datafiniti.Business;
+
+var client = BusinessClient.FromEnvironment();
+
+SearchResult results = await client.SearchAsync(
+    query: "categories:Restaurant AND province:TX",
+    numRecords: 5,
+    view: "default");
+
+Console.WriteLine("\n=== BUSINESS VIEWS ===");
+Console.WriteLine($"Total matches: {results.NumFound:N0}\n");
+
+foreach (var business in results.Records)
+{
+    string name = business.TryGetProperty("name", out var n) ? n.GetString() : "N/A";
+    string city = business.TryGetProperty("city", out var c) ? c.GetString() : "N/A";
+    Console.WriteLine($"{name} — {city}");
+}
+```
+
+#### Code breakdown
+
+| Section                                                     | What it does                                                                                      |
+| ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `using Datafiniti.Business;`                                | Imports the `BusinessClient` type from the `Datafiniti.Business` namespace.                       |
+| `view: "default"`                                           | The named view to apply. Replace with any named view listed in the Business Data Views reference. |
+| `client.SearchAsync(query, numRecords: 5, view: "default")` | Executes the search with the named view applied to the response.                                  |
+| `business.TryGetProperty("name", out var n)`                | Safely reads a field from the record's `JsonElement`, returning `false` if it is absent.          |
+
+<Callout kind="info" collapsed="false">
+  In the C# SDK the `view` parameter is a named-view string (for example `"default"`). Named views are convenient presets that control which fields appear in the response. See the Business Data Views reference for the full list of available views.
+</Callout>
+
+## Example: Discover revenue of businesses
+
+Datafiniti makes it easy to filter businesses by their reported annual revenue using the `revenueMin` and `revenueMax` fields. These fields help you find businesses that meet specific financial criteria — whether you're targeting small local shops or large enterprise brands.
+
+### Filtering by revenue
+
+To search by revenue, include either or both of the `revenueMin` and `revenueMax` fields in your query. The values are numeric and measured in USD. Because the builder does not expose these fields, use `.Raw(...)` with a range expression (or pass a raw query string).
+
+For example, to find businesses with estimated annual revenue between $1M and $10M:
+
+```csharp
+using Datafiniti.Business;
+
+var client = BusinessClient.FromEnvironment();
+
+string query = client.Query()
+    .Raw("revenueMin:[1000000 TO 10000000]")
+    .Build();
+// revenueMin:[1000000 TO 10000000]
+
+SearchResult results = await client.SearchAsync(query, numRecords: 10);
+```
+
+To set only a minimum or only a maximum, use an open-ended range with `*`:
+
+```csharp
+// Minimum revenue only
+string minOnly = client.Query().Raw("revenueMin:[500000 TO *]").Build();
+
+// Maximum revenue only
+string maxOnly = client.Query().Raw("revenueMax:[* TO 2000000]").Build();
+```
+
+### Finding mid-market retail businesses
+
+Here's a more specific example: retail businesses in Texas making between $5M and $20M annually. Combine the category and location builder methods with a raw revenue range.
+
+```csharp
+using Datafiniti.Business;
+
+var client = BusinessClient.FromEnvironment();
+
+string query = client.Query()
+    .Categories(new[] { "Retail" })
+    .Province("TX")
+    .Raw("revenueMin:[5000000 TO 20000000]")
+    .Build();
+// categories:("Retail") AND province:"TX" AND revenueMin:[5000000 TO 20000000]
+
+SearchResult results = await client.SearchAsync(query, numRecords: 10);
+
+Console.WriteLine("\n=== MID-MARKET TX RETAIL ===");
+Console.WriteLine($"Total matches: {results.NumFound:N0}\n");
+
+foreach (var business in results.Records)
+{
+    string name = business.TryGetProperty("name", out var n) ? n.GetString() : "N/A";
+    string city = business.TryGetProperty("city", out var c) ? c.GetString() : "N/A";
+    long revenueMin = business.TryGetProperty("revenueMin", out var rmin) ? rmin.GetInt64() : 0;
+    long revenueMax = business.TryGetProperty("revenueMax", out var rmax) ? rmax.GetInt64() : 0;
+    string currency = business.TryGetProperty("revenueCurrency", out var cur) ? cur.GetString() : "USD";
+
+    Console.WriteLine($"{name} ({city})");
+    Console.WriteLine($"  Revenue: {revenueMin:N0}–{revenueMax:N0} {currency}\n");
+}
+```
+
+<Callout kind="info" collapsed="false">
+  **Things to keep in mind**
+
+  Revenue fields are not available for every business. If a business has no revenue estimate, it will not appear in queries that filter by `revenueMin` or `revenueMax`. Revenue filters are especially useful combined with fields like `categories`, `employeeCount`, and `yearIncorporated`.
+</Callout>
+
+## Code Examples
+
+Here are some C# examples built upon what we have just discussed. All snippets are ready to run as long as you have your `DATAFINITI_API_KEY` exported.
+
+<CodeGroup show-lines="true">
+  ```csharp
+  using Datafiniti.Business;
+  using Datafiniti.Core;
+
+  var client = BusinessClient.FromEnvironment();
+
+  try
+  {
+      long count = await client.CountAsync("categories:Restaurant AND country:US");
+      Console.WriteLine("\n=== BUSINESS COUNT TEST ===");
+      Console.WriteLine($"Businesses found: {count:N0}");
+  }
+  catch (DatafinitiApiException e)
+  {
+      Console.WriteLine($"\nAPI Error {e.StatusCode}: {e.Message}");
+      Console.WriteLine(e.ResponseBody);
+  }
+  ```
+
+  ```csharp
+  using Datafiniti.Business;
+  using Datafiniti.Core;
+
+  var client = BusinessClient.FromEnvironment();
+
+  try
+  {
+      // Radius search around Austin, TX (10 miles)
+      SearchResult response = await client.GeoLocationAsync(
+          longitude: -97.7430600f,
+          latitude: 30.2671500f,
+          radius: 10f,
+          unit: "mi",
+          numRecords: 10);
+
+      Console.WriteLine("\n=== BUSINESSES NEAR AUSTIN ===");
+      Console.WriteLine($"Total matches: {response.NumFound:N0}\n");
+
+      foreach (var business in response.Records)
+      {
+          string Get(string field) =>
+              business.TryGetProperty(field, out var v) ? v.ToString() : "N/A";
+
+          Console.WriteLine($"{Get("name")} — {Get("city")}, {Get("province")}");
+      }
+  }
+  catch (DatafinitiApiException e)
+  {
+      Console.WriteLine($"\nAPI Error {e.StatusCode}: {e.Message}");
+      Console.WriteLine(e.ResponseBody);
+  }
+  ```
+
+  ```csharp
+  using Datafiniti.Business;
+  using Datafiniti.Core;
+
+  var client = BusinessClient.FromEnvironment();
+
+  Console.WriteLine("\n=== BUSINESS PAGINATION TEST ===");
+
+  int recordsSeen = 0;
+
+  try
+  {
+      await foreach (var business in client.PaginateAsync(
+          query: "country:US AND province:TX AND categories:Restaurant",
+          pageSize: 10))
+      {
+          recordsSeen++;
+
+          string Get(string field) =>
+              business.TryGetProperty(field, out var v) ? v.ToString() : "";
+
+          Console.WriteLine($"{recordsSeen}. {Get("name")} — {Get("city")}, {Get("province")}");
+
+          if (recordsSeen >= 50) break; // stop after 50 total records (5 pages of 10)
+      }
+
+      Console.WriteLine($"\nTotal Retrieved: {recordsSeen}");
+  }
+  catch (DatafinitiApiException e)
+  {
+      Console.WriteLine($"\nAPI Error {e.StatusCode}: {e.Message}");
+      Console.WriteLine(e.ResponseBody);
+  }
+  ```
+
+  ```csharp
+  using Datafiniti.Business;
+  using Datafiniti.Core;
+
+  // ---------------------------------------------------------------------------
+  // Discover revenue of businesses.
+  //
+  // Filters businesses by reported annual revenue using the revenueMin and
+  // revenueMax fields (USD). This example finds mid-market retail businesses
+  // in Texas making between $5M and $20M annually.
+  //
+  // Reference: https://docs.datafiniti.co/docs/discover-business-revenue
+  // ---------------------------------------------------------------------------
+
+  var client = BusinessClient.FromEnvironment();
+
+  string query = client.Query()
+      .Categories(new[] { "Retail" })
+      .Province("TX")
+      .Raw("revenueMin:[5000000 TO 20000000]")
+      .Build();
+
+  try
+  {
+      SearchResult response = await client.SearchAsync(query, numRecords: 10);
+
+      Console.WriteLine("\n=== MID-MARKET TX RETAIL ===");
+      Console.WriteLine($"Total matches: {response.NumFound:N0}\n");
+
+      foreach (var business in response.Records)
+      {
+          string name = business.TryGetProperty("name", out var n) ? n.GetString() : "N/A";
+          string city = business.TryGetProperty("city", out var c) ? c.GetString() : "N/A";
+          long revenueMin = business.TryGetProperty("revenueMin", out var rmin) ? rmin.GetInt64() : 0;
+          long revenueMax = business.TryGetProperty("revenueMax", out var rmax) ? rmax.GetInt64() : 0;
+          string currency = business.TryGetProperty("revenueCurrency", out var cur) ? cur.GetString() : "USD";
+
+          Console.WriteLine($"{name} ({city})");
+          Console.WriteLine($"  Revenue: {revenueMin:N0}-{revenueMax:N0} {currency}\n");
+      }
+  }
+  catch (DatafinitiApiException e)
+  {
+      Console.WriteLine($"\nAPI Error {e.StatusCode}: {e.Message}");
+      Console.WriteLine(e.ResponseBody);
+  }
+  ```
+</CodeGroup>
+
