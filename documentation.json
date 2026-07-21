@@ -866,6 +866,10 @@
                         "group": "Business Data SDK",
                         "pages": [
                           {
+                            "title": "C# - Business Data SDK",
+                            "path": "c-business-data-sdk"
+                          },
+                          {
                             "title": "Python - Business Data SDK",
                             "path": "business-data-sdk"
                           },
