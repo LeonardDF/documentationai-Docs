@@ -1,0 +1,643 @@
+# C# - Product Data SDK
+
+Install, authenticate, and make your first product searches with the Datafiniti Product Data SDK for C#.
+
+## Get started with the C# SDK
+
+You can use the [Datafiniti Product Data SDK](https://www.nuget.org/packages/Datafiniti.Sdk) for C# to authenticate with the Product Data API and run common product searches, including name lookup, brand and category filtering, price-range queries, counting, and pagination.
+
+The SDK is available on NuGet at [https://www.nuget.org/packages/Datafiniti.Sdk](https://www.nuget.org/packages/Datafiniti.Sdk).
+
+<Callout kind="info" collapsed="false">
+  Target .NET 8.0 or later. The Product SDK lives in the `Datafiniti.Product` namespace and shares the core client, options, and error types in `Datafiniti.Core`.
+</Callout>
+
+### Installation
+
+<Steps>
+  <Step title="Install the SDK" icon="package" title-type="p">
+    Add the Datafiniti SDK to your project with the .NET CLI.
+
+    ```bash
+    dotnet add package Datafiniti.Sdk
+    ```
+
+    After the command finishes, the package is restored into your project. The Product SDK is included in the unified `Datafiniti.Sdk` package alongside the Business, People, and Property SDKs.
+  </Step>
+</Steps>
+
+### Authentication
+
+<Steps>
+  <Step title="Configure your API key" icon="lock" title-type="p">
+    Authenticate by setting the `DATAFINITI_API_KEY` environment variable or by passing your API key directly through `DatafinitiClientOptions` when you create the client.
+
+    <CodeGroup show-lines="true">
+      ```bash
+      export DATAFINITI_API_KEY="YOUR_API_KEY"
+      ```
+
+      ```csharp
+      using Datafiniti.Product;
+      using Datafiniti.Core;
+
+      var client = new ProductClient(new DatafinitiClientOptions
+      {
+          ApiKey = "df_example_9xmk7q2r"
+      });
+      ```
+    </CodeGroup>
+
+    If you use the environment variable approach, initialize the client with `ProductClient.FromEnvironment()`. The SDK reads `DATAFINITI_API_KEY` and throws if it is not set.
+  </Step>
+</Steps>
+
+## Features
+
+### Search by name
+
+Look up product records by name using `SearchByNameAsync`. Use this to quickly retrieve product details without writing raw API queries.
+
+```csharp
+using Datafiniti.Product;
+
+var client = ProductClient.FromEnvironment();
+
+// Search by name — pass the product name as a single string
+SearchResult results = await client.SearchByNameAsync("Nike Air Max", numRecords: 10);
+
+Console.WriteLine("\n=== NAME SEARCH TEST ===");
+Console.WriteLine($"Matches: {results.NumFound}");
+
+var records = results.Records;
+
+if (records.Count > 0)
+{
+    var product = records[0];
+    Console.WriteLine("\nProduct:");
+    Console.WriteLine(product.GetProperty("name").GetString());
+    Console.WriteLine(product.GetProperty("brand").GetString());
+}
+else
+{
+    Console.WriteLine("No product found.");
+}
+```
+
+#### Code breakdown
+
+| Section                                                    | What it does                                                                                      |
+| ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `using Datafiniti.Product;`                                | Imports the `ProductClient` and `ProductQuery` types from the `Datafiniti.Product` namespace.     |
+| `ProductClient.FromEnvironment()`                          | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.                    |
+| `client.SearchByNameAsync("Nike Air Max", numRecords: 10)` | Queries the Product Data API for records matching the given name. Returns a `Task<SearchResult>`. |
+| `results.NumFound`                                         | Returns the total number of products that matched the query.                                      |
+| `results.Records`                                          | An `IReadOnlyList<JsonElement>` of matching product records.                                      |
+| `records[0]`                                               | Accesses the first (best-match) product record from the results.                                  |
+| `product.GetProperty("name").GetString()`                  | Reads an individual field from the record's `JsonElement`.                                        |
+
+<Callout kind="info" collapsed="false">
+  `SearchByNameAsync` abstracts away the raw query syntax and accepts the name as a single string, with an optional `numRecords` to limit results. Records are returned as `System.Text.Json.JsonElement`, so read fields with `GetProperty(...)`.
+</Callout>
+
+### Count
+
+Get the total number of products matching a query without downloading any records. Use this to check result sizes before running larger searches or to build dashboards with aggregate counts.
+
+```csharp
+using Datafiniti.Product;
+
+var client = ProductClient.FromEnvironment();
+
+long count = await client.CountAsync("brand:\"Nike\" AND categories:\"Shoes\"");
+
+Console.WriteLine("\n=== COUNT TEST ===");
+Console.WriteLine($"Products found: {count:N0}");
+```
+
+#### Code breakdown
+
+| Section                                                        | What it does                                                                                          |
+| -------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `using Datafiniti.Product;`                                    | Imports the `ProductClient` type from the `Datafiniti.Product` namespace.                             |
+| `ProductClient.FromEnvironment()`                              | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.                        |
+| `client.CountAsync("brand:\"Nike\" AND categories:\"Shoes\"")` | Returns the total number of Nike shoe products without fetching full records. Returns a `Task<long>`. |
+| `$"Products found: {count:N0}"`                                | Formats the count with thousands separators for readability (e.g., `1,234,567`).                      |
+
+<Callout kind="info" collapsed="false">
+  `CountAsync` accepts the same query syntax as `SearchAsync` but only returns the total number of matching records — no data is downloaded.
+</Callout>
+
+#### Understanding the query syntax
+
+The query string `brand:"Nike" AND categories:"Shoes"` uses Datafiniti's query language. Here's what you need to know:
+
+| Question                                                        | Answer                                                                                                                                                                         |
+| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| What is the format?                                             | See the [Constructing Product Queries](https://docs.datafiniti.co/docs/constructing-product-queries) guide for the complete field reference, operators, and advanced examples. |
+| How do I handle multi-word string values?                       | Wrap them in exact quotes: `brand:"Nike"`. In C# string literals, escape the quotes (`"brand:\"Nike\""`) or use a verbatim/raw string literal.                                 |
+| What fields can I query & what is the full list of field names? | Any field in the [Product Data Schema](https://docs.datafiniti.co/docs/product-data-schema) — `name`, `brand`, `categories`, `upc`, `prices`, and many more.                   |
+
+### Build a query
+
+Compose a query using the fluent `ProductQuery` builder. Chain field methods — such as brand, categories, UPC, or price range — and call `.Build()` to produce a Datafiniti query string.
+
+```csharp
+using Datafiniti.Product;
+
+var client = ProductClient.FromEnvironment();
+
+// Build a query — chain field methods, then Build()
+string query = client.Query()
+    .Brand("Nike")
+    .Categories(new[] { "Shoes", "Running" })
+    .PriceRange(minPrice: 50m, maxPrice: 200m)
+    .Build();
+
+SearchResult results = await client.SearchAsync(query, numRecords: 10);
+
+Console.WriteLine("\n=== QUERY BUILDER TEST ===");
+Console.WriteLine($"Total matches: {results.NumFound:N0}");
+
+foreach (var product in results.Records)
+{
+    Console.WriteLine(
+        $"{product.GetProperty("brand").GetString()} — " +
+        $"{product.GetProperty("name").GetString()}");
+}
+```
+
+#### Code breakdown
+
+| Section                                      | What it does                                                                                  |
+| -------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `using Datafiniti.Product;`                  | Imports the `ProductClient` and `ProductQuery` types from the `Datafiniti.Product` namespace. |
+| `ProductClient.FromEnvironment()`            | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.                |
+| `client.Query()`                             | Returns a fluent `ProductQuery` builder for composing a query without raw syntax.             |
+| `.Brand("Nike")`                             | Filters to products of a given brand.                                                         |
+| `.Categories(new[] { "Shoes", "Running" })`  | Filters by one or more product categories.                                                    |
+| `.PriceRange(minPrice: 50m, maxPrice: 200m)` | Restricts results to a price range. Both bounds are `decimal?`, so either can be omitted.     |
+| `.Build()`                                   | Produces the final Datafiniti query string from the chained fields.                           |
+| `client.SearchAsync(query, numRecords: 10)`  | Executes the search and returns up to `numRecords` matching records.                          |
+
+<Callout kind="info" collapsed="false">
+  `ProductQuery` is a fluent builder exposing fields relevant to the Product data type: `Brand`, `Name`, `Categories`, `Upc`, and `PriceRange`. Each method returns the builder so calls chain, and `.Build()` produces a Datafiniti query string you can pass to `SearchAsync`, `CountAsync`, or `PaginateAsync`. For fields the builder does not expose, use `.Raw(...)` or pass a raw query string directly.
+</Callout>
+
+### Search by UPC
+
+Look up a product directly by its UPC using the builder or a raw query string.
+
+```csharp
+using Datafiniti.Product;
+
+var client = ProductClient.FromEnvironment();
+
+string query = client.Query().Upc("085239047880").Build();
+
+SearchResult results = await client.SearchAsync(query, numRecords: 1);
+
+Console.WriteLine("\n=== UPC SEARCH ===");
+foreach (var product in results.Records)
+{
+    Console.WriteLine($"{product.GetProperty("brand").GetString()} — {product.GetProperty("name").GetString()}");
+}
+```
+
+#### Code breakdown
+
+| Section                                      | What it does                                                              |
+| -------------------------------------------- | ------------------------------------------------------------------------- |
+| `using Datafiniti.Product;`                  | Imports the `ProductClient` type from the `Datafiniti.Product` namespace. |
+| `client.Query().Upc("085239047880").Build()` | Builds a query matching a single product by its UPC.                      |
+| `client.SearchAsync(query, numRecords: 1)`   | Executes the search and returns the matching record.                      |
+
+<Callout kind="info" collapsed="false">
+  A UPC uniquely identifies a product, so a UPC search typically returns a single record. Use `numRecords: 1` unless you expect variant listings.
+</Callout>
+
+### Paginate
+
+Iterate through large result sets page by page without loading everything into memory at once. `PaginateAsync` returns an `IAsyncEnumerable<JsonElement>`, so you consume it with `await foreach`.
+
+```csharp
+using Datafiniti.Product;
+
+var client = ProductClient.FromEnvironment();
+
+Console.WriteLine("\n=== PAGINATION TEST ===");
+
+int recordsSeen = 0;
+
+// Paginate through large result sets
+await foreach (var product in client.PaginateAsync(
+    query: "brand:\"Nike\" AND prices.amountMax:*",
+    pageSize: 10))
+{
+    recordsSeen++;
+    Console.WriteLine(
+        $"{product.GetProperty("brand").GetString()} — " +
+        $"{product.GetProperty("name").GetString()}");
+
+    if (recordsSeen >= 50) break; // stop after 50 total records
+}
+
+Console.WriteLine($"\nTotal Retrieved: {recordsSeen}");
+```
+
+#### Code breakdown
+
+| Section                                          | What it does                                                                                                 |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
+| `using Datafiniti.Product;`                      | Imports the `ProductClient` type from the `Datafiniti.Product` namespace.                                    |
+| `ProductClient.FromEnvironment()`                | Creates a client instance using the `DATAFINITI_API_KEY` environment variable.                               |
+| `client.PaginateAsync(query, pageSize)`          | Returns an `IAsyncEnumerable<JsonElement>` that yields individual product records across multiple API pages. |
+| `query: "brand:\"Nike\" AND prices.amountMax:*"` | The search query — all Nike products that have a maximum price (`*` matches any value).                      |
+| `pageSize: 10`                                   | Fetches 10 records per API request.                                                                          |
+| `if (recordsSeen >= 50) break;`                  | Stops after retrieving 50 total records, even if more are available.                                         |
+| `await foreach (var product in ...)`             | Iterates through each yielded record one at a time without loading the full result set into memory.          |
+
+<Callout kind="info" collapsed="false">
+  `PaginateAsync` handles API pagination automatically behind the scenes and streams records as an async sequence. Break out of the `await foreach` to cap total retrieval, or let it run to iterate through all matching results.
+</Callout>
+
+### Views
+
+Control which fields are returned in API responses using a premade named view. Pass the view name through the `view` parameter of `SearchAsync` (and `PaginateAsync`) to reduce payload size, speed up requests, and tailor results. For a full list of available product data views, see [Product Data Views](https://docs.datafiniti.co/docs/available-views-for-product-data).
+
+```csharp
+using Datafiniti.Product;
+
+var client = ProductClient.FromEnvironment();
+
+SearchResult results = await client.SearchAsync(
+    query: "brand:\"Nike\" AND categories:\"Shoes\"",
+    numRecords: 5,
+    view: "default");
+
+Console.WriteLine("\n=== PRODUCT VIEWS ===");
+Console.WriteLine($"Total matches: {results.NumFound:N0}\n");
+
+foreach (var product in results.Records)
+{
+    string name  = product.TryGetProperty("name", out var n) ? n.GetString() : "N/A";
+    string brand = product.TryGetProperty("brand", out var b) ? b.GetString() : "N/A";
+    Console.WriteLine($"{brand} — {name}");
+}
+```
+
+#### Code breakdown
+
+| Section                                                     | What it does                                                                                     |
+| ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `using Datafiniti.Product;`                                 | Imports the `ProductClient` type from the `Datafiniti.Product` namespace.                        |
+| `view: "default"`                                           | The named view to apply. Replace with any named view listed in the Product Data Views reference. |
+| `client.SearchAsync(query, numRecords: 5, view: "default")` | Executes the search with the named view applied to the response.                                 |
+| `product.TryGetProperty("name", out var n)`                 | Safely reads a field from the record's `JsonElement`, returning `false` if it is absent.         |
+
+<Callout kind="info" collapsed="false">
+  In the C# SDK the `view` parameter is a named-view string (for example `"default"`). Named views are convenient presets that control which fields appear in the response. See the Product Data Views reference for the full list of available views.
+</Callout>
+
+## Example: Pricing analytics for pet food
+
+Datafiniti provides a rich collection of pricing data across product categories. This example shows how to pull data for pricing intelligence in one specific category — pet food — using the C# SDK.
+
+### Accessing pricing data
+
+Pricing data lives in each record's `prices` field, a complete log of all known prices for a product along with the timestamp and source of each price. To find all pricing data in the pet food category, filter on the taxonomy, category, and the presence of prices.
+
+```csharp
+using Datafiniti.Product;
+
+var client = ProductClient.FromEnvironment();
+
+string query = client.Query()
+    .Raw("taxonomy:\"pet supplies\"")
+    .Categories(new[] { "food" })
+    .Raw("prices:*")
+    .Build();
+// taxonomy:"pet supplies" AND categories:("food") AND prices:*
+
+SearchResult results = await client.SearchAsync(query, numRecords: 10);
+
+Console.WriteLine("\n=== PET FOOD PRICING ===");
+Console.WriteLine($"Total matches: {results.NumFound:N0}\n");
+```
+
+Each returned record has a `prices` array. A single entry looks like this:
+
+```json
+{
+  "amountMax": 11.99,
+  "amountMin": 11.99,
+  "currency": "USD",
+  "dateSeen": ["2021-08-31T03:44:58.977Z", "2021-07-24T02:14:58.474Z"],
+  "merchant": "Chewy.com",
+  "shipping": "+$4.95 shipping",
+  "sourceURLs": ["https://www.google.com/shopping/product/10099448883039819830"]
+}
+```
+
+Each price object represents a single price amount seen by Datafiniti, along with all the dates and sources for when and where that price was seen. You can read the array from each record's `JsonElement`:
+
+```csharp
+foreach (var product in results.Records)
+{
+    string name = product.TryGetProperty("name", out var n) ? n.GetString() : "N/A";
+    Console.WriteLine($"Product: {name}");
+
+    if (product.TryGetProperty("prices", out var prices) && prices.ValueKind == JsonValueKind.Array)
+    {
+        foreach (var price in prices.EnumerateArray())
+        {
+            decimal amountMax = price.TryGetProperty("amountMax", out var mx) ? mx.GetDecimal() : 0m;
+            string currency = price.TryGetProperty("currency", out var c) ? c.GetString() : "";
+            string merchant = price.TryGetProperty("merchant", out var m) ? m.GetString() : "unknown";
+            Console.WriteLine($"  {amountMax} {currency} @ {merchant}");
+        }
+    }
+}
+```
+
+### Finding if the current product is on sale
+
+The `mostRecentPriceIsSale` field is a Boolean indicating whether a product is currently listed as on sale. Add it to the query to return only pet food that is on sale.
+
+```csharp
+string query = client.Query()
+    .Raw("taxonomy:\"pet supplies\"")
+    .Categories(new[] { "food" })
+    .Raw("prices:*")
+    .Raw("mostRecentPriceIsSale:*")
+    .Build();
+// taxonomy:"pet supplies" AND categories:("food") AND prices:* AND mostRecentPriceIsSale:*
+
+SearchResult onSale = await client.SearchAsync(query, numRecords: 10);
+```
+
+<Callout kind="info" collapsed="false">
+  **mostRecentPriceIsSale**
+
+  All "most recent" fields are data points as of the time of the API call and are subject to change over time. If you need frequent updates, build that polling into your own logic.
+</Callout>
+
+### Generating pricing analytics
+
+You can pull the same `prices` array for every product matching your query and run a wide variety of analysis on the collection — what factors drive price for a given product, what the price distribution looks like across a market segment, and so on. Use fields like `categories`, `taxonomy`, and `brand` to segment the data. The following pages a full result set with `PaginateAsync` and computes a simple average of each product's most recent `amountMax`.
+
+```csharp
+using System.Text.Json;
+using Datafiniti.Product;
+
+var client = ProductClient.FromEnvironment();
+
+string query = client.Query()
+    .Raw("taxonomy:\"pet supplies\"")
+    .Categories(new[] { "food" })
+    .Raw("prices:*")
+    .Build();
+
+var prices = new List<decimal>();
+
+await foreach (var product in client.PaginateAsync(query, pageSize: 100))
+{
+    if (product.TryGetProperty("prices", out var priceArray) &&
+        priceArray.ValueKind == JsonValueKind.Array &&
+        priceArray.GetArrayLength() > 0)
+    {
+        var first = priceArray[0];
+        if (first.TryGetProperty("amountMax", out var mx))
+            prices.Add(mx.GetDecimal());
+    }
+
+    if (prices.Count >= 500) break; // cap the sample
+}
+
+Console.WriteLine("\n=== PET FOOD PRICING ANALYTICS ===");
+Console.WriteLine($"Products sampled: {prices.Count}");
+if (prices.Count > 0)
+{
+    Console.WriteLine($"Average price: {prices.Average():C}");
+    Console.WriteLine($"Min price:     {prices.Min():C}");
+    Console.WriteLine($"Max price:     {prices.Max():C}");
+}
+```
+
+<Callout kind="info" collapsed="false">
+  With the knowledge of how to pull records by category, taxonomy, and brand, you can generate pricing intelligence reports for specific segments of the pet food market.
+</Callout>
+
+## Code Examples
+
+Here are some C# examples built upon what we have just discussed. All snippets are ready to run as long as you have your `DATAFINITI_API_KEY` exported.
+
+<CodeGroup show-lines="true" tabs={["Search_by_Name","Count","Search_via_brand","Pagination","Categories&Prices"]}>
+  ```csharp Search_by_Name
+  using Datafiniti.Product;
+  using Datafiniti.Core;
+
+  var client = ProductClient.FromEnvironment();
+
+  string query = client.Query()
+      .Brand("Nike")
+      .Categories(new[] { "Shoes" })
+      .PriceRange(minPrice: 50m, maxPrice: 200m)
+      .Build();
+
+  try
+  {
+      SearchResult response = await client.SearchAsync(query, numRecords: 10);
+
+      Console.WriteLine("\n=== PRODUCT SEARCH ===");
+      Console.WriteLine($"Total matches: {response.NumFound:N0}\n");
+
+      foreach (var product in response.Records)
+      {
+          string Get(string field) =>
+              product.TryGetProperty(field, out var v) ? v.ToString() : "N/A";
+
+          Console.WriteLine($"Brand: {Get("brand")}");
+          Console.WriteLine($"Name:  {Get("name")}");
+          Console.WriteLine($"UPC:   {Get("upc")}\n");
+      }
+  }
+  catch (DatafinitiApiException e)
+  {
+      Console.WriteLine($"\nAPI Error {e.StatusCode}: {e.Message}");
+      Console.WriteLine(e.ResponseBody);
+  }
+  ```
+
+  ```csharp Count
+  using Datafiniti.Product;
+  using Datafiniti.Core;
+
+  var client = ProductClient.FromEnvironment();
+
+  try
+  {
+      long count = await client.CountAsync("categories:\"Pet Food\"");
+      Console.WriteLine("\n=== PRODUCT COUNT TEST ===");
+      Console.WriteLine($"Products found: {count:N0}");
+  }
+  catch (DatafinitiApiException e)
+  {
+      Console.WriteLine($"\nAPI Error {e.StatusCode}: {e.Message}");
+      Console.WriteLine(e.ResponseBody);
+  }
+  ```
+
+  ```csharp Search_via_brand
+  using System.Text.Json;
+  using Datafiniti.Product;
+  using Datafiniti.Core;
+
+  var client = ProductClient.FromEnvironment();
+
+  try
+  {
+      SearchResult response = await client.SearchAsync(
+          query: "brand:\"Nike\" AND categories:\"Shoes\"",
+          numRecords: 5,
+          view: "default");
+
+      Console.WriteLine("\n=== PRODUCTS ===");
+      Console.WriteLine($"Found: {response.NumFound}");
+
+      var records = response.Records;
+
+      if (records.Count > 0)
+      {
+          Console.WriteLine($"\n{records.Count} Record(s) Found:");
+          var opts = new JsonSerializerOptions { WriteIndented = true };
+          for (int i = 0; i < records.Count; i++)
+          {
+              Console.WriteLine($"\n--- Record {i + 1} ---");
+              Console.WriteLine(JsonSerializer.Serialize(records[i], opts));
+          }
+      }
+      else
+      {
+          Console.WriteLine("No records returned.");
+      }
+  }
+  catch (DatafinitiApiException e)
+  {
+      Console.WriteLine($"\nAPI Error {e.StatusCode}: {e.Message}");
+      Console.WriteLine(e.ResponseBody);
+  }
+  ```
+
+  ```csharp Pagination
+  using Datafiniti.Product;
+  using Datafiniti.Core;
+
+  var client = ProductClient.FromEnvironment();
+
+  Console.WriteLine("\n=== PRODUCT PAGINATION TEST ===");
+
+  int recordsSeen = 0;
+
+  try
+  {
+      // The query can be any product data query.
+      // pageSize maps to the API `limit` param — records per page (max 500).
+      // PaginateAsync advances pages automatically until you stop iterating
+      // or the API returns an empty page (no more results).
+      await foreach (var product in client.PaginateAsync(
+          query: "categories:\"Pet Food\" AND prices.amountMax:*",
+          pageSize: 10))
+      {
+          recordsSeen++;
+
+          string Get(string field) =>
+              product.TryGetProperty(field, out var v) ? v.ToString() : "";
+
+          Console.WriteLine($"{recordsSeen}. {Get("brand")} — {Get("name")}");
+
+          if (recordsSeen >= 50) break; // stop after 50 total records (5 pages of 10)
+      }
+
+      Console.WriteLine($"\nTotal Retrieved: {recordsSeen}");
+  }
+  catch (DatafinitiApiException e)
+  {
+      Console.WriteLine($"\nAPI Error {e.StatusCode}: {e.Message}");
+      Console.WriteLine(e.ResponseBody);
+  }
+  ```
+
+  ```csharp Categories&Prices
+  using System.Text.Json;
+  using Datafiniti.Product;
+  using Datafiniti.Core;
+
+  // ---------------------------------------------------------------------------
+  // Pricing analytics for pet food.
+  //
+  // Pulls every product in the pet food category that has pricing data, reads
+  // each record's `prices` array, and computes simple price analytics. Flip
+  // ONLY_ON_SALE to restrict the pull to products currently listed on sale via
+  // the `mostRecentPriceIsSale` field.
+  //
+  // Reference: https://docs.datafiniti.co/docs/pricing-analytics-for-pet-food
+  // ---------------------------------------------------------------------------
+
+  bool onlyOnSale = false;
+
+  var client = ProductClient.FromEnvironment();
+
+  var builder = client.Query()
+      .Raw("taxonomy:\"pet supplies\"")
+      .Categories(new[] { "food" })
+      .Raw("prices:*");
+
+  if (onlyOnSale)
+      builder.Raw("mostRecentPriceIsSale:*");
+
+  string query = builder.Build();
+  // taxonomy:"pet supplies" AND categories:("food") AND prices:* [AND mostRecentPriceIsSale:*]
+
+  var prices = new List<decimal>();
+
+  try
+  {
+      await foreach (var product in client.PaginateAsync(query, pageSize: 100))
+      {
+          string name = product.TryGetProperty("name", out var n) ? n.GetString() : "N/A";
+
+          if (product.TryGetProperty("prices", out var priceArray) &&
+              priceArray.ValueKind == JsonValueKind.Array &&
+              priceArray.GetArrayLength() > 0)
+          {
+              // Use the first (most recent) price entry for the running stats.
+              var first = priceArray[0];
+              decimal amountMax = first.TryGetProperty("amountMax", out var mx) ? mx.GetDecimal() : 0m;
+              string currency = first.TryGetProperty("currency", out var c) ? c.GetString() : "";
+              string merchant = first.TryGetProperty("merchant", out var m) ? m.GetString() : "unknown";
+
+              if (amountMax > 0m) prices.Add(amountMax);
+              Console.WriteLine($"{name}: {amountMax} {currency} @ {merchant}");
+          }
+
+          if (prices.Count >= 500) break; // cap the sample
+      }
+
+      Console.WriteLine("\n=== PET FOOD PRICING ANALYTICS ===");
+      Console.WriteLine($"Products sampled: {prices.Count}");
+      if (prices.Count > 0)
+      {
+          Console.WriteLine($"Average price: {prices.Average():C}");
+          Console.WriteLine($"Min price:     {prices.Min():C}");
+          Console.WriteLine($"Max price:     {prices.Max():C}");
+      }
+  }
+  catch (DatafinitiApiException e)
+  {
+      Console.WriteLine($"\nAPI Error {e.StatusCode}: {e.Message}");
+      Console.WriteLine(e.ResponseBody);
+  }
+  ```
+</CodeGroup>
+

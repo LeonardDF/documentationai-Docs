@@ -718,6 +718,10 @@
                         "group": "Product Data SDK",
                         "pages": [
                           {
+                            "title": "C# - Product Data SDK",
+                            "path": "c-product-data-sdk"
+                          },
+                          {
                             "title": "Python - Product Data SDK",
                             "path": "python-product-data-sdk"
                           },
