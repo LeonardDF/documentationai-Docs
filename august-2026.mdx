@@ -1,0 +1,53 @@
+---
+title: August 2026 Release Log
+description: >-
+  Improved address match rates over 80%, new C# and Node.js SDKs, and expanded
+  product and property data coverage.
+---
+## New to Datafiniti
+
+Address matching is one of the hardest problems in working with real-world data. Files come in with inconsistent formats, missing components, and properties that have rarely (if ever) been on the market. We've been heads-down improving how Datafiniti handles exactly these cases — and the results are worth sharing.
+
+### Improved Address Match Rate — Over 80%
+
+We recently ran a head-to-head test against a real customer sample file — messy data, inconsistent formats, the kind of input that trips up most matching systems. Other providers matched roughly 60% of records, and to be candid, so did we at the start.
+
+After a round of targeted improvements, Datafiniti's address match rate on that same file now sits at 81.5% — well ahead of what other providers delivered on identical input.
+
+### Why This Matters
+
+<Callout kind="tip" collapsed="false">
+  A higher match rate means more of your records resolve to real, usable property data on the first pass — less manual cleanup, fewer dropped rows, and more confidence that the coverage is there when you need it. When your input data is messy (and it usually is), the gap between a 60% and an 80%+ match rate is the difference between a dataset you can act on and one you have to rework.
+</Callout>
+
+### What Changed
+
+Our improvements broadly fall into three categories:
+
+- **Broader property coverage.** We're rolling out an AI-enabled system that lets us pull data from nearly every county across the country — dramatically improving coverage of properties that haven't been on the market in years, if ever.
+- **Fuzzy matching on property addresses.** When matching on the address field, a wider variety of provided address formats will now find their match within Datafiniti, even when the input isn't perfectly formatted.
+- **USPS standardized addresses.** A predictable, standardized address format is now always available — so downstream matching and deduplication stay consistent.
+
+## New SDKs: C# and Node.js
+
+### Integrate Datafiniti in your coding language
+
+Our Python SDK now has company. We're releasing official C# and Node.js SDKs, giving you first-class support across three of the most widely used developer ecosystems.
+
+All SDKs cover all four Datafiniti data types — property, business, people, and product — and wrap authentication, search, and downloads behind a clean, idiomatic interface, so you can skip hand-rolling raw API calls.
+
+Get started today:
+
+- C# (NuGet): `dotnet add package Datafiniti.Sdk`
+- Node.js (npm): `npm install @datafiniti/sdk`
+
+## Data Sourcing Recap — July 2026
+
+### 57 new and updated crawl sources
+
+Our crawl development team stayed busy in July, expanding coverage and keeping existing sources healthy across three data types:
+
+- **Product data.** The bulk of the month went into new product buildouts — roughly 40 brands added across beauty, personal care, and fashion, including Estée Lauder, Neutrogena, CeraVe, La Roche-Posay, Gucci, Burberry, YSL, Calvin Klein, and many more, alongside major retailers like Ulta and Chemist Warehouse.
+- **Property data.** New county buildouts for Larimer County, CO and Spartanburg County, SC extended our property coverage into additional regions.
+- **Coverage health.** A round of repairs have kept existing property sources running smoothly, including Galveston County, TX, Santa Barbara County, CA, Williamson County, TX, and off-market listing fixes.
+
