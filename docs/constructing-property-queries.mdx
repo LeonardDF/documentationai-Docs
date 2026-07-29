@@ -94,14 +94,11 @@ You can use an exact search to search for specific addresses
 
 ## Fuzzy Matching
 
-When using the `address` field in your property data query, it defaults to fuzzy matching for exact, full, or partial addresses. Meaning for an address like *1100 Congress Ave., Austin, TX 78701,* the following queries would be acceptable:
+When using the `address` field in your property data query, it defaults to fuzzy matching for exact, full, or partial addresses. Meaning for an address like _1100 Congress Ave., Austin, TX 78701,_ the following queries would be acceptable:
 
 - 1100 Congress Ave
-
 - 1100 Congress Avenue
-
 - 1100 Congress Ave, Austin
-
 - 1100 Congress Ave, Austin, TX 78701
 
 ```java wrap="true"
@@ -109,6 +106,7 @@ When using the `address` field in your property data query, it defaults to fuzzy
 	"query": "address:\"100 Congress Ave, Austin, Texas 78701\" 
 }
 ```
+
 ### Address prerequisites
 
 - `address` field must start with a digit (no P.O. Box, rural route, etc.)
@@ -116,29 +114,30 @@ When using the `address` field in your property data query, it defaults to fuzzy
 
 ### Supported address formats
 
-| Format | Example |
-|--------|---------|
-| Comma after street, city+state+zip space-delimited | `1706 Sierra RD, Austin TX 78759` |
-| All fields comma-delimited | `1706 Sierra Road, Austin, TX, 78759` |
-| No commas at all (token-walks for street suffix) | `1706 Sierra Road Austin TX 78759` |
-| No zip | `1706 Sierra Rd, Austin, TX` |
-| Full state name, single-word | `1706 Sierra Rd, Austin, Texas` |
-| Full state name, multi-word | `350 Fifth Ave, New York, New York` |
-| ZIP+4 | `1706 Sierra Rd, Austin, TX 78759-1234` |
+| Format                                             | Example                                 |
+| -------------------------------------------------- | --------------------------------------- |
+| Comma after street, city+state+zip space-delimited | `1706 Sierra RD, Austin TX 78759`       |
+| All fields comma-delimited                         | `1706 Sierra Road, Austin, TX, 78759`   |
+| No commas at all (token-walks for street suffix)   | `1706 Sierra Road Austin TX 78759`      |
+| No zip                                             | `1706 Sierra Rd, Austin, TX`            |
+| Full state name, single-word                       | `1706 Sierra Rd, Austin, Texas`         |
+| Full state name, multi-word                        | `350 Fifth Ave, New York, New York`     |
+| ZIP+4                                              | `1706 Sierra Rd, Austin, TX 78759-1234` |
 
 ### Ambiguous state/suffix 2-letter codes
 
 Some codes are valid both as street suffixes and state abbreviations (e.g., `CT` = Court or Connecticut, `LA` = Lane or Louisiana). The splitter requires at least one disambiguator to treat them as a state:
+
 - A zip code is present, OR
 - A comma appears before the state token
 
-Without a disambiguator, the code is left as a street suffix. `UNAMBIGUOUS_STATES` (`AL`, `OR`, `PA`, `WY`, `WA`) bypass this check but are still protected by a secondary guard: if splitting would leave the street portion as just a house number (< 2 tokens), the split is rejected.
+Without a disambiguator, the code is left as a street suffix. `UNAMBIGUOUS_STATES` (`AL`, `OR`, `PA`, `WY`, `WA`) bypass this check but are still protected by a secondary guard: if splitting would leave the street portion as just a house number (\< 2 tokens), the split is rejected.
 
 ### Other behavior
 
 - Pre-existing `city`, `province`, `postalCode` fields are **never overwritten** — the split only populates missing fields.
 - The no-comma path uses street suffix abbreviation tables to find the boundary between street and city; if no suffix is found, it falls back to treating the last word as the city.
-- A bare house number without a street name (< 2 tokens remaining after extracting city/state) is treated as a failed parse, and the original string is returned unchanged.
+- A bare house number without a street name (\< 2 tokens remaining after extracting city/state) is treated as a failed parse, and the original string is returned unchanged.
 
 ## Wildcards
 
@@ -319,6 +318,63 @@ POST https://api.datafiniti.co/v4/properties/paginate?page=1&limit=500
 The pagination endpoint uses the following parameters:
 
 - **page** - You specify which chunk of data you would like to access. You can iterate the page to work your way through all of the results. You cannot paginate further than the 10,000th record.
-
 - **limit** - This specifies the number of results you want returned within the page. The maximum number of results that can be returned per page is 500.
 
+## Regex Queries
+
+You can filter any field with a regular expression by wrapping the pattern in forward slashes (`/.../`).  This lets you match values by shape rather than by exact string.  For example, to match any postal code beginning with `787` followed by two more digits:
+
+```json
+{
+	"query": "postalCode:/787[0-9]{2}/"
+}
+```
+
+### Character classes — `[0-9]`
+
+A character class matches any single character from a set.  Use `[0-9]` for a digit, and `{n}` to repeat it.  For example, all five-digit postal codes:
+
+```json
+{
+	"query": "postalCode:/[0-9]{5}/"
+}
+```
+
+### Wildcards — `.*`
+
+`.` matches any single character and `*` repeats the preceding token zero or more times, so `.*` matches any run of characters.  For example, any city name that contains `ville`:
+
+```json
+{
+	"query": "city:/.*ville.*/"
+}
+```
+
+### Alternation — `|`
+
+The pipe (`|`) matches any one of several alternatives.  For example, either of two provinces:
+
+```json
+{
+	"query": "province:/TX|CA/"
+}
+```
+
+### Combining with other operators
+
+Regex patterns work alongside boolean operators and other fields just like any other query:
+
+```json
+{
+	"query": "city:\"Dallas\"|\"Austin\" AND postalCode:/787[0-9]{2}/ AND numBedroom:3"
+}
+```
+
+<Callout kind="info" collapsed="false">
+  **Regex reference**
+
+  - Wrap the pattern in forward slashes: `field:/pattern/`.
+  - `[0-9]` matches a digit; `{n}` and `{n,m}` set repetition counts.
+  - `.` matches any character, `*` repeats zero or more, and `.*` matches any run of characters.
+  - The pipe `|` is alternation (OR) between patterns.
+</Callout>
