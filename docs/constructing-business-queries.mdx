@@ -1,7 +1,6 @@
 ---
 title: Constructing Business Queries
 ---
-
 The Datafiniti API lets you build out a wide variety of search queries so you can get the exact data you want.
 
 ## Querying a Single Field
@@ -108,33 +107,34 @@ It's important to note here that querying on sub-fields will not only return sub
 
 For instance, if a business look likes this:
 
-<CodeGroup tabs="Input,Output">
-```json
-{
-  "name": "example business",
-  "reviews": [
-    {
-      "rating": 3
-    },
-    {
-      "rating": 4
-    }
-  ]
-}
-```
-```json
-{
-  "name": "example business",
-  "reviews": [
-    {
-      "rating": 3
-    },
-    {
-      "rating": 4
-    }
-  ]
-}
-```
+<CodeGroup show-lines="true">
+  ```json
+  {
+    "name": "example business",
+    "reviews": [
+      {
+        "rating": 3
+      },
+      {
+        "rating": 4
+      }
+    ]
+  }
+  ```
+
+  ```json
+  {
+    "name": "example business",
+    "reviews": [
+      {
+        "rating": 3
+      },
+      {
+        "rating": 4
+      }
+    ]
+  }
+  ```
 </CodeGroup>
 
 then you'll see both `rating` values in your data, even if you do `"query": "reviews.rating:3"`.
@@ -150,7 +150,7 @@ Along with querying individual sub-fields, you can also query for sub-objects th
 }
 ```
 
-The key thing to note for these queries is that any sub-field requirements that you want to match within a single sub-object must be contained within curly brackets **"{ }"**
+The key thing to note for these queries is that any sub-field requirements that you want to match within a single sub-object must be contained within curly brackets **""**
 
 ## Range Queries
 
@@ -204,7 +204,7 @@ You can also use the API to do queries based around latitude and longitude value
 }
 ```
 
-The format for the parameter values is: [ Longitude, Latitude, Distance, Distance Unit ]
+The format for the parameter values is: \[ Longitude, Latitude, Distance, Distance Unit ]
 
 You can also use the following units for measuring distance:
 
@@ -221,7 +221,7 @@ You can also use the following units for measuring distance:
 
 As an alternative or used for testing purposes you can set your `num_records` to 0 in your business search query. This is will only return the `num_found` of the query and will cost 0 credits to search.
 
-<Card title="Try it in the API Playground" href="/reference/businesses" icon="play" horizontal={false}>
+<Card title="Try it in the API Playground" href="/reference/businesses" icon="play" horizontal="false">
   Test your business search queries directly in the API reference.
 </Card>
 
@@ -232,10 +232,10 @@ As an alternative or used for testing purposes you can set your `num_records` to
 }
 ```
 
-<Callout kind="info">
+<Callout kind="info" collapsed="false">
   **Count Feature**
 
-Please note that this is feature is only for paid accounts. So please check your account plan or contact `<support@datafinti.co.>`
+  Please note that this is feature is only for paid accounts. So please check your account plan or contact `<support@datafinti.co.>`
 </Callout>
 
 ## Paging Over Results
@@ -251,6 +251,65 @@ POST https://api.datafiniti.co/v4/products/paginate?page=1&limit=50
 
 The pagination endpoint uses the following parameters:
 
-* **page** - You specify which chunk of data you would like to access. You can iterate the page to work your way through all of the results. You cannot paginate further than the 10,000th record.
-* **limit** - This specifies the number of results you want returned within the page. The maximum number of results that can be returned per page is 1,000.
+- **page** - You specify which chunk of data you would like to access. You can iterate the page to work your way through all of the results. You cannot paginate further than the 10,000th record.
+- **limit** - This specifies the number of results you want returned within the page. The maximum number of results that can be returned per page is 1,000.
+
+## Regex Queries
+
+You can filter any field with a regular expression by wrapping the pattern in forward slashes (`/.../`).  This lets you match values by shape rather than by exact string.  For example, to match any postal code beginning with `921` followed by two more digits:
+
+```json
+{
+	"query": "postalCode:/921[0-9]{2}/"
+}
+```
+
+### Character classes — `[0-9]`
+
+A character class matches any single character from a set.  Use `[0-9]` for a digit, and `{n}` to repeat it.  For example, all four-digit SIC codes:
+
+```json
+{
+	"query": "sic:/[0-9]{4}/"
+}
+```
+
+### Wildcards — `.*`
+
+`.` matches any single character and `*` repeats the preceding token zero or more times, so `.*` matches any run of characters.  For example, any business name that contains `Seafood`:
+
+```json
+{
+	"query": "name:/.*Seafood.*/"
+}
+```
+
+### Alternation — `|`
+
+The pipe (`|`) matches any one of several alternatives.  For example, either of two provinces:
+
+```json
+{
+	"query": "province:/CA|NV/"
+}
+```
+
+### Combining with other operators
+
+Regex patterns work alongside boolean operators and other fields just like any other query:
+
+```json
+{
+	"query": "name:/.*Seafood.*/ AND province:/CA|NV/ AND numEmployeesMin:<10"
+}
+```
+
+<Callout kind="info" collapsed="false">
+  **Regex reference**
+
+  - Wrap the pattern in forward slashes: `field:/pattern/`.
+  - `[0-9]` matches a digit; `{n}` and `{n,m}` set repetition counts.
+  - `.` matches any character, `*` repeats zero or more, and `.*` matches any run of characters.
+  - The pipe `|` is alternation (OR) between patterns.
+</Callout>
 
