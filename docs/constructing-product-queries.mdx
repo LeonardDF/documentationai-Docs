@@ -1,7 +1,6 @@
 ---
 title: Constructing Product Queries
 ---
-
 The Datafiniti API lets you build out a wide variety of search queries so you can get the exact data you want.
 
 ## Querying a Single Field
@@ -92,10 +91,10 @@ Wildcards can do more though.  You can also append `*` to the value we're search
 
 This will return products with any of the following in their `categories` field: `computer`, `computers`, `computing`, `computation`, and so on.
 
-<Callout kind="alert">
+<Callout kind="alert" collapsed="false">
   **Wildcard Use**
 
-Note that wild cards can only be for postfix string in a searches or required field searches. For example `"query": "categories:*computer"` will not work searching for anything prefixing `computer`.
+  Note that wild cards can only be for postfix string in a searches or required field searches. For example `"query": "categories:*computer"` will not work searching for anything prefixing `computer`.
 </Callout>
 
 ## Querying Sub-Fields
@@ -141,7 +140,7 @@ Along with querying individual sub-fields, you can also query for sub-objects th
 }
 ```
 
-The key thing to note for these queries is that any sub-field requirements that you want to match within a single sub-object must be contained within curly brackets **"{ }"**
+The key thing to note for these queries is that any sub-field requirements that you want to match within a single sub-object must be contained within curly brackets **""**
 
 ## Range Queries
 
@@ -201,7 +200,7 @@ However there are many different ways to approach searching via an address. You 
 
 As an alternative or used for testing purposes you can set your `num_records` to 0 in your product search query. This is will only return the `num_found` of the query and will cost 0 credits to search.
 
-<Card title="Try it in the API Playground" href="/reference/products" icon="play" horizontal={false}>
+<Card title="Try it in the API Playground" href="/reference/products" icon="play" horizontal="false">
   Test your product search queries directly in the API reference.
 </Card>
 
@@ -212,10 +211,10 @@ As an alternative or used for testing purposes you can set your `num_records` to
 }
 ```
 
-<Callout kind="info">
+<Callout kind="info" collapsed="false">
   **Count Feature**
 
-Please note that this is feature is only for paid accounts. So please check your account plan or contact `<support@datafinti.co.>`
+  Please note that this is feature is only for paid accounts. So please check your account plan or contact `<support@datafinti.co.>`
 </Callout>
 
 ## Paging Over Results
@@ -231,6 +230,65 @@ POST https://api.datafiniti.co/v4/products/paginate?page=1&limit=50
 
 The pagination endpoint uses the following parameters:
 
-* **page** - You specify which chunk of data you would like to access. You can iterate the page to work your way through all of the results. You cannot paginate further than the 10,000th record.
-* **limit** - This specifies the number of results you want returned within the page. The maximum number of results that can be returned per page is 1,000.
+- **page** - You specify which chunk of data you would like to access. You can iterate the page to work your way through all of the results. You cannot paginate further than the 10,000th record.
+- **limit** - This specifies the number of results you want returned within the page. The maximum number of results that can be returned per page is 1,000.
+
+## Regex Queries
+
+You can filter any field with a regular expression by wrapping the pattern in forward slashes (`/.../`).  This lets you match values by shape rather than by exact string.  For example, to match any UPC beginning with `014` followed by nine more digits:
+
+```json
+{
+	"query": "upc:/014[0-9]{9}/"
+}
+```
+
+### Character classes — `[0-9]`
+
+A character class matches any single character from a set.  Use `[0-9]` for a digit, and `{n}` to repeat it.  For example, all 12-digit UPC-A codes:
+
+```json
+{
+	"query": "upca:/[0-9]{12}/"
+}
+```
+
+### Wildcards — `.*`
+
+`.` matches any single character and `*` repeats the preceding token zero or more times, so `.*` matches any run of characters.  For example, any product name that contains `Propane`:
+
+```json
+{
+	"query": "name:/.*Propane.*/"
+}
+```
+
+### Alternation — `|`
+
+The pipe (`|`) matches any one of several alternatives.  For example, either of two brands:
+
+```json
+{
+	"query": "brand:/Samsung|Sony/"
+}
+```
+
+### Combining with other operators
+
+Regex patterns work alongside boolean operators and other fields just like any other query:
+
+```json
+{
+	"query": "name:/.*oled.*/ AND brand:/Samsung|Sony/ AND mostRecentPriceAmount:<85"
+}
+```
+
+<Callout kind="info" collapsed="false">
+  **Regex reference**
+
+  - Wrap the pattern in forward slashes: `field:/pattern/`.
+  - `[0-9]` matches a digit; `{n}` and `{n,m}` set repetition counts.
+  - `.` matches any character, `*` repeats zero or more, and `.*` matches any run of characters.
+  - The pipe `|` is alternation (OR) between patterns.
+</Callout>
 
