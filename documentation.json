@@ -315,6 +315,10 @@
                             "path": "docs/count-property"
                           },
                           {
+                            "title": "Fuzzy Matching",
+                            "path": "fuzzy-matching"
+                          },
+                          {
                             "title": "Geolocation",
                             "path": "docs/geolocation-property"
                           },
