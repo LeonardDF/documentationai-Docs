@@ -168,6 +168,64 @@ POST https://api.datafiniti.co/v4/products/paginate?page=1&limit=50
 The pagination endpoint uses the following parameters:
 
 - **page** - You specify which chunk of data you would like to access. You can iterate the page to work your way through all of the results. You cannot paginate further than the 10,000th record.
-
 - **limit** - This specifies the number of results you want returned within the page. The maximum number of results that can be returned per page is 1,000.
+
+## Regex Queries
+
+You can filter any field with a regular expression by wrapping the pattern in forward slashes (`/.../`).  This lets you match values by shape rather than by exact string.  For example, to match any postal code beginning with `193` followed by two more digits:
+
+```json
+{
+	"query": "postalCode:/193[0-9]{2}/"
+}
+```
+
+### Character classes — `[0-9]`
+
+A character class matches any single character from a set.  Use `[0-9]` for a digit, and `{n}` to repeat it.  For example, all five-digit postal codes:
+
+```json
+{
+	"query": "postalCode:/[0-9]{5}/"
+}
+```
+
+### Wildcards — `.*`
+
+`.` matches any single character and `*` repeats the preceding token zero or more times, so `.*` matches any run of characters.  For example, any job title that contains `Engineer`:
+
+```json
+{
+	"query": "jobTitle:/.*Engineer.*/"
+}
+```
+
+### Alternation — `|`
+
+The pipe (`|`) matches any one of several alternatives.  For example, either of two job titles:
+
+```json
+{
+	"query": "jobTitle:/C-Team|VP/"
+}
+```
+
+### Combining with other operators
+
+Regex patterns work alongside boolean operators and other fields just like any other query:
+
+```json
+{
+	"query": "jobTitle:/.*Engineer.*/ AND province:/PA|NY/ AND numEmployeesMin:<20"
+}
+```
+
+<Callout kind="info" collapsed="false">
+  **Regex reference**
+
+  - Wrap the pattern in forward slashes: `field:/pattern/`.
+  - `[0-9]` matches a digit; `{n}` and `{n,m}` set repetition counts.
+  - `.` matches any character, `*` repeats zero or more, and `.*` matches any run of characters.
+  - The pipe `|` is alternation (OR) between patterns.
+</Callout>
 
