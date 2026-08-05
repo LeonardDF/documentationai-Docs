@@ -15,15 +15,7 @@ POST [https://api.datafiniti.co/v4/properties/search](https://api.datafiniti.co/
 
 ### Input
 
-Add the `fuzzy_match` parameter alongside your normal search parameters. It accepts one of three values:
-
-- `query` - This selects which records should be matched. It's the same format as our search endpoint.
-- `fuzzy_match` - Controls how the `address` field is matched against Datafiniti's records. Set to `on`, `off`, or `retry`.
-- `num_records` - The number of records matching the query you want returned. If this parameter is not specified, all matching records will be returned.
-- `download` - Set this to "true" OR "false" to download the records to a file.
-- `format` - Specify either "json" or "csv" for your file format.
-
-The three accepted values for `fuzzy_match` behave as follows:
+Add the `fuzzy_match` parameter alongside your normal search parameters. It accepts one of three values. The three accepted values for `fuzzy_match` behave as follows:
 
 - `on` - Datafiniti matches the `address` field using its own normalization standard, autocorrecting the supplied value to a matching record. This is the default behavior.
 - `off` - The `address` field value is matched exactly as supplied, with no normalization. Only records that exactly match will be returned.
