@@ -1021,8 +1021,8 @@
           },
           "fuzzy_match": {
             "type": "string",
-            "description": "Controls how the `address` field is matched against Datafiniti's records.\n\n- `on`: Datafiniti attempts to match the `address` field using its own normalization standard, autocorrecting the supplied value to a matching record.\n- `off`: The `address` field value is matched exactly as supplied, with no normalization.\n- `retry`: Datafiniti first matches as if `off`. If no match is found, it then attempts to fuzzy match as if `on`.\n\nDefaults to `off`.",
-            "default": "off",
+            "description": "Controls how the `address` field is matched against Datafiniti's records.\n\n- `on`: Datafiniti attempts to match the `address` field using its own normalization standard, autocorrecting the supplied value to a matching record.\n- `off`: The `address` field value is matched exactly as supplied, with no normalization.\n- `retry`: Datafiniti first matches as if `off`. If no match is found, it then attempts to fuzzy match as if `on`.\n\nDefaults to `on`. You can choose not to declare this value.",
+            "default": "on",
             "enum": [
               "on",
               "off",
