@@ -57,7 +57,9 @@
         "operationId": "searchBusinesses",
         "summary": "Search Business Data",
         "description": "Search over 35 million business records. Returns up to 10 records per request by default. Include `download: true` in the request body to initiate a bulk download of matching records.",
-        "tags": ["Search and Downloads"],
+        "tags": [
+          "Search and Downloads"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -102,7 +104,9 @@
         "operationId": "searchPeople",
         "summary": "Search People Data",
         "description": "Search millions of people records. Returns up to 10 records per request by default. Include `download: true` in the request body to initiate a bulk download of matching records.",
-        "tags": ["Search and Downloads"],
+        "tags": [
+          "Search and Downloads"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -146,7 +150,9 @@
         "operationId": "searchProducts",
         "summary": "Search Product Data",
         "description": "Search over 75 million product records. Returns up to 10 records per request by default. Include `download: true` in the request body to initiate a bulk download of matching records.",
-        "tags": ["Search and Downloads"],
+        "tags": [
+          "Search and Downloads"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -190,7 +196,9 @@
         "operationId": "searchProperties",
         "summary": "Search Property Data",
         "description": "Search property records. Returns up to 10 records per request by default. Include `download: true` in the request body to initiate a bulk download. Supports autotrace for cross-referencing property and people data.",
-        "tags": ["Search and Downloads"],
+        "tags": [
+          "Search and Downloads"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -198,10 +206,39 @@
               "schema": {
                 "$ref": "#/components/schemas/PropertySearchRequest"
               },
-              "example": {
-                "query": "country:US AND province:FL",
-                "num_records": 1,
-                "format": "JSON"
+              "examples": {
+                "basicSearch": {
+                  "summary": "Basic property search",
+                  "value": {
+                    "query": "country:US AND province:FL",
+                    "num_records": 1,
+                    "format": "JSON"
+                  }
+                },
+                "fuzzyMatchOff": {
+                  "summary": "fuzzy_match off \u2014 exact address match",
+                  "value": {
+                    "query": "address:\"3820 Guthrie rd\"",
+                    "fuzzy_match": "off",
+                    "num_records": 10
+                  }
+                },
+                "fuzzyMatchOn": {
+                  "summary": "fuzzy_match on \u2014 normalize and autocorrect the address",
+                  "value": {
+                    "query": "address:\"3820 Guthrie Highway\"",
+                    "fuzzy_match": "on",
+                    "num_records": 10
+                  }
+                },
+                "fuzzyMatchRetry": {
+                  "summary": "fuzzy_match retry \u2014 exact first, then fuzzy fallback",
+                  "value": {
+                    "query": "address:\"3820 Guthrie Highway\"",
+                    "fuzzy_match": "retry",
+                    "num_records": 10
+                  }
+                }
               }
             }
           }
@@ -235,7 +272,9 @@
         "operationId": "getRecord",
         "summary": "Get a Specific Record",
         "description": "Retrieve a specific record by its unique identifier. The data type determines which dataset to query (properties, people, products, or businesses).",
-        "tags": ["Records"],
+        "tags": [
+          "Records"
+        ],
         "parameters": [
           {
             "name": "data_type",
@@ -244,7 +283,12 @@
             "description": "The type of data to retrieve the record from",
             "schema": {
               "type": "string",
-              "enum": ["properties", "people", "products", "businesses"]
+              "enum": [
+                "properties",
+                "people",
+                "products",
+                "businesses"
+              ]
             }
           },
           {
@@ -286,8 +330,10 @@
       "get": {
         "operationId": "getAllDownloads",
         "summary": "Get All Downloads",
-        "description": "Retrieve an array of all the downloads you've ever started, including cancelled and completed ones. Note: This endpoint returns JSON objects describing downloads — it does not download data to your computer. Links to actual files can be found in the `results` field for each download.",
-        "tags": ["Downloads"],
+        "description": "Retrieve an array of all the downloads you've ever started, including cancelled and completed ones. Note: This endpoint returns JSON objects describing downloads \u2014 it does not download data to your computer. Links to actual files can be found in the `results` field for each download.",
+        "tags": [
+          "Downloads"
+        ],
         "responses": {
           "200": {
             "description": "Successful retrieval of all downloads",
@@ -319,8 +365,10 @@
       "get": {
         "operationId": "getDownload",
         "summary": "Get a Download",
-        "description": "Retrieve details about a specific download by its ID. Note: This endpoint returns a JSON object describing the download — it does not download data to your computer. Links to actual files can be found in the `results` field.",
-        "tags": ["Downloads"],
+        "description": "Retrieve details about a specific download by its ID. Note: This endpoint returns a JSON object describing the download \u2014 it does not download data to your computer. Links to actual files can be found in the `results` field.",
+        "tags": [
+          "Downloads"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -359,7 +407,9 @@
         "operationId": "cancelDownload",
         "summary": "Cancel a Download",
         "description": "Cancel an in-progress download. Cancelling a download will stop it, but not delete it. It will still include all records that were added before cancellation, and you can still retrieve these records via `GET /downloads/{id}`. Your account will still have credits deducted for the number of records added before cancellation.",
-        "tags": ["Downloads"],
+        "tags": [
+          "Downloads"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -406,7 +456,9 @@
         "operationId": "createView",
         "summary": "Create a View",
         "description": "Create a new view to configure and save custom field filters for later use. Views allow you to define which fields are returned in search results without specifying them in every request.",
-        "tags": ["Views"],
+        "tags": [
+          "Views"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -444,7 +496,9 @@
         "operationId": "getAllViews",
         "summary": "Get All Views",
         "description": "Retrieve all views that have been created by the authenticated user.",
-        "tags": ["Views"],
+        "tags": [
+          "Views"
+        ],
         "responses": {
           "200": {
             "description": "Successful retrieval of all views",
@@ -477,7 +531,9 @@
         "operationId": "getViewByName",
         "summary": "Get a View by Name",
         "description": "Retrieve a single view by its name.",
-        "tags": ["Views"],
+        "tags": [
+          "Views"
+        ],
         "parameters": [
           {
             "name": "view_name",
@@ -516,7 +572,9 @@
         "operationId": "updateView",
         "summary": "Update a View",
         "description": "Update an existing view by its name.",
-        "tags": ["Views"],
+        "tags": [
+          "Views"
+        ],
         "parameters": [
           {
             "name": "view_name",
@@ -565,7 +623,9 @@
         "operationId": "deleteView",
         "summary": "Delete a View",
         "description": "Delete a previously created view by its name.",
-        "tags": ["Views"],
+        "tags": [
+          "Views"
+        ],
         "parameters": [
           {
             "name": "view_name",
@@ -612,7 +672,9 @@
         "operationId": "createRealTimeRequest",
         "summary": "Real-time Data Requests",
         "description": "Get the web data you need in real-time. This endpoint allows you to request real-time web data scraping for up-to-date information.",
-        "tags": ["Real-time"],
+        "tags": [
+          "Real-time"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -653,7 +715,9 @@
         "operationId": "createRealTimeUpdate",
         "summary": "Create a Real-time Update",
         "description": "Refresh the data you need in real-time. Create a targeted update to get the latest data for specific records.",
-        "tags": ["Real-time"],
+        "tags": [
+          "Real-time"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -692,7 +756,9 @@
         "operationId": "getAllRealTimeUpdates",
         "summary": "View All Real-time Updates",
         "description": "View all created real-time updates and their current status.",
-        "tags": ["Real-time"],
+        "tags": [
+          "Real-time"
+        ],
         "responses": {
           "200": {
             "description": "Successful retrieval of all real-time updates",
@@ -726,7 +792,9 @@
         "operationId": "authenticate",
         "summary": "Authentication",
         "description": "Use your email and password to receive a bearer token. You will then use that token in all future API requests via the `Authorization: Bearer <token>` header.",
-        "tags": ["Account"],
+        "tags": [
+          "Account"
+        ],
         "security": [],
         "requestBody": {
           "required": true,
@@ -771,7 +839,9 @@
         "operationId": "getAccount",
         "summary": "Get Your Account",
         "description": "Retrieve your account information, which is useful for checking how many credits you have remaining. Legacy plan users access overall credits via `num_credits_used`, while modern plans split credits by data type with separate `credits_allotted` limits per category.",
-        "tags": ["Account"],
+        "tags": [
+          "Account"
+        ],
         "responses": {
           "200": {
             "description": "Successful retrieval of account information",
@@ -799,7 +869,9 @@
         "operationId": "updateAccount",
         "summary": "Update Your Account",
         "description": "Update your account information, including your email and password. If you update your email or password, a notification will be sent to your original email address.",
-        "tags": ["Account"],
+        "tags": [
+          "Account"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -842,7 +914,9 @@
         "operationId": "getApiStatus",
         "summary": "API Status Check",
         "description": "Check the operational status of the Datafiniti API. You can also view the status page at status.datafiniti.co for additional status information.",
-        "tags": ["Status"],
+        "tags": [
+          "Status"
+        ],
         "responses": {
           "200": {
             "description": "API is operational",
@@ -886,7 +960,9 @@
     "schemas": {
       "SearchRequest": {
         "type": "object",
-        "required": ["query"],
+        "required": [
+          "query"
+        ],
         "properties": {
           "query": {
             "type": "string",
@@ -901,7 +977,10 @@
             "type": "string",
             "description": "Must be either `json` or `csv`. Defaults to `json`.",
             "default": "json",
-            "enum": ["json", "csv"]
+            "enum": [
+              "json",
+              "csv"
+            ]
           },
           "download": {
             "type": "boolean",
@@ -917,7 +996,9 @@
       },
       "PropertySearchRequest": {
         "type": "object",
-        "required": ["query"],
+        "required": [
+          "query"
+        ],
         "properties": {
           "query": {
             "type": "string",
@@ -933,7 +1014,20 @@
             "type": "string",
             "description": "Must be either `json` or `csv`. Defaults to `json`.",
             "default": "json",
-            "enum": ["json", "csv"]
+            "enum": [
+              "json",
+              "csv"
+            ]
+          },
+          "fuzzy_match": {
+            "type": "string",
+            "description": "Controls how the `address` field is matched against Datafiniti's records.\n\n- `on`: Datafiniti attempts to match the `address` field using its own normalization standard, autocorrecting the supplied value to a matching record.\n- `off`: The `address` field value is matched exactly as supplied, with no normalization.\n- `retry`: Datafiniti first matches as if `off`. If no match is found, it then attempts to fuzzy match as if `on`.\n\nDefaults to `on`. You can choose not to declare this value.",
+            "default": "on",
+            "enum": [
+              "on",
+              "off",
+              "retry"
+            ]
           },
           "download": {
             "type": "boolean",
@@ -990,7 +1084,12 @@
           "status": {
             "type": "string",
             "description": "Current status of the download",
-            "enum": ["queued", "in_progress", "completed", "cancelled"]
+            "enum": [
+              "queued",
+              "in_progress",
+              "completed",
+              "cancelled"
+            ]
           },
           "num_records": {
             "type": "integer",
@@ -1081,7 +1180,10 @@
       },
       "AuthRequest": {
         "type": "object",
-        "required": ["email", "password"],
+        "required": [
+          "email",
+          "password"
+        ],
         "properties": {
           "email": {
             "type": "string",
