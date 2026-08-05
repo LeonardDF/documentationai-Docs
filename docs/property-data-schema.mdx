@@ -1116,8 +1116,6 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
-<ParamField body="websiteIDs" param-type="keyword" required="false" deprecated="false" show-location="false" />
-
 <ParamField body="yearBuilt" param-type="integer" required="false" deprecated="false" show-location="false">
   The year the property was built.
 
@@ -1139,8 +1137,6 @@ The property data schema below lists all available fields in a property record. 
 </ParamField>
 
 ## Listing Fields
-
-<ParamField body="dateOnMarket" param-type="date" required="false" deprecated="false" show-location="false" />
 
 <ParamField body="daysOnMarket" param-type="integer" required="false" deprecated="false" show-location="false">
   The number of days the property has been on the market.
@@ -2255,6 +2251,10 @@ The property data schema below lists all available fields in a property record. 
   </Expandable>
 </ParamField>
 
+<Callout kind="alert" collapsed="false">
+  Datafiniti recommends pulling and viewing historical statuses from the `statusHistory` field. The `statuses` field is currently being deprecated, and all status history values are being migrated to `statusHistory`.
+</Callout>
+
 <ParamField body="vacancy" param-type="nested" required="false" deprecated="false" show-location="false">
   The status of the vacancy of the property:
 
@@ -2818,4 +2818,3 @@ The property data schema below lists all available fields in a property record. 
     ]
   ```
 </ParamField>
-

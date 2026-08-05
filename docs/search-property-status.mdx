@@ -5,6 +5,10 @@ title: Search on property statuses
 
 Datafiniti's property data can be used to verify or enrich data that you have for existing properties. If you have an area of property but want more specific data about its status on the market, you can use the following guide as a starting point.
 
+<Callout kind="alert" collapsed="false">
+  Datafiniti recommends pulling and viewing historical statuses from the `statusHistory` field. The `statuses` field is currently being deprecated, and all status history values are being migrated to `statusHistory`.
+</Callout>
+
 <Callout kind="info" collapsed="false">
   **Status Types**
 
@@ -33,9 +37,7 @@ Here is an example of how to do that.
   The `address` field defaults to fuzzy matching for exact, full, or partial addresses. This means the following queries would all return matching results:
 
   - `address:\"2815 Manor Rd\"`
-
   - `address:\"2815 Manor Road\"`
-
   - `address:\"2815 Manor Rd, Austin\"`
 
   For more details on how fuzzy matching and address normalization work, including address prerequisites, supported formats, ambiguous state/suffix codes, and other behavior, see [Constructing Property Queries — Fuzzy Matching](/docs/constructing-property-queries#fuzzy-matching).
@@ -126,7 +128,6 @@ Let's say that you want to find the most recent "For Sale" property as it hits t
 Here are example bulk download files of our previous query:
 
 - [Delisted Sacramento, CA CSV](https://drive.google.com/file/d/1VvCBRc9PACAo-GHPyyP2iGi7SkT76dAZ/view?usp=share_link)
-
 - [Delisted Sacramento, CA Json](https://drive.google.com/file/d/11cL8HU5hHws5J9WnkOkG-shSCkvqqVQ2/view?usp=share_link)
 
 ### Conclusion
