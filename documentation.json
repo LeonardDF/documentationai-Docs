@@ -316,7 +316,7 @@
                           },
                           {
                             "title": "Fuzzy Match",
-                            "path": "fuzzy-match"
+                            "path": "docs/fuzzy-match"
                           },
                           {
                             "title": "Geolocation",
@@ -333,15 +333,15 @@
                         "pages": [
                           {
                             "title": "C# - Property Data SDK",
-                            "path": "c-property-data-sdk"
+                            "path": "docs/c-property-data-sdk"
                           },
                           {
                             "title": "Python - Property Data SDK",
-                            "path": "Python-Property-Data-SDK"
+                            "path": "docs/Python-Property-Data-SDK"
                           },
                           {
                             "title": "Node.js - Property Data SDK",
-                            "path": "nodejs-property-data-sdk"
+                            "path": "docs/nodejs-property-data-sdk"
                           }
                         ]
                       }
@@ -481,15 +481,15 @@
                         "pages": [
                           {
                             "title": "C# - People Data SDK",
-                            "path": "c-people-data-sdk"
+                            "path": "docs/c-people-data-sdk"
                           },
                           {
                             "title": "NodeJS - People Data SDK",
-                            "path": "nodejs-people-data-sdk"
+                            "path": "docs/nodejs-people-data-sdk"
                           },
                           {
                             "title": "Python - People Data SDK",
-                            "path": "python-people-data-sdk"
+                            "path": "docs/python-people-data-sdk"
                           }
                         ]
                       }
@@ -559,7 +559,7 @@
                             "pages": [
                               {
                                 "title": "Product Categorization",
-                                "path": "product-categorization"
+                                "path": "docs/product-categorization"
                               },
                               {
                                 "title": "Taxonomy 1 Level",
@@ -640,7 +640,7 @@
                         "pages": [
                           {
                             "title": "How Product Records Are Sourced",
-                            "path": "how-product-records-are-sourced"
+                            "path": "docs/how-product-records-are-sourced"
                           },
                           {
                             "title": "How Product Records Are Merged",
@@ -723,15 +723,15 @@
                         "pages": [
                           {
                             "title": "C# - Product Data SDK",
-                            "path": "c-product-data-sdk"
+                            "path": "docs/c-product-data-sdk"
                           },
                           {
                             "title": "Python - Product Data SDK",
-                            "path": "python-product-data-sdk"
+                            "path": "docs/python-product-data-sdk"
                           },
                           {
                             "title": "Node.js - Product Data SDK",
-                            "path": "nodejs-product-data-sdk"
+                            "path": "docs/nodejs-product-data-sdk"
                           }
                         ]
                       }
@@ -871,15 +871,15 @@
                         "pages": [
                           {
                             "title": "C# - Business Data SDK",
-                            "path": "c-business-data-sdk"
+                            "path": "docs/c-business-data-sdk"
                           },
                           {
                             "title": "Python - Business Data SDK",
-                            "path": "business-data-sdk"
+                            "path": "docs/business-data-sdk"
                           },
                           {
                             "title": "Nodejs - Business Data SDK",
-                            "path": "nodejs-business-data-sdk"
+                            "path": "docs/nodejs-business-data-sdk"
                           }
                         ]
                       }
