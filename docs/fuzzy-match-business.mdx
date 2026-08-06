@@ -1,8 +1,9 @@
 ---
 title: Fuzzy Match
-description: Control how business address queries match stored records by using fuzzy matching, exact matching, or exact-then-fallback retry behavior.
+description: >-
+  Control how business address queries match stored records by using fuzzy
+  matching, exact matching, or exact-then-fallback retry behavior.
 ---
-
 ## Fuzzy matching for business addresses
 
 The `fuzzy_match` parameter controls how the `address` field in your query is matched against business records. By default, Datafiniti applies its own normalization standard to the `address` field so that minor variations in spelling, formatting, or abbreviation still return the records you expect. The `fuzzy_match` parameter lets you tune this behavior — turning it off for exact matching, leaving it on, or retrying with fuzzy matching only when an exact match returns no results.
@@ -104,20 +105,17 @@ Note that the query searched for `700 East 6th Street`, but the record stored th
 
 ## Example use cases
 
-<Columns cols={3}>
-  <Card
-    title="Search via street address"
-    href="/docs/search-via-street-address-business"
-    icon="map-pin"
-  />
-  <Card
-    title="Find local restaurants using geolocation"
-    href="/docs/find-local-restaurants-using-geolocation"
-    icon="map"
-  />
-  <Card
-    title="Discover business revenue"
-    href="/docs/discover-business-revenue"
-    icon="bar-chart"
-  />
+<Columns cols="3">
+  <Card title="Search via street address" href="/docs/search-via-street-address-business" icon="map-pin" horizontal="false">
+
+  </Card>
+
+  <Card title="Find local restaurants using geolocation" href="/docs/find-local-restaurants-using-geolocation" icon="map" horizontal="false">
+
+  </Card>
+
+  <Card title="Discover business revenue" href="/docs/discover-business-revenue" icon="bar-chart" horizontal="false">
+
+  </Card>
 </Columns>
+
