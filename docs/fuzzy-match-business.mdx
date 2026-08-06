@@ -1,0 +1,123 @@
+---
+title: Fuzzy Match
+description: Control how business address queries match stored records by using fuzzy matching, exact matching, or exact-then-fallback retry behavior.
+---
+
+## Fuzzy matching for business addresses
+
+The `fuzzy_match` parameter controls how the `address` field in your query is matched against business records. By default, Datafiniti applies its own normalization standard to the `address` field so that minor variations in spelling, formatting, or abbreviation still return the records you expect. The `fuzzy_match` parameter lets you tune this behavior — turning it off for exact matching, leaving it on, or retrying with fuzzy matching only when an exact match returns no results.
+
+This is especially useful when searching by address, where the same business can be represented in slightly different ways across sources, such as `700 E 6th St` versus `700 East 6th Street`.
+
+For the full parameter definition, see the [Business Data API reference](/reference/businesses).
+
+## Endpoint
+
+POST [https://api.datafiniti.co/v4/businesses/search](https://api.datafiniti.co/v4/businesses/search)
+
+### Input
+
+Add the `fuzzy_match` parameter alongside your normal search parameters. It accepts one of three values. The three accepted values for `fuzzy_match` behave as follows:
+
+- `on` - Datafiniti matches the `address` field using its own normalization standard, autocorrecting the supplied value to a matching record. This is the default behavior.
+- `off` - The `address` field value is matched exactly as supplied, with no normalization. Only records that exactly match will be returned.
+- `retry` - Datafiniti first matches as if `off`. If no record is found, it then attempts to fuzzy match as if `on`. This gives you the precision of an exact match while falling back to a broader search only when needed.
+
+**default behavior**
+
+If you do not specify a `fuzzy_match` parameter, the API behaves as if `fuzzy_match` is set to `on`. To require exact matches, you must explicitly set `fuzzy_match` to `off`.
+
+```typescript
+{
+  "query": "address:\"700 East 6th Street\" AND city:Austin AND province:TX",
+  "fuzzy_match": "on",
+  "num_records": 5,
+  "download": false,
+  "format": "json"
+}
+```
+
+### Exact matching
+
+Set `fuzzy_match` to `off` when you need precise results and want to avoid close-but-not-exact matches. This is useful when you already know the exact stored value of a field and want to guarantee that only matching records are returned.
+
+```typescript
+{
+  "query": "address:\"700 East 6th Street\" AND city:Austin AND province:TX",
+  "fuzzy_match": "off",
+  "num_records": 5,
+  "download": false,
+  "format": "json"
+}
+```
+
+**exact string matching**
+
+When using `fuzzy_match: off`, remember to wrap multi-word values in escaped quotes (`field:\"value\"`) so the API treats them as a single exact string rather than separate terms.
+
+### Retry matching
+
+Set `fuzzy_match` to `retry` when you want the best of both approaches. The API attempts an exact match first, and only falls back to fuzzy matching if the exact search returns zero records.
+
+```typescript
+{
+  "query": "address:\"700 East 6th Street\" AND city:Austin AND province:TX",
+  "fuzzy_match": "retry",
+  "num_records": 5,
+  "download": false,
+  "format": "json"
+}
+```
+
+**when to use retry**
+
+`retry` is a good default for address lookups where you want exact results when they exist, but would rather receive close matches than an empty response when they don't.
+
+```typescript
+{
+  "num_found": 1,
+  "total_cost": 1,
+  "people_cost": 0,
+  "property_cost": 0,
+  "business_cost": 1,
+  "product_cost": 0,
+  "records": [
+    {
+      "name": "Cisco's Restaurant Bakery & Bar",
+      "address": "700 E 6th St",
+      "city": "Austin",
+      "country": "US",
+      "province": "TX",
+      "postalCode": "78701",
+      "categories": [
+        "Mexican Restaurants",
+        "Bars",
+        "Bakeries"
+      ],
+      "id": "3CYhpHIBzUQvJ7ofBJwQ"
+    }
+  ]
+}
+```
+
+Note that the query searched for `700 East 6th Street`, but the record stored the address as `700 E 6th St`. With fuzzy matching enabled, or via `retry`, this record is still returned.
+
+## Example use cases
+
+<Columns cols={3}>
+  <Card
+    title="Search via street address"
+    href="/docs/search-via-street-address-business"
+    icon="map-pin"
+  />
+  <Card
+    title="Find local restaurants using geolocation"
+    href="/docs/find-local-restaurants-using-geolocation"
+    icon="map"
+  />
+  <Card
+    title="Discover business revenue"
+    href="/docs/discover-business-revenue"
+    icon="bar-chart"
+  />
+</Columns>
