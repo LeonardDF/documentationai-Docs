@@ -94,25 +94,81 @@ You can use an exact search to search for specific addresses
 
 ## Fuzzy Matching
 
-When using the `address` field in your property data query, it defaults to fuzzy matching for exact, full, or partial addresses. Meaning for an address like _1100 Congress Ave., Austin, TX 78701,_ the following queries would be acceptable:
+The `fuzzy_match` parameter controls how the `address` field in your query is matched against property records. By default, Datafiniti applies its own normalization standard to the `address` field so that minor variations in spelling, formatting, or abbreviation still return the records you expect.
+
+The three accepted values for `fuzzy_match` behave as follows:
+
+- `on` — Datafiniti matches the `address` field using its own normalization standard, autocorrecting the supplied value to a matching record. This is the **default behavior**.
+- `off` — The `address` field value is matched exactly as supplied, with no normalization. Only records that exactly match will be returned.
+- `retry` — Datafiniti first matches as if `off`. If no record is found, it then attempts to fuzzy match as if `on`. This gives you the precision of an exact match while falling back to a broader search only when needed.
+
+For the full feature guide, see [Fuzzy Match](/docs/fuzzy-match).
+
+### Fuzzy match on
+
+With the default (`on`) behavior, minor variations in the address string are still matched. For an address like _1100 Congress Ave., Austin, TX 78701,_ the following queries would all return results:
 
 - 1100 Congress Ave
 - 1100 Congress Avenue
 - 1100 Congress Ave, Austin
 - 1100 Congress Ave, Austin, TX 78701
 
-```java wrap="true"
+```json
 {
-	"query": "address:\"100 Congress Ave, Austin, Texas 78701\" 
+  "query": "address:\"100 Congress Ave, Austin, Texas 78701\"",
+  "fuzzy_match": "on",
+  "num_records": 5,
+  "download": false,
+  "format": "json"
 }
 ```
 
-### Address prerequisites
+### Exact matching
+
+Set `fuzzy_match` to `off` when you need precise results and want to avoid close-but-not-exact matches. This is useful when you already know the exact stored value and want to guarantee that only matching records are returned.
+
+```json
+{
+  "query": "address:\"123 Main Street\" AND city:Austin AND province:TX",
+  "fuzzy_match": "off",
+  "num_records": 5,
+  "download": false,
+  "format": "json"
+}
+```
+
+<Callout kind="alert" collapsed="false">
+  **Exact string matching**
+
+  When using `fuzzy_match: off`, remember to wrap multi-word values in escaped quotes (`field:\"value\"`) so the API treats them as a single exact string rather than separate terms.
+</Callout>
+
+### Retry matching
+
+Set `fuzzy_match` to `retry` when you want the best of both approaches. The API attempts an exact match first, and only falls back to fuzzy matching if the exact search returns zero records.
+
+```json
+{
+  "query": "address:\"123 Main Street\" AND city:Austin AND province:TX",
+  "fuzzy_match": "retry",
+  "num_records": 5,
+  "download": false,
+  "format": "json"
+}
+```
+
+`retry` is a good default for address lookups where you want exact results when they exist, but would rather receive close matches than an empty response when they don't.
+
+### Address parsing details
+
+When fuzzy matching is active, Datafiniti parses the `address` field into its component parts (street, city, state, postal code) to normalize and match against stored records. The following details describe how this parsing works.
+
+#### Address prerequisites
 
 - `address` field must start with a digit (no P.O. Box, rural route, etc.)
 - US-only — state must match a recognized US state abbreviation or name
 
-### Supported address formats
+#### Supported address formats
 
 | Format                                             | Example                                 |
 | -------------------------------------------------- | --------------------------------------- |
@@ -124,7 +180,7 @@ When using the `address` field in your property data query, it defaults to fuzzy
 | Full state name, multi-word                        | `350 Fifth Ave, New York, New York`     |
 | ZIP+4                                              | `1706 Sierra Rd, Austin, TX 78759-1234` |
 
-### Ambiguous state/suffix 2-letter codes
+#### Ambiguous state/suffix 2-letter codes
 
 Some codes are valid both as street suffixes and state abbreviations (e.g., `CT` = Court or Connecticut, `LA` = Lane or Louisiana). The splitter requires at least one disambiguator to treat them as a state:
 
@@ -133,7 +189,7 @@ Some codes are valid both as street suffixes and state abbreviations (e.g., `CT`
 
 Without a disambiguator, the code is left as a street suffix. `UNAMBIGUOUS_STATES` (`AL`, `OR`, `PA`, `WY`, `WA`) bypass this check but are still protected by a secondary guard: if splitting would leave the street portion as just a house number (\< 2 tokens), the split is rejected.
 
-### Other behavior
+#### Other parsing behavior
 
 - Pre-existing `city`, `province`, `postalCode` fields are **never overwritten** — the split only populates missing fields.
 - The no-comma path uses street suffix abbreviation tables to find the boundary between street and city; if no suffix is found, it falls back to treating the last word as the city.
@@ -378,3 +434,4 @@ Regex patterns work alongside boolean operators and other fields just like any o
   - `.` matches any character, `*` repeats zero or more, and `.*` matches any run of characters.
   - The pipe `|` is alternation (OR) between patterns.
 </Callout>
+
