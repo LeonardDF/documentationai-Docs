@@ -1122,9 +1122,8 @@
                 "group": "Community",
                 "pages": [
                   {
-                    "group": "Community & Social Channels",
-                    "pages": [],
-                    "path": "community-social-channels"
+                    "title": "Community & Social Channels",
+                    "path": "community-social-channel"
                   }
                 ]
               }
