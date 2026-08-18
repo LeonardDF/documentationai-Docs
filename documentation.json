@@ -1117,6 +1117,16 @@
                     ]
                   }
                 ]
+              },
+              {
+                "group": "Community",
+                "pages": [
+                  {
+                    "group": "Community & Social Channels",
+                    "pages": [],
+                    "path": "community-social-channels"
+                  }
+                ]
               }
             ]
           },
