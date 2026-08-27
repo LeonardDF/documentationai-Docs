@@ -296,6 +296,10 @@
                           {
                             "title": "Building rental property data market reports",
                             "path": "docs/building-rental-property-data-market-reports"
+                          },
+                          {
+                            "title": "Access Images & Panoramas",
+                            "path": "access-images-panoramas"
                           }
                         ]
                       },
