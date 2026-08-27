@@ -190,10 +190,6 @@
                         "group": "Use Cases for Property Data",
                         "pages": [
                           {
-                            "title": "Access Images & Panoramas",
-                            "path": "access-images-panoramas"
-                          },
-                          {
                             "title": "Use Cases for Property Data",
                             "path": "docs/use-cases-for-property-data"
                           },
@@ -300,6 +296,10 @@
                           {
                             "title": "Building rental property data market reports",
                             "path": "docs/building-rental-property-data-market-reports"
+                          },
+                          {
+                            "title": "Access Images & Panoramas",
+                            "path": "access-images-panoramas"
                           }
                         ]
                       },
