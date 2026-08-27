@@ -1,5 +1,6 @@
-# Accessing property images and panoramas
-
+---
+title: Accessing property images and panoramas
+---
 ## Introduction
 
 Datafiniti's property data includes visual media for many property records. There are two fields you can use to access this media:
@@ -9,7 +10,7 @@ Datafiniti's property data includes visual media for many property records. Ther
 
 Both fields are populated from the listing sources Datafiniti collects, so availability varies by property. Actual property records may not include either field.
 
-<Callout kind="info">
+<Callout kind="info" collapsed="false">
   **Terms of Use — Publicly displaying images**
 
   Per Datafiniti's [Terms of Use](https://www.datafiniti.co/terms), Section 3.9, you agree **not to** "Publicly display images available through accessing image URLs within Datafiniti's property data."
@@ -36,7 +37,7 @@ Neither `imageURLs` nor `panoramas` is a searchable filter in the typical sense 
 
 Let's say you want a single-family dwelling in Austin, Texas and want to see the media attached to it.
 
-```
+```typescript
 {
     "query": "country:US AND province:TX AND city:Austin AND propertyType:\"Single Family Dwelling\"",
     "num_records": 1
@@ -49,7 +50,7 @@ The AI assistant can help explain the query, break down the request body, and su
 
 If you only want records that include image URLs, you can require the `imageURLs` field to exist in your query.
 
-```
+```typescript
 {
     "query": "country:US AND province:TX AND city:Austin AND propertyType:\"Single Family Dwelling\" AND imageURLs:*",
     "num_records": 5
@@ -62,7 +63,7 @@ This returns up to 5 Austin single-family dwellings that have at least one image
 
 Similarly, you can require the `panoramas` field to exist to return only records that include panoramic media.
 
-```
+```typescript
 {
     "query": "country:US AND province:TX AND city:Austin AND propertyType:\"Single Family Dwelling\" AND panoramas:*",
     "num_records": 5
@@ -77,7 +78,7 @@ This returns up to 5 Austin single-family dwellings that have panoramic media av
 
 A returned record with both fields populated looks similar to this:
 
-```
+```typescript
 {
     "address": "7206 Walling Ln",
     "city": "Austin",
@@ -103,7 +104,7 @@ A returned record with both fields populated looks similar to this:
 }
 ```
 
-<Callout kind="info">
+<Callout kind="info" collapsed="false">
   Remember: the image URLs above (and any image assets referenced by `panoramas`) may **not** be publicly displayed, per [Terms of Use](https://www.datafiniti.co/terms) Section 3.9.
 </Callout>
 
@@ -111,7 +112,7 @@ A returned record with both fields populated looks similar to this:
 
 Once you've pulled a record, you can render the media inside your own application.
 
-<Callout kind="info">
+<Callout kind="info" collapsed="false">
   **Where you can display this media**
 
   Terms of Use Section 3.9 prohibits **public** display of images accessed through Datafiniti's property data. You **may** display these images and panoramas as long as they sit behind a login, credential, paywall, or other authenticated/walled service — i.e., not on a publicly accessible page. Keep any embed inside an authenticated part of your application.
@@ -157,6 +158,6 @@ Rendered with the placeholder, it looks like this:
 
 > **Note (please verify):** The `<iframe>` approach assumes `panoramas` exposes an embeddable `url`. If the field instead returns a provider-specific viewer or a non-embeddable link, adjust the embed method accordingly.
 
-### Conclusion
+# Conclusion
 
 With `imageURLs` and `panoramas`, you can enrich your property records with both static photos and immersive panoramic media. Use `imageURLs` for standard listing photos and `panoramas` for 360°/virtual-tour media. You can display this media in your own application as long as it stays behind a login, credential, or other walled service — per [Terms of Use](https://www.datafiniti.co/terms) Section 3.9, it may not be shown on a publicly accessible page.
