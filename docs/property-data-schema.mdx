@@ -2794,6 +2794,46 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
+<ParamField body="panoramas" param-type="nested" required="false" deprecated="false" show-location="false">
+  A list of 360-degree panoramic images associated with this property.
+
+  **Example:**
+
+  ```json
+  "panoramas": [
+      {
+        "panoramaTitle": "Living Room",
+        "panoramaURL": "https://example.com/pano/living-room.jpg",
+        "panoramaFOV": 120,
+        "panoramaStartAngle": -45,
+        "panoramaDestinations": ["Kitchen::90", "Primary bedroom::-42"]
+      }
+    ]
+  ```
+
+  <Expandable title="Sub-fields" default-open="false">
+    <ParamField body="panoramas.panoramaTitle" param-type="text" required="false" deprecated="false" show-location="false">
+      The title or label for this panorama.
+    </ParamField>
+
+    <ParamField body="panoramas.panoramaURL" param-type="keyword" required="false" deprecated="false" show-location="false">
+      The URL of the panorama image.
+    </ParamField>
+
+    <ParamField body="panoramas.panoramaFOV" param-type="integer" required="false" deprecated="false" show-location="false">
+      The field of view angle (in degrees) for this panorama.
+    </ParamField>
+
+    <ParamField body="panoramas.panoramaStartAngle" param-type="integer" required="false" deprecated="false" show-location="false">
+      The starting viewing angle (in degrees) for this panorama.
+    </ParamField>
+
+    <ParamField body="panoramas.panoramaDestinations" param-type="text" required="false" deprecated="false" show-location="false">
+      A list of navigation destinations from this panorama to other panoramas, formatted as `RoomName::angle`.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
 <ParamField body="sourceURLs" param-type="keyword" required="false" deprecated="false" show-location="false">
   A list of source URLs associated with this property record.
 
@@ -2818,3 +2858,4 @@ The property data schema below lists all available fields in a property record. 
     ]
   ```
 </ParamField>
+
