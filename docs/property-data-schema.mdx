@@ -979,11 +979,40 @@ The property data schema below lists all available fields in a property record. 
   ```json
   "permits": [
       {
-        "number": "BLD-2024-01822",
-        "type": "Renovation Permit"
+        "Date: 08/27/2001 || Amount: $200 || Permit Number: 01950324"
       }
     ]
   ```
+</ParamField>
+
+<ParamField body="permitDetails" param-type="nested" required="false" deprecated="false" show-location="false">
+  A normalized and nested list of permit details associated with the property, with each permit detail placed in its own sub-field.
+
+  **Example:**
+
+  ```json
+  "permitDetails": [
+      {
+        "number": "BLDM23-000121",
+        "type": "Boathouse, Dock & Shoreline",
+        "date": "2023-02-17T00:00:00Z"
+      }
+    ]
+  ```
+
+  <Expandable title="Sub-fields" default-open="false">
+    <ParamField body="permitDetails.number" param-type="text" required="false" deprecated="false" show-location="false">
+      The permit number.
+    </ParamField>
+
+    <ParamField body="permitDetails.type" param-type="text" required="false" deprecated="false" show-location="false">
+      The type of permit.
+    </ParamField>
+
+    <ParamField body="permitDetails.date" param-type="date" required="false" deprecated="false" show-location="false">
+      The date of the permit.
+    </ParamField>
+  </Expandable>
 </ParamField>
 
 <ParamField body="petPolicy" param-type="text" required="false" deprecated="false" show-location="false">
