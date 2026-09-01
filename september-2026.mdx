@@ -1,5 +1,6 @@
-# September 2026 Release Log
-
+---
+title: September 2026 Release Log
+---
 Two new property fields — permit details and 360° panoramas — plus one of our heaviest crawl build-out months yet across product and property data.
 
 ## New to Datafiniti
@@ -28,7 +29,7 @@ This month we added two new fields to property records, giving you richer detail
 
 Both fields are populated from the listing sources we collect, so availability varies by property, and actual records may not include either field. To return only records that include a field, require it to exist in your query:
 
-```
+```typescript
 {
     "query": "country:US AND province:TX AND city:Austin AND propertyType:\"Single Family Dwelling\" AND panoramas:*",
     "num_records": 5
@@ -53,3 +54,4 @@ A look at what we're working on next:
 - **Completing the statusHistory migration.** We continue to move our `statuses` field over to `statusHistory`, cleaning up redundant records and normalizing historic values along the way.
 - **Normalized product categories.** We're introducing a new normalized category to make it easier to find categories and build taxonomy.
 - **Adding a businessesAtAddress field.** A new generated field on property data that links a business data record and a property data record whenever they share the same address.
+
