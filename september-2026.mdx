@@ -1,0 +1,55 @@
+# September 2026 Release Log
+
+Two new property fields — permit details and 360° panoramas — plus one of our heaviest crawl build-out months yet across product and property data.
+
+## New to Datafiniti
+
+This month we added two new fields to property records, giving you richer detail on a property's history and a more immersive way to view it.
+
+### PermitDetails
+
+`permitDetails` is a normalized, nested list of building-permit records associated with a property, with each permit broken out into its own sub-fields (for example `number`, `type`, and `date`). It gives you structured visibility into renovations, additions, and construction activity tied to a property — without stitching together a separate permit data source.
+
+[See it in the schema](https://docs.datafiniti.co/docs/property-data-schema#body-permitDetails).
+
+### panoramas
+
+`panoramas` is a list of 360° panoramic media associated with a property, complementing the static photos already available in `imageURLs`. Where `imageURLs` provides individual listing photos, `panoramas` surfaces immersive, interactive views — so you can build more engaging property experiences and feed richer inputs into your models and workflows.
+
+[See it in the schema](https://docs.datafiniti.co/docs/property-data-schema#body-panoramas).
+
+### Why This Matters
+
+`permitDetails` lets you understand a property beyond its listing snapshot. Permit history is a strong signal for property condition, recent improvements, and valuation changes, opening up new use cases in risk assessment, renovation tracking, and lead scoring.
+
+`panoramas` gives your applications visual context that static images alone can't. Immersive walkthroughs help end users evaluate a property faster and give your models a richer view of what a listing actually looks like.
+
+### What Changed
+
+Both fields are populated from the listing sources we collect, so availability varies by property, and actual records may not include either field. To return only records that include a field, require it to exist in your query:
+
+```
+{
+    "query": "country:US AND province:TX AND city:Austin AND propertyType:\"Single Family Dwelling\" AND panoramas:*",
+    "num_records": 5
+}
+```
+
+A quick note on usage: per our [Terms of Use](https://www.datafiniti.co/terms) (Section 3.9), images accessed through property data — including assets referenced by `panoramas` — may not be publicly displayed. You can display this media inside an authenticated part of your application, behind a login, credential, or paywall.
+
+## Data Sourcing Recap — August 2026
+
+### 76 new and updated crawl sources
+
+Our crawl development team had a heavy build-out month in August — 76 total tickets across product and property data:
+
+- **Product data.** Product dominated the month with 71 buildouts plus 2 rebuilds (CVS and Bloomingdales). The work was almost entirely beauty and personal care — cosmetics, skincare, haircare, fragrance, and health/OTC — spanning individual brands like Charlotte Tilbury, The Ordinary, Olaplex, and Kiehl's, alongside multi-brand retailers such as SpaceNK and Superdrug. AtlanticCigar was the lone non-beauty outlier.
+- **Property data.** A new buildout for Rare Beauty, plus a new feature: Zillow Panoramas and DailyUpdate changes, which power the new `panoramas` field above.
+
+## Coming Soon
+
+A look at what we're working on next:
+
+- **Completing the statusHistory migration.** We continue to move our `statuses` field over to `statusHistory`, cleaning up redundant records and normalizing historic values along the way.
+- **Normalized product categories.** We're introducing a new normalized category to make it easier to find categories and build taxonomy.
+- **Adding a businessesAtAddress field.** A new generated field on property data that links a business data record and a property data record whenever they share the same address.
