@@ -11,6 +11,20 @@ This month we added two new fields to property records, giving you richer detail
 
 `permitDetails` is a normalized, nested list of building-permit records associated with a property, with each permit broken out into its own sub-fields (for example `number`, `type`, and `date`). It gives you structured visibility into renovations, additions, and construction activity tied to a property — without stitching together a separate permit data source.
 
+```typescript
+"permitDetails": [
+    {
+      "number": "24-0788",
+      "type": "Boathouse, Dock & Shoreline",
+      "status": "C – Closed",
+      "description": "35 – Remodeling, Exterior",
+      "amount": 5285,
+      "date": "2024-08-28T00:00:00Z",
+      "completionDate": "2025-05-23T00:00:00Z"
+    }
+  ]
+```
+
 [See it in the schema](https://docs.datafiniti.co/docs/property-data-schema#body-permitDetails).
 
 ### panoramas
