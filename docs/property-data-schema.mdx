@@ -993,24 +993,44 @@ The property data schema below lists all available fields in a property record. 
   ```json
   "permitDetails": [
       {
-        "number": "BLDM23-000121",
+        "number": "24-0788",
         "type": "Boathouse, Dock & Shoreline",
-        "date": "2023-02-17T00:00:00Z"
+        "status": "C – Closed",
+        "description": "35 – Remodeling, Exterior",
+        "amount": 5285,
+        "date": "2024-08-28T00:00:00Z",
+        "completionDate": "2025-05-23T00:00:00Z"
       }
     ]
   ```
 
   <Expandable title="Sub-fields" default-open="false">
-    <ParamField body="permitDetails.number" param-type="text" required="false" deprecated="false" show-location="false">
-      The permit number.
+    <ParamField body="permitDetails.amount" param-type="float" required="false" deprecated="false" show-location="false">
+      The permit amount. This is not a normalized field.
     </ParamField>
 
-    <ParamField body="permitDetails.type" param-type="text" required="false" deprecated="false" show-location="false">
-      The type of permit.
+    <ParamField body="permitDetails.completionDate" param-type="date" required="false" deprecated="false" show-location="false">
+      The completion date of the permit. This is not a normalized field.
     </ParamField>
 
     <ParamField body="permitDetails.date" param-type="date" required="false" deprecated="false" show-location="false">
       The date of the permit.
+    </ParamField>
+
+    <ParamField body="permitDetails.description" param-type="text" required="false" deprecated="false" show-location="false">
+      The description of the permit work. This is not a normalized field.
+    </ParamField>
+
+    <ParamField body="permitDetails.number" param-type="text" required="false" deprecated="false" show-location="false">
+      The permit number.
+    </ParamField>
+
+    <ParamField body="permitDetails.status" param-type="text" required="false" deprecated="false" show-location="false">
+      The status of the permit. This is not a normalized field.
+    </ParamField>
+
+    <ParamField body="permitDetails.type" param-type="text" required="false" deprecated="false" show-location="false">
+      The type of permit.
     </ParamField>
   </Expandable>
 </ParamField>
