@@ -8,19 +8,12 @@ We're excited to announce some major changes to Datafiniti.  We've just complete
 
 For more technical details, we've published release notes to help customers understand the technical aspects of the changes.
 
-We've also published new guides and API docs for Product Data.  You can view those at:
-
-* [Getting Started with Product Data](https://datafiniti-api.readme.io/docs/getting-started-with-product-data)
-* [API Documentation](https://datafiniti-api.readme.io/reference)
-
-Both of these links go to reference material that is a work in progress.
-
 *Note:  All changes below currently only affect our Product Data.  Business Data and Property Data will be migrated to an Elasticsearch backend in the coming months.*
 
 ## Changes that will break existing integrations
 
 * You must now specify a `format` with your API call.  `format` can be set to `JSON` or `CSV`.  If you don’t supply a format, the API response will default to `JSON`.
-* Some field names have changed in order to abide by a consistent naming convention.  See the last note under Data Quality below.  You can view the updated product schema [here](https://datafiniti-api.readme.io/docs/product-data-schema).
+* Some field names have changed in order to abide by a consistent naming convention.  See the last note under Data Quality below.  You can view the updated product schema.
 * The presentation and ordering of data in API responses or downloads may be different due to removal of fields or changes in field names.  Some fields have been "demoted" to our `features` field.
 
 ## Expanded Query Capabilities
