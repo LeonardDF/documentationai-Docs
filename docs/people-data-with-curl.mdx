@@ -98,7 +98,7 @@ Now let's dive through the response the API returned:
 | Response Field | Description |
 | :--- | :--- |
 | `"num_found"` | The total number of available records in the database that match your query.  If you end up downloading the entire data set, this is how many records you'll use. |
-| `"total_cost"` | The number of credits this request has cost you.  People records have a record cost multiplier tied to them.  [See pricing](https://datafiniti.co/pricing/people-data-pricing/). |
+| `"total_cost"` | The number of credits this request has cost you.  People records have a record cost multiplier tied to them.  [See pricing](https://www.datafiniti.co/data/people-data#pricing). |
 | `"records"` | The first available matches to your query. If there are no matches, this field will be empty.<br />Within each record returned, you'll see multiple fields shown.  This is the data for each record. |
 
 Within the `records` field, you'll see a single person returned with multiple fields and the values associated with that product.  The JSON response will show all fields that have a value.  It won't show any fields that don't have a value.
@@ -213,7 +213,7 @@ Here's what these fields mean:
 | `query`          | The query you ran.                                                                                                                                                                                   |
 | `format`         | The data format you requested.                                                                                                                                                                       |
 | `num_records`    | The total number of records that will be downloaded.                                                                                                                                                 |
-| `total_cost`     | The total number of credits used by this download.  People records have a record cost multiplier tied to them.  [See pricing](https://datafiniti.co/pricing/people-data-pricing/).                   |
+| `total_cost`     | The total number of credits used by this download.  People records have a record cost multiplier tied to them.  [See pricing](https://www.datafiniti.co/data/people-data#pricing).                   |
 
 ### 6. Download the result file(s)
 
