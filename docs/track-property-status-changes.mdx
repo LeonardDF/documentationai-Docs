@@ -6,6 +6,10 @@ title: Track property status changes
 
 Many Datafiniti customers are interested in using our property data to track the status of property as they on/off the market. This guide will show you how to track this feed from historical to daily.
 
+<Callout kind="alert" collapsed="false">
+  Datafiniti recommends pulling and viewing historical statuses from the `statusHistory` field. The `statuses` field is currently being deprecated, and all status history values are being migrated to `statusHistory`.
+</Callout>
+
 ### Finding the most recent status change
 
 Datafiniti allows you to search on the most recent changes to the data in the record itself. For this example we will be looking for the most recent *For Sale* homes in Houston, Texas for the last 30 days since July 1st. Here is the query:
