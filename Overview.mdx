@@ -1,0 +1,79 @@
+---
+title: Using Datafiniti with AI
+description: >-
+  Connect AI agents and assistants directly to Datafiniti's product, business,
+  property, and people data through the Datafiniti MCP server.
+---
+# Getting Started with Datafiniti's MCP
+
+Datafiniti's Model Context Protocol (MCP) server lets AI agents and assistants query Datafiniti's product, business, property, and people data directly — no glue code, no parallel integration. If your tooling speaks MCP (Claude, agent frameworks, or any MCP-aware client), it can search, count, download, and inspect Datafiniti records using the same request handlers, permissions, and credit model as our REST API.
+
+Because the MCP server reuses the exact same request-handler functions the public API uses, MCP and REST behave identically. There's no second implementation to drift out of sync — a fix or feature on one surface applies to both.
+
+## Capabilities
+
+The Datafiniti MCP server gives your AI agent everything it needs to go from a natural-language request to a structured data pull:
+
+- **Tools** for searching, counting, downloading, retrieving single records, and fetching schemas — each backed by the same handler as its REST equivalent.
+- **Prompts** that turn Datafiniti's use-case guides into ready-to-run query templates, so an agent can build a correct Lucene query from a plain-language goal.
+- **Shared query, view, and status syntax** documentation exposed to the agent, so generated queries follow Datafiniti's conventions (boolean operators, nested-field dot notation, compound `{}` queries, saved and ad-hoc views).
+- **The same authentication, permissions, and credit accounting** as REST. Your bearer token authenticates the MCP session, field allowlists are enforced identically, and `df_search` / `df_start_download` charge credits exactly as `/search` does.
+- **Structured errors** (`{code, message, field}`) on the tools agents actually hit, so an agent can branch on a stable error `code` instead of string-matching a message.
+
+## Authentication
+
+The MCP server is mounted at `/v4/mcp` and sits behind the same authentication every other Datafiniti route uses: a bearer JWT. There's no separate MCP credential to manage. You can get your API token from the [Datafiniti Web Portal](https://portal.datafiniti.co/settings/api) — the same token you use for REST requests and Postman.
+
+**API Token**
+
+Your API token authenticates the MCP session just as it does a REST call. For security reasons, your API token is automatically regenerated whenever you change your password.
+
+## Explore by data type
+
+Each data type works through the same set of tools, but the fields, statuses, and use cases differ. Pick your data type below to see how to query it through the MCP server:
+
+[Property DataSearch real estate and property records — addresses, valuations, statuses, transactions, and linked people — through the MCP server.](https://docs.datafiniti.co/docs/using-datafiniti-with-ai-property)[People DataRetrieve people records with contact information and demographic attributes through the MCP server.](https://docs.datafiniti.co/docs/using-datafiniti-with-ai-people)[Product DataQuery product listings with pricing, descriptions, reviews, and specifications through the MCP server.](https://docs.datafiniti.co/docs/using-datafiniti-with-ai-product)[Business DataLook up business profiles, locations, categories, and contact details through the MCP server.](https://docs.datafiniti.co/docs/using-datafiniti-with-ai-business)[Using Datafiniti's MCP with PostmanConnect to and exercise the MCP server from Postman to inspect tools, prompts, and responses.](https://docs.datafiniti.co/docs/using-datafiniti-with-ai-postman)
+
+## Available tools
+
+Every tool reuses the same REST request handler the public API uses, so behavior, permissions, and pricing match REST exactly.
+
+| Tool                 | What it does                                     | Notes                                                                              |
+| -------------------- | ------------------------------------------------ | ---------------------------------------------------------------------------------- |
+| `df_search`          | Search records matching a query                  | Returns up to 50 records per call; charges credits identically to REST `/search`   |
+| `df_count`           | Count records matching a query                   | No records returned, no credit cost                                                |
+| `df_start_download`  | Start an asynchronous download                   | Poll `df_download_status` for progress. Capped at 100,000 records at the MCP layer |
+| `df_download_status` | Check the status of a download                   | Returns links to result files once complete                                        |
+| `df_get_record`      | Retrieve a single record                         |                                                                                    |
+| `df_get_schema`      | Fetch the field-name-to-type map for a data type | Returns the fields an agent needs to write a query                                 |
+
+**Choosing a tool**
+
+Use `df_count` to size a result set before spending credits, `df_search` for small or targeted pulls (up to 50 records), and `df_start_download` when a use case's scope implies it could return many records.
+
+## How queries work
+
+The MCP server exposes Datafiniti's full query syntax to the agent, so generated queries follow the same rules documented in our query-construction guides:
+
+- **Boolean operators, negation, and parentheses** for combining and grouping field conditions.
+- **Nested-field dot notation** for sub-fields (for example, `descriptions.value`).
+- **Ranges** for date, integer, and double fields.
+- **Compound&#x20;****`{}`****&#x20;syntax** for matching multiple sub-field requirements within a single nested object, which behaves differently from an unbraced `AND`.
+
+Query syntax is documented per data type. See [Constructing Property Queries](https://docs.datafiniti.co/docs/constructing-property-queries), [Constructing People Queries](https://docs.datafiniti.co/docs/constructing-people-queries), [Constructing Product Queries](https://docs.datafiniti.co/docs/constructing-product-queries), and [Constructing Business Queries](https://docs.datafiniti.co/docs/constructing-business-queries).
+
+### Views
+
+The `view` parameter on `df_search` and `df_start_download` controls which fields come back. A string names a default or saved view. An array is an ad-hoc view built from `{"name": "<field>"}` objects, where nested sub-fields use dot notation in the `name` (for example, `"descriptions.value"`).
+
+### Defaults
+
+`df_search`'s `sort` parameter defaults to sorting by `dateUpdated` descending, and `fuzzy_match` defaults to `'on'` for address fuzzy-matching — both matching the REST `/search` endpoint's defaults exactly.
+
+## Prompts
+
+The MCP server ships a library of prompts, each converting a `docs.datafiniti.co` use-case guide into a ready-to-run query template. A prompt doesn't execute anything on its own — it returns a built query and tells the calling agent which tool to run next (`df_search` for a small, targeted result set, or `df_start_download` when the guide's scope implies many records).
+
+Every prompt's description cites its source guide, so any query an agent generates is traceable back to the original documentation. The prompts available for each data type are listed on that data type's page.
+
+Was this page helpful?

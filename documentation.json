@@ -54,6 +54,43 @@
             "tab": "Guides",
             "groups": [
               {
+                "group": "Using Datafiniti with AI",
+                "pages": [
+                  {
+                    "title": "Overview",
+                    "path": "Overview"
+                  },
+                  {
+                    "group": "Property Data",
+                    "pages": [
+                      {
+                        "title": "Property Data with AI",
+                        "path": "getting-started-with-property-data"
+                      }
+                    ]
+                  },
+                  {
+                    "group": "People Data",
+                    "pages": [
+                      {
+                        "title": "People Data with AI",
+                        "path": "people-data-with-ai"
+                      }
+                    ]
+                  },
+                  {
+                    "group": "Product Data",
+                    "pages": [
+                      {
+                        "title": "Product Data with AI",
+                        "path": "product-data-with-ai"
+                      }
+                    ]
+                  }
+                ],
+                "path": "overview"
+              },
+              {
                 "group": "Datafiniti API",
                 "pages": [
                   {

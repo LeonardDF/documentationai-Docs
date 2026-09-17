@@ -1,0 +1,66 @@
+---
+title: Product Data with AI
+description: >-
+  Query Datafiniti's product data through the MCP server — search, count,
+  download, and inspect product records from an AI agent.
+---
+# Using Product Data with AI
+
+Datafiniti's product data provides access to product listings with pricing, descriptions, reviews, and specifications across retailers. Through the MCP server, an AI agent can search, count, download, and retrieve these records using the same tools, permissions, and credit model as the REST API.
+
+This page covers how product data works specifically through the MCP server. For the underlying field definitions and query rules, see the [Product Data Schema](https://docs.datafiniti.co/docs/product-data-schema) and [Constructing Product Queries](https://docs.datafiniti.co/docs/constructing-product-queries).
+
+## Tools
+
+All of the shared MCP tools work against product data. Set the data type to product and the agent can:
+
+| Tool                 | Product use                                                                                  |
+| -------------------- | -------------------------------------------------------------------------------------------- |
+| `df_search`          | Return up to 50 matching product records. Charges credits identically to REST `/search`      |
+| `df_count`           | Count matching products with no records returned and no credit cost                          |
+| `df_start_download`  | Start an async download of a larger product set (capped at 100,000 records at the MCP layer) |
+| `df_download_status` | Poll a running product download for status and result-file links                             |
+| `df_get_record`      | Retrieve a single product record                                                             |
+| `df_get_schema`      | Fetch the product field-name-to-type map so the agent can write a valid query                |
+
+## Example query
+
+A product search combines field conditions with boolean operators, and can match multiple values within a single field. The agent builds the Lucene query string and passes it to `df_search`:
+
+```typescript
+{
+  "query": "categories:(laptops OR desktops) AND brand:Apple",
+  "num_records": 10
+}
+```
+
+To size the result set before spending credits, the same query goes to `df_count`, which returns the match count with no credit cost. When the scope implies many records — for example exporting descriptions or reviews for training — the agent passes the query to `df_start_download` and polls `df_download_status` for result-file links.
+
+## Views and nested fields
+
+The `view` parameter controls which product fields come back. Nested sub-fields are expressed as dot notation in a view's `name` — for example, `"descriptions.value"` — rather than a separate sub-fields array. This matters for product data in particular, where descriptions, reviews, and prices are nested structures. See [Available Views for Product Data](https://docs.datafiniti.co/docs/available-views-for-product-data).
+
+## Prompts for product data
+
+Each prompt converts a product use-case guide into a ready-to-run query template, then tells the agent whether to call `df_search` or `df_start_download` next. Product prompts include:
+
+| Prompt ID                             | Title                                                   |
+| ------------------------------------- | ------------------------------------------------------- |
+| `search_by_gtin`                      | Look up a product by GTIN                               |
+| `lookup_product_by_brand_model`       | Look up a product by brand and model number             |
+| `export_llm_training_data`            | Export product descriptions or reviews for LLM training |
+| `pet_food_pricing_analytics`          | Pricing analytics for pet food                          |
+| `cleanup_customer_product_entry`      | Clean up a customer-entered product record              |
+| `build_wine_database`                 | Build a database of wines                               |
+| `personalized_pricing_recommendation` | Find products matching a budget                         |
+| `match_products_against_competitor`   | Match products against a competitor                     |
+| `search_for_phones`                   | Search for phones                                       |
+| `find_product_material_info`          | Find product material info                              |
+
+**Traceability**
+
+Each prompt's description cites the source guide it was built from, so any query the agent generates traces back to the original product documentation.
+
+## Exporting data for LLM training
+
+A common AI-adjacent use case is pulling product descriptions or reviews to train or fine-tune a model. The `export_llm_training_data` prompt builds a query scoped to those fields and, because the scope typically implies a large pull, routes the agent to `df_start_download` rather than `df_search`. See [Train LLMs with Product Descriptions and Review](https://docs.datafiniti.co/docs/train-llms-with-product-descriptions-and-review) for the underlying guide.

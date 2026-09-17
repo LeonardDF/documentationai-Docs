@@ -1,0 +1,92 @@
+---
+title: Property Data with AI
+description: >-
+  Query Datafiniti's property data through the MCP server — search, count,
+  download, and inspect real estate records from an AI agent.
+---
+# Using Property Data with AI
+
+Datafiniti's property data covers real estate and property records — addresses, valuations, square footage, bedrooms and bathrooms, statuses, transactions, tax assessments, and linked people such as owners and brokers. Through the MCP server, an AI agent can query all of it using the same tools, permissions, and credit model as the REST API.
+
+This page covers how property data works specifically through the MCP server. For the underlying field definitions and query rules, see the [Property Data Schema](https://docs.datafiniti.co/docs/property-data-schema) and [Constructing Property Queries](https://docs.datafiniti.co/docs/constructing-property-queries).
+
+## Tools
+
+All of the shared MCP tools work against property data. Set the data type to property and the agent can:
+
+| Tool                 | Property use                                                                                  |
+| -------------------- | --------------------------------------------------------------------------------------------- |
+| `df_search`          | Return up to 50 matching property records. Charges credits identically to REST `/search`      |
+| `df_count`           | Count matching properties with no records returned and no credit cost                         |
+| `df_start_download`  | Start an async download of a larger property set (capped at 100,000 records at the MCP layer) |
+| `df_download_status` | Poll a running property download for status and result-file links                             |
+| `df_get_record`      | Retrieve a single property record                                                             |
+| `df_get_schema`      | Fetch the property field-name-to-type map so the agent can write a valid query                |
+
+## Property statuses
+
+Property queries frequently filter on status, and property records carry a rich, docs-verified set of status values covering the sale side, specific off-market and delisted reasons, and the rental side. Because the exact value routes to the correct underlying field — `mostRecentStatus` for sale-side values versus `mostRecentRentalStatus` for rental-side values — status arguments on property prompts are constrained to the verified value set rather than accepting a free string.
+
+For the full list of accepted values, see [Possible Values for Property Fields](https://docs.datafiniti.co/docs/possible-values-for-property-fields).
+
+**Status routing**
+
+A rental-side status value only exists on `mostRecentRentalStatus`. Querying it against `mostRecentStatus` silently returns zero results. The property prompts handle this routing for you.
+
+## Example query
+
+A simple property search asks for records in a location. The agent builds the Lucene query string and passes it to `df_search`:
+
+```typescript
+{
+  "query": "country:US AND propertyType:\"Single Family Dwelling\"",
+  "num_records": 10
+}
+```
+
+To size the result set before spending credits, the same query goes to `df_count` instead, which returns the match count with no credit cost. When the scope implies many records, the agent passes the query to `df_start_download` and then polls `df_download_status` for result-file links.
+
+**Escaped quotes**
+
+Exact-match values inside a query use escaped quotes — `propertyType:\"Single Family Dwelling\"` — not unescaped quotes.
+
+## Prompts for property data
+
+Each prompt converts a property use-case guide into a ready-to-run query template, then tells the agent whether to call `df_search` or `df_start_download` next. Property prompts include:
+
+| Prompt ID                             | Title                                                         |
+| ------------------------------------- | ------------------------------------------------------------- |
+| `search_mls_properties`               | Search or download MLS property data                          |
+| `determine_home_value`                | Determine home values                                         |
+| `search_properties_near_latlong`      | Search properties around a lat/long                           |
+| `select_commercial_development_sites` | Select sites for commercial development                       |
+| `find_dental_office_properties`       | Find locations of dental offices                              |
+| `find_roofing_lead_properties`        | Find homeowners that may need roofing work                    |
+| `find_new_home_owner_leads`           | Find recent home buyers                                       |
+| `search_property_status`              | Search on property statuses                                   |
+| `search_by_street_address`            | Search via street address                                     |
+| `discover_client_home_sale`           | Discover when a client sold their home                        |
+| `find_investment_properties`          | Find investment properties                                    |
+| `check_shipping_address_vacancy`      | Check if a shipping address is a vacant/listed property       |
+| `collect_hoa_fee_data`                | Collect HOA fee data                                          |
+| `find_rental_rates`                   | Find rental rates for properties                              |
+| `find_property_comps`                 | Find property comps from transaction data                     |
+| `find_sold_property_prices`           | Find prices of sold properties                                |
+| `track_property_status`               | Track property status changes                                 |
+| `search_broker_licenses`              | Search broker license numbers                                 |
+| `generate_broker_contacts`            | Generate a list of recent broker contacts                     |
+| `find_property_refinance_data`        | Find property refinance data                                  |
+| `find_commercial_days_on_market`      | Find days on market for commercial property                   |
+| `find_property_liens`                 | Find property with liens                                      |
+| `find_mortgage_lenders`               | Find mortgage lender from transactions                        |
+| `access_owner_broker_people`          | Access owners, brokers, and other people linked to a property |
+| `build_rental_market_report`          | Build a rental property market report                         |
+| `find_local_brokers`                  | Find real estate brokers                                      |
+
+**Traceability**
+
+Each prompt's description cites the source guide it was built from, so any query the agent generates traces back to the original property documentation.
+
+## Accessing linked people data
+
+Several property use cases — reaching homeowners who may need roofing work, contacting new home owners, and accessing owners and brokers — join property and people data. The corresponding prompts assemble this link so an agent can move from a property record to the people associated with it. See [Accessing owners, brokers, & other people data](https://docs.datafiniti.co/docs/accessing-owners-brokers-and-other-people) for the underlying guide.
