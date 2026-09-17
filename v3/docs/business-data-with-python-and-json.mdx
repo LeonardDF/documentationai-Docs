@@ -4,15 +4,12 @@ title: Business Data with Python and JSON
 For this guide, we're going to assume you're interested in using Datafiniti's business data to do some marketing  analysis on hotels.  Let's say you're a data scientist that's been tasked with the following:
 
 1. Collect data on hotels.
-
 2. Sort the data by state.
-
 3. Find which states have the most hotels.
 
 Your environment and data needs:
 
 1. You're working with Python.
-
 2. You want to work with JSON data.
 
 Here are the steps we'll take:
@@ -184,43 +181,43 @@ Let's break down what the API call is all about:
 | `AAAXXXXXXXXXXXX:@` | Your API token.  You're telling the API who you are so it can respond to your request.                       |
 | `api.datafiniti.co` | The location of the API.                                                                                     |
 
-<ParamField path="/v3" param-type="string" required="false" deprecated="false">
+<ParamField path="/v3" param-type="string" required="false" deprecated="false" show-location="true">
   You're telling the API which version to use.  `v3` is our most recent and current API version.
 </ParamField>
 
-<ParamField path="/data" param-type="string" required="false" deprecated="false">
+<ParamField path="/data" param-type="string" required="false" deprecated="false" show-location="true">
   You're telling the API you're interested in querying data.
 </ParamField>
 
-<ParamField path="/businesses" param-type="string" required="false" deprecated="false">
+<ParamField path="/businesses" param-type="string" required="false" deprecated="false" show-location="true">
   Specifically, you're interested in business data.
 </ParamField>
 
-<ParamField query="view" param-type="string" required="false" deprecated="false">
+<ParamField query="view" param-type="string" required="false" deprecated="false" show-location="true">
   The `view` tells the API in which fields you want your response.  `businesses_all` will show all available fields in a record.
 
   **Example:** `view=businesses_all`
 </ParamField>
 
-<ParamField query="format" param-type="string" required="false" deprecated="false">
+<ParamField query="format" param-type="string" required="false" deprecated="false" show-location="true">
   The `format` tells the API which data format you want to see.  You can set it to `JSON` or `CSV`.
 
   **Example:** `format=JSON`
 </ParamField>
 
-<ParamField query="q" param-type="string" required="false" deprecated="false">
+<ParamField query="q" param-type="string" required="false" deprecated="false" show-location="true">
   The `q` tells the API what query you want to use.  In this case, you're telling the API you want to search by `categories`.  Any business that has `hotels` listed in its `categories` field will be returned.
 
   **Example:** `q=categories:hotels`
 </ParamField>
 
-<ParamField query="records" param-type="integer" required="false" deprecated="false">
+<ParamField query="records" param-type="integer" required="false" deprecated="false" show-location="true">
   The `records` tells the API how many records to return in the its response.  In this case, you just want to see 1 matching record.
 
   **Example:** `records=1`
 </ParamField>
 
-<ParamField query="download" param-type="boolean" required="false" deprecated="false">
+<ParamField query="download" param-type="boolean" required="false" deprecated="false" show-location="true">
   The `download` tells the API if you want to initiate a download request or not. Setting it to `false` means you don't, so it will show the matching records immediately in the response.
 
   **Example:** `download=false`
@@ -283,7 +280,6 @@ else:
 This query is different in a couple ways:
 
 1. It adds ` AND country:US` to narrow down results to just US hotels.
-
 2. It changes `records=1` to `records=10` so we can look at more sample matches.
 
 Datafiniti lets you construct very refined boolean queries.  If you wanted to do more complicated searches, you could OR operations, negation, and more.
@@ -356,10 +352,9 @@ else:
 A few things to pay attention to in the above code:
 
 1. We removed `&records=10`.
-
 2. We changed `download=false` to `download=true`.
 
-Since we've handled multiple steps of the download process in this code, we won't go into the details here, but we do recommend you familiarize yourself with those steps.  Checking them out in our [Business Data with Web Browser and JSON Guide](/v3/docs/business-data-with-web-browser-json) will be helpful.
+Since we've handled multiple steps of the download process in this code, we won't go into the details here, but we do recommend you familiarize yourself with those steps.  Checking them out in our [Getting Started with Business Data](/docs/getting-started-with-business-data) will be helpful.
 
 ## 6. Parse the JSON data
 
@@ -389,6 +384,3 @@ for record in records:
 ```
 
 You can edit the code in the `for` loop above to do whatever you'd like with the data, such as store the data in a database, write it out to your console, etc.
-
-
-
