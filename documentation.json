@@ -55,6 +55,7 @@
             "groups": [
               {
                 "group": "Using Datafiniti with AI",
+                "expandable": true,
                 "pages": [
                   {
                     "title": "Overview",
@@ -118,6 +119,7 @@
               },
               {
                 "group": "Datafiniti API",
+                "expandable": true,
                 "pages": [
                   {
                     "group": "Introduction",
@@ -997,6 +999,7 @@
               },
               {
                 "group": "Web Portal",
+                "expandable": true,
                 "pages": [
                   {
                     "group": "Introduction",
@@ -1178,6 +1181,7 @@
               },
               {
                 "group": "Community",
+                "expandable": true,
                 "pages": [
                   {
                     "title": "Community & Social Channels",
@@ -1192,6 +1196,7 @@
             "groups": [
               {
                 "group": "Requesting Data",
+                "expandable": true,
                 "pages": [
                   {
                     "group": "Search and Downloads",
@@ -1313,6 +1318,7 @@
               },
               {
                 "group": "Your Account",
+                "expandable": true,
                 "pages": [
                   {
                     "title": "Authentication",
@@ -1336,6 +1342,7 @@
               },
               {
                 "group": "API Status",
+                "expandable": true,
                 "pages": [
                   {
                     "title": "API Status Check",
@@ -1358,6 +1365,7 @@
             "groups": [
               {
                 "group": "Changelog",
+                "expandable": true,
                 "path": "changelog/index",
                 "pages": [
                   {
