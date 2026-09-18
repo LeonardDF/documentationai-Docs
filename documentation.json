@@ -62,57 +62,12 @@
                     "path": "Overview"
                   },
                   {
-                    "group": "Property Data",
-                    "pages": [
-                      {
-                        "title": "Property Data with AI",
-                        "path": "getting-started-with-property-data"
-                      }
-                    ]
+                    "title": "MCP Server",
+                    "path": "mcp-server"
                   },
                   {
-                    "group": "People Data",
-                    "pages": [
-                      {
-                        "title": "People Data with AI",
-                        "path": "people-data-with-ai"
-                      }
-                    ]
-                  },
-                  {
-                    "group": "Product Data",
-                    "pages": [
-                      {
-                        "title": "Product Data with AI",
-                        "path": "product-data-with-ai"
-                      }
-                    ]
-                  },
-                  {
-                    "group": "Business Data",
-                    "pages": [
-                      {
-                        "title": "Business Data with AI",
-                        "path": "business-data-with-ai"
-                      }
-                    ]
-                  },
-                  {
-                    "group": "Supported AI Tools",
-                    "pages": [
-                      {
-                        "title": "ChatGPT",
-                        "path": "chatgpt"
-                      },
-                      {
-                        "title": "Claude",
-                        "path": "claude"
-                      },
-                      {
-                        "title": "Postman",
-                        "path": "postman"
-                      }
-                    ]
+                    "title": "Postman",
+                    "path": "postman-mcp"
                   }
                 ],
                 "path": "overview"
