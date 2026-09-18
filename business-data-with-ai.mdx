@@ -1,0 +1,60 @@
+---
+title: Business Data with AI
+description: >-
+  Query Datafiniti's business data through the MCP server — search, count,
+  download, and inspect business records from an AI agent.
+---
+# Business Data with AI
+
+Datafiniti's business data provides access to business profiles, including locations, categories, operating hours, revenue, and contact details. Through the MCP server, an AI agent can search, count, download, and retrieve these records using the same tools, permissions, and credit model as the REST API.
+
+This page covers how business data works specifically through the MCP server. For the underlying field definitions and query rules, see the [Business Data Schema](https://docs.datafiniti.co/docs/business-data-schema) and [Constructing Business Queries](https://docs.datafiniti.co/docs/constructing-business-queries).
+
+## Tools
+
+All of the shared MCP tools work against business data. Set the data type to business and the agent can:
+
+| Tool                 | Business use                                                                                  |
+| -------------------- | --------------------------------------------------------------------------------------------- |
+| `df_search`          | Return up to 50 matching business records. Charges credits identically to REST `/search`      |
+| `df_count`           | Count matching businesses with no records returned and no credit cost                         |
+| `df_start_download`  | Start an async download of a larger business set (capped at 100,000 records at the MCP layer) |
+| `df_download_status` | Poll a running business download for status and result-file links                             |
+| `df_get_record`      | Retrieve a single business record                                                             |
+| `df_get_schema`      | Fetch the business field-name-to-type map so the agent can write a valid query                |
+
+## Example query
+
+A business search combines field conditions with boolean operators. The agent builds the Lucene query string and passes it to `df_search`:
+
+```typescript
+{
+  "query": "categories:hotels AND country:US",
+  "num_records": 10
+}
+```
+
+To size the result set before spending credits, the same query goes to `df_count`, which returns the match count with no credit cost. When the scope implies many records, the agent passes the query to `df_start_download` and polls `df_download_status` for result-file links.
+
+**Escaped quotes**
+
+Exact-match values inside a query use escaped quotes — `name:\"Joe's Coffee\"` — not unescaped quotes.
+
+## Prompts for business data
+
+Each prompt converts a business use-case guide into a ready-to-run query template, then tells the agent whether to call `df_search` or `df_start_download` next. Business prompts include:
+
+| Prompt ID                        | Title                                         |
+| -------------------------------- | --------------------------------------------- |
+| `discover_business_revenue`      | Find businesses by revenue range              |
+| `search_business_by_address`     | Search for a business by street address       |
+| `find_restaurants_near_location` | Find restaurants near a location              |
+| `search_restaurants_by_cuisine`  | Search for restaurants by cuisine or category |
+
+**Traceability**
+
+Each prompt's description cites the source guide it was built from, so any query the agent generates traces back to the original business documentation.
+
+## Cross-data helpers
+
+Some prompts span more than one data type. `build_df_query` helps an agent assemble a Datafiniti query from a plain-language goal against any data type, and `check_shipping_address_vacancy` bridges business or shipping addresses with property vacancy status. When a request could match against a business, product, property, or people index, the agent uses `df_get_schema` to confirm the field names for the chosen data type before building the query.
