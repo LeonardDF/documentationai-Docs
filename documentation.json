@@ -58,6 +58,10 @@
                 "expandable": true,
                 "pages": [
                   {
+                    "title": "Other LLMs",
+                    "path": "other-llms"
+                  },
+                  {
                     "title": "Overview",
                     "path": "Overview"
                   },
