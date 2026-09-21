@@ -92,9 +92,13 @@ Call `df_search` with a query string and a record count. For a property search:
 
 The server runs the same handler as REST `/search`, charges credits identically, and returns a response containing `num_found`, `total_cost`, and a `records` array — the same shape a REST search returns.
 
-**Escaped quotes**
+<Callout kind="tip" collapsed="false">
+  **Escaped quotes**
 
-Exact-match values inside a query use escaped quotes — `propertyType:\"Single Family Dwelling\"` — not unescaped quotes.
+  Exact-match values inside a query use escaped quotes — `propertyType:\"Single Family Dwelling\"` — not unescaped quotes.
+
+
+</Callout>
 
 ### Query syntax
 

@@ -68,6 +68,10 @@
                   {
                     "title": "Postman",
                     "path": "postman-mcp"
+                  },
+                  {
+                    "title": "ChatGPT/Codex",
+                    "path": "chatgpt/codex"
                   }
                 ],
                 "path": "overview"

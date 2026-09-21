@@ -1,0 +1,95 @@
+---
+title: ChatGPT / Codex
+description: >-
+  Use Datafiniti from ChatGPT or Codex — through MCP support or by giving the
+  model the API details and query syntax to call it as a tool.
+---
+# Using ChatGPT / Codex & Datafiniti's MCP
+
+You can use Datafiniti from ChatGPT or Codex in two ways: connect the Datafiniti MCP server where MCP is supported, or give the model the API details and query syntax and let it call Datafiniti as a tool (or help you build queries you run yourself). This is one of several ways to use Datafiniti with AI — see the [Overview](https://docs.datafiniti.co/overview) for the full picture.
+
+Which path you use depends on your environment. Some ChatGPT and Codex surfaces support MCP or custom tools/actions directly; others are plain chat, where the model helps you write a query that you run in [Postman](https://docs.datafiniti.co/postman), cURL, or an SDK.
+
+## Option A — Connect via MCP
+
+If your ChatGPT or Codex environment supports MCP connectors, point it at the Datafiniti MCP server and it can call `df_search`, `df_count`, `df_start_download`, and the other tools on its own.
+
+### 1. Get your API token
+
+Use the same bearer token as REST, from the [Datafiniti Web Portal](https://portal.datafiniti.co/settings/api). It regenerates whenever you change your password.
+
+<Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1789761206903-pssrezkzs4-APIkeyPortal.png?fm=auto&auto=compress%2Cformat" width="1689" height="490" alt="APIkeyPortal" />
+
+### 2. Add the connector
+
+Add a new MCP connector with:
+
+```typescript
+URL:    https://api.datafiniti.co/v4/mcp
+Auth:   Bearer AAAXXXXXXXXXXXX
+```
+
+Use the **Streamable HTTP** transport. Once connected, the model can list the Datafiniti tools and prompts and call them during a conversation.
+
+
+
+_Screenshot: adding the Datafiniti MCP server as a connector in ChatGPT or Codex._
+
+For the full tool reference, behavior, and defaults, see [MCP Server](https://docs.datafiniti.co/mcp-server).
+
+## Option B — Register Datafiniti as a tool / action
+
+If your environment supports custom tools, functions, or actions but not MCP, you can register the Datafiniti REST search endpoint directly. Give the model a tool definition that:
+
+- Calls the Datafiniti search endpoint with a bearer token.
+- Accepts a `query` string and optional `num_records`, `view`, and `download` parameters.
+- Returns the JSON response (`num_found`, `total_cost`, `records`).
+
+
+
+_Screenshot: the Datafiniti search endpoint registered as a custom tool or action._
+
+Then include Datafiniti's query syntax in the system prompt or tool description so the model builds valid queries. A minimal system-prompt snippet:
+
+```typescript
+Datafiniti queries use field:value syntax with boolean operators
+(AND, OR), negation (-), parentheses for grouping, dot notation for
+nested sub-fields (e.g. descriptions.value), ranges for date/number
+fields, and {} to match multiple sub-fields within one nested object.
+Exact-match values use escaped quotes, e.g. propertyType:\"Single Family Dwelling\".
+```
+
+## Option C — Plain conversation (no connection)
+
+You don't need any integration to get value here. Describe what you're looking for, paste in the relevant query-construction guide or schema, and let the model draft a query. Then run that query yourself in [Postman](https://docs.datafiniti.co/postman), cURL, or an SDK.
+
+This keeps your credentials out of the model entirely — the model only _writes_ the query; you run it. It also works on any ChatGPT or Codex surface, including ones with no tool support.
+
+**Give the model the right context**
+
+Models produce far better Datafiniti queries when you paste in the relevant guide for your data type — for example [Constructing Property Queries](https://docs.datafiniti.co/docs/constructing-property-queries) — and the [Possible Values](https://docs.datafiniti.co/docs/possible-values-for-property-fields) page for any status or enum fields.
+
+## Example conversation
+
+A plain-conversation exchange might look like:
+
+> **You:** I want US single-family homes currently for sale. Build me a Datafiniti property query.
+>
+> **Model:** `country:US AND propertyType:"Single Family Dwelling" AND mostRecentStatus:"For Sale"`
+
+
+
+_Screenshot: the model building a query in a plain conversation, with no integration attached._
+
+You'd then run that query — escaping the quotes for the API — in whichever client you prefer.
+
+## Credits and permissions
+
+- In **Option A/B**, the model runs real queries, so searches and downloads charge credits exactly as REST does, under your token's permissions.
+- In **Option C**, building a query costs nothing; only running it (yourself) uses credits.
+
+## Next steps
+
+- Want an agent to run queries end-to-end? See [MCP Server](https://docs.datafiniti.co/mcp-server).
+- Working in a data type? See its "…with AI" page for fields, statuses, and prompts.
+
