@@ -1,0 +1,140 @@
+---
+title: MCP Server — Property Examples
+description: >-
+  Worked examples of querying Datafiniti property data through the MCP server —
+  counting, searching, downloading, and running a property prompt.
+---
+# MCP Server — Property Examples
+
+This guide walks through end-to-end examples of using the [MCP Server](https://docs.datafiniti.co/mcp-server) against **property data**. It assumes you've already connected a client and authenticated — see the [MCP Server](https://docs.datafiniti.co/mcp-server) guide for setup, transport, and the full tool reference.
+
+Every example here uses the same tools (`df_count`, `df_search`, `df_start_download`, `df_download_status`) and the same query syntax as the other data types; what changes are the fields, statuses, and views specific to property records. For the underlying reference, see the [Property Data Schema](https://docs.datafiniti.co/docs/property-data-schema) and [Constructing Property Queries](https://docs.datafiniti.co/docs/constructing-property-queries).
+
+## The goal
+
+Say we want **single-family homes currently for sale in Austin, TX** — first to see how many exist, then to pull a targeted sample, and finally to export the full set.
+
+## 1. Size the result set with `df_count`
+
+Start with a count. It returns no records and costs no credits, so it's the cheapest way to check whether a query is scoped the way you expect before spending anything.
+
+```
+{
+  "query": "country:US AND province:TX AND city:Austin AND propertyType:\"Single Family Dwelling\" AND mostRecentStatus:\"For Sale\"",
+  "type": "property"
+}
+```
+
+A response tells you how many records match:
+
+```
+{
+  "num_found": 3184
+}
+```
+
+**Sanity-check the count**
+
+A count of `0` almost always means a field name or value is off — a rental-side status queried against `mostRecentStatus`, or an unescaped quote — not that no such properties exist. Fix the query here before spending credits on a search.
+
+## 2. Pull a targeted sample with `df_search`
+
+Now retrieve a handful of records. `df_search` returns up to 50 per call and charges credits identically to REST `/search`.
+
+```
+{
+  "query": "country:US AND province:TX AND city:Austin AND propertyType:\"Single Family Dwelling\" AND mostRecentStatus:\"For Sale\"",
+  "type": "property",
+  "num_records": 5,
+  "view": ["address", "city", "province", "postalCode", "mostRecentPriceAmount", "numBedroom", "numBathroom"]
+}
+```
+
+The response has the same shape as a REST search — `num_found`, `total_cost`, and a `records` array:
+
+```
+{
+  "num_found": 3184,
+  "total_cost": 5,
+  "records": [
+    {
+      "address": "…",
+      "city": "Austin",
+      "province": "TX",
+      "postalCode": "…",
+      "mostRecentPriceAmount": 000000,
+      "numBedroom": 3,
+      "numBathroom": 2
+    }
+  ]
+}
+```
+
+**Escaped quotes**
+
+Exact-match values use escaped quotes — `propertyType:\"Single Family Dwelling\"` — not unescaped quotes.
+
+## 3. Filter on property status
+
+Property status is where property queries most often go wrong, because a value routes to a specific underlying field. Sale-side values live on `mostRecentStatus`; rental-side values live on `mostRecentRentalStatus`. Querying a rental value against the sale field silently returns zero results.
+
+Sale-side example:
+
+```
+{
+  "query": "country:US AND province:TX AND mostRecentStatus:\"For Sale\"",
+  "type": "property"
+}
+```
+
+Rental-side example — note the different field:
+
+```
+{
+  "query": "country:US AND province:TX AND mostRecentRentalStatus:\"For Rent\"",
+  "type": "property"
+}
+```
+
+For the complete, verified set of status values and which side each belongs to, see [Possible Values for Property Fields](https://docs.datafiniti.co/docs/possible-values-for-property-fields).
+
+## 4. Export the full set with `df_start_download`
+
+When you want all matching records rather than a sample, start an asynchronous download. At the MCP layer this is capped at 100,000 records.
+
+```
+{
+  "query": "country:US AND province:TX AND city:Austin AND propertyType:\"Single Family Dwelling\" AND mostRecentStatus:\"For Sale\"",
+  "type": "property",
+  "format": "JSON",
+  "view": ["address", "city", "province", "postalCode", "mostRecentPriceAmount", "numBedroom", "numBathroom"]
+}
+```
+
+This returns a download identifier. Poll it with `df_download_status`:
+
+```
+{
+  "download_id": "…"
+}
+```
+
+Once the status comes back complete, the response includes links to the result files.
+
+**Download scope**
+
+`df_start_download` is the right tool when a query's scope implies more than the 50 records a single `df_search` returns. Use the `df_count` from step 1 to decide.
+
+## 5. Run a property prompt
+
+Prompts turn a property use-case guide into a ready-to-run query template. For example, the `find_investment_properties` prompt builds a query for investment candidates and then tells the client whether to call `df_search` or `df_start_download` next.
+
+Because a property `status` argument has a small, verified value set, clients that render prompt forms show it as a dropdown rather than a free-text box, and the prompt routes the chosen value to the correct status field for you.
+
+For the full list of property prompts, see [Property Data with AI](https://docs.datafiniti.co/docs/property-data-with-ai).
+
+## Next steps
+
+- Try the same flow for [People](https://docs.datafiniti.co/docs/mcp-server-people-examples), [Product](https://docs.datafiniti.co/docs/mcp-server-product-examples), or [Business](https://docs.datafiniti.co/docs/mcp-server-business-examples) data.
+- Full tool reference and setup: [MCP Server](https://docs.datafiniti.co/mcp-server).
+- Property fields, statuses, and prompts: [Property Data with AI](https://docs.datafiniti.co/docs/property-data-with-ai).

@@ -21,8 +21,7 @@ If you'd rather have an assistant help you _build_ a query that you run yourself
 
 ## 1. Get your API token
 
-The MCP server uses the same bearer token as REST — there's no separate MCP credential. Get your token from the [Datafiniti Web Portal](https://portal.datafiniti.co/settings/api), log in, and open settings from the left navigation bar. \
-
+The MCP server uses the same bearer token as REST — there's no separate MCP credential. Get your token from the [Datafiniti Web Portal](https://portal.datafiniti.co/settings/api), log in, and open settings from the left navigation bar. \\
 
 <Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1789761206903-pssrezkzs4-APIkeyPortal.png?fm=auto&auto=compress%2Cformat" width="1689" height="490" alt="" />
 
@@ -64,8 +63,6 @@ A single MCP handshake legitimately issues several requests in quick succession 
 
 Once connected, the client can list and call these tools. Each reuses the same REST request handler the public API uses, so behavior, permissions, and pricing match REST exactly.
 
-
-
 | Tool                 | What it does                                     | Notes                                                                              |
 | -------------------- | ------------------------------------------------ | ---------------------------------------------------------------------------------- |
 | `df_search`          | Search records matching a query                  | Returns up to 50 records per call; charges credits identically to REST `/search`   |
@@ -96,8 +93,6 @@ The server runs the same handler as REST `/search`, charges credits identically,
   **Escaped quotes**
 
   Exact-match values inside a query use escaped quotes — `propertyType:\"Single Family Dwelling\"` — not unescaped quotes.
-
-
 </Callout>
 
 ### Query syntax
@@ -139,4 +134,3 @@ Branch on the stable `code` — for example `invalid_query`, `invalid_view`, `ou
 - Want to test the connection by hand before automating? See [Postman](https://docs.datafiniti.co/postman).
 - Using a specific client? See [Claude](https://docs.datafiniti.co/claude) or [ChatGPT / Codex](https://docs.datafiniti.co/chatgpt-codex).
 - Working in a data type? See its "…with AI" page for fields, statuses, and prompts.
-

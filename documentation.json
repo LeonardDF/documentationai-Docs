@@ -58,15 +58,17 @@
                 "expandable": true,
                 "pages": [
                   {
-                    "title": "Other LLMs",
-                    "path": "other-llms"
-                  },
-                  {
                     "title": "Overview",
                     "path": "Overview"
                   },
                   {
-                    "title": "MCP Server",
+                    "group": "MCP Server",
+                    "pages": [
+                      {
+                        "title": "Property Data with an MCP Server",
+                        "path": "property-data-with-an-mcp-server"
+                      }
+                    ],
                     "path": "mcp-server"
                   },
                   {
@@ -80,6 +82,10 @@
                   {
                     "title": "Claude",
                     "path": "claude-MCP"
+                  },
+                  {
+                    "title": "Other LLMs",
+                    "path": "other-llms"
                   }
                 ],
                 "path": "overview"
