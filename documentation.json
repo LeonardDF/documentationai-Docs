@@ -72,6 +72,10 @@
                   {
                     "title": "ChatGPT/Codex",
                     "path": "chatgpt/codex"
+                  },
+                  {
+                    "title": "Claude",
+                    "path": "claude-MCP"
                   }
                 ],
                 "path": "overview"

@@ -1,0 +1,106 @@
+---
+title: Claude
+description: >-
+  Use Datafiniti with Claude — connect the MCP server so Claude can run queries,
+  or simply have a conversation and let Claude build queries for you.
+---
+---
+
+# Using Claude & Datafiniti's MCP
+
+There are two ways to use Datafiniti with Claude, and both are valid:
+
+1. **Connect the MCP server** so Claude can run Datafiniti queries directly during a conversation.
+2. **Just talk to Claude** about the data you want — no connection at all — and let Claude help you build a query that you run yourself.
+
+Neither is more "official" than the other. This page covers both, so you can pick based on whether you want Claude to _execute_ queries or just to _help you write_ them. For how this fits alongside other tools, see the [Overview](https://docs.datafiniti.co/overview).
+
+## Option A — Connect the MCP server
+
+When you connect Datafiniti as an MCP server, Claude can list the Datafiniti tools and call them — searching, counting, and starting downloads — inside a normal conversation.
+
+### 1. Get your API token
+
+Use the same bearer token as REST, from the [Datafiniti Web Portal](https://portal.datafiniti.co/settings/api). For security, it regenerates whenever you change your password.
+
+<Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1789761206903-pssrezkzs4-APIkeyPortal.png?fm=auto&auto=compress%2Cformat" width="1689" height="490" alt="APIkeyPortal" />
+
+### 2. Add Datafiniti as a connector
+
+In Claude's connector settings, add a custom MCP connector with:
+
+```typescript
+URL:    https://api.datafiniti.co/v4/mcp
+Auth:   Bearer AAAXXXXXXXXXXXX
+```
+
+The server uses the **Streamable HTTP** transport. Once connected, Claude can complete the handshake and list the Datafiniti tools and prompts.
+
+
+
+<Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1790020924905-g9v6umrj0if-claude-connector.png?fm=auto&auto=compress%2Cformat" width="1018" height="711" alt="" />
+
+### 3. Ask Claude to run a query
+
+With the connector active, ask in plain language:
+
+> Find US single-family homes for sale and show me the first few.
+
+Claude will build a Datafiniti query, call `df_search`, and summarize the records that come back. Ask it to count first (`df_count`) to size a result set before spending credits, or to start a download (`df_start_download`) when you want a large pull — Claude polls `df_download_status` for the result-file links.
+
+
+
+_Screenshot: Claude calling&#x20;_``_&#x20;and summarizing the results._
+
+For the full tool list, defaults, and behavior, see [MCP Server](https://docs.datafiniti.co/mcp-server).
+
+**Credits apply when Claude runs a query**
+
+With the connector active, Claude's searches and downloads charge credits exactly as REST does, under your token's permissions. Counting (`df_count`) is free.
+
+## Option B — Just have a conversation
+
+You don't have to connect anything to get real value from Claude here. Because Datafiniti's query syntax is fully documented, Claude can help you construct and refine a correct query in plain conversation — and you run it yourself afterward.
+
+This is a good fit when you'd rather not give a tool live access to your account, when you're still exploring what to ask, or when you just want a second set of eyes on a query.
+
+### How to do it
+
+1. Tell Claude what data you're after and which data type (property, people, product, or business).
+2. Paste in the relevant context so Claude works from your actual field names — the query-construction guide for your data type, plus the schema or possible-values page for any status or enum fields.
+3. Let Claude draft the query, then ask it to explain or refine each part.
+4. Run the finished query yourself in [Postman](https://docs.datafiniti.co/postman), cURL, an SDK, or the Portal.
+
+**Give Claude the right context**
+
+Claude writes much better Datafiniti queries when you paste in the guide for your data type — for example [Constructing Property Queries](https://docs.datafiniti.co/docs/constructing-property-queries) — and the [Possible Values for Property Fields](https://docs.datafiniti.co/docs/possible-values-for-property-fields) page for status or enum fields. Without that context, it's working from general knowledge and may guess at field names.
+
+### Example exchange
+
+> **You:** I want US single-family homes currently for sale. Here's the property query guide and the possible status values. Build me a Datafiniti query and explain it.
+>
+> **Claude:** `country:US AND propertyType:"Single Family Dwelling" AND mostRecentStatus:"For Sale"` — this matches US records whose property type is single-family and whose most recent sale-side status is "For Sale." When you send it to the API, escape the quotes: `propertyType:\"Single Family Dwelling\"`.
+
+
+
+_Screenshot: Claude building and explaining a query in a plain conversation, with no connector attached._
+
+You then run that query in the client of your choice.
+
+**Building a query costs nothing**
+
+In a plain conversation, Claude only _writes_ the query — no credits are used until you run it yourself.
+
+## Which option should I use?
+
+- Choose **Option A** if you want Claude to run queries and hand you results end-to-end, and you're comfortable connecting the server with your token.
+- Choose **Option B** if you want help writing and understanding queries without granting live access, or if you can't connect the server in your environment.
+
+You can also mix them — draft and refine a query in conversation, then connect the server when you're ready to run it at scale.
+
+## Next steps
+
+- Full MCP tool reference: [MCP Server](https://docs.datafiniti.co/mcp-server).
+- Test a query by hand: [Postman](https://docs.datafiniti.co/postman).
+- Data-type specifics (fields, statuses, prompts): the "…with AI" page for [Property](https://docs.datafiniti.co/docs/property-data-with-ai), [People](https://docs.datafiniti.co/docs/people-data-with-ai), [Product](https://docs.datafiniti.co/docs/product-data-with-ai), or [Business](https://docs.datafiniti.co/docs/business-data-with-ai) data.
+
