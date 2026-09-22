@@ -1,5 +1,5 @@
 ---
-title: MCP Server — Business Examples
+title: Business Data with an MCP Server
 description: >-
   Worked examples of querying Datafiniti business data through the MCP server —
   counting, searching, downloading, and running a business prompt.
@@ -18,7 +18,7 @@ Say we want **hotels in the US**, with their locations and contact details — f
 
 Start with a count. It returns no records and costs no credits, so it's the cheapest way to confirm a query is scoped correctly before spending anything.
 
-```
+```typescript
 {
   "query": "categories:hotels AND country:US",
   "type": "business"
@@ -27,7 +27,7 @@ Start with a count. It returns no records and costs no credits, so it's the chea
 
 A response tells you how many records match:
 
-```
+```typescript
 {
   "num_found": 58310
 }
@@ -41,7 +41,7 @@ An unexpected count usually points to a category or field-name mismatch rather t
 
 Now retrieve a handful of records. `df_search` returns up to 50 per call and charges credits identically to REST `/search`.
 
-```
+```typescript
 {
   "query": "categories:hotels AND country:US AND province:NV",
   "type": "business",
@@ -52,7 +52,7 @@ Now retrieve a handful of records. `df_search` returns up to 50 per call and cha
 
 The response has the same shape as a REST search — `num_found`, `total_cost`, and a `records` array:
 
-```
+```typescript
 {
   "num_found": 1204,
   "total_cost": 5,
@@ -78,7 +78,7 @@ Exact-match values with spaces or apostrophes use escaped quotes — `name:\"Joe
 
 Business queries combine field conditions with boolean operators. To find restaurants of a particular cuisine near a location, combine a category with a place:
 
-```
+```typescript
 {
   "query": "categories:restaurants AND categories:Italian AND city:\"San Francisco\"",
   "type": "business"
@@ -87,7 +87,7 @@ Business queries combine field conditions with boolean operators. To find restau
 
 To match more than one category, group alternatives with parentheses:
 
-```
+```typescript
 {
   "query": "categories:(hotels OR motels) AND country:US",
   "type": "business"
@@ -98,7 +98,7 @@ To match more than one category, group alternatives with parentheses:
 
 Numeric fields such as revenue accept range syntax. To find businesses within a revenue band:
 
-```
+```typescript
 {
   "query": "categories:restaurants AND country:US AND revenue:[1000000 TO 5000000]",
   "type": "business"
@@ -111,7 +111,7 @@ Ranges work the same way for other numeric and date fields on the record.
 
 When you want all matching records rather than a sample, start an asynchronous download. At the MCP layer this is capped at 100,000 records.
 
-```
+```typescript
 {
   "query": "categories:hotels AND country:US",
   "type": "business",
@@ -122,7 +122,7 @@ When you want all matching records rather than a sample, start an asynchronous d
 
 This returns a download identifier. Poll it with `df_download_status`:
 
-```
+```typescript
 {
   "download_id": "…"
 }
@@ -141,3 +141,4 @@ For the full list of business prompts, see [Business Data with AI](https://docs.
 - Try the same flow for [Property](https://docs.datafiniti.co/docs/mcp-server-property-examples), [People](https://docs.datafiniti.co/docs/mcp-server-people-examples), or [Product](https://docs.datafiniti.co/docs/mcp-server-product-examples) data.
 - Full tool reference and setup: [MCP Server](https://docs.datafiniti.co/mcp-server).
 - Business fields and prompts: [Business Data with AI](https://docs.datafiniti.co/docs/business-data-with-ai).
+
