@@ -67,6 +67,10 @@
                       {
                         "title": "Property Data with an MCP Server",
                         "path": "property-data-with-an-mcp-server"
+                      },
+                      {
+                        "title": "People Data with an MCP Server",
+                        "path": "people-data-with-an-mcp-server"
                       }
                     ],
                     "path": "mcp-server"
