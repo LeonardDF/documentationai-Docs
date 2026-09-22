@@ -75,6 +75,10 @@
                       {
                         "title": "Product Data with an MCP Server",
                         "path": "product-data-with-an-mcp-server"
+                      },
+                      {
+                        "title": "Business Data with an MCP Server",
+                        "path": "business-data-with-an-mcp-server"
                       }
                     ],
                     "path": "mcp-server"

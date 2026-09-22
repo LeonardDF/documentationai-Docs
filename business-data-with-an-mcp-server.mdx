@@ -1,0 +1,143 @@
+---
+title: MCP Server — Business Examples
+description: >-
+  Worked examples of querying Datafiniti business data through the MCP server —
+  counting, searching, downloading, and running a business prompt.
+---
+# MCP Server — Business Examples
+
+This guide walks through end-to-end examples of using the [MCP Server](https://docs.datafiniti.co/mcp-server) against **business data**. It assumes you've already connected a client and authenticated — see the [MCP Server](https://docs.datafiniti.co/mcp-server) guide for setup, transport, and the full tool reference.
+
+Every example here uses the same tools (`df_count`, `df_search`, `df_start_download`, `df_download_status`) and the same query syntax as the other data types; what changes are the fields and views specific to business records. For the underlying reference, see the [Business Data Schema](https://docs.datafiniti.co/docs/business-data-schema) and [Constructing Business Queries](https://docs.datafiniti.co/docs/constructing-business-queries).
+
+## The goal
+
+Say we want **hotels in the US**, with their locations and contact details — first to size the set, then to pull a targeted sample, and finally to export the full set.
+
+## 1. Size the result set with `df_count`
+
+Start with a count. It returns no records and costs no credits, so it's the cheapest way to confirm a query is scoped correctly before spending anything.
+
+```
+{
+  "query": "categories:hotels AND country:US",
+  "type": "business"
+}
+```
+
+A response tells you how many records match:
+
+```
+{
+  "num_found": 58310
+}
+```
+
+**Sanity-check the count**
+
+An unexpected count usually points to a category or field-name mismatch rather than the true size of the data. Confirm the query here before spending credits on a search.
+
+## 2. Pull a targeted sample with `df_search`
+
+Now retrieve a handful of records. `df_search` returns up to 50 per call and charges credits identically to REST `/search`.
+
+```
+{
+  "query": "categories:hotels AND country:US AND province:NV",
+  "type": "business",
+  "num_records": 5,
+  "view": ["name", "address", "city", "province", "postalCode", "phones", "categories"]
+}
+```
+
+The response has the same shape as a REST search — `num_found`, `total_cost`, and a `records` array:
+
+```
+{
+  "num_found": 1204,
+  "total_cost": 5,
+  "records": [
+    {
+      "name": "…",
+      "address": "…",
+      "city": "Las Vegas",
+      "province": "NV",
+      "postalCode": "…",
+      "phones": ["…"],
+      "categories": ["hotels"]
+    }
+  ]
+}
+```
+
+**Escaped quotes**
+
+Exact-match values with spaces or apostrophes use escaped quotes — `name:\"Joe's Coffee\"` — not unescaped quotes.
+
+## 3. Search by category and location
+
+Business queries combine field conditions with boolean operators. To find restaurants of a particular cuisine near a location, combine a category with a place:
+
+```
+{
+  "query": "categories:restaurants AND categories:Italian AND city:\"San Francisco\"",
+  "type": "business"
+}
+```
+
+To match more than one category, group alternatives with parentheses:
+
+```
+{
+  "query": "categories:(hotels OR motels) AND country:US",
+  "type": "business"
+}
+```
+
+## 4. Filter on a numeric range
+
+Numeric fields such as revenue accept range syntax. To find businesses within a revenue band:
+
+```
+{
+  "query": "categories:restaurants AND country:US AND revenue:[1000000 TO 5000000]",
+  "type": "business"
+}
+```
+
+Ranges work the same way for other numeric and date fields on the record.
+
+## 5. Export the full set with `df_start_download`
+
+When you want all matching records rather than a sample, start an asynchronous download. At the MCP layer this is capped at 100,000 records.
+
+```
+{
+  "query": "categories:hotels AND country:US",
+  "type": "business",
+  "format": "JSON",
+  "view": ["name", "address", "city", "province", "postalCode", "phones", "categories"]
+}
+```
+
+This returns a download identifier. Poll it with `df_download_status`:
+
+```
+{
+  "download_id": "…"
+}
+```
+
+Once the status comes back complete, the response includes links to the result files.
+
+## 6. Run a business prompt
+
+Prompts turn a business use-case guide into a ready-to-run query template. For example, `discover_business_revenue` builds a query for businesses in a revenue band, `search_business_by_address` looks up a business by street address, and `find_restaurants_near_location` and `search_restaurants_by_cuisine` target restaurants — then each tells the client whether to call `df_search` or `df_start_download` next.
+
+For the full list of business prompts, see [Business Data with AI](https://docs.datafiniti.co/docs/business-data-with-ai).
+
+## Next steps
+
+- Try the same flow for [Property](https://docs.datafiniti.co/docs/mcp-server-property-examples), [People](https://docs.datafiniti.co/docs/mcp-server-people-examples), or [Product](https://docs.datafiniti.co/docs/mcp-server-product-examples) data.
+- Full tool reference and setup: [MCP Server](https://docs.datafiniti.co/mcp-server).
+- Business fields and prompts: [Business Data with AI](https://docs.datafiniti.co/docs/business-data-with-ai).
