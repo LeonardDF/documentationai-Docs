@@ -2,13 +2,14 @@
 title: MCP Server
 description: >-
   Connect an MCP-aware AI client to Datafiniti through the Model Context
-  Protocol to search, count, and download data.
+  Protocol to search, count, and download product, business, property, and
+  people data.
 ---
 # MCP Server
 
-The Datafiniti MCP server lets any MCP-aware client — Claude, ChatGPT, Codex, or an agent framework — query Datafiniti's product, business, property, and people data directly. It's one of several ways to use Datafiniti with AI (see the [Overview](https://docs.datafiniti.co/overview)); this one is best when you want an assistant or agent to _run_ queries on its own rather than just help you write them.
+The Datafiniti MCP server lets any MCP-aware client — Claude, ChatGPT, Codex, Cursor, or an agent framework — query Datafiniti's product, business, property, and people data directly. It's one of several ways to use Datafiniti with AI (see the [Overview](https://docs.datafiniti.co/overview)); this one is best when you want an assistant or agent to _run_ queries on its own rather than just help you write them.
 
-Because the MCP server reuses the exact same request-handler functions the public API uses, MCP and REST behave identically. There's no second implementation to drift out of sync — a fix or feature on one surface applies to both.
+MCP and REST return the same data and enforce the same permissions and credit rules, so anything you can do against the REST API you can do here.
 
 ## When to use MCP
 
@@ -16,14 +17,38 @@ Use the MCP server when:
 
 - Your client supports MCP natively and you want it to execute searches and downloads without a human relaying results.
 - You're building an agent that goes from a natural-language goal to a structured data pull in one flow.
+  If you'd rather have an assistant help you _build_ a query that you run yourself, you don't need MCP at all — see [Claude](https://docs.datafiniti.co/claude) or [Other LLMs](https://docs.datafiniti.co/other-llms).
 
-If you'd rather have an assistant help you _build_ a query that you run yourself, you don't need MCP at all — see [Claude](https://docs.datafiniti.co/claude) or [Other LLMs](https://docs.datafiniti.co/other-llms).
+## When to use MCP
+
+Use the MCP server when:
+
+- Your client supports MCP natively and you want it to execute searches and downloads without a human relaying results.
+- You're building an agent that goes from a natural-language goal to a structured data pull in one flow.
+  If you'd rather have an assistant help you _build_ a query that you run yourself, you don't need MCP at all — see [Claude](https://docs.datafiniti.co/claude) or [Other LLMs](https://docs.datafiniti.co/other-llms).
+
+## Quickstart
+
+The fastest path to confirming the server works is a single `df_count`, which returns a match count, spends no credits, and needs no LLM.
 
 ## 1. Get your API token
 
-The MCP server uses the same bearer token as REST — there's no separate MCP credential. Get your token from the [Datafiniti Web Portal](https://portal.datafiniti.co/settings/api), log in, and open settings from the left navigation bar. \\
+The MCP server uses the same bearer token as REST — there's no separate MCP credential. Get your token from the [Datafiniti Web Portal](https://portal.datafiniti.co/settings/api), log in, and open settings from the left navigation bar.&#x20;
 
 <Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1789761206903-pssrezkzs4-APIkeyPortal.png?fm=auto&auto=compress%2Cformat" width="1689" height="490" alt="" />
+
+## 2. Register the server with your client (see [Client setup](#client-setup) below), or hit it directly to smoke-test (see [Verify the connection](#verify-the-connection)).
+
+## 3. Call `df_count` with a data type and a query:
+
+```json
+{
+  "type": "property",
+  "query": "country:US AND province:TX"
+}
+```
+
+A count comes back with no records and no credit cost — enough to confirm auth and connectivity before you involve a model.
 
 **API Key**
 
