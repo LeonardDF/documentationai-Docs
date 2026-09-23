@@ -4,7 +4,7 @@ description: >-
   Use Postman to connect to the Datafiniti MCP server or the REST API — inspect
   tools and prompts, run a query by hand, and confirm responses.
 ---
-# Postman with Datafiniti's MCP
+# Using Datafiniti's MCP in Postman
 
 Postman is the easiest way to exercise Datafiniti before you wire up an agent. You can complete the MCP handshake, list the available tools and prompts, and call a tool by hand — or hit the REST API directly — all without writing any code. It's one of several ways to use Datafiniti with AI (see the [Overview](https://docs.datafiniti.co/overview)); this one is best for confirming things work and for building queries you'll hand to another tool.
 
@@ -14,11 +14,9 @@ For this guide we'll assume you want to confirm the MCP server is reachable with
 
 We recommend Postman for working with both the Datafiniti MCP server and the REST API. Download it [here](https://www.postman.com/downloads/).
 
-<Callout kind="info" collapsed="false">
-  **Postman version**
+**Postman version**
 
-  MCP support is only in recent versions of Postman. If you don't see an MCP request type, update to the latest release.
-</Callout>
+MCP support is only in recent versions of Postman. If you don't see an MCP request type, update to the latest release.
 
 ## 2. Get your API token
 
@@ -26,17 +24,19 @@ You'll authenticate with the same bearer token as REST — there's no separate M
 
 <Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1789761206903-pssrezkzs4-APIkeyPortal.png?fm=auto&auto=compress%2Cformat" width="1689" height="490" alt="APIkeyPortal" />
 
-_Screenshot: the API token on the Portal settings page._
+<Callout kind="tip" collapsed="false">
+  **API Key**
 
-**API Key**
+  For the rest of this page we'll use `AAAXXXXXXXXXXXX` as a stand-in for your real token.
+</Callout>
 
-For the rest of this page we'll use `AAAXXXXXXXXXXXX` as a stand-in for your real token.
-
-<Callout kind="alert" collapsed="false">
+<Callout kind="warning" collapsed="false" color="#f59e0b">
   **API Key Regen**
 
   For security reasons, your API token is automatically changed whenever you change your password.
 </Callout>
+
+
 
 ## 3. Create an MCP request
 
@@ -48,9 +48,9 @@ https://api.datafiniti.co/v4/mcp
 
 Set the transport to **Streamable HTTP** — the transport the Datafiniti server uses.
 
-<Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1789761870246-fz8i0cnkxe6-MCPaddedgif.gif?fm=auto&auto=compress%2Cformat" width="1720" height="1000" alt="MCPaddedgif" />
 
-_Screenshot: a new MCP request in Postman with the server URL and transport set._
+
+<Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1789761870246-fz8i0cnkxe6-MCPaddedgif.gif?fm=auto&auto=compress%2Cformat" width="1720" height="1000" alt="MCPaddedgif" />
 
 ## 4. Add your authorization
 
@@ -62,9 +62,9 @@ Authorization: Bearer AAAXXXXXXXXXXXX
 
 Your token tells the server who you are, what you have access to, and how to account for credits — exactly as for a REST call. Field permissions are enforced identically to REST.
 
-<Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1789740593097-ox2qvuutez-postmanMCPAuth.png?fm=auto&auto=compress%2Cformat" width="1369" height="544" alt="postmanMCPAuth" />
 
-_Screenshot: the Authorization tab set to Bearer Token._
+
+<Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1789740593097-ox2qvuutez-postmanMCPAuth.png?fm=auto&auto=compress%2Cformat" width="1369" height="544" alt="postmanMCPAuth" />
 
 ## 5. Connect and list tools
 
@@ -79,17 +79,13 @@ df_get_record
 df_get_schema
 ```
 
-<Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1789740688733-lsptika7h5-poostmanMCP_prompt.png?fm=auto&auto=compress%2Cformat" width="1366" height="660" alt="poostmanMCP prompt" />
-
-_Screenshot: the connected server with the Datafiniti tools listed._
+<Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1789762386512-azypctsxpat-df_search-Screenshot.png?fm=auto&auto=compress%2Cformat" width="1366" height="1225" alt="df search Screenshot" />
 
 Each reuses the same REST request handler the public API uses, so behavior and pricing match REST exactly.
 
-<Callout kind="tip" collapsed="false">
-  **Handshake overlap**
+**Handshake overlap**
 
-  A single MCP handshake issues several requests in quick succession — `initialize`, `notifications/initialized`, `tools/list`, `prompts/list`, and an optional stream request. This is expected; the server's rate limit accounts for it.
-</Callout>
+A single MCP handshake issues several requests in quick succession — `initialize`, `notifications/initialized`, `tools/list`, `prompts/list`, and an optional stream request. This is expected; the server's rate limit accounts for it.
 
 ## 6. List the prompts
 
@@ -97,15 +93,13 @@ List the available **prompts**. Each converts a `docs.datafiniti.co` use-case gu
 
 Where a prompt argument has a small, verified value set (such as a property `status`), Postman renders it as a dropdown rather than a free-text box, because those arguments are defined as enums.
 
-<Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1789762181678-2k0zoynp804-pasted-image-propmts-postman.png?fm=auto&auto=compress%2Cformat" width="1363" height="930" alt="" />
-
-<Callout kind="tip" collapsed="false">
-  **Prompt arguments are flat strings**
-
-  MCP prompt arguments are transmitted as a flat string-to-string map, so every argument is a simple string — no arrays or nested objects. Nested values use dot notation where needed.
 
 
-</Callout>
+<Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1789740688733-lsptika7h5-poostmanMCP_prompt.png?fm=auto&auto=compress%2Cformat" width="1366" height="660" alt="poostmanMCP prompt" />
+
+**Prompt arguments are flat strings**
+
+MCP prompt arguments are transmitted as a flat string-to-string map, so every argument is a simple string — no arrays or nested objects. Nested values use dot notation where needed.
 
 ## 7. Call a tool
 
@@ -120,12 +114,14 @@ Select `df_search` and provide its arguments. For a property search:
 
 Send it. The server runs the same handler as REST `/search`, charges credits identically, and returns up to 50 records (here, 1). You'll get back `num_found`, `total_cost`, and a `records` array — the same shape a REST search returns.
 
-<Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1789762386512-azypctsxpat-df_search-Screenshot.png?fm=auto&auto=compress%2Cformat" width="1366" height="1225" alt="" />
+
+
+<Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1789740756484-gxxoest2xa8-Postman_MCP_prompts.png?fm=auto&auto=compress%2Cformat" width="1369" height="979" alt="Postman MCP prompts" />
 
 <Callout kind="tip" collapsed="false">
-  **Escaped quotes**
+  **Quoting exact-match values**
 
-  Exact-match values inside a query use escaped quotes — `propertyType:\"Single Family Dwelling\"` — not unescaped quotes.
+  Exact-match values use double quotes in the query: `propertyType:"Single Family Dwelling"`. Postman sends the JSON body as-is, so escape the inner quotes as `\"` in the request body (as shown). That's a JSON encoding rule, not part of the query syntax.
 </Callout>
 
 ## 8. Read structured errors
@@ -140,9 +136,9 @@ If a call fails, the tools agents actually hit return a structured error object 
 }
 ```
 
-Branch on the stable `code` — for example `invalid_query`, `invalid_view`, `out_of_range`, `credit_limit_exceeded`, or `no_results` — rather than string-matching the `message`. This is the same error shape your agent will see in production.
+Branch on the stable `code` — for example `invalid_query`, `invalid_view`, `out_of_range`, or `credit_limit_exceeded` — rather than string-matching the `message`. This is the same error shape your agent will see in production. (A query that simply matches nothing is not an error — it returns a successful response with no records.)
 
-<Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1789762456052-pcyif4h0409-psotmanMCP_error.png?fm=auto&auto=compress%2Cformat" width="1367" height="1040" alt="" />
+<Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1789762456052-pcyif4h0409-psotmanMCP_error.png?fm=auto&auto=compress%2Cformat" width="1367" height="1040" alt="psotmanMCP error" />
 
 ## Using the REST API in Postman instead
 
