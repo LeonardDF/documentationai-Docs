@@ -192,9 +192,11 @@ If you don't set `num_records`, `df_search` returns a single record. Set it expl
 
 Returns a JSON download response object describing the newly created download, including its download id. Poll that id with `df_download_status`.
 
-**Download size is set by your plan**
+<Callout kind="tip" collapsed="false">
+  **Download size is set by your plan**
 
-The number of records a download can return is governed by your Datafiniti subscription plan, not a fixed MCP limit. Check your plan's record limit under [subscription settings](https://portal.datafiniti.co/settings/billing/subscription).
+  The number of records a download can return is governed by your Datafiniti subscription plan, not a fixed MCP limit. Check your plan's record limit under [subscription settings](https://portal.datafiniti.co/settings/billing/subscription).
+</Callout>
 
 **`df_download_status`**
 
@@ -204,9 +206,11 @@ The number of records a download can return is governed by your Datafiniti subsc
 
 Returns the download's status — one of `queued`, `running`, `completed`, or `cancelled` — and, once completed, links to the result files. No credit cost.
 
-**Result links expire after 7 days**
+<Callout kind="alert" collapsed="false">
+  **Result links expire after 7 days**
 
-Download result-file links are valid for 7 days. After that, re-run the download to regenerate them.
+  Download result-file links are valid for 7 days. After that, re-run the download to regenerate them.
+</Callout>
 
 **`df_get_record`**
 
