@@ -1,0 +1,515 @@
+\---
+
+title: MCP Server
+
+description: Connect an MCP-aware AI client to Datafiniti through the Model Context Protocol to search, count, and download product, business, property, and people data.
+
+\---
+
+\# MCP Server
+
+The Datafiniti MCP server lets any MCP-aware client — Claude, ChatGPT, Codex, Cursor, or an agent framework — query Datafiniti's product, business, property, and people data directly. It's one of several ways to use Datafiniti with AI (see the \[Overview]\([https://docs.datafiniti.co/overview](https://docs.datafiniti.co/overview))); this one is best when you want an assistant or agent to _run_ queries on its own rather than just help you write them.
+
+MCP and REST return the same data and enforce the same permissions and credit rules, so anything you can do against the REST API you can do here.
+
+\## When to use MCP
+
+Use the MCP server when:
+
+\- Your client supports MCP natively and you want it to execute searches and downloads without a human relaying results.
+
+\- You're building an agent that goes from a natural-language goal to a structured data pull in one flow.
+
+If you'd rather have an assistant help you _build_ a query that you run yourself, you don't need MCP at all — see \[Claude]\([https://docs.datafiniti.co/claude](https://docs.datafiniti.co/claude)) or \[Other LLMs]\([https://docs.datafiniti.co/other-llms](https://docs.datafiniti.co/other-llms)).
+
+\## Quickstart
+
+The fastest path to confirming the server works is a single `df_count`, which returns a match count, spends no credits, and needs no LLM.
+
+1\. Get your API token from the \[Datafiniti Web Portal]\([https://portal.datafiniti.co/settings/api](https://portal.datafiniti.co/settings/api)).
+
+2\. Register the server with your client (see \[Client setup]\(#client-setup) below), or hit it directly to smoke-test (see \[Verify the connection]\(#verify-the-connection)).
+
+3\. Call `df_count` with a data type and a query:
+
+\`\`\`json
+
+\{
+
+&#x20; "type": "property",
+
+&#x20; "query": "country:US AND province:TX"
+
+}
+
+\`\`\`
+
+A count comes back with no records and no credit cost — enough to confirm auth and connectivity before you involve a model.
+
+\## Authentication
+
+The MCP server uses the same bearer token as REST — there's no separate MCP credential. Get your token from the \[Datafiniti Web Portal]\([https://portal.datafiniti.co/settings/api](https://portal.datafiniti.co/settings/api)).
+
+The token authenticates the session and determines your field access and credit accounting, exactly as it does for a REST call.
+
+\*\*Keep your token out of source control\*\*
+
+Store your token in an environment variable (for example `DATAFINITI_API_TOKEN`) and reference it from your client config, rather than pasting it into a file you might commit. Your token can spend credits — treat it like a password. For security, it regenerates whenever you change your Datafiniti password.
+
+\## Client setup
+
+The server is mounted at:
+
+\`\`\`
+
+[https://api.datafiniti.co/v4/mcp](https://api.datafiniti.co/v4/mcp)
+
+\`\`\`
+
+It uses the \*\*Streamable HTTP\*\* transport. How you register it depends on your client. In each snippet below, set `DATAFINITI_API_TOKEN` in your environment first.
+
+\*\*Claude Code\*\*
+
+\`\`\`bash
+
+claude mcp add --transport http datafiniti [https://api.datafiniti.co/v4/mcp](https://api.datafiniti.co/v4/mcp) \\
+
+&#x20; \--header "Authorization: Bearer $DATAFINITI\_API\_TOKEN"
+
+\`\`\`
+
+\*\*Cursor / VS Code / Codex / generic `mcpServers` config\*\*
+
+Most config-file clients accept a `mcpServers` block. Add:
+
+\`\`\`json
+
+\{
+
+&#x20; "mcpServers": \{
+
+&#x20;   "datafiniti": \{
+
+&#x20;     "type": "http",
+
+&#x20;     "url": "[https://api.datafiniti.co/v4/mcp](https://api.datafiniti.co/v4/mcp)",
+
+&#x20;     "headers": \{
+
+&#x20;       "Authorization": "Bearer $\{DATAFINITI\_API\_TOKEN}"
+
+&#x20;     }
+
+&#x20;   }
+
+&#x20; }
+
+}
+
+\`\`\`
+
+\<!-- VERIFY: Confirm each client's exact config key/shape and where the file lives
+
+&#x20;    (Cursor: .cursor/mcp.json; VS Code: .vscode/mcp.json or settings; Codex: config.toml?).
+
+&#x20;    The block above is the common MCP shape but per-client keys vary — check before publishing. -->
+
+\*\*Clients that can't send custom headers\*\*
+
+Some clients (including [claude.ai](http://claude.ai)'s custom connectors) don't let you set an `Authorization` header directly — see the \[Claude]\([https://docs.datafiniti.co/claude](https://docs.datafiniti.co/claude)) page for that flow. For header-only auth in a client that lacks header support, you can bridge with `mcp-remote`]\([https://www.npmjs.com/package/mcp-remote](https://www.npmjs.com/package/mcp-remote)):
+
+\`\`\`json
+
+\{
+
+&#x20; "mcpServers": \{
+
+&#x20;   "datafiniti": \{
+
+&#x20;     "command": "npx",
+
+&#x20;     "args": \[
+
+&#x20;       "mcp-remote",
+
+&#x20;       "[https://api.datafiniti.co/v4/mcp](https://api.datafiniti.co/v4/mcp)",
+
+&#x20;       "--header",
+
+&#x20;       "Authorization: Bearer $\{DATAFINITI\_API\_TOKEN}"
+
+&#x20;     ]
+
+&#x20;   }
+
+&#x20; }
+
+}
+
+\`\`\`
+
+\*\*[claude.ai](http://claude.ai) uses OAuth, not a pasted header\*\*
+
+The instructions above are for clients that support a static bearer header (Claude Code, Claude Desktop via config, Cursor, and similar). Connecting from \*\*[claude.ai](http://claude.ai)\*\* uses an OAuth sign-in flow instead — you won't paste a token. See the \[Claude]\([https://docs.datafiniti.co/claude](https://docs.datafiniti.co/claude)) page.
+
+\## Verify the connection
+
+Before involving an LLM, confirm the server responds to your token. Streamable HTTP expects both JSON and event-stream in the `Accept` header.
+
+\`\`\`bash
+
+curl -sS [https://api.datafiniti.co/v4/mcp](https://api.datafiniti.co/v4/mcp) \\
+
+&#x20; -H "Authorization: Bearer $DATAFINITI\_API\_TOKEN" \\
+
+&#x20; -H "Accept: application/json, text/event-stream" \\
+
+&#x20; -H "Content-Type: application/json" \\
+
+&#x20; -d '\{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+
+\`\`\`
+
+A successful call returns the list of tools. You can also point the \[MCP Inspector]\([https://github.com/modelcontextprotocol/inspector](https://github.com/modelcontextprotocol/inspector)) at the server for an interactive check:
+
+\`\`\`bash
+
+npx @modelcontextprotocol/inspector
+
+\`\`\`
+
+\<!-- VERIFY: Confirm the exact initialize/tools-list handshake the server expects
+
+&#x20;    (whether a prior initialize call is required before tools/list, session headers, etc.). -->
+
+\## Tools
+
+Every tool takes a `type` parameter naming the data type — `property`, `people`, `product`, or `business` — which is how a tool call picks the dataset. (REST uses separate endpoints; MCP folds them into one tool set selected by `type`.)
+
+\| Tool | What it does | Credits |
+
+\| --- | --- | --- |
+
+\| `df_count` | Count records matching a query | None |
+
+\| `df_search` | Return up to 50 matching records | Charged like REST `/search` |
+
+\| `df_start_download` | Start an asynchronous download of a larger set | See \[Credits]\(#credits) |
+
+\| `df_download_status` | Check a download's status and get result-file links | None |
+
+\| `df_get_record` | Retrieve a single record by identifier | See \[Credits]\(#credits) |
+
+\| `df_get_schema` | Return the field-name-to-type map for a data type | None |
+
+\*\*Choosing a tool\*\*
+
+Use `df_count` to size a result set before spending credits, `df_search` for small or targeted pulls (up to 50 records), and `df_start_download` when a use case's scope implies many records.
+
+\### Tool reference
+
+The parameters below are drawn from the equivalent REST behavior. Confirm exact names, defaults, and return shapes against your deployment before publishing.
+
+\*`df_count`\*\*
+
+\| Parameter | Type | Required | Description |
+
+\| --- | --- | --- | --- |
+
+\| `type` | string | yes | `property` \\| `people` \\| `product` \\| `business` |
+
+\| `query` | string | yes | Lucene query string |
+
+Returns `{ "num_found": <int> }`. No credit cost.
+
+\*`df_search`\*\*
+
+\| Parameter | Type | Required | Default | Description |
+
+\| --- | --- | --- | --- | --- |
+
+\| `type` | string | yes | — | `property` \\| `people` \\| `product` \\| `business` |
+
+\| `query` | string | yes | — | Lucene query string |
+
+\| `num_records` | integer | no | \<!-- VERIFY default --> | Number of records to return, up to 50 |
+
+\| `view` | string \\| array | no | default view | A saved view name, or an ad-hoc array of `{"name": "<field>"}` |
+
+\| `sort` | boolean | no | `true` | Sort by `dateUpdated` descending |
+
+\| `fuzzy_match` | string | no | `'on'` | Address fuzzy-matching. \*\*Property only\*\* — see \[Fuzzy match scope]\(#fuzzy-match-scope) |
+
+Returns `{ "num_found", "total_cost", "records": [...] }` — the same shape as a REST search.
+
+\<!-- VERIFY: df\_search default for num\_records; whether view accepts a plain string,
+
+&#x20;    an array, or both; whether any param beyond the above is accepted. -->
+
+\*`df_start_download`\*\*
+
+\| Parameter | Type | Required | Default | Description |
+
+\| --- | --- | --- | --- | --- |
+
+\| `type` | string | yes | — | `property` \\| `people` \\| `product` \\| `business` |
+
+\| `query` | string | yes | — | Lucene query string |
+
+\| `format` | string | no | \<!-- VERIFY --> | Output format — JSON / CSV? |
+
+\| `num_records` | integer | no | \<!-- VERIFY --> | Records to download, capped at 100,000 at the MCP layer |
+
+\| `view` | string \\| array | no | default view | As in `df_search` |
+
+\<!-- VERIFY: What df\_start\_download returns (a download\_id string? an object?),
+
+&#x20;    what `format` values are accepted, and — critically — what happens when a query
+
+&#x20;    exceeds the 100,000-record cap: does it error (with which code?) or silently truncate? -->
+
+Returns a download identifier to poll with `df_download_status`.
+
+\*`df_download_status`\*\*
+
+\| Parameter | Type | Required | Description |
+
+\| --- | --- | --- | --- |
+
+\| `download_id` | string | yes | The identifier returned by `df_start_download` |
+
+\<!-- VERIFY: the exact identifier parameter name; the set of possible status values
+
+&#x20;    (e.g. running / completed / failed); and whether result-file links expire (if so, after how long). -->
+
+Returns the download's status and, once complete, links to the result files. No credit cost.
+
+\*`df_get_record`\*\*
+
+\| Parameter | Type | Required | Description |
+
+\| --- | --- | --- | --- |
+
+\| `type` | string | yes | `property` \\| `people` \\| `product` \\| `business` |
+
+\| `id` | string | yes | \<!-- VERIFY: the record identifier field/param name --> |
+
+\<!-- VERIFY: the identifier df\_get\_record takes (record id? key?) and whether retrieving
+
+&#x20;    a single record costs credits. -->
+
+\*`df_get_schema`\*\*
+
+\| Parameter | Type | Required | Description |
+
+\| --- | --- | --- | --- |
+
+\| `type` | string | yes | `property` \\| `people` \\| `product` \\| `business` |
+
+Returns the field-name-to-type map an agent needs to write a valid query. No credit cost. See also the schema and possible-values links under \[Querying]\(#querying).
+
+\## Run a query
+
+Call `df_search` with a data type, a query string, and a record count:
+
+\`\`\`json
+
+\{
+
+&#x20; "type": "property",
+
+&#x20; "query": "country:US AND propertyType:\\"Single Family Dwelling\\"",
+
+&#x20; "num\_records": 10
+
+}
+
+\`\`\`
+
+The response contains `num_found`, `total_cost`, and a `records` array — the same shape a REST search returns.
+
+\*\*Quoting exact-match values\*\*
+
+Exact-match values use double quotes in the query: `propertyType:"Single Family Dwelling"`. Those are query syntax, not JSON. When an agent calls the tool, its client serializes the arguments and handles escaping for you. Only when you're \*\*hand-writing the JSON arguments\*\* do you escape the inner quotes as `\"` — as in the example above. Avoid double-escaping `\\"`).
+
+\## Querying
+
+The server exposes Datafiniti's full query syntax to the client: boolean operators, negation, parentheses, nested-field dot notation, ranges, and the compound `{}` syntax for matching multiple sub-field requirements within a single nested object.
+
+\*\*Construction guides:\*\* \[Property]\([https://docs.datafiniti.co/docs/constructing-property-queries](https://docs.datafiniti.co/docs/constructing-property-queries)) · \[People]\([https://docs.datafiniti.co/docs/constructing-people-queries](https://docs.datafiniti.co/docs/constructing-people-queries)) · \[Product]\([https://docs.datafiniti.co/docs/constructing-product-queries](https://docs.datafiniti.co/docs/constructing-product-queries)) · \[Business]\([https://docs.datafiniti.co/docs/constructing-business-queries](https://docs.datafiniti.co/docs/constructing-business-queries))
+
+\*\*Schemas\*\* (field names and types — pair these with `df_get_schema`): \[Property]\([https://docs.datafiniti.co/docs/property-data-schema](https://docs.datafiniti.co/docs/property-data-schema)) · \[People]\([https://docs.datafiniti.co/docs/people-data-schema](https://docs.datafiniti.co/docs/people-data-schema)) · \[Product]\([https://docs.datafiniti.co/docs/product-data-schema](https://docs.datafiniti.co/docs/product-data-schema)) · \[Business]\([https://docs.datafiniti.co/docs/business-data-schema](https://docs.datafiniti.co/docs/business-data-schema))
+
+\*\*Possible values\*\* (exact enum values): \[Property fields]\([https://docs.datafiniti.co/docs/possible-values-for-property-fields](https://docs.datafiniti.co/docs/possible-values-for-property-fields)) \<!-- VERIFY: add People/Product/Business possible-values pages if they exist -->
+
+\### Views
+
+The `view` parameter on `df_search` and `df_start_download` controls which fields come back. A string names a default or saved view; an array is an ad-hoc view of `{"name": "<field>"}` objects, with nested sub-fields expressed as dot notation in the `name` (for example, `"descriptions.value"`).
+
+\### Fuzzy match scope
+
+`fuzzy_match` controls address fuzzy-matching and defaults to `'on'`. It applies to \*\*property\*\* queries. Fuzzy matching is documented only for property and business data, so it isn't meaningful for people or product queries.
+
+\<!-- VERIFY: On people/product, is fuzzy\_match silently ignored, or does passing it
+
+&#x20;    return an error? And is it accepted on business as well as property? State the
+
+&#x20;    actual behavior here. -->
+
+\### Paging past 50 records
+
+`df_search` returns at most 50 records per call.
+
+\<!-- VERIFY: Can a client page through results (offset/cursor param), or is
+
+&#x20;    df\_start\_download the only way to retrieve more than 50 records? State which. -->
+
+\## Tips for agents
+
+Models predictably make a few mistakes against these schemas. If you're writing a system prompt or tool description, call these out:
+
+\- \*\*Geographic filters use top-level `city` and `province`\*\*, not `address.city`.
+
+\- \*\*For property data, don't use the deprecated `statuses` field.\*\* Use `mostRecentStatus` (and `mostRecentRentalStatus` for rentals), or `statusHistory`. Models trained on older docs tend to reach for `statuses.type`.
+
+\- \*\*Property status is split by side.\*\* Sale-side values live on `mostRecentStatus`; rental-side values on `mostRecentRentalStatus`. A rental value queried against the sale field returns zero results.
+
+\- \*\*Enum fields need exact values\*\* from the Possible Values pages — not paraphrases.
+
+\- \*\*Count before you search or download\*\* to size a result set without spending credits.
+
+\<!-- VERIFY: confirm the deprecated-field guidance (statuses vs statusHistory/mostRecentStatus)
+
+&#x20;    and the top-level city/province advice against the current schema before publishing. -->
+
+\## Credits
+
+MCP tools spend credits on the same basis as REST, using your token's account.
+
+\- `df_count`, `df_download_status`, `df_get_schema` — \*\*free\*\*.
+
+\- `df_search` — \*\*charged like REST `/search`.\*\* \<!-- VERIFY: charged per record returned? per call? -->
+
+\- `df_start_download` — \*\*charged for the download.\*\* \<!-- VERIFY: charged at start or on completion? -->
+
+\- `df_get_record` — \<!-- VERIFY: does a single-record fetch cost credits? -->
+
+To keep spend predictable: run `df_count` first, keep `num_records` low while iterating, and reserve `df_start_download` for when you actually need the full set. If a call returns `credit_limit_exceeded`, your account has hit its credit limit — the query was not fulfilled. See \[How Credits Work]\([https://docs.datafiniti.co/docs/how-credits-work](https://docs.datafiniti.co/docs/how-credits-work)) \<!-- VERIFY exact slug --> for details.
+
+\## Limits
+
+\- \*\*Records per search:\*\* 50 `df_search`).
+
+\- \*\*Records per download:\*\* 100,000 at the MCP layer.
+
+\- \*\*Rate limits:\*\* \<!-- VERIFY: state the MCP rate limit and what a client sees when it's hit (which code / HTTP status, and whether to back off and retry). -->
+
+\## Errors
+
+The agent-facing query tools return a structured error object rather than a bare status code or loose string:
+
+\`\`\`json
+
+\{
+
+&#x20; "code": "invalid\_query",
+
+&#x20; "message": "…",
+
+&#x20; "field": "query"
+
+}
+
+\`\`\`
+
+Branch on the stable `code` rather than string-matching `message`.
+
+\| Code | Meaning | Retry? |
+
+\| --- | --- | --- |
+
+\| `invalid_type` | Unknown or missing `type` | No — fix the value |
+
+\| `invalid_enum` | A value isn't in the field's allowed set | No — use a Possible Values entry |
+
+\| `missing_required_field` | A required parameter is absent | No — add it |
+
+\| `out_of_range` | A numeric/date value or count is out of bounds | No — adjust |
+
+\| `unknown_field` | Query references a field that doesn't exist | No — check the schema |
+
+\| `invalid_field` | Field can't be used this way | No — check the schema |
+
+\| `invalid_query` | Query string is malformed | No — fix syntax |
+
+\| `invalid_view` | View references an invalid field/shape | No — fix the view |
+
+\| `not_found` | Requested record doesn't exist | No |
+
+\| `no_results` | Query matched nothing | See note below |
+
+\| `credit_limit_exceeded` | Account credit limit reached | No — not until credits reset/raised |
+
+\| `plan_restriction` | Your plan doesn't allow this | No |
+
+\| `feature_not_enabled` | Feature is off for your account | No |
+
+\| `forbidden` | Not permitted for your token | No |
+
+\| `query_runner_error` | Backend query execution error (on the `query` field) | Maybe — transient backend errors may clear |
+
+\| `internal_error` | Unexpected server error | Maybe — retry with backoff |
+
+\*\*Is `no_results` an error?\*\*
+
+\<!-- VERIFY: This is important for agent authors. Does a zero-hit search actually return
+
+&#x20;    a no\_results _error_, or does it return a normal result with num\_found: 0? Most clients
+
+&#x20;    expect the latter and an agent branching on errors will mishandle a no\_results code.
+
+&#x20;    Confirm and document the real behavior. -->
+
+\*\*Auth failures\*\*
+
+\<!-- VERIFY: Does a missing/expired/invalid token come back as an HTTP 401, or as a
+
+&#x20;    structured error object? Agents need to know which to catch. -->
+
+\<!-- VERIFY: The structured-error shape is confirmed for the search/count/download/get-record
+
+&#x20;    surface. If any tool (e.g. df\_get\_schema) returns errors in a different shape, say so here. -->
+
+\## Prompts
+
+The server ships a library of prompts, each converting a `docs.datafiniti.co` use-case guide into a ready-to-run query template. A prompt doesn't execute anything itself — it returns a built query and tells the client which tool to run next `df_search` for a small, targeted result set, or `df_start_download` when the guide's scope implies many records).
+
+In many clients, prompts surface as slash commands or a prompt picker. Where a prompt argument has a small, verified value set (such as a property `status`), it's defined as an enum, so clients that render prompt forms show a dropdown instead of a free-text box.
+
+The prompts available for each data type are listed on that data type's page: \[Property]\([https://docs.datafiniti.co/docs/property-data-with-ai](https://docs.datafiniti.co/docs/property-data-with-ai)) · \[People]\([https://docs.datafiniti.co/docs/people-data-with-ai](https://docs.datafiniti.co/docs/people-data-with-ai)) · \[Product]\([https://docs.datafiniti.co/docs/product-data-with-ai](https://docs.datafiniti.co/docs/product-data-with-ai)) · \[Business]\([https://docs.datafiniti.co/docs/business-data-with-ai](https://docs.datafiniti.co/docs/business-data-with-ai)).
+
+\## Worked examples
+
+For full, end-to-end walkthroughs per data type — count, search, a data-type-specific technique, and a download — see:
+
+\[Property Examples]\([https://docs.datafiniti.co/docs/mcp-server-property-examples](https://docs.datafiniti.co/docs/mcp-server-property-examples)) · \[People Examples]\([https://docs.datafiniti.co/docs/mcp-server-people-examples](https://docs.datafiniti.co/docs/mcp-server-people-examples)) · \[Product Examples]\([https://docs.datafiniti.co/docs/mcp-server-product-examples](https://docs.datafiniti.co/docs/mcp-server-product-examples)) · \[Business Examples]\([https://docs.datafiniti.co/docs/mcp-server-business-examples](https://docs.datafiniti.co/docs/mcp-server-business-examples))
+
+\## Troubleshooting
+
+\- \*`tools/list` returns nothing / connection refused\*\* — re-check the URL and that your `Accept` header includes both `application/json` and `text/event-stream`. Try the \[cURL smoke test]\(#verify-the-connection).
+
+\- \*\*401 / auth error\*\* — confirm `DATAFINITI_API_TOKEN` is set and current; it regenerates on password change.
+
+\- \*\*A client won't accept the `Authorization` header\*\* — use the `mcp-remote` bridge, or the OAuth flow on the \[Claude]\([https://docs.datafiniti.co/claude](https://docs.datafiniti.co/claude)) page.
+
+\- \*\*Queries return zero unexpectedly\*\* — check for a rental status on the sale field, a deprecated `statuses` field, or an enum value that isn't in Possible Values.
+
+\## Next steps
+
+\- Test the connection by hand: \[Verify the connection]\(#verify-the-connection).
+
+\- Per-client details: \[Claude]\([https://docs.datafiniti.co/claude](https://docs.datafiniti.co/claude)) · \[ChatGPT / Codex]\([https://docs.datafiniti.co/chatgpt-codex](https://docs.datafiniti.co/chatgpt-codex)) · \[Postman]\([https://docs.datafiniti.co/postman](https://docs.datafiniti.co/postman)).
+
+\- Data-type walkthroughs: the "…with AI" and Examples pages above.
+
+Was this page helpful?
