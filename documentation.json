@@ -84,8 +84,14 @@
                     "path": "mcp-server"
                   },
                   {
-                    "title": "Postman",
-                    "path": "postman-mcp"
+                    "group": "Postman",
+                    "pages": [
+                      {
+                        "title": "Property Data with Postman MCP",
+                        "path": "property-data-with-postman-mcp"
+                      }
+                    ],
+                    "path": "postman"
                   },
                   {
                     "title": "ChatGPT/Codex",
