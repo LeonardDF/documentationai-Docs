@@ -1,10 +1,10 @@
 ---
-title: MCP Server — Product Examples
+title: Product Data with an MCP Server
 description: >-
   Worked examples of querying Datafiniti product data through the MCP server —
   counting, searching, downloading, and running a product prompt.
 ---
-# Product Data with an MCP Server
+# MCP Server — Product Examples
 
 This guide walks through end-to-end examples of using the [MCP Server](https://docs.datafiniti.co/mcp-server) against **product data**. It assumes you've already connected a client and authenticated — see the [MCP Server](https://docs.datafiniti.co/mcp-server) guide for setup, transport, and the full tool reference.
 
@@ -16,18 +16,20 @@ Say we want **Apple laptops**, with their pricing and descriptions — first to 
 
 ## 1. Size the result set with `df_count`
 
+Every tool call names the dataset with a `data_type` parameter — here `"data_type": "product"`. This is how the server knows to search product records rather than the other data types. The accepted values are `property`, `people`, `product`, and `business`.
+
 Start with a count. It returns no records and costs no credits, so it's the cheapest way to confirm a query is scoped correctly before spending anything.
 
-```typescript
+```json
 {
   "query": "brand:Apple AND categories:laptops",
-  "type": "product"
+  "data_type": "product"
 }
 ```
 
 A response tells you how many records match:
 
-```typescript
+```json
 {
   "num_found": 742
 }
@@ -37,18 +39,16 @@ A response tells you how many records match:
   **Match multiple values in one field**
 
   Product queries frequently match several values in a single field. Group alternatives with parentheses — `categories:(laptops OR desktops)` — to widen the match without repeating the field.
-
-
 </Callout>
 
 ## 2. Pull a targeted sample with `df_search`
 
 Now retrieve a handful of records. `df_search` returns up to 50 per call and charges credits identically to REST `/search`.
 
-```typescript
+```json
 {
   "query": "brand:Apple AND categories:(laptops OR desktops)",
-  "type": "product",
+  "data_type": "product",
   "num_records": 5,
   "view": ["name", "brand", "categories", "prices.amount", "prices.currency"]
 }
@@ -56,7 +56,7 @@ Now retrieve a handful of records. `df_search` returns up to 50 per call and cha
 
 The response has the same shape as a REST search — `num_found`, `total_cost`, and a `records` array:
 
-```typescript
+```json
 {
   "num_found": 742,
   "total_cost": 5,
@@ -79,16 +79,16 @@ Product data leans heavily on nested structures — prices, descriptions, and re
 
 Query on a nested sub-field:
 
-```typescript
+```json
 {
   "query": "brand:Apple AND descriptions.value:\"Retina display\"",
-  "type": "product"
+  "data_type": "product"
 }
 ```
 
 Request nested sub-fields in a view with dot notation in the `name`:
 
-```typescript
+```json
 {
   "view": [
     {"name": "name"},
@@ -99,18 +99,22 @@ Request nested sub-fields in a view with dot notation in the `name`:
 }
 ```
 
-**Dot notation, not sub-field arrays**
+<Callout kind="warning" collapsed="false" color="#f59e0b">
+  **Dot notation, not sub-field arrays**
 
-Nested sub-fields are expressed as dot notation in a view's `name` — `"descriptions.value"` — rather than as a separate sub-fields array.
+  Nested sub-fields are expressed as dot notation in a view's `name` — `"descriptions.value"` — rather than as a separate sub-fields array.
+</Callout>
+
+
 
 ## 4. Use the compound `{}` syntax
 
 To require multiple sub-fields to match _within the same nested object_ — rather than anywhere across separate objects — use the compound `{}` syntax. For example, to match a product that has a single price record that is both under a threshold and in USD:
 
-```typescript
+```json
 {
   "query": "brand:Apple AND prices:{amount:[* TO 1000] AND currency:USD}",
-  "type": "product"
+  "data_type": "product"
 }
 ```
 
@@ -118,12 +122,12 @@ This differs from an unbraced `AND`, which would let the two conditions be satis
 
 ## 5. Export descriptions or reviews with `df_start_download`
 
-A common product use case is pulling descriptions or reviews in bulk — for analysis or for training a model. Start an asynchronous download, capped at 100,000 records at the MCP layer.
+A common product use case is pulling descriptions or reviews in bulk — for analysis or for training a model. Start an asynchronous download; the number of records it can return is governed by your Datafiniti subscription plan.
 
-```typescript
+```json
 {
   "query": "categories:laptops",
-  "type": "product",
+  "data_type": "product",
   "format": "JSON",
   "view": ["name", "brand", "descriptions.value", "reviews.text", "reviews.rating"]
 }
@@ -131,7 +135,7 @@ A common product use case is pulling descriptions or reviews in bulk — for ana
 
 This returns a download identifier. Poll it with `df_download_status`:
 
-```typescript
+```json
 {
   "download_id": "…"
 }

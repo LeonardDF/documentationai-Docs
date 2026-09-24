@@ -16,35 +16,39 @@ Say we want **hotels in the US**, with their locations and contact details — f
 
 ## 1. Size the result set with `df_count`
 
+Every tool call names the dataset with a `data_type` parameter — here `"data_type": "business"`. This is how the server knows to search business records rather than the other data types. The accepted values are `property`, `people`, `product`, and `business`.
+
 Start with a count. It returns no records and costs no credits, so it's the cheapest way to confirm a query is scoped correctly before spending anything.
 
-```typescript
+```json
 {
   "query": "categories:hotels AND country:US",
-  "type": "business"
+  "data_type": "business"
 }
 ```
 
 A response tells you how many records match:
 
-```typescript
+```json
 {
   "num_found": 58310
 }
 ```
 
-**Sanity-check the count**
+<Callout kind="tip" collapsed="false">
+  **Sanity-check the count**
 
-An unexpected count usually points to a category or field-name mismatch rather than the true size of the data. Confirm the query here before spending credits on a search.
+  A count of `0` is a valid result — no records matched — not an error. If you expected matches, check the category and field names against the schema, then adjust. A count is the cheapest way to test changes before spending credits on a search.
+</Callout>
 
 ## 2. Pull a targeted sample with `df_search`
 
 Now retrieve a handful of records. `df_search` returns up to 50 per call and charges credits identically to REST `/search`.
 
-```typescript
+```json
 {
   "query": "categories:hotels AND country:US AND province:NV",
-  "type": "business",
+  "data_type": "business",
   "num_records": 5,
   "view": ["name", "address", "city", "province", "postalCode", "phones", "categories"]
 }
@@ -52,7 +56,7 @@ Now retrieve a handful of records. `df_search` returns up to 50 per call and cha
 
 The response has the same shape as a REST search — `num_found`, `total_cost`, and a `records` array:
 
-```typescript
+```json
 {
   "num_found": 1204,
   "total_cost": 5,
@@ -70,27 +74,31 @@ The response has the same shape as a REST search — `num_found`, `total_cost`, 
 }
 ```
 
-**Escaped quotes**
+<Callout kind="tip" collapsed="false">
+  **Quoting exact-match values**
 
-Exact-match values with spaces or apostrophes use escaped quotes — `name:\"Joe's Coffee\"` — not unescaped quotes.
+  Exact-match values use double quotes in the query: `name:"Joe's Coffee"`. That's query syntax, not JSON. A client serializes tool arguments for you; only when you hand-write the JSON do you escape the inner quotes as `\"`. Avoid double-escaping (`\\"`).
+</Callout>
+
+
 
 ## 3. Search by category and location
 
 Business queries combine field conditions with boolean operators. To find restaurants of a particular cuisine near a location, combine a category with a place:
 
-```typescript
+```json
 {
   "query": "categories:restaurants AND categories:Italian AND city:\"San Francisco\"",
-  "type": "business"
+  "data_type": "business"
 }
 ```
 
 To match more than one category, group alternatives with parentheses:
 
-```typescript
+```json
 {
   "query": "categories:(hotels OR motels) AND country:US",
-  "type": "business"
+  "data_type": "business"
 }
 ```
 
@@ -98,10 +106,10 @@ To match more than one category, group alternatives with parentheses:
 
 Numeric fields such as revenue accept range syntax. To find businesses within a revenue band:
 
-```typescript
+```json
 {
   "query": "categories:restaurants AND country:US AND revenue:[1000000 TO 5000000]",
-  "type": "business"
+  "data_type": "business"
 }
 ```
 
@@ -109,12 +117,12 @@ Ranges work the same way for other numeric and date fields on the record.
 
 ## 5. Export the full set with `df_start_download`
 
-When you want all matching records rather than a sample, start an asynchronous download. At the MCP layer this is capped at 100,000 records.
+When you want all matching records rather than a sample, start an asynchronous download. The number of records a download can return is governed by your Datafiniti subscription plan.
 
-```typescript
+```json
 {
   "query": "categories:hotels AND country:US",
-  "type": "business",
+  "data_type": "business",
   "format": "JSON",
   "view": ["name", "address", "city", "province", "postalCode", "phones", "categories"]
 }
@@ -122,7 +130,7 @@ When you want all matching records rather than a sample, start an asynchronous d
 
 This returns a download identifier. Poll it with `df_download_status`:
 
-```typescript
+```json
 {
   "download_id": "…"
 }
