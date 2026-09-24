@@ -1,0 +1,167 @@
+---
+title: Product Data with Postman MCP
+description: >-
+  Drive the Datafiniti MCP tools against product data by hand in Postman —
+  count, search, work with nested fields, and start a download.
+---
+# Postman — Product Examples
+
+This guide walks through calling the Datafiniti MCP tools against **product data** by hand in Postman — selecting a tool, filling in its argument form, sending, and reading the response. It assumes you've already connected Postman to the MCP server and authenticated; if not, start with the [Postman](https://docs.datafiniti.co/postman) guide for download, token, request, and connection setup.
+
+Everything here uses the same tools and `data_type` parameter as the other data types; what changes are the fields, nested sub-fields, and views specific to product records. For the field reference, see the [Product Data Schema](https://docs.datafiniti.co/docs/product-data-schema) and [Constructing Product Queries](https://docs.datafiniti.co/docs/constructing-product-queries). For the full tool reference, see [MCP Server](https://docs.datafiniti.co/mcp-server).
+
+## The goal
+
+We'll find **Apple laptops** with pricing and descriptions — first counting them, then pulling a sample, then working with nested fields and the compound query syntax, then exporting descriptions and reviews.
+
+## 1. Count with `df_count`
+
+Select the `df_count` tool and fill in `data_type` and `query`:
+
+```json
+{
+  "data_type": "product",
+  "query": "brand:Apple AND categories:laptops"
+}
+```
+
+Send it. `df_count` returns a match count with no records and no credit cost:
+
+```json
+{
+  "num_found": 15248
+}
+```
+
+<Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1790280054425-2rkx5y7jvy2-product-MCP-Count.png?fm=auto&auto=compress%2Cformat" width="1369" height="878" alt="" />
+
+<Callout kind="info" collapsed="false">
+  **Match multiple values in one field**
+
+  Product queries often match several values in one field — group alternatives with parentheses, e.g. `categories:(laptops OR desktops)`. A count of `0` is a valid result, not an error.
+</Callout>
+
+
+
+## 2. Search with `df_search`
+
+Select `df_search`. Add `num_records` and a `view`:
+
+```json
+{
+  "data_type": "product",
+  "query": "brand:Apple AND categories:(laptops OR desktops)",
+  "num_records": 5,
+  "view": [{"name": "name"}, {"name": "brand"}, {"name": "categories"}, {"name": "prices.amount"}, {"name": "prices.currency"}]
+}
+```
+
+Send it. The response has the same shape as a REST search:
+
+```json
+{
+  "num_found": 15248,
+  "total_cost": 5,
+  "records": [
+    {
+      "name": "…",
+      "brand": "Apple",
+      "categories": ["laptops"],
+      "prices": [
+        {"amount": "000.00", "currency": "USD"}
+      ]
+    }
+  ]
+}
+```
+
+<Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1790279995850-iw56dp921z-product_MCP_search.png?fm=auto&auto=compress%2Cformat" width="1360" height="1182" alt="product MCP search" />
+
+## 3. Work with nested sub-fields
+
+Product data leans on nested structures — prices, descriptions, and reviews are nested objects. Reference their sub-fields with dot notation, in both queries and views.
+
+Query on a nested sub-field:
+
+```json
+{
+  "data_type": "product",
+  "query": "brand:Apple AND descriptions.value:\"Retina display\""
+}
+```
+
+Request nested sub-fields in a view with dot notation in the `name`:
+
+```json
+{
+  "view": [
+    {"name": "name"},
+    {"name": "brand"},
+    {"name": "descriptions.value"},
+    {"name": "reviews.text"}
+  ]
+}
+```
+
+<Callout kind="tip" collapsed="false">
+  **Dot notation, not sub-field arrays**
+
+  Nested sub-fields are expressed as dot notation in a view's `name` — `"descriptions.value"` — rather than a separate sub-fields array.
+</Callout>
+
+## 4. Use the compound `{}` syntax
+
+To require multiple sub-fields to match _within the same nested object_ — rather than anywhere across separate objects — use the compound `{}` syntax. For a product with a single price record that is both under a threshold and in USD:
+
+```json
+{
+  "data_type": "product",
+  "query": "brand:Apple AND prices:{amount:[* TO 1000] AND currency:USD}"
+}
+```
+
+This differs from an unbraced `AND`, which would let the two conditions be satisfied by different price records on the same product. See [Constructing Product Queries](https://docs.datafiniti.co/docs/constructing-product-queries) for a full explanation.
+
+## 5. Export with `df_start_download`
+
+A common product use case is pulling descriptions or reviews in bulk. Select `df_start_download` and add a `format`:
+
+```json wrap="true"
+{
+  "data_type": "product",
+  "query": "categories:laptops",
+  "format": "JSON",
+  "view": [{"name": "name"}, {"name": "brand"}, {"name": "descriptions"}, {"name": "reviews"}, {"name": "reviews"}]
+}
+```
+
+It returns a JSON object with the new download id. Copy the id into `df_download_status` and poll:
+
+```json
+{
+  "download_id": "…"
+}
+```
+
+The status comes back as `queued`, `running`, `completed`, or `cancelled`. Once completed, the response includes result-file links, valid for 7 days.
+
+<Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1790280282308-ui42hpxhr2-products-MCP-download-start.png?fm=auto&auto=compress%2Cformat" width="1348" height="1224" alt="" />
+
+<Callout kind="alert" collapsed="false">
+  **Download size follows your plan**
+
+  How many records a download can return is governed by your [subscription plan](https://portal.datafiniti.co/settings/billing/subscription). To page a smaller set by hand, `df_search` returns up to 10,000 records across calls.
+</Callout>
+
+## 6. Try a product prompt
+
+Select a prompt such as `search_by_gtin`, `lookup_product_by_brand_model`, or `export_llm_training_data` from Postman's prompt list. It returns a ready-to-run query; copy that into `df_search` or `df_start_download` to run it.
+
+For the full list of product prompts, see [Product Data with AI](https://docs.datafiniti.co/docs/product-data-with-ai).
+
+## Next steps
+
+- Same flow for [Property](https://docs.datafiniti.co/docs/postman-property-examples), [People](https://docs.datafiniti.co/docs/postman-people-examples), or [Business](https://docs.datafiniti.co/docs/postman-business-examples).
+- Setup and connection: [Postman](https://docs.datafiniti.co/postman).
+- Full tool reference: [MCP Server](https://docs.datafiniti.co/mcp-server).
+

@@ -87,6 +87,10 @@
                     "group": "Postman",
                     "pages": [
                       {
+                        "title": "Product Data with Postman",
+                        "path": "product-data-with-postman"
+                      },
+                      {
                         "title": "Property Data with Postman MCP",
                         "path": "property-data-with-postman-mcp"
                       },
