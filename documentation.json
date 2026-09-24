@@ -89,6 +89,10 @@
                       {
                         "title": "Property Data with Postman MCP",
                         "path": "property-data-with-postman-mcp"
+                      },
+                      {
+                        "title": "People Data with Postman",
+                        "path": "people-data-with-postman"
                       }
                     ],
                     "path": "postman"
