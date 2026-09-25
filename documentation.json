@@ -87,16 +87,20 @@
                     "group": "Postman",
                     "pages": [
                       {
-                        "title": "Product Data with Postman",
-                        "path": "product-data-with-postman"
-                      },
-                      {
                         "title": "Property Data with Postman MCP",
                         "path": "property-data-with-postman-mcp"
                       },
                       {
                         "title": "People Data with Postman",
                         "path": "people-data-with-postman"
+                      },
+                      {
+                        "title": "Product Data with Postman",
+                        "path": "product-data-with-postman"
+                      },
+                      {
+                        "title": "Business Data with Postman MCP",
+                        "path": "business-data-with-postman-mcp"
                       }
                     ],
                     "path": "postman"
