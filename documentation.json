@@ -111,6 +111,10 @@
                       {
                         "title": "Property Data with GPT",
                         "path": "property-data-with-gpt"
+                      },
+                      {
+                        "title": "Product Data with GPT",
+                        "path": "product-data-with-gpt"
                       }
                     ],
                     "path": "chatgpt/codex"
