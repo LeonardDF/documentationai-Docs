@@ -33,7 +33,7 @@ Use the **Streamable HTTP** transport. Once connected, the model can list the Da
 
 
 
-_Screenshot: adding the Datafiniti MCP server as a connector in ChatGPT or Codex._
+<Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1790779209393-23k33hz593l-add_gpt-plugin.png?fm=auto&auto=compress%2Cformat" width="2256" height="1251" alt="" />
 
 For the full tool reference, behavior, and defaults, see [MCP Server](https://docs.datafiniti.co/mcp-server).
 
@@ -47,7 +47,7 @@ If your environment supports custom tools, functions, or actions but not MCP, yo
 
 
 
-_Screenshot: the Datafiniti search endpoint registered as a custom tool or action._
+<Video src="https://video-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1790779282796-do72v4omut5-download_allow_Datafiniti.mp4" render-type="video" poster="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1790779284191-e4266nakbfo-download_allow_Datafiniti-poster.jpg?fm=auto&auto=compress%2Cformat" controls="true" allow-full-screen="true" />
 
 Then include Datafiniti's query syntax in the system prompt or tool description so the model builds valid queries. A minimal system-prompt snippet:
 
@@ -61,7 +61,7 @@ Exact-match values use escaped quotes, e.g. propertyType:\"Single Family Dwellin
 
 ## Option C — Plain conversation (no connection)
 
-You don't need any integration to get value here. Describe what you're looking for, paste in the relevant query-construction guide or schema, and let the model draft a query. Then run that query yourself in [Postman](https://docs.datafiniti.co/postman), cURL, or an SDK.
+You don't need any integration to get value here. Describe what you're looking for, paste in the relevant query-construction guide or schema, and let the model draft a query. Then run that query yourself in [Postman](/postman), cURL, or an SDK.
 
 This keeps your credentials out of the model entirely — the model only _writes_ the query; you run it. It also works on any ChatGPT or Codex surface, including ones with no tool support.
 
@@ -77,6 +77,8 @@ A plain-conversation exchange might look like:
 >
 > **Model:** `country:US AND propertyType:"Single Family Dwelling" AND mostRecentStatus:"For Sale"`
 
+<Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1790779899090-zdo86fhvs3o-gpt-generic-example.png?fm=auto&auto=compress%2Cformat" width="1077" height="1063" alt="" />
+
 
 
 _Screenshot: the model building a query in a plain conversation, with no integration attached._
@@ -86,6 +88,13 @@ You'd then run that query — escaping the quotes for the API — in whichever c
 ## Credits and permissions
 
 - In **Option A/B**, the model runs real queries, so searches and downloads charge credits exactly as REST does, under your token's permissions.
+
+<Callout kind="alert" collapsed="false">
+  Credit limit
+
+  Please note that your credit limit is tied to your Datafiniti account. For more information on credits and [how they work](/docs/how-credits-work-api).
+</Callout>
+
 - In **Option C**, building a query costs nothing; only running it (yourself) uses credits.
 
 ## Next steps
