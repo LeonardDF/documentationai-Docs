@@ -115,6 +115,10 @@
                       {
                         "title": "Product Data with GPT",
                         "path": "product-data-with-gpt"
+                      },
+                      {
+                        "title": "Business Data with GPT",
+                        "path": "business-data-with-gpt"
                       }
                     ],
                     "path": "chatgpt/codex"
