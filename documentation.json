@@ -106,7 +106,13 @@
                     "path": "postman"
                   },
                   {
-                    "title": "ChatGPT/Codex",
+                    "group": "ChatGPT/Codex",
+                    "pages": [
+                      {
+                        "title": "Property Data with GPT",
+                        "path": "property-data-with-gpt"
+                      }
+                    ],
                     "path": "chatgpt/codex"
                   },
                   {

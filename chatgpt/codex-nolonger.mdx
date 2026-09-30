@@ -10,11 +10,6 @@ You can use Datafiniti from ChatGPT or Codex in two ways: connect the Datafiniti
 
 Which path you use depends on your environment. Some ChatGPT and Codex surfaces support MCP or custom tools/actions directly; others are plain chat, where the model helps you write a query that you run in [Postman](https://docs.datafiniti.co/postman), cURL, or an SDK.
 
-<Callout kind="info" collapsed="false" icon="lucide-person-standing">
-  **People Data**\
-  People data is not available through ChatGPT / Codex.**&#x20;**&#x43;hatGPT and Codex don't permit querying Datafiniti **people data**. This applies across all three approaches below, including plain conversation. For people data, we recommend using \[Claude]\([https://docs.datafiniti.co/claude](https://docs.datafiniti.co/claude)) or another tool — see \[Other LLMs]\([https://docs.datafiniti.co/other-llms](https://docs.datafiniti.co/other-llms)). The property, product, and business examples on this page are unaffected.
-</Callout>
-
 ## Option A — Connect via MCP
 
 If your ChatGPT or Codex environment supports MCP connectors, point it at the Datafiniti MCP server and it can call `df_search`, `df_count`, `df_start_download`, and the other tools on its own.
@@ -36,6 +31,8 @@ Auth:   Bearer AAAXXXXXXXXXXXX
 
 Use the **Streamable HTTP** transport. Once connected, the model can list the Datafiniti tools and prompts and call them during a conversation.
 
+
+
 <Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1790779209393-23k33hz593l-add_gpt-plugin.png?fm=auto&auto=compress%2Cformat" width="2256" height="1251" alt="" />
 
 For the full tool reference, behavior, and defaults, see [MCP Server](https://docs.datafiniti.co/mcp-server).
@@ -47,6 +44,8 @@ If your environment supports custom tools, functions, or actions but not MCP, yo
 - Calls the Datafiniti search endpoint with a bearer token.
 - Accepts a `query` string and optional `num_records`, `view`, and `download` parameters.
 - Returns the JSON response (`num_found`, `total_cost`, `records`).
+
+
 
 <Video src="https://video-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1790779282796-do72v4omut5-download_allow_Datafiniti.mp4" render-type="video" poster="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1790779284191-e4266nakbfo-download_allow_Datafiniti-poster.jpg?fm=auto&auto=compress%2Cformat" controls="true" allow-full-screen="true" />
 
@@ -79,6 +78,8 @@ A plain-conversation exchange might look like:
 > **Model:** `country:US AND propertyType:"Single Family Dwelling" AND mostRecentStatus:"For Sale"`
 
 <Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1790779899090-zdo86fhvs3o-gpt-generic-example.png?fm=auto&auto=compress%2Cformat" width="1077" height="1063" alt="" />
+
+
 
 _Screenshot: the model building a query in a plain conversation, with no integration attached._
 
