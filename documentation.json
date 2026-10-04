@@ -127,16 +127,20 @@
                     "group": "Claude",
                     "pages": [
                       {
-                        "title": "Product Data with Claude",
-                        "path": "product-data-with-claude"
-                      },
-                      {
                         "title": "Property Data with Claude",
                         "path": "property-data-with-claude"
                       },
                       {
                         "title": "People Data with Claude",
                         "path": "people-data-with-claude"
+                      },
+                      {
+                        "title": "Product Data with Claude",
+                        "path": "product-data-with-claude"
+                      },
+                      {
+                        "title": "Business Data with Claude",
+                        "path": "business-data-with-claude"
                       }
                     ],
                     "path": "claude"
