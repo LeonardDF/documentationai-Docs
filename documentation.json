@@ -129,6 +129,10 @@
                       {
                         "title": "Property Data with Claude",
                         "path": "property-data-with-claude"
+                      },
+                      {
+                        "title": "People Data with Claude",
+                        "path": "people-data-with-claude"
                       }
                     ],
                     "path": "claude"
