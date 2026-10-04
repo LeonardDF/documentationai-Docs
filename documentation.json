@@ -127,6 +127,10 @@
                     "group": "Claude",
                     "pages": [
                       {
+                        "title": "Product Data with Claude",
+                        "path": "product-data-with-claude"
+                      },
+                      {
                         "title": "Property Data with Claude",
                         "path": "property-data-with-claude"
                       },
