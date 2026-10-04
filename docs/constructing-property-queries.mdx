@@ -77,15 +77,15 @@ You can use " quotes to match the exact string you are searching for
 
 ```json
 {
- "query":"dateUpdated:[2022-01-01 TO *] AND mostRecentStatus:(Rental OR \"For Sale\")"
+ "query":"dateUpdated:[2022-01-01 TO *] AND mostRecentStatus:(Rental OR \\"For Sale\\")"
 }
 ```
 
 You can use an exact search to search for specific addresses
 
-```json
+```json wrap="true"
 {
-	"query":"address:\"3900 Eventide Ave\" AND city:(\"Sacramento\") AND postalCode:95835 AND province:(\"CA\") AND country:\"US\"" }
+	"query":"address:\\"3900 Eventide Ave\\" AND city:(\\"Sacramento\\") AND postalCode:95835 AND province:(\\"CA\\") AND country:\\"US\\"" }
 ```
 
 <Callout kind="info" collapsed="false">
@@ -380,7 +380,7 @@ The pagination endpoint uses the following parameters:
 
 You can filter any field with a regular expression by wrapping the pattern in forward slashes (`/.../`).  This lets you match values by shape rather than by exact string.  For example, to match any postal code beginning with `787` followed by two more digits:
 
-```json
+```plaintext
 {
 	"query": "postalCode:/787[0-9]{2}/"
 }
@@ -390,7 +390,7 @@ You can filter any field with a regular expression by wrapping the pattern in fo
 
 A character class matches any single character from a set.  Use `[0-9]` for a digit, and `{n}` to repeat it.  For example, all five-digit postal codes:
 
-```json
+```plaintext
 {
 	"query": "postalCode:/[0-9]{5}/"
 }
@@ -400,7 +400,7 @@ A character class matches any single character from a set.  Use `[0-9]` for a di
 
 `.` matches any single character and `*` repeats the preceding token zero or more times, so `.*` matches any run of characters.  For example, any city name that contains `ville`:
 
-```json
+```plaintext
 {
 	"query": "city:/.*ville.*/"
 }
@@ -410,7 +410,7 @@ A character class matches any single character from a set.  Use `[0-9]` for a di
 
 The pipe (`|`) matches any one of several alternatives.  For example, either of two provinces:
 
-```json
+```plaintext
 {
 	"query": "province:/TX|CA/"
 }
@@ -420,7 +420,7 @@ The pipe (`|`) matches any one of several alternatives.  For example, either of 
 
 Regex patterns work alongside boolean operators and other fields just like any other query:
 
-```json
+```plaintext
 {
 	"query": "city:\"Dallas\"|\"Austin\" AND postalCode:/787[0-9]{2}/ AND numBedroom:3"
 }
