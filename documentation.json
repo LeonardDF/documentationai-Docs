@@ -124,8 +124,14 @@
                     "path": "chatgpt/codex"
                   },
                   {
-                    "title": "Claude",
-                    "path": "claude-MCP"
+                    "group": "Claude",
+                    "pages": [
+                      {
+                        "title": "Property Data with Claude",
+                        "path": "property-data-with-claude"
+                      }
+                    ],
+                    "path": "claude"
                   },
                   {
                     "title": "Other LLMs",
