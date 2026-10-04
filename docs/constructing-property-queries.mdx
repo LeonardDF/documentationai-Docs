@@ -129,7 +129,7 @@ Set `fuzzy_match` to `off` when you need precise results and want to avoid close
 
 ```json
 {
-  "query": "address:\"123 Main Street\" AND city:Austin AND province:TX",
+  "query": "address:\\"123 Main Street\\" AND city:Austin AND province:TX",
   "fuzzy_match": "off",
   "num_records": 5,
   "download": false,
@@ -149,7 +149,7 @@ Set `fuzzy_match` to `retry` when you want the best of both approaches. The API 
 
 ```json
 {
-  "query": "address:\"123 Main Street\" AND city:Austin AND province:TX",
+  "query": "address:\\"123 Main Street\\" AND city:Austin AND province:TX",
   "fuzzy_match": "retry",
   "num_records": 5,
   "download": false,
@@ -310,7 +310,7 @@ You can use the API to search via the `address` field. For example, if you would
 
 ```json
 {
-    "query":"address:\"2815 Manor Rd\" AND postalCode:78722"
+    "query":"address:\\"2815 Manor Rd\\" AND postalCode:78722"
 }
 ```
 
