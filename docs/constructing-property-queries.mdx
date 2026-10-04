@@ -420,7 +420,7 @@ The pipe (`|`) matches any one of several alternatives.  For example, either of 
 
 Regex patterns work alongside boolean operators and other fields just like any other query:
 
-```plaintext
+```json
 {
 	"query": "city:\"Dallas\"|\"Austin\" AND postalCode:/787[0-9]{2}/ AND numBedroom:3"
 }
