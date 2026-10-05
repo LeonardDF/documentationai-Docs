@@ -24,10 +24,6 @@ Connecting from Claude uses OAuth, so you won't paste a token by hand — you'll
 - You have a Datafiniti account you can sign in to. Your access and credits are tied to that account exactly as they are for REST.
 - You're on a Claude plan that supports remote (custom) connectors. On **Team or Enterprise**, an organization owner may need to add the connector first, in **Organization settings → Connectors**; members then connect their own Datafiniti account to it.
 
-**No token to copy**
-
-Unlike Postman or cURL, you don't need to copy your API token for this path. OAuth issues the credential behind the scenes when you authorize the connection.
-
 ### 2. Add Datafiniti as a connector
 
 In Claude, open **Settings → Connectors**, click **Add** (the **+** button), and choose **Add custom connector**. In the dialog, enter:
@@ -94,9 +90,13 @@ This is a good fit when you'd rather not give a tool live access to your account
 3. Let Claude draft the query, then ask it to explain or refine each part.
 4. Run the finished query yourself in [Postman](https://docs.datafiniti.co/postman), cURL, an SDK, or the Portal.
 
-**Give Claude the right context**
+<Callout kind="info" collapsed="false">
+  **Claude can create Datafiniti queries**
 
-Claude writes much better Datafiniti queries when you paste in the guide for your data type — for example [Constructing Property Queries](https://docs.datafiniti.co/docs/constructing-property-queries) — and the [Possible Values for Property Fields](https://docs.datafiniti.co/docs/possible-values-for-property-fields) page for status or enum fields. Without that context, it's working from general knowledge and may guess at field names.
+  Claude can write Datafiniti queries when you paste in the guide for your data type — for example [Constructing Property Queries](https://docs.datafiniti.co/docs/constructing-property-queries) — and the [Possible Values for Property Fields](https://docs.datafiniti.co/docs/possible-values-for-property-fields) page for status or enum fields. Without that context, it's working from general knowledge and may guess at field names.
+</Callout>
+
+
 
 ### Example exchange
 
