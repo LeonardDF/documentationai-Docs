@@ -59,7 +59,7 @@
                 "pages": [
                   {
                     "title": "Overview",
-                    "path": "Overview"
+                    "path": "MCP-Overview"
                   },
                   {
                     "group": "MCP Server",
