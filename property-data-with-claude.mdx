@@ -30,17 +30,13 @@ You don't need to connect anything. Paste in the property query guide and the po
 
 <Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1791149532554-7316mw90tah-Claude-MCP-Property-request1.png?fm=auto&auto=compress%2Cformat" width="1677" height="1393" alt="" />
 
-<Callout kind="tip" collapsed="false">
-  **Exact-match quoting:&#x20;**`"`**&#x20;vs&#x20;**`\"`
+### Exact-match quoting: `"` vs `\"`
 
-  When a value is quoted for an exact match (like the one above), which quote form to use depends on where the query goes. In the **raw query string**, use plain double quotes: `FIELD:"value"`. When that query is a value inside a **JSON tool argument or request body**, the inner quotes must be escaped as `\"` so the JSON stays valid: `"query": "FIELD:\"value\""`. Some coding platforms and clients expect one form over the other — if a query returns an error or no results, check that the quoting matches the context you're pasting into.
-</Callout>
+When a value is quoted for an exact match (like the one above), which quote form to use depends on where the query goes. In the **raw query string**, use plain double quotes: `FIELD:"value"`. When that query is a value inside a **JSON tool argument or request body**, the inner quotes must be escaped as `\"` so the JSON stays valid: `"query": "FIELD:\"value\""`. Some coding platforms and clients expect one form over the other — if a query returns an error or no results, check that the quoting matches the context you're pasting into.
 
-<Callout kind="info" collapsed="false">
-  **Give Claude the right context**
+### Give Claude the right context
 
-  Claude writes much better property queries when you paste in [Constructing Property Queries](https://docs.datafiniti.co/docs/constructing-property-queries) and [Possible Values for Property Fields](https://docs.datafiniti.co/docs/possible-values-for-property-fields). Without them it will guess at field names and status values, and property status in particular is easy to get wrong.
-</Callout>
+Claude writes much better property queries when you paste in [Constructing Property Queries](https://docs.datafiniti.co/docs/constructing-property-queries) and [Possible Values for Property Fields](https://docs.datafiniti.co/docs/possible-values-for-property-fields). Without them it will guess at field names and status values, and property status in particular is easy to get wrong.
 
 ## Run the query yourself
 
@@ -81,8 +77,7 @@ Claude calls `df_count` first (free) to size the result, then `df_search` for th
 ```
 
 With the connector active, searches and downloads charge credits against the Datafiniti account you authorized; counting is free. See [MCP Server](https://docs.datafiniti.co/mcp-server) for the full tool reference, and [Property Data with AI](https://docs.datafiniti.co/docs/property-data-with-ai) for property fields, statuses, and prompts.\
-\
-
+\\
 
 <Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1791149865030-dshbkc9ykpc-property-MCP-COUNT-response.png?fm=auto&auto=compress%2Cformat" width="1582" height="1429" alt="" />
 
@@ -117,4 +112,3 @@ Next steps
 - Same flow for [People](https://docs.datafiniti.co/docs/claude-people-examples), [Product](https://docs.datafiniti.co/docs/claude-product-examples), or [Business](https://docs.datafiniti.co/docs/claude-business-examples) data.
 - Setup for both paths: [Claude](https://docs.datafiniti.co/claude).
 - Full tool reference: [MCP Server](https://docs.datafiniti.co/mcp-server).
-

@@ -31,18 +31,13 @@ You don't need to connect anything. Paste in the product query guide and the pos
 
 _Screenshot: Claude building and explaining a product query, with no connector attached._
 
-<Callout kind="tip" collapsed="false">
-  **Exact-match quoting:&#x20;**`"`**&#x20;vs&#x20;**`\"`
+### Exact-match quoting: `"` vs `\"`
 
-  When a value is quoted for an exact match (like the one above), which quote form to use depends on where the query goes. In the **raw query string**, use plain double quotes: `FIELD:"value"`. When that query is a value inside a **JSON tool argument or request body**, the inner quotes must be escaped as `\"` so the JSON stays valid: `"query": "FIELD:\"value\""`. Some coding platforms and clients expect one form over the other — if a query returns an error or no results, check that the quoting matches the context you're pasting into.
-</Callout>
+When a value is quoted for an exact match (like the one above), which quote form to use depends on where the query goes. In the **raw query string**, use plain double quotes: `FIELD:"value"`. When that query is a value inside a **JSON tool argument or request body**, the inner quotes must be escaped as `\"` so the JSON stays valid: `"query": "FIELD:\"value\""`. Some coding platforms and clients expect one form over the other — if a query returns an error or no results, check that the quoting matches the context you're pasting into.
 
-<Callout kind="info" collapsed="false">
-  **Give Claude the right context**
+### Give Claude the right context
 
-  Product data leans on nested structures — prices, descriptions, and reviews. Paste in [Constructing Product Queries](https://docs.datafiniti.co/docs/constructing-product-queries) so Claude uses dot notation for sub-fields (`descriptions.value`) and the compound `{}` syntax correctly, rather than a plain `AND` that would match across separate nested objects.\
-  **Give Claude the right context**
-</Callout>
+Product data leans on nested structures — prices, descriptions, and reviews. Paste in [Constructing Product Queries](https://docs.datafiniti.co/docs/constructing-product-queries) so Claude uses dot notation for sub-fields (`descriptions.value`) and the compound `{}` syntax correctly, rather than a plain `AND` that would match across separate nested objects.
 
 ## Run the query yourself
 
@@ -76,8 +71,7 @@ Claude calls `df_count` first (free), then `df_search` for a sample. For a bulk 
 }
 ```
 
-With the connector active, searches and downloads charge credits against the account you authorized; counting is free. See [MCP Server](https://docs.datafiniti.co/mcp-server) for the full tool reference, and [Product Data with AI](https://docs.datafiniti.co/docs/product-data-with-ai) for product fields and prompts.\
-
+With the connector active, searches and downloads charge credits against the account you authorized; counting is free. See [MCP Server](https://docs.datafiniti.co/mcp-server) for the full tool reference, and [Product Data with AI](https://docs.datafiniti.co/docs/product-data-with-ai) for product fields and prompts.\\
 
 <Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1791153520891-266hduzxb9g-product-data-laptops-exp.png?fm=auto&auto=compress%2Cformat" width="1596" height="1420" alt="" />
 
@@ -137,4 +131,3 @@ Each returned record carries its full `prices` array — every observed price wi
 - Same flow for [Property](https://docs.datafiniti.co/docs/claude-property-examples), [People](https://docs.datafiniti.co/docs/claude-people-examples), or [Business](https://docs.datafiniti.co/docs/claude-business-examples) data.
 - Setup for both paths: [Claude](https://docs.datafiniti.co/claude).
 - Full tool reference: [MCP Server](https://docs.datafiniti.co/mcp-server).
-
