@@ -36,8 +36,6 @@ You'll authenticate with the same bearer token as REST — there's no separate M
   For security reasons, your API token is automatically changed whenever you change your password.
 </Callout>
 
-
-
 ## 3. Create an MCP request
 
 In Postman, create a new **MCP** request and set the server URL to:
@@ -47,8 +45,6 @@ https://api.datafiniti.co/v4/mcp
 ```
 
 Set the transport to **Streamable HTTP** — the transport the Datafiniti server uses.
-
-
 
 <Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1789761870246-fz8i0cnkxe6-MCPaddedgif.gif?fm=auto&auto=compress%2Cformat" width="1720" height="1000" alt="MCPaddedgif" />
 
@@ -61,8 +57,6 @@ Authorization: Bearer AAAXXXXXXXXXXXX
 ```
 
 Your token tells the server who you are, what you have access to, and how to account for credits — exactly as for a REST call. Field permissions are enforced identically to REST.
-
-
 
 <Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1789740593097-ox2qvuutez-postmanMCPAuth.png?fm=auto&auto=compress%2Cformat" width="1369" height="544" alt="postmanMCPAuth" />
 
@@ -93,8 +87,6 @@ List the available **prompts**. Each converts a `docs.datafiniti.co` use-case gu
 
 Where a prompt argument has a small, verified value set (such as a property `status`), Postman renders it as a dropdown rather than a free-text box, because those arguments are defined as enums.
 
-
-
 <Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1789740688733-lsptika7h5-poostmanMCP_prompt.png?fm=auto&auto=compress%2Cformat" width="1366" height="660" alt="poostmanMCP prompt" />
 
 **Prompt arguments are flat strings**
@@ -113,8 +105,6 @@ Select `df_search` and provide its arguments. For a property search:
 ```
 
 Send it. The server runs the same handler as REST `/search`, charges credits identically, and returns up to 50 records (here, 1). You'll get back `num_found`, `total_cost`, and a `records` array — the same shape a REST search returns.
-
-
 
 <Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1789740756484-gxxoest2xa8-Postman_MCP_prompts.png?fm=auto&auto=compress%2Cformat" width="1369" height="979" alt="Postman MCP prompts" />
 
@@ -146,4 +136,4 @@ You don't have to use MCP at all. If you just want to build and run queries by h
 
 ## Next steps
 
-Once the server responds and returns records, you're ready to point an AI client at the same endpoint and token. See [MCP Server](https://docs.datafiniti.co/mcp-server) for the full tool and prompt reference, and the per-data-type "…with AI" pages for fields, statuses, and prompts.
+Once the server responds and returns records, you're ready to point an AI client at the same endpoint and token. See [MCP Server](https://docs.datafiniti.co/mcp-server) for the full tool and prompt reference, and the per-data-type "…with AI" pages for fields, statuses, and prompts: [Property](https://docs.datafiniti.co/docs/property-data-with-postman) · [People](https://docs.datafiniti.co/docs/people-data-with-postman) · [Product](https://docs.datafiniti.co/docs/product-data-with-postman) · [Business](https://docs.datafiniti.co/docs/business-data-with-postman).

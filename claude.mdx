@@ -39,15 +39,9 @@ Then click **Connect**. Claude redirects you to sign in to Datafiniti and author
 
 Finally, start a new chat and enable the connector for that conversation from the **+** ("Add files, connectors, and more") menu next to the message box.
 
-
-
 _Screenshot: the "Add custom connector" dialog with the Datafiniti name and URL._
 
-
-
 _Screenshot: the Datafiniti sign-in and authorize screen reached from Connect._
-
-
 
 _Screenshot: enabling the connector for a conversation from the + menu._
 
@@ -67,9 +61,7 @@ With the connector active, ask in plain language:
 
 Claude will build a Datafiniti query, call `df_search`, and summarize the records that come back. Ask it to count first (`df_count`) to size a result set before spending credits, or to start a download (`df_start_download`) when you want a large pull — Claude polls `df_download_status` for the result-file links.
 
-
-
-_Screenshot: Claude calling&#x20;_``_&#x20;and summarizing the results._
+_Screenshot: Claude calling&#x20;_\`\`_&#x20;and summarizing the results._
 
 For the full tool list, defaults, and behavior, see [MCP Server](/Overview).
 
@@ -96,21 +88,17 @@ This is a good fit when you'd rather not give a tool live access to your account
   Claude can write Datafiniti queries when you paste in the guide for your data type — for example [Constructing Property Queries](https://docs.datafiniti.co/docs/constructing-property-queries) — and the [Possible Values for Property Fields](https://docs.datafiniti.co/docs/possible-values-for-property-fields) page for status or enum fields. Without that context, it's working from general knowledge and may guess at field names.
 </Callout>
 
-
-
 ### Example exchange
 
 > **You:** I want US single-family homes currently for sale. Here's the property query guide and the possible status values. Build me a Datafiniti query and explain it.
 >
 > **Claude:** `country:US AND propertyType:"Single Family Dwelling" AND mostRecentStatus:"For Sale"` — this matches US records whose property type is single-family and whose most recent sale-side status is "For Sale." When you send it to the API, escape the quotes: `propertyType:\"Single Family Dwelling\"`.
 
-
-
 _Screenshot: Claude building and explaining a query in a plain conversation, with no connector attached._
 
 You then run that query in the client of your choice.
 
-**Exact-match quoting:&#x20;****`"`****&#x20;vs&#x20;****`\"`**
+**Exact-match quoting:&#x20;****`"`****&#x20;vs \*\*\*\*****`\"`**
 
 When a value is quoted for an exact match, which quote form to use depends on where the query goes. In the **raw query string**, use plain double quotes: `FIELD:"value"`. When that query is a value inside a **JSON tool argument or request body**, the inner quotes must be escaped as `\"` so the JSON stays valid: `"query": "FIELD:\"value\""`. Some coding platforms and clients expect one form over the other — if a query returns an error or no results, check that the quoting matches the context you're pasting into.
 
@@ -137,6 +125,6 @@ For step-by-step examples of building a query in conversation and running it —
 ## Next steps
 
 - Full MCP tool reference: [MCP Server](https://docs.datafiniti.co/mcp-server).
-- Test a query by hand: [Postman](https://docs.datafiniti.co/postman).
-- Data-type specifics (fields, statuses, prompts): the "…with AI" page for [Property](https://docs.datafiniti.co/docs/property-data-with-ai), [People](https://docs.datafiniti.co/docs/people-data-with-ai), [Product](https://docs.datafiniti.co/docs/product-data-with-ai), or [Business](https://docs.datafiniti.co/docs/business-data-with-ai) data.
+- Test a query by hand: [Postman](/postman).
+- Data-type specifics (fields, statuses, prompts): the "…with Claude" page for [Property](/property-data-with-claude), [People](/people-data-with-claude), [Product](/product-data-with-claude), or [Business](/business-data-with-claude) data.
 

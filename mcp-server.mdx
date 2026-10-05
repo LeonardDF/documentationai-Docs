@@ -49,8 +49,6 @@ The token authenticates the session and determines your field access and credit 
   **Keep your token out of source control**
 
   Store your token in an environment variable (for example `DATAFINITI_API_TOKEN`) and reference it from your client config, rather than pasting it into a file you might commit. Your token can spend credits — treat it like a password. For security, it regenerates whenever you change your Datafiniti password.
-
-
 </Callout>
 
 ## Client setup
@@ -177,7 +175,7 @@ Returns `{ "num_found": <int> }`. No credit cost.
 
 Returns `{ "num_found", "total_cost", "records": [...] }` — the same shape as a REST search.
 
-**`num_records`****&#x20;defaults to 1**
+**`num_records`****\*\*\*\*\*\*\*\* defaults to 1**
 
 If you don't set `num_records`, `df_search` returns a single record. Set it explicitly (up to 50) when you want more.
 
@@ -275,7 +273,7 @@ The `view` parameter on `df_search` and `df_start_download` controls which field
 
 Models predictably make a few mistakes against these schemas. If you're writing a system prompt or tool description, call these out:
 
-- **Confirm field names with&#x20;****`df_get_schema`** (or the [schema pages](https://docs.datafiniti.co/docs/property-data-schema)) before building a query, rather than guessing by analogy.
+- **Confirm field names with df\_get\_schema** (or the [schema pages](https://docs.datafiniti.co/docs/property-data-schema)) before building a query, rather than guessing by analogy.
 - **Property status is split by side.** Sale-side values live on `mostRecentStatus`; rental-side values on `mostRecentRentalStatus`. A rental value queried against the sale field returns zero results.
 - **Enum fields need exact values** from the Possible Values pages — not paraphrases.
 - **Count before you search or download** to size a result set without spending credits.
@@ -355,18 +353,18 @@ The prompts available for each data type are listed on that data type's page: [P
 
 For full, end-to-end walkthroughs per data type — count, search, a data-type-specific technique, and a download — see:
 
-[Property Examples](https://docs.datafiniti.co/docs/mcp-server-property-examples) · [People Examples](https://docs.datafiniti.co/docs/mcp-server-people-examples) · [Product Examples](https://docs.datafiniti.co/docs/mcp-server-product-examples) · [Business Examples](https://docs.datafiniti.co/docs/mcp-server-business-examples)
+[Property Examples](https://docs.datafiniti.co/property-data-with-an-mcp-server) · [People Examples](https://docs.datafiniti.co/people-data-with-an-mcp-server) · [Product Examples](https://docs.datafiniti.co/product-data-with-an-mcp-server) · [Business Examples](https://docs.datafiniti.co/business-data-with-an-mcp-server)
 
 ## Troubleshooting
 
-- **`tools/list`****&#x20;returns nothing / connection refused** — re-check the URL and that your `Accept` header includes both `application/json` and `text/event-stream`. Try the [cURL smoke test](#verify-the-connection).
+- **`tools/list`****&#x20;returns nothing / connection refused** — re-check the URL and that your `Accept` header includes both `application/json` and `text/event-stream`. Try the [cURL smoke test](/reference/api-status-check).
 - **401 / auth error** — confirm `DATAFINITI_API_TOKEN` is set and current; it regenerates on password change.
 - **A client won't accept the&#x20;****`Authorization`****&#x20;header** — use the `mcp-remote` bridge, or the OAuth flow on the [Claude](https://docs.datafiniti.co/claude) page.
 - **Queries return zero unexpectedly** — a zero-result query isn't an error; adjust it. Check for a rental status queried against the sale field, an enum value that isn't in Possible Values, or a field name that doesn't match the schema. Run `df_count` to test changes for free.
 
 ## Next steps
 
-- Test the connection by hand: [Verify the connection](#verify-the-connection).
-- Per-client details: [Claude](https://docs.datafiniti.co/claude) · [ChatGPT / Codex](https://docs.datafiniti.co/chatgpt-codex) · [Postman](https://docs.datafiniti.co/postman).
+- Test the connection by hand: [Verify the connection](/reference/api-status-check).
+- Per-client details: [Claude](https://docs.datafiniti.co/claude) · [ChatGPT / Codex](https://docs.datafiniti.co/chatgpt/codex) · [Postman](https://docs.datafiniti.co/postman).
 - Data-type walkthroughs: the "…with AI" and Examples pages above.
 
