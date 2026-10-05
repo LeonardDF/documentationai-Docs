@@ -175,7 +175,7 @@ Returns `{ "num_found": <int> }`. No credit cost.
 
 Returns `{ "num_found", "total_cost", "records": [...] }` — the same shape as a REST search.
 
-**`num_records`****\*\*\*\*\*\*\*\* defaults to 1**
+**`num_records`****\*\*\*\*\*\*\*\*\*\*\*\* defaults to 1**
 
 If you don't set `num_records`, `df_search` returns a single record. Set it explicitly (up to 50) when you want more.
 
@@ -251,7 +251,25 @@ The response contains `num_found`, `total_cost`, and a `records` array — the s
 
 The server exposes Datafiniti's full query syntax to the client: boolean operators, negation, parentheses, nested-field dot notation, ranges, and the compound `{}` syntax for matching multiple sub-field requirements within a single nested object.
 
-**Construction guides:** [Property](https://docs.datafiniti.co/docs/constructing-property-queries) · [People](https://docs.datafiniti.co/docs/constructing-people-queries) · [Product](https://docs.datafiniti.co/docs/constructing-product-queries) · [Business](https://docs.datafiniti.co/docs/constructing-business-queries)
+**Construction guides:**
+
+<Columns cols="2">
+  <Card title="Property" href="https://docs.datafiniti.co/docs/constructing-property-queries" horizontal="false">
+    Build property queries — fields, statuses, and range syntax.
+  </Card>
+
+  <Card title="People" href="https://docs.datafiniti.co/docs/constructing-people-queries" horizontal="false">
+    Build people queries — titles, contact fields, and linked properties.
+  </Card>
+
+  <Card title="Product" href="https://docs.datafiniti.co/docs/constructing-product-queries" horizontal="false">
+    Build product queries — nested prices, descriptions, and reviews.
+  </Card>
+
+  <Card title="Business" href="https://docs.datafiniti.co/docs/constructing-business-queries" horizontal="false">
+    Build business queries — categories, revenue, and geolocation.
+  </Card>
+</Columns>
 
 **Schemas** (field names and types — pair these with `df_get_schema`): [Property](https://docs.datafiniti.co/docs/property-data-schema) · [People](https://docs.datafiniti.co/docs/people-data-schema) · [Product](https://docs.datafiniti.co/docs/product-data-schema) · [Business](https://docs.datafiniti.co/docs/business-data-schema)
 
@@ -357,7 +375,7 @@ For full, end-to-end walkthroughs per data type — count, search, a data-type-s
 
 ## Troubleshooting
 
-- **`tools/list`****&#x20;returns nothing / connection refused** — re-check the URL and that your `Accept` header includes both `application/json` and `text/event-stream`. Try the [cURL smoke test](/reference/api-status-check).
+- **`tools/list`****\*\*\*\* returns nothing / connection refused** — re-check the URL and that your `Accept` header includes both `application/json` and `text/event-stream`. Try the [cURL smoke test](/reference/api-status-check).
 - **401 / auth error** — confirm `DATAFINITI_API_TOKEN` is set and current; it regenerates on password change.
 - **A client won't accept the&#x20;****`Authorization`****&#x20;header** — use the `mcp-remote` bridge, or the OAuth flow on the [Claude](https://docs.datafiniti.co/claude) page.
 - **Queries return zero unexpectedly** — a zero-result query isn't an error; adjust it. Check for a rental status queried against the sale field, an enum value that isn't in Possible Values, or a field name that doesn't match the schema. Run `df_count` to test changes for free.
