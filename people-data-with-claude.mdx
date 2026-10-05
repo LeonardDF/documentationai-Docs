@@ -31,6 +31,8 @@ You don't need to connect anything. Paste in the people query guide, describe wh
 
 <Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1791152410000-ux7q01k6pkf-claude-people-build-query-exp.png?fm=auto&auto=compress%2Cformat" width="1618" height="1380" alt="" />
 
+## Run the query yourself
+
 ### Exact-match quoting: `"` vs `\"`
 
 When a value is quoted for an exact match (like the one above), which quote form to use depends on where the query goes. In the **raw query string**, use plain double quotes: `FIELD:"value"`. When that query is a value inside a **JSON tool argument or request body**, the inner quotes must be escaped as `\"` so the JSON stays valid: `"query": "FIELD:\"value\""`. Some coding platforms and clients expect one form over the other — if a query returns an error or no results, check that the quoting matches the context you're pasting into.
@@ -38,8 +40,6 @@ When a value is quoted for an exact match (like the one above), which quote form
 ### Give Claude the right context
 
 Claude writes better people queries when you paste in [Constructing People Queries](https://docs.datafiniti.co/docs/constructing-people-queries). Field names like `title`, `emails`, and `phones` come straight from the schema — confirm them there rather than letting the model guess.
-
-## Run the query yourself
 
 Take the query Claude produced and run it in [Postman](https://docs.datafiniti.co/docs/postman-people-examples), cURL, or an SDK:
 
@@ -117,3 +117,4 @@ For the full walkthrough — including the broker path and the fields that matte
 - Same flow for [Property](https://docs.datafiniti.co/docs/claude-property-examples), [Product](https://docs.datafiniti.co/docs/claude-product-examples), or [Business](https://docs.datafiniti.co/docs/claude-business-examples) data.
 - Setup for both paths: [Claude](https://docs.datafiniti.co/claude).
 - Full tool reference: [MCP Server](https://docs.datafiniti.co/mcp-server).
+

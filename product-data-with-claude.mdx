@@ -29,7 +29,7 @@ You don't need to connect anything. Paste in the product query guide and the pos
 
 <Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1791153296724-pac5gzfqgp-Claude-product-data-example1.png?fm=auto&auto=compress%2Cformat" width="1621" height="1402" alt="" />
 
-_Screenshot: Claude building and explaining a product query, with no connector attached._
+## Run the query yourself
 
 ### Exact-match quoting: `"` vs `\"`
 
@@ -38,8 +38,6 @@ When a value is quoted for an exact match (like the one above), which quote form
 ### Give Claude the right context
 
 Product data leans on nested structures — prices, descriptions, and reviews. Paste in [Constructing Product Queries](https://docs.datafiniti.co/docs/constructing-product-queries) so Claude uses dot notation for sub-fields (`descriptions.value`) and the compound `{}` syntax correctly, rather than a plain `AND` that would match across separate nested objects.
-
-## Run the query yourself
 
 Take the query Claude produced and run it in [Postman](https://docs.datafiniti.co/docs/postman-product-examples), cURL, or an SDK. Nested sub-fields go in the view as `{"name": "<field>"}` objects with dot notation:
 
@@ -131,3 +129,4 @@ Each returned record carries its full `prices` array — every observed price wi
 - Same flow for [Property](https://docs.datafiniti.co/docs/claude-property-examples), [People](https://docs.datafiniti.co/docs/claude-people-examples), or [Business](https://docs.datafiniti.co/docs/claude-business-examples) data.
 - Setup for both paths: [Claude](https://docs.datafiniti.co/claude).
 - Full tool reference: [MCP Server](https://docs.datafiniti.co/mcp-server).
+

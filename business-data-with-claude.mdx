@@ -28,7 +28,7 @@ You don't need to connect anything. Paste in the business query guide and the po
 > - `country:US` limits to the United States.
 > - `revenue:[1000000 TO 5000000]` uses range syntax to bound annual revenue between 1M and 5M inclusive.
 
-_Screenshot: Claude building and explaining a business query, with no connector attached._
+## Run the query yourself
 
 ### Exact-match quoting: `"` vs `\"`
 
@@ -37,8 +37,6 @@ When a value is quoted for an exact match (like the one above), which quote form
 ### Give Claude the right context
 
 Paste in [Constructing Business Queries](https://docs.datafiniti.co/docs/constructing-business-queries) and [Possible Values for Business Fields](https://docs.datafiniti.co/docs/possible-values-for-business-fields) so Claude uses real category values and correct range syntax. Category and field names are the usual place a model guesses wrong.
-
-## Run the query yourself
 
 Take the query Claude produced and run it in [Postman](https://docs.datafiniti.co/docs/postman-business-examples), cURL, or an SDK. Mind the exact-match quoting (see the note above) — plain `"` in the raw query, escaped `\"` inside JSON:
 
