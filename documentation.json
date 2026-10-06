@@ -1407,6 +1407,10 @@
                     "group": "2026",
                     "pages": [
                       {
+                        "title": "October 2026",
+                        "path": "october-2026"
+                      },
+                      {
                         "title": "September 2026",
                         "path": "september-2026"
                       },

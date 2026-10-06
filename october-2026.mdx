@@ -1,0 +1,79 @@
+---
+title: October 2026 Release Log
+description: >-
+  Datafiniti now works directly inside your AI tools — a new MCP server, guides
+  for Claude, ChatGPT/Codex, Postman, and other LLMs, and a leaner way for
+  agents to search data.
+---
+Datafiniti now works directly inside your AI tools. A new MCP server and a full set of AI guides let agents and assistants query property, people, product, and business data — with less token spend than searching the web.
+
+## New to Datafiniti
+
+### Using Datafiniti with AI
+
+We've launched a new **Using Datafiniti with AI** section in our docs, along with the **Datafiniti MCP server**. Together they let AI agents and assistants — Claude, ChatGPT, Codex, Cursor, Postman, or any agent framework — search, count, and download Datafiniti data directly, without glue code or a separate integration.
+
+There's more than one way to use it. Connect the MCP server so your AI tool runs queries for you, register the Datafiniti API as a tool, or simply have a conversation and let your assistant build a query that you run yourself. Every path uses the same API token, the same query syntax, and the same credit rules as the REST API.
+
+[Explore Using Datafiniti with AI](/MCP-Overview).
+
+### The MCP server
+
+The server is available at `https://api.datafiniti.co/v4/mcp` and authenticates with your existing Datafiniti API token (claude.ai connects through an OAuth sign-in instead). Every tool takes a `data_type` parameter — `property`, `people`, `product`, or `business` — to select the dataset.
+
+| Tool                 | What it does                                   | Credits             |
+| -------------------- | ---------------------------------------------- | ------------------- |
+| `df_count`           | Count records matching a query                 | Free                |
+| `df_search`          | Return up to 50 records per call               | Per record returned |
+| `df_start_download`  | Start a download of a larger set (JSON or CSV) | Per record found    |
+| `df_download_status` | Check a download's status and get result links | Free                |
+| `df_get_record`      | Retrieve a single record by its `id`           | 1 credit            |
+| `df_get_schema`      | Return the field map for a data type           | Free                |
+
+The server also ships **45 prompts**, each turning one of our use-case guides into a ready-to-run query template — from finding investment properties to pricing analytics for pet food.
+
+[See the MCP Server guide](/MCP-Overview).
+
+### New guides for your AI tools
+
+Each tool has its own setup guide, plus worked examples for each data type built around real use cases:
+
+- [**MCP Server**](https://docs.datafiniti.co/mcp-server) — client setup, the full tool reference, credits, limits, and errors.
+- [**Postman**](https://docs.datafiniti.co/postman) — connect to the MCP server and drive each tool by hand before wiring up an agent.
+- [**Claude**](https://docs.datafiniti.co/claude) — connect the MCP server so Claude runs queries, or just have a conversation and let Claude build them.
+- [**ChatGPT / Codex**](https://docs.datafiniti.co/chatgpt/codex) — connect via MCP, register Datafiniti as a tool, or build queries in plain conversation. People data is not available through ChatGPT or Codex.
+- [**Other LLMs**](https://docs.datafiniti.co/other-llms) — use any capable model by supplying the endpoint, authentication, and query syntax.
+
+### Why This Matters
+
+**Put real data behind your AI.** Models are only as good as what they can see. Connecting Datafiniti gives your assistant structured, current records — property statuses, transactions, permits, product pricing, business details, and linked people — instead of whatever it can piece together from the open web. That opens up workflows like watching a client list for home sales, tracking competitor pricing, or enriching leads with the properties they own, all from inside the tool your team already uses.
+
+**Spend fewer tokens on search.** When an AI tool searches the web, it pays in tokens at every step — running searches, opening pages, and reading through HTML to find a handful of facts. The MCP server skips all of that:
+
+- **Structured records, not web pages.** Your agent gets back clean JSON instead of parsing search results and page content.
+- **Only the fields you ask for.** A `view` limits each record to the fields you need, keeping responses small.
+- **Count before you pull.** `df_count` returns a single number — free, and nearly zero tokens — so your agent can size a query before retrieving anything.
+- **Bulk data stays out of context.** `df_start_download` returns links to result files rather than streaming thousands of records through the conversation.
+- **Fewer wrong guesses.** `df_get_schema`, the built-in prompts, and stable error codes help agents write a valid query the first time instead of retrying.
+
+To get started, grab your API token from the [Datafiniti Web Portal](https://portal.datafiniti.co/settings/api) and follow the setup guide for your AI tool.
+
+### statusHistory migration complete
+
+We've finished moving our `statuses` field over to `statusHistory`, cleaning up redundant records and normalizing historic values along the way. Use `statusHistory` for a property's full status history, and `mostRecentStatus` for its current status.
+
+## Data Sourcing Recap — September 2026
+
+### 77 new and updated crawl sources
+
+Our crawl development team closed out September with 77 tickets:
+
+- **Product data.** All 77 tickets this month — 75 new buildouts plus 2 rebuilds. Beauty and personal care led again across skincare, cosmetics, haircare, and fragrance, including European dermo-cosmetic lines. Coverage also expanded into health and wellness.
+
+## Coming Soon
+
+A look at what we're working on next:
+
+- **Normalized product categories.** We're introducing a new normalized category to make it easier to find categories and build taxonomy.
+- **Adding a&#x20;**`businessesAtAddress`**&#x20;field.** A new generated field on property data that links a business data record and a property data record whenever they share the same address.
+
