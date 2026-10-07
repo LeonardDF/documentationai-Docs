@@ -1,0 +1,115 @@
+---
+title: Product Data with GPT - Coming Soon
+description: >-
+  Build Datafiniti product queries with ChatGPT or Codex — in a plain
+  conversation you run yourself, or through a connected tool call.
+---
+# ChatGPT / Codex — Product Examples
+
+<Callout kind="alert" collapsed="false">
+  **ChatGPT connector awaiting OpenAI approval**
+
+  The Datafiniti ChatGPT connector is still awaiting approval from OpenAI. Until approved, the MCP and tool/action integration paths described below may not be available in ChatGPT or Codex. The plain-conversation approach works regardless of approval status. You can also connect manually by configuring the Datafiniti MCP server yourself — see the [MCP Server](/mcp-server) guide for instructions.
+</Callout>
+
+This guide shows how to get **product data** out of Datafiniti using ChatGPT or Codex. It leads with the plain-conversation path — where the model writes a query and you run it — then shows the connected form for when the model calls Datafiniti directly. For the three ways to wire this up (MCP, tool/action, or plain chat), see the [ChatGPT / Codex](https://docs.datafiniti.co/chatgpt-codex) page.
+
+For the field reference behind these queries, see the [Product Data Schema](https://docs.datafiniti.co/docs/product-data-schema), [Constructing Product Queries](https://docs.datafiniti.co/docs/constructing-product-queries), and [Possible Values for Product Fields](https://docs.datafiniti.co/docs/possible-values-for-product-fields).
+
+## The goal
+
+We want **Apple laptops with their pricing** — and we'll have the model build the query, then run it ourselves.
+
+## Build the query in conversation
+
+You don't need any integration. Paste in the product query guide and the possible-values page, describe what you want, and let the model draft the query.
+
+> **You:** Using Datafiniti product data, build me a query for Apple laptops, and include a price filter under $1,000. Here's the product query guide and possible values: \[paste or link the guides]. Explain each part.
+>
+> **Model:** Here's the query:
+>
+> `brand:Apple AND categories:laptops AND prices:{amount:[* TO 1000] AND currency:USD}`
+>
+> - `brand:Apple AND categories:laptops` matches Apple products categorized as laptops.
+> - `prices:{amount:[* TO 1000] AND currency:USD}` uses the compound `{}` syntax so both conditions must hold for the _same_ price entry — a USD price under 1,000 — rather than being satisfied by two different price records.
+
+<Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1790782543720-q0idcek6a99-product-data-example-1-GPT.png?fm=auto&auto=compress%2Cformat" width="1138" height="1209" alt="" />
+
+<Callout kind="tip" collapsed="false">
+  **Give the model the right context**
+
+  Product data leans on nested structures — prices, descriptions, and reviews. Paste in [Constructing Product Queries](https://docs.datafiniti.co/docs/constructing-product-queries) so the model uses dot notation for sub-fields (`descriptions.value`) and the compound `{}` syntax correctly, rather than a plain `AND` that would match across separate nested objects.
+</Callout>
+
+## Run the query yourself
+
+Take the query the model produced and run it in [Postman](https://docs.datafiniti.co/docs/postman-product-examples), cURL, or an SDK. Nested sub-fields go in the view as `{"name": "<field>"}` objects with dot notation:
+
+```json
+{
+  "data_type": "product",
+  "query": "brand:Apple AND categories:laptops AND prices:{amount:[* TO 1000] AND currency:USD}",
+  "num_records": 5,
+  "view": [{"name": "name"}, {"name": "brand"}, {"name": "prices.amount"}, {"name": "prices.currency"}]
+}
+```
+
+In a plain conversation the model only _writes_ the query — nothing is charged until you run it yourself.
+
+## Count Tool: let the model run it
+
+If your ChatGPT or Codex environment has the Datafiniti MCP server connected (or the search endpoint registered as a tool), ask the model to run it:
+
+> **You:** How many Apple laptops under $1,000 are there? Then show me a few, and pull their descriptions.
+
+The model calls `df_count` first (free), then `df_search` for a sample. For a bulk pull of descriptions or reviews, it uses `df_start_download` instead:
+
+```json
+{
+  "data_type": "product",
+  "query": "categories:laptops",
+  "format": "JSON",
+  "view": [{"name": "name"}, {"name": "brand"}, {"name": "descriptions.value"}, {"name": "reviews.text"}]
+}
+```
+
+<Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1790782686051-f459x3tj2yr-Product-GPT-Apple-Laptop.png?fm=auto&auto=compress%2Cformat" width="1112" height="1193" alt="" />
+
+Once connected, searches and downloads charge credits exactly as REST does. See [MCP Server](https://docs.datafiniti.co/mcp-server) for the full tool reference, and [Product Data with AI](https://docs.datafiniti.co/docs/product-data-with-ai) for product fields and prompts.
+
+### Narrow to products currently on sale
+
+The `mostRecentPriceIsSale` field is a boolean flag for whether a product's most recent price is a sale price. To limit the pull to pet food currently on sale, the model adds it to the query:
+
+> **You:** Provide a list of pet food for dogs that's currently on sale.
+>
+> **Model:** `taxonomy:"pet supplies" AND categories:\"dog food\" AND prices:* AND mostRecentPriceIsSale:*`
+
+<Callout kind="info" collapsed="false">
+  **Most-recent fields are point-in-time**
+
+  `mostRecentPriceIsSale` and other "most recent" fields reflect the value at the time of the API call and change over time. For ongoing tracking, re-run the query on a schedule rather than treating one result as permanent.
+</Callout>
+
+<Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1790783200213-dc8m5ljpz2j-pasted-image-1790783197454.png?fm=auto&auto=compress%2Cformat" width="1129" height="1102" alt="" />
+
+### Pull the pricing data
+
+For analytics you'll usually want the full set rather than a sample, so this is a download. Run it yourself, or have a connected model call `df_start_download`:
+
+```json
+{
+  "data_type": "product",
+  "query": "taxonomy:\"pet supplies\" AND categories:food AND prices:*",
+  "format": "JSON",
+  "view": [{"name": "name"}, {"name": "brand"}, {"name": "categories"}, {"name": "taxonomy"}, {"name": "prices"}]
+}
+```
+
+Each returned record carries its full `prices` array — every observed price with `amountMin`/`amountMax`, `currency`, `dateSeen`, and `merchant` — which is what you feed into your pricing analysis. For the full walkthrough, see [Pricing Analytics for Pet Food](https://docs.datafiniti.co/docs/pricing-analytics-for-pet-food).
+
+## Next steps
+
+- Same flow for [Property](https://docs.datafiniti.co/docs/chatgpt-codex-property-examples) or [Business](https://docs.datafiniti.co/docs/chatgpt-codex-business-examples) data.
+- Wiring options: [ChatGPT / Codex](https://docs.datafiniti.co/chatgpt-codex).
+- Prefer Claude? [Claude](https://docs.datafiniti.co/claude).

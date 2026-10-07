@@ -1,0 +1,103 @@
+---
+title: Property Data with GPT - Coming Soon
+description: >-
+  Build Datafiniti property queries with ChatGPT or Codex — in a plain
+  conversation you run yourself, or through a connected tool call.
+---
+# ChatGPT / Codex — Property Examples
+
+<Callout kind="alert" collapsed="false">
+  **ChatGPT connector awaiting OpenAI approval**
+
+  The Datafiniti ChatGPT connector is still awaiting approval from OpenAI. Until approved, the MCP and tool/action integration paths described below may not be available in ChatGPT or Codex. The plain-conversation approach works regardless of approval status. You can also connect manually by configuring the Datafiniti MCP server yourself — see the [MCP Server](/mcp-server) guide for instructions.
+</Callout>
+
+This guide shows how to get **property data** out of Datafiniti using ChatGPT or Codex. It leads with the plain-conversation path — where the model writes a query and you run it — then shows the connected form for when the model calls Datafiniti directly. For the three ways to wire this up (MCP, tool/action, or plain chat), see the [ChatGPT / Codex](https://docs.datafiniti.co/chatgpt-codex) page.
+
+For the field reference behind these queries, see the [Property Data Schema](https://docs.datafiniti.co/docs/property-data-schema), [Constructing Property Queries](https://docs.datafiniti.co/docs/constructing-property-queries), and [Possible Values for Property Fields](https://docs.datafiniti.co/docs/possible-values-for-property-fields).
+
+## The goal
+
+We want **single-family homes currently for sale in Austin, TX** — and we'll have the model build the query, then run it ourselves.
+
+## Build the query in conversation
+
+You don't need any integration. Paste in the property query guide and the possible-values page, describe what you want, and let the model draft the query.
+
+> **You:** Using Datafiniti property data, build me a query for single-family homes currently for sale in Austin, TX. Here's the property query guide and the possible property status values: \[paste or link the guides]. Explain each part.
+>
+> **Model:** Here's the query:
+>
+> `country:US AND province:TX AND city:Austin AND propertyType:"Single Family Dwelling" AND mostRecentStatus:"For Sale"`
+>
+> - `country:US AND province:TX AND city:Austin` limits to Austin, Texas.
+> - `propertyType:"Single Family Dwelling"` restricts to single-family homes — an exact value from the Possible Values page.
+> - `mostRecentStatus:"For Sale"` filters to active sale listings. (For rentals you'd use `mostRecentRentalStatus` instead — a rental status on the sale field returns nothing.)
+
+<Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1790781452846-wnnfjr74ub-Property-GPT-Example-Build-Query.png?fm=auto&auto=compress%2Cformat" width="1220" height="1235" alt="" />
+
+<Callout kind="tip" collapsed="false">
+  **Give the model the right context**
+
+  The model writes much better property queries when you paste in [Constructing Property Queries](https://docs.datafiniti.co/docs/constructing-property-queries) and [Possible Values for Property Fields](https://docs.datafiniti.co/docs/possible-values-for-property-fields). Without them it will guess field names like `propertyType` values or the status field, and property status in particular is easy to get wrong.
+</Callout>
+
+## Run the query yourself
+
+Take the query the model produced and run it in [Postman](https://docs.datafiniti.co/docs/postman-property-examples), cURL, or an SDK. When you send it to the API, the exact-match values are double-quoted in the query, and if you're hand-writing JSON you escape those inner quotes:
+
+```json
+{
+  "data_type": "property",
+  "query": "country:US AND province:TX AND city:Austin AND propertyType:\"Single Family Dwelling\" AND mostRecentStatus:\"For Sale\"",
+  "num_records": 5,
+  "view": [{"name": "address"}, {"name": "city"}, {"name": "province"}, {"name": "mostRecentPriceAmount"}]
+}
+```
+
+In a plain conversation the model only _writes_ the query — nothing is charged until you run it yourself.
+
+## Connected mode: let the model run it
+
+If your ChatGPT or Codex environment has the Datafiniti MCP server connected (or the search endpoint registered as a tool), you can skip the copy-paste and ask the model to run it:
+
+> **You:** Count how many single-family homes are for sale in Austin, TX, then show me the first five.
+
+The model calls `df_count` first (free) to size the result, then `df_search` for the sample. Under the hood those calls look like:
+
+<Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1790781723313-jzrc0n5hukr-Property-GPT-count-austin.png?fm=auto&auto=compress%2Cformat" width="1121" height="1190" alt="" />
+
+```json
+{
+  "data_type": "property",
+  "query": "country:US AND province:TX AND city:Austin AND propertyType:\"Single Family Dwelling\" AND mostRecentStatus:\"For Sale\""
+}
+```
+
+Once connected, searches and downloads charge credits exactly as REST does. See [MCP Server](https://docs.datafiniti.co/mcp-server) for the full tool reference, and [Property Data with AI](https://docs.datafiniti.co/docs/property-data-with-ai) for property fields, statuses, and prompts.
+
+## Use case: discover when a client sold their home
+
+A common real-estate workflow is watching a list of client addresses for a status change — so you can follow up when someone lists or sells. The [Discover when clients sell their homes](https://docs.datafiniti.co/docs/discover-when-clients-sell-their-homes) guide walks through this end to end; here's how ChatGPT or Codex helps you build the per-address check.
+
+Say you have a client at _1023 Jollyville Rd, Austin, TX 78703_ and you want to know whether their home has had a recent status change.
+
+> **You:** Using Datafiniti property data, build me a query that checks whether the property at 1023 Jollyville Rd, Austin, TX 78703 has had a status update since March 28, 2023. Here's the property query guide: \[paste or link the guide]. Explain each part.
+>
+> **Model:** Here's the query:
+>
+> `address:"1023 Jollyville Rd" AND city:Austin AND province:TX AND postalCode:78703 AND dateUpdated:[2023-03-28 TO *]`
+>
+> - The address, city, province, and postal code pin the exact property.
+> - `dateUpdated:[2023-03-28 TO *]` is an open-ended range that only matches if the record was updated on or after that date — so a hit means something changed recently.
+> - When a record comes back, read `mostRecentStatus` and `mostRecentStatusDate` to see the new status and when it took effect.
+
+<Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1790782093363-vmzzfuxaw9n-gpt-property-selling-homes.png?fm=auto&auto=compress%2Cformat" width="1109" height="1182" alt="" />
+
+To run this across a whole client list, loop the query over each address and advance the `dateUpdated` floor each day so you only catch new changes. If your environment has the connector, the model can call `df_search` per address directly; otherwise it builds each query and you run them yourself. For the full walkthrough — including turning the results back into a CRM-ready file — see [Discover when clients sell their homes](https://docs.datafiniti.co/docs/discover-when-clients-sell-their-homes).
+
+## Next steps
+
+- Same flow for [Product](https://docs.datafiniti.co/docs/chatgpt-codex-product-examples) or [Business](https://docs.datafiniti.co/docs/chatgpt-codex-business-examples) data.
+- Wiring options: [ChatGPT / Codex](https://docs.datafiniti.co/chatgpt-codex).
+- Prefer Claude? [Claude](https://docs.datafiniti.co/claude).

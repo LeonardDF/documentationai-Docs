@@ -1,0 +1,126 @@
+---
+title: Business Data with Claude - Coming Soon
+description: >-
+  Build Datafiniti business queries with Claude — in a plain conversation you
+  run yourself, or by letting a connected Claude run them for you.
+---
+# Claude — Business Examples
+
+<Callout kind="alert" collapsed="false">
+  **Official Claude connector awaiting approval**
+
+  The official Datafiniti Claude connector is still awaiting approval. Until approved, the built-in connector may not be available in Claude. You can still connect manually by configuring the Datafiniti MCP server yourself — see the [MCP Server](/mcp-server) guide for instructions.
+</Callout>
+
+This guide shows how to get **business data** out of Datafiniti using Claude. It covers both of Claude's paths: a plain conversation where Claude writes a query and you run it, and connected mode where Claude runs queries itself through the MCP server. For setup of either path, see the [Claude](https://docs.datafiniti.co/claude) page.
+
+For the field reference behind these queries, see the [Business Data Schema](https://docs.datafiniti.co/docs/business-data-schema), [Constructing Business Queries](https://docs.datafiniti.co/docs/constructing-business-queries), and [Possible Values for Business Fields](https://docs.datafiniti.co/docs/possible-values-for-business-fields).
+
+## The goal
+
+We want **US hotels in a specific revenue band** — and we'll have Claude build the query, then run it ourselves.
+
+## Build the query in conversation
+
+You don't need to connect anything. Paste in the business query guide and the possible-values page, describe what you want, and let Claude draft and explain the query.
+
+> **You:** Using Datafiniti business data, build me a query for hotels in the US with annual revenue between $1M and $5M. Here's the business query guide and possible values: \[paste or link the guides]. Explain each part.
+>
+> **Claude:** Here's the query:
+>
+> `categories:hotels AND country:US AND revenue:[1000000 TO 5000000]`
+>
+> - `categories:hotels` matches businesses categorized as hotels — a value from the Possible Values page.
+> - `country:US` limits to the United States.
+> - `revenue:[1000000 TO 5000000]` uses range syntax to bound annual revenue between 1M and 5M inclusive.
+
+## Run the query yourself
+
+### Exact-match quoting: `"` vs `\"`
+
+When a value is quoted for an exact match (like the one above), which quote form to use depends on where the query goes. In the **raw query string**, use plain double quotes: `FIELD:"value"`. When that query is a value inside a **JSON tool argument or request body**, the inner quotes must be escaped as `\"` so the JSON stays valid: `"query": "FIELD:\"value\""`. Some coding platforms and clients expect one form over the other — if a query returns an error or no results, check that the quoting matches the context you're pasting into.
+
+### Give Claude the right context
+
+Paste in [Constructing Business Queries](https://docs.datafiniti.co/docs/constructing-business-queries) and [Possible Values for Business Fields](https://docs.datafiniti.co/docs/possible-values-for-business-fields) so Claude uses real category values and correct range syntax. Category and field names are the usual place a model guesses wrong.
+
+Take the query Claude produced and run it in [Postman](https://docs.datafiniti.co/docs/postman-business-examples), cURL, or an SDK. Mind the exact-match quoting (see the note above) — plain `"` in the raw query, escaped `\"` inside JSON:
+
+```json
+{
+  "data_type": "business",
+  "query": "categories:hotels AND country:US AND revenue:[1000000 TO 5000000]",
+  "num_records": 5,
+  "view": [{"name": "name"}, {"name": "address"}, {"name": "city"}, {"name": "province"}, {"name": "phones"}]
+}
+```
+
+In a plain conversation Claude only _writes_ the query — nothing is charged until you run it yourself.
+
+## Connected mode: let Claude run it
+
+If you've connected the Datafiniti MCP server to Claude (see the [Claude](https://docs.datafiniti.co/claude) page), ask it to run the query directly:
+
+> **You:** How many US hotels have revenue between $1M and $5M? Show me the first few in Nevada.
+
+Claude calls `df_count` first (free) to size the result, then `df_search` with the added location filter:
+
+```json
+{
+  "data_type": "business",
+  "query": "categories:hotels AND country:US AND province:NV AND revenue:[1000000 TO 5000000]"
+}
+```
+
+With the connector active, searches and downloads charge credits against the account you authorized; counting is free. See [MCP Server](https://docs.datafiniti.co/mcp-server) for the full tool reference, and [Business Data with AI](https://docs.datafiniti.co/docs/business-data-with-ai) for business fields and prompts.
+
+## Use case: search for specific restaurants
+
+A common business-data workflow is finding restaurants by the kind of food they serve — for lead lists, market research, or enrichment. The [Search for specific restaurants](https://docs.datafiniti.co/docs/search-for-specific-restaurants) guide shows a useful wrinkle: two different fields describe what a restaurant offers, and combining them catches more results than either alone. Here's how Claude builds that up.
+
+Say we want **vegan restaurants in California**.
+
+The `categories` field is a list of category keywords scraped from a business's descriptions and menu items. Start there:
+
+> **You:** Using Datafiniti business data, build me a query for vegan restaurants in California using the categories field. Here's the business query guide: \[paste or link the guide].
+>
+> **Claude:** `country:US AND province:CA AND categories:(vegan)`
+
+The `cuisines` field describes the cuisines a location offers, typically drawn from online order menus — a _different_ source than categories. The same search against cuisines:
+
+> **You:** Now the same thing but using the cuisines field instead.
+>
+> **Claude:** `country:US AND province:CA AND cuisines:(vegan)`
+
+**Two fields, two sources**
+
+`categories` and `cuisines` are populated from different data sources, so each catches restaurants the other misses. That's exactly why combining them is worth doing.
+
+### Combine the fields for full coverage
+
+Because the two fields come from different sources, OR-ing them together is a catch-all that returns any restaurant tagged vegan by either:
+
+> **You:** Combine both so I don't miss any.
+>
+> **Claude:** `country:US AND province:CA AND (categories:vegan OR cuisines:vegan)`
+
+Run it yourself, or have a connected Claude call `df_search` — then `df_start_download` for the full set:
+
+```json
+{
+  "data_type": "business",
+  "query": "country:US AND province:CA AND (categories:vegan OR cuisines:vegan)",
+  "format": "JSON",
+  "view": [{"name": "name"}, {"name": "address"}, {"name": "city"}, {"name": "province"}, {"name": "categories"}, {"name": "cuisines"}]
+}
+```
+
+For the full walkthrough, see [Search for specific restaurants](https://docs.datafiniti.co/docs/search-for-specific-restaurants).
+
+## Next steps
+
+- Same flow for [Property](https://docs.datafiniti.co/docs/claude-property-examples), [People](https://docs.datafiniti.co/docs/claude-people-examples), or [Product](https://docs.datafiniti.co/docs/claude-product-examples) data.
+- Setup for both paths: [Claude](https://docs.datafiniti.co/claude).
+- Full tool reference: [MCP Server](https://docs.datafiniti.co/mcp-server).
+
+Was this page helpful?

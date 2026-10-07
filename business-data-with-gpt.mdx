@@ -1,0 +1,142 @@
+---
+title: Business Data with GPT - Coming Soon
+description: >-
+  Build Datafiniti business queries with ChatGPT or Codex — in a plain
+  conversation you run yourself, or through a connected tool call.
+---
+# ChatGPT / Codex — Business Examples
+
+<Callout kind="alert" collapsed="false">
+  **ChatGPT connector awaiting OpenAI approval**
+
+  The Datafiniti ChatGPT connector is still awaiting approval from OpenAI. Until approved, the MCP and tool/action integration paths described below may not be available in ChatGPT or Codex. The plain-conversation approach works regardless of approval status. You can also connect manually by configuring the Datafiniti MCP server yourself — see the [MCP Server](/mcp-server) guide for instructions.
+</Callout>
+
+This guide shows how to get **business data** out of Datafiniti using ChatGPT or Codex. It leads with the plain-conversation path — where the model writes a query and you run it — then shows the connected form for when the model calls Datafiniti directly. For the three ways to wire this up (MCP, tool/action, or plain chat), see the [ChatGPT / Codex](https://docs.datafiniti.co/chatgpt-codex) page.
+
+For the field reference behind these queries, see the [Business Data Schema](https://docs.datafiniti.co/docs/business-data-schema), [Constructing Business Queries](https://docs.datafiniti.co/docs/constructing-business-queries), and [Possible Values for Business Fields](https://docs.datafiniti.co/docs/possible-values-for-business-fields).
+
+## The goal
+
+We want **US hotels in a specific revenue band** — and we'll have the model build the query, then run it ourselves.
+
+## Build the query in conversation
+
+You don't need any integration. Paste in the business query guide and the possible-values page, describe what you want, and let the model draft the query.
+
+> **You:** Using Datafiniti business data, build me a query for hotels in the US with annual revenue between $1M and $5M. Here's the business query guide and possible values: \[paste or link the guides]. Explain each part.
+>
+> **Model:** Here's the query:
+>
+> `categories:hotels AND country:US AND revenue:[1000000 TO 5000000]`
+>
+> - `categories:hotels` matches businesses categorized as hotels — a value from the Possible Values page.
+> - `country:US` limits to the United States.
+> - `revenue:[1000000 TO 5000000]` uses range syntax to bound annual revenue between 1M and 5M inclusive.
+
+<Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1790785118008-pe5c3gc27b-business-gpt-1-hotels.png?fm=auto&auto=compress%2Cformat" width="1183" height="1205" alt="" />
+
+<Callout kind="info" collapsed="false">
+  **Give the model the right context**
+
+  Paste in [Constructing Business Queries](https://docs.datafiniti.co/docs/constructing-business-queries) and [Possible Values for Business Fields](https://docs.datafiniti.co/docs/possible-values-for-business-fields) so the model uses real category values and correct range syntax. Category and field names are the usual place a model guesses wrong.
+</Callout>
+
+## Run the query yourself
+
+Take the query the model produced and run it in [Postman](https://docs.datafiniti.co/docs/postman-business-examples), cURL, or an SDK. Exact-match values with spaces or apostrophes are double-quoted, and escaped when hand-writing JSON:
+
+```json
+{
+  "data_type": "business",
+  "query": "categories:hotels AND country:US AND revenue:[1000000 TO 5000000]",
+  "num_records": 5,
+  "view": [{"name": "name"}, {"name": "address"}, {"name": "city"}, {"name": "province"}, {"name": "phones"}]
+}
+```
+
+In a plain conversation the model only _writes_ the query — nothing is charged until you run it yourself.
+
+## Connected mode: let the model run it
+
+If your ChatGPT or Codex environment has the Datafiniti MCP server connected (or the search endpoint registered as a tool), ask the model to run it:
+
+> **You:** How many US hotels have revenue between $1M and $5M? Show me the first few in Nevada.
+
+The model calls `df_count` first (free) to size the result, then `df_search` with the added location filter:
+
+<Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1790785236828-t54f91z3zgj-business-gpt-nevada.png?fm=auto&auto=compress%2Cformat" width="1169" height="1038" alt="" />
+
+```json
+{
+  "data_type": "business",
+  "query": "categories:hotels AND country:US AND province:NV AND revenue:[1000000 TO 5000000]"
+}
+```
+
+Once connected, searches and downloads charge credits exactly as REST does. See [MCP Server](https://docs.datafiniti.co/mcp-server) for the full tool reference, and [Business Data with AI](https://docs.datafiniti.co/docs/business-data-with-ai) for business fields and prompts.
+
+## Use case: search for specific restaurants
+
+A common business-data workflow is finding restaurants by the kind of food they serve — for lead lists, market research, or enrichment. The [Search for specific restaurants](https://docs.datafiniti.co/docs/search-for-specific-restaurants) guide shows a useful wrinkle: two different fields describe what a restaurant offers, and combining them catches more results than either alone. Here's how ChatGPT or Codex builds that up.
+
+Say we want **vegan restaurants in California**.
+
+The `categories` field is a list of category keywords scraped from a business's descriptions and menu items. Start there:
+
+> **You:** Using Datafiniti business data, build me a query for vegan restaurants in California using the categories field. Here's the business query guide: \[paste or link the guide].
+>
+> **Model:** `country:US AND province:CA AND categories:(vegan)`
+
+<Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1790785575034-9foov9qcp6d-business-data-vegan-rest.png?fm=auto&auto=compress%2Cformat" width="1067" height="957" alt="" />
+
+The `cuisines` field describes the cuisines a location offers, typically drawn from online order menus — a _different_ source than categories. The same search against cuisines:
+
+> **You:** Now the same thing but using the cuisines field instead.
+>
+> **Model:** `country:US AND province:CA AND cuisines:(vegan)`
+
+<Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1790785626592-wwjgcltuxe-pasted-image-1790785624074.png?fm=auto&auto=compress%2Cformat" width="1061" height="849" alt="" />
+
+**Two fields, two sources**
+
+`categories` and `cuisines` are populated from different data sources, so each catches restaurants the other misses. That's exactly why combining them is worth doing.
+
+### Combine the fields for full coverage
+
+Because the two fields come from different sources, OR-ing them together is a catch-all that returns any restaurant tagged vegan by either:
+
+> **You:** Combine both so I don't miss any.
+>
+> **Model:** `country:US AND province:CA AND (categories:vegan OR cuisines:vegan)`
+
+Run it yourself, or have a connected model call `df_search` — then `df_start_download` for the full set.
+
+<Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1790785734790-8s668eztsop-pasted-image-1790785732680.png?fm=auto&auto=compress%2Cformat" width="1165" height="720" alt="" />
+
+\\
+
+The code:
+
+```json
+{
+  "data_type": "business",
+  "query": "country:US AND province:CA AND (categories:vegan OR cuisines:vegan)",
+  "format": "JSON",
+  "view": [{"name": "name"}, {"name": "address"}, {"name": "city"}, {"name": "province"}, {"name": "categories"}, {"name": "cuisines"}]
+}
+```
+
+Example records:
+
+| Business                  | Location                                   | Vegan match                              |
+| ------------------------- | ------------------------------------------ | ---------------------------------------- |
+| **Vegan N' Chicken**      | 5337 Valley View Rd, El Sobrante, CA 94803 | `categories` includes **Vegan-friendly** |
+| **Nick's Laguna Beach**   | 440 S Coast Hwy, Laguna Beach, CA 92651    | `cuisines` includes **Vegan Options**    |
+| **Mantra Indian Cuisine** | 27645 Jefferson Ave, Temecula, CA 92590    | `cuisines` includes **Vegan Options**    |
+
+For the full walkthrough, see [Search for specific restaurants](https://docs.datafiniti.co/docs/search-for-specific-restaurants).
+
+## Next steps
+
+- Same flow for [Property](https://docs.datafiniti.co/docs/chatgpt-codex-property-examples) or [Product](https://docs.datafiniti.co/docs/chatgpt-codex-product-examples) data.

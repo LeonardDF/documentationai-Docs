@@ -1,0 +1,160 @@
+---
+title: Business Data with Postman MCP
+description: >-
+  Drive the Datafiniti MCP tools against business data by hand in Postman —
+  count, search, filter on a range, and start a download.
+---
+# Postman — Business Examples
+
+This guide walks through calling the Datafiniti MCP tools against **business data** by hand in Postman — selecting a tool, filling in its argument form, sending, and reading the response. It assumes you've already connected Postman to the MCP server and authenticated; if not, start with the [Postman](https://docs.datafiniti.co/postman) guide for download, token, request, and connection setup.
+
+Everything here uses the same tools and `data_type` parameter as the other data types; what changes are the fields and views specific to business records. For the field reference, see the [Business Data Schema](https://docs.datafiniti.co/docs/business-data-schema) and [Constructing Business Queries](https://docs.datafiniti.co/docs/constructing-business-queries). For the full tool reference, see [MCP Server](https://docs.datafiniti.co/mcp-server).
+
+## The goal
+
+We'll find **hotels in the US** with locations and contact details — first counting them, then pulling a sample, then filtering by category and a numeric range, then starting a download.
+
+## 1. Count with `df_count`
+
+Select the `df_count` tool and fill in `data_type` and `query`:
+
+```json
+{
+  "data_type": "business",
+  "query": "categories:hotels AND country:US"
+}
+```
+
+Send it. `df_count` returns a match count with no records and no credit cost:
+
+```json
+{
+  "num_found": 58310
+}
+```
+
+
+
+_Screenshot: the&#x20;_``_&#x20;argument form and its response._
+
+**Count first, spend nothing**
+
+A count is free — use it to confirm the query before spending credits. A count of `0` is a valid result, not an error; if you expected matches, check the category and field names against the schema.
+
+## 2. Search with `df_search`
+
+Select `df_search`. Add `num_records` and a `view`:
+
+```json
+{
+  "data_type": "business",
+  "query": "categories:hotels AND country:US AND province:NV",
+  "num_records": 5,
+  "view": [{"name": "name"}, {"name": "address"}, {"name": "city"}, {"name": "province"}, {"name": "postalCode"}, {"name": "phones"}, {"name": "categories"}]
+}
+```
+
+Send it. The response has the same shape as a REST search:
+
+```json
+{
+  "num_found": 1204,
+  "total_cost": 5,
+  "records": [
+    {
+      "name": "…",
+      "address": "…",
+      "city": "Las Vegas",
+      "province": "NV",
+      "phones": ["…"],
+      "categories": ["hotels"]
+    }
+  ]
+}
+```
+
+
+
+_Screenshot: the&#x20;_``_&#x20;argument form and its response._
+
+**Quoting exact-match values**
+
+Exact-match values use double quotes in the query: `name:"Joe's Coffee"`. Postman sends the JSON body as-is, so escape the inner quotes as `\"` in the argument form. That's JSON encoding, not query syntax.
+
+## 3. Search by category and location
+
+Business queries combine field conditions with boolean operators. Restaurants of a cuisine in a city:
+
+```json
+{
+  "data_type": "business",
+  "query": "categories:restaurants AND categories:Italian AND city:\"San Francisco\""
+}
+```
+
+Or match more than one category with parentheses:
+
+```json
+{
+  "data_type": "business",
+  "query": "categories:(hotels OR motels) AND country:US"
+}
+```
+
+## 4. Filter on a numeric range
+
+Numeric fields such as revenue accept range syntax. Businesses within a revenue band:
+
+```json
+{
+  "data_type": "business",
+  "query": "categories:restaurants AND country:US AND revenue:[1000000 TO 5000000]"
+}
+```
+
+Ranges work the same way for other numeric and date fields on the record.
+
+## 5. Start a download with `df_start_download`
+
+For the full set, select `df_start_download` and add a `format`:
+
+```json
+{
+  "data_type": "business",
+  "query": "categories:hotels AND country:US",
+  "format": "JSON",
+  "view": [{"name": "name"}, {"name": "address"}, {"name": "city"}, {"name": "province"}, {"name": "postalCode"}, {"name": "phones"}, {"name": "categories"}]
+}
+```
+
+It returns a JSON object with the new download id. Copy the id into `df_download_status` and poll:
+
+```json
+{
+  "download_id": "…"
+}
+```
+
+The status comes back as `queued`, `running`, `completed`, or `cancelled`. Once completed, the response includes result-file links, valid for 7 days.
+
+
+
+_Screenshot: starting a download and polling its status._
+
+**Download size follows your plan**
+
+How many records a download can return is governed by your [subscription plan](https://portal.datafiniti.co/settings/billing/subscription). To page a smaller set by hand, `df_search` returns up to 10,000 records across calls.
+
+## 6. Try a business prompt
+
+Select a prompt such as `discover_business_revenue`, `search_business_by_address`, or `search_restaurants_by_cuisine` from Postman's prompt list. It returns a ready-to-run query; copy that into `df_search` or `df_start_download` to run it.
+
+For the full list of business prompts, see [Business Data with AI](https://docs.datafiniti.co/docs/business-data-with-ai).
+
+## Next steps
+
+- Same flow for [Property](https://docs.datafiniti.co/docs/postman-property-examples), [People](https://docs.datafiniti.co/docs/postman-people-examples), or [Product](https://docs.datafiniti.co/docs/postman-product-examples).
+- Setup and connection: [Postman](https://docs.datafiniti.co/postman).
+- Full tool reference: [MCP Server](https://docs.datafiniti.co/mcp-server).
+
+Was this page helpful?

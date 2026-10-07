@@ -1,0 +1,66 @@
+---
+title: People Data with AI
+description: >-
+  Query Datafiniti's people data through the MCP server — search, count,
+  download, and inspect people records from an AI agent.
+---
+# Using People Data with AI
+
+Datafiniti's people data provides access to people records with contact information and demographic attributes, including links to associated property records. Through the MCP server, an AI agent can search, count, download, and retrieve these records using the same tools, permissions, and credit model as the REST API.
+
+This page covers how people data works specifically through the MCP server. For the underlying field definitions and query rules, see the [People Data Schema](https://docs.datafiniti.co/docs/people-data-schema) and [Constructing People Queries](https://docs.datafiniti.co/docs/constructing-people-queries).
+
+## Tools
+
+All of the shared MCP tools work against people data. Set the data type to people and the agent can:
+
+| Tool                 | People use                                                                                  |
+| -------------------- | ------------------------------------------------------------------------------------------- |
+| `df_search`          | Return up to 50 matching people records. Charges credits identically to REST `/search`      |
+| `df_count`           | Count matching people records with no records returned and no credit cost                   |
+| `df_start_download`  | Start an async download of a larger people set (capped at 100,000 records at the MCP layer) |
+| `df_download_status` | Poll a running people download for status and result-file links                             |
+| `df_get_record`      | Retrieve a single people record                                                             |
+| `df_get_schema`      | Fetch the people field-name-to-type map so the agent can write a valid query                |
+
+## Example query
+
+A people search combines field conditions with boolean operators. The agent builds the Lucene query string and passes it to `df_search`:
+
+```typescript
+{
+  "query": "country:US AND title:\"Chief Executive Officer\"",
+  "num_records": 10
+}
+```
+
+To size the result set before spending credits, the same query goes to `df_count`, which returns the match count with no credit cost. When the scope implies many records, the agent passes the query to `df_start_download` and polls `df_download_status` for result-file links.
+
+**Escaped quotes**
+
+Exact-match values inside a query use escaped quotes — `title:\"Chief Executive Officer\"` — not unescaped quotes.
+
+## Views
+
+The `view` parameter controls which people fields come back. A string names a default or saved view; an array is an ad-hoc view built from `{"name": "<field>"}` objects, with nested sub-fields expressed as dot notation in the `name`. See [Available Views for People Data](https://docs.datafiniti.co/docs/available-views-for-people-data).
+
+## Prompts for people data
+
+Each prompt converts a people use-case guide into a ready-to-run query template, then tells the agent whether to call `df_search` or `df_start_download` next. People prompts include:
+
+| Prompt ID                            | Title                                          |
+| ------------------------------------ | ---------------------------------------------- |
+| `find_saas_leads`                    | Find SaaS business leads                       |
+| `identify_targeted_employee_company` | Identify the employer of a targeted individual |
+| `gather_people_contact_info`         | Gather people contact information              |
+| `link_people_to_property`            | Link a person to their property records        |
+| `find_local_brokers`                 | Find real estate brokers                       |
+| `search_for_phones`                  | Search for phones                              |
+
+**Traceability**
+
+Each prompt's description cites the source guide it was built from, so any query the agent generates traces back to the original people documentation.
+
+## Linking people to property
+
+People and property data connect in both directions. From a people record, the `link_people_to_property` prompt assembles the cross-reference to the associated property records. From the property side, prompts such as accessing owners and brokers move from a property to its linked people. See [Accessing property data linked to people records](https://docs.datafiniti.co/docs/accessing-property-linked-people-records) for the underlying guide.

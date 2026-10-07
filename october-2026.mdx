@@ -1,0 +1,91 @@
+---
+title: October 2026 Release Log
+description: >-
+  Datafiniti now works inside your AI tools, with a new MCP server and setup
+  guides for Claude, ChatGPT, Codex, Postman, and other LLMs.
+---
+A new MCP server and AI guides that bring Datafiniti into your AI tools, plus a completed statusHistory migration and a full month of product crawl buildouts.
+
+## New to Datafiniti
+
+This month we launched a new way to use Datafiniti: directly inside your AI tools, with fewer tokens spent on search.
+
+### Using Datafiniti with AI
+
+We've added a new Using Datafiniti with AI section to our docs and launched the Datafiniti MCP server. AI tools like Claude, ChatGPT, Codex, Cursor, and Postman can now search, count, and download Datafiniti data directly, with no extra integration work.
+
+You can use it in three ways. Connect the MCP server and let your AI tool run queries for you. Add the Datafiniti API as a tool in any model that supports tool calling. Or ask your assistant to write a query, then run it yourself. All three use your existing API token, the same query syntax, and the same credit rules as our REST API.
+
+[Explore Using Datafiniti with AI](https://docs.datafiniti.co/MCP-Overview).
+
+### MCP Server
+
+The MCP server is available at `https://api.datafiniti.co/v4/mcp` and uses your existing Datafiniti API token. If you connect from claude.ai, you'll sign in through OAuth instead. Every tool takes a `data_type` parameter (`property`, `people`, `product`, or `business`) to choose the dataset.
+
+| Tool                 | What it does                                      | Credits             |
+| -------------------- | ------------------------------------------------- | ------------------- |
+| `df_count`           | Counts records that match a query                 | Free                |
+| `df_search`          | Returns up to 50 records per call                 | Per record returned |
+| `df_start_download`  | Starts a download of a larger set (JSON or CSV)   | Per record found    |
+| `df_download_status` | Checks a download's status and returns file links | Free                |
+| `df_get_record`      | Retrieves a single record by its `id`             | 1 credit            |
+| `df_get_schema`      | Returns the field list for a data type            | Free                |
+
+The server also includes 45 prompts. Each one turns a use case guide into a ready-to-run query, from finding investment properties to tracking pet food prices.
+
+[See the MCP Server guide](https://docs.datafiniti.co/mcp-server).
+
+### New Guides for Your AI Tools
+
+Each tool has its own setup guide, with examples for each data type based on real use cases:
+
+- [**MCP Server**](https://docs.datafiniti.co/mcp-server)**.** Client setup, the full tool reference, credits, limits, and errors.
+- [**Postman**](https://docs.datafiniti.co/postman)**.** Connect to the MCP server and test each tool by hand before you build an agent.
+- [**Claude**](https://docs.datafiniti.co/claude)**.** Connect the MCP server so Claude runs queries for you, or have Claude write queries in a regular chat.
+- [**ChatGPT / Codex**](https://docs.datafiniti.co/chatgpt/codex)**.** Connect through MCP, add Datafiniti as a tool, or write queries in a regular chat. People data isn't available through ChatGPT or Codex.
+- [**Other LLMs**](https://docs.datafiniti.co/other-llms)**.** Use any capable model by giving it our endpoint, authentication, and query syntax.
+
+### statusHistory Migration Complete
+
+We've finished moving the `statuses` field to `statusHistory`. Along the way, we removed duplicate records and standardized older status values. Use `statusHistory` for a property's full status history and `mostRecentStatus` for its current status.
+
+### Why This Matters
+
+Your AI is only as good as the data it can see. With Datafiniti connected, your assistant works from structured, up-to-date records instead of whatever it finds on the open web. That includes property statuses, transactions, permits, product prices, business details, and linked people records. Your team can watch a client list for home sales, track competitor pricing, or enrich leads with the properties they own, all from the AI tool they already use.
+
+It also saves tokens. A web search uses tokens at every step: running the search, opening pages, and reading through them to find a few facts. The MCP server avoids most of that work:
+
+- **Structured data.** Your AI gets clean records instead of web pages to read.
+- **Smaller responses.** You choose which fields come back, so responses stay small.
+- **Free counts.** `df_count` returns a single number at no cost, so your AI can check the size of a result before pulling records.
+- **Downloads to file.** `df_start_download` sends large result sets to a file instead of loading thousands of records into the chat.
+- **Fewer retries.** `df_get_schema`, the built-in prompts, and clear error codes help your AI write a working query on the first try.
+
+To get started, copy your API token from the [Datafiniti Web Portal](https://portal.datafiniti.co/settings/api) and follow the setup guide for your AI tool. A good first test is a free count:
+
+```typescript
+{
+    "data_type": "property",
+    "query": "country:US AND province:TX AND city:Austin AND propertyType:\"Single Family Dwelling\" AND panoramas:*"
+}
+```
+
+Searches and downloads through AI tools use credits the same way they do through our REST API. If you only ask your assistant to write a query, nothing is charged until you run it.
+
+## Data Sourcing Recap - September 2026
+
+### 77 new and updated crawl sources
+
+Our crawl development team completed 77 tickets in September, all in product data:
+
+- **Product data.** Product made up the whole month, with 75 new buildouts and 2 rebuilds. Beauty and personal care led again, covering skincare, cosmetics, haircare, fragrance, and European dermocosmetic brands. We also expanded into health and wellness.
+
+## Coming Soon
+
+A look at what we're working on next:
+
+- **Normalized product categories.** We're introducing a new normalized category to make it easier to find categories and build taxonomy.
+- **Adding a businessesAtAddress field.** A new generated field on property data that links a business data record and a property data record whenever they share the same address.
+- **Faster downloads.** We're completely rebuilding our download speed optimizer to make large downloads faster.
+- **Claude and ChatGPT connectors.** Our official Datafiniti connectors for Claude and ChatGPT are waiting for approval, so keep an eye out for them. Until then, you can connect either tool using the MCP server setup guides.
+
