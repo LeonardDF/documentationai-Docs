@@ -6,6 +6,12 @@ description: >-
 ---
 # Using ChatGPT / Codex & Datafiniti's MCP
 
+<Callout kind="alert" collapsed="false">
+  **ChatGPT connector awaiting OpenAI approval**
+
+  The Datafiniti ChatGPT connector is still awaiting approval from OpenAI. Until approved, the MCP and tool/action integration paths described below may not be available in ChatGPT or Codex. The plain-conversation approach (Option C) works regardless of approval status. You can also connect manually by configuring the Datafiniti MCP server yourself — see the [MCP Server](/mcp-server) guide for instructions.
+</Callout>
+
 You can use Datafiniti from ChatGPT or Codex in two ways: connect the Datafiniti MCP server where MCP is supported, or give the model the API details and query syntax and let it call Datafiniti as a tool (or help you build queries you run yourself). This is one of several ways to use Datafiniti with AI — see the [Overview](https://docs.datafiniti.co/overview) for the full picture.
 
 Which path you use depends on your environment. Some ChatGPT and Codex surfaces support MCP or custom tools/actions directly; others are plain chat, where the model helps you write a query that you run in [Postman](https://docs.datafiniti.co/postman), cURL, or an SDK.
@@ -100,4 +106,3 @@ You'd then run that query — escaping the quotes for the API — in whichever c
 
 - Want an agent to run queries end-to-end? See [MCP Server](/mcp-server).
 - Working in a data type? See its "…with AI" page for fields, statuses, and prompts.
-

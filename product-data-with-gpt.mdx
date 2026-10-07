@@ -6,6 +6,12 @@ description: >-
 ---
 # ChatGPT / Codex — Product Examples
 
+<Callout kind="alert" collapsed="false">
+  **ChatGPT connector awaiting OpenAI approval**
+
+  The Datafiniti ChatGPT connector is still awaiting approval from OpenAI. Until approved, the MCP and tool/action integration paths described below may not be available in ChatGPT or Codex. The plain-conversation approach works regardless of approval status. You can also connect manually by configuring the Datafiniti MCP server yourself — see the [MCP Server](/mcp-server) guide for instructions.
+</Callout>
+
 This guide shows how to get **product data** out of Datafiniti using ChatGPT or Codex. It leads with the plain-conversation path — where the model writes a query and you run it — then shows the connected form for when the model calls Datafiniti directly. For the three ways to wire this up (MCP, tool/action, or plain chat), see the [ChatGPT / Codex](https://docs.datafiniti.co/chatgpt-codex) page.
 
 For the field reference behind these queries, see the [Product Data Schema](https://docs.datafiniti.co/docs/product-data-schema), [Constructing Product Queries](https://docs.datafiniti.co/docs/constructing-product-queries), and [Possible Values for Product Fields](https://docs.datafiniti.co/docs/possible-values-for-product-fields).
@@ -100,8 +106,6 @@ For analytics you'll usually want the full set rather than a sample, so this is 
 }
 ```
 
-
-
 Each returned record carries its full `prices` array — every observed price with `amountMin`/`amountMax`, `currency`, `dateSeen`, and `merchant` — which is what you feed into your pricing analysis. For the full walkthrough, see [Pricing Analytics for Pet Food](https://docs.datafiniti.co/docs/pricing-analytics-for-pet-food).
 
 ## Next steps
@@ -109,4 +113,3 @@ Each returned record carries its full `prices` array — every observed price wi
 - Same flow for [Property](https://docs.datafiniti.co/docs/chatgpt-codex-property-examples) or [Business](https://docs.datafiniti.co/docs/chatgpt-codex-business-examples) data.
 - Wiring options: [ChatGPT / Codex](https://docs.datafiniti.co/chatgpt-codex).
 - Prefer Claude? [Claude](https://docs.datafiniti.co/claude).
-

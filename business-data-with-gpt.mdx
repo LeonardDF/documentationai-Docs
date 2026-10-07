@@ -6,6 +6,12 @@ description: >-
 ---
 # ChatGPT / Codex — Business Examples
 
+<Callout kind="alert" collapsed="false">
+  **ChatGPT connector awaiting OpenAI approval**
+
+  The Datafiniti ChatGPT connector is still awaiting approval from OpenAI. Until approved, the MCP and tool/action integration paths described below may not be available in ChatGPT or Codex. The plain-conversation approach works regardless of approval status. You can also connect manually by configuring the Datafiniti MCP server yourself — see the [MCP Server](/mcp-server) guide for instructions.
+</Callout>
+
 This guide shows how to get **business data** out of Datafiniti using ChatGPT or Codex. It leads with the plain-conversation path — where the model writes a query and you run it — then shows the connected form for when the model calls Datafiniti directly. For the three ways to wire this up (MCP, tool/action, or plain chat), see the [ChatGPT / Codex](https://docs.datafiniti.co/chatgpt-codex) page.
 
 For the field reference behind these queries, see the [Business Data Schema](https://docs.datafiniti.co/docs/business-data-schema), [Constructing Business Queries](https://docs.datafiniti.co/docs/constructing-business-queries), and [Possible Values for Business Fields](https://docs.datafiniti.co/docs/possible-values-for-business-fields).
@@ -108,8 +114,7 @@ Run it yourself, or have a connected model call `df_search` — then `df_start_d
 
 <Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1790785734790-8s668eztsop-pasted-image-1790785732680.png?fm=auto&auto=compress%2Cformat" width="1165" height="720" alt="" />
 
-\
-
+\\
 
 The code:
 
@@ -135,4 +140,3 @@ For the full walkthrough, see [Search for specific restaurants](https://docs.dat
 ## Next steps
 
 - Same flow for [Property](https://docs.datafiniti.co/docs/chatgpt-codex-property-examples) or [Product](https://docs.datafiniti.co/docs/chatgpt-codex-product-examples) data.
-

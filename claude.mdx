@@ -6,6 +6,12 @@ description: >-
 ---
 # Datafiniti Claude Connector
 
+<Callout kind="alert" collapsed="false">
+  **Official Claude connector awaiting approval**
+
+  The official Datafiniti Claude connector is still awaiting approval. Until approved, the built-in connector may not be available in Claude. You can still connect manually by configuring the Datafiniti MCP server yourself — see the [MCP Server](/mcp-server) guide for instructions.
+</Callout>
+
 There are two ways to use Datafiniti with Claude, and both are valid:
 
 1. **Connect the MCP server** so Claude can run Datafiniti queries directly during a conversation.
@@ -98,7 +104,7 @@ _Screenshot: Claude building and explaining a query in a plain conversation, wit
 
 You then run that query in the client of your choice.
 
-**Exact-match quoting:&#x20;****`"`****&#x20;vs \*\*\*\*****`\"`**
+**Exact-match quoting:&#x20;****`"`****&#x20;vs \*\*\*\*\*\*\*\*****`\"`**
 
 When a value is quoted for an exact match, which quote form to use depends on where the query goes. In the **raw query string**, use plain double quotes: `FIELD:"value"`. When that query is a value inside a **JSON tool argument or request body**, the inner quotes must be escaped as `\"` so the JSON stays valid: `"query": "FIELD:\"value\""`. Some coding platforms and clients expect one form over the other — if a query returns an error or no results, check that the quoting matches the context you're pasting into.
 
@@ -127,4 +133,3 @@ For step-by-step examples of building a query in conversation and running it —
 - Full MCP tool reference: [MCP Server](https://docs.datafiniti.co/mcp-server).
 - Test a query by hand: [Postman](/postman).
 - Data-type specifics (fields, statuses, prompts): the "…with Claude" page for [Property](/property-data-with-claude), [People](/people-data-with-claude), [Product](/product-data-with-claude), or [Business](/business-data-with-claude) data.
-

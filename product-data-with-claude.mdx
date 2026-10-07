@@ -6,6 +6,12 @@ description: >-
 ---
 # Claude — Product Examples
 
+<Callout kind="alert" collapsed="false">
+  **Official Claude connector awaiting approval**
+
+  The official Datafiniti Claude connector is still awaiting approval. Until approved, the built-in connector may not be available in Claude. You can still connect manually by configuring the Datafiniti MCP server yourself — see the [MCP Server](/mcp-server) guide for instructions.
+</Callout>
+
 This guide shows how to get **product data** out of Datafiniti using Claude. It covers both of Claude's paths: a plain conversation where Claude writes a query and you run it, and connected mode where Claude runs queries itself through the MCP server. For setup of either path, see the [Claude](https://docs.datafiniti.co/claude) page.
 
 For the field reference behind these queries, see the [Product Data Schema](https://docs.datafiniti.co/docs/product-data-schema), [Constructing Product Queries](https://docs.datafiniti.co/docs/constructing-product-queries), and [Possible Values for Product Fields](https://docs.datafiniti.co/docs/possible-values-for-product-fields).
@@ -129,4 +135,3 @@ Each returned record carries its full `prices` array — every observed price wi
 - Same flow for [Property](https://docs.datafiniti.co/docs/claude-property-examples), [People](https://docs.datafiniti.co/docs/claude-people-examples), or [Business](https://docs.datafiniti.co/docs/claude-business-examples) data.
 - Setup for both paths: [Claude](https://docs.datafiniti.co/claude).
 - Full tool reference: [MCP Server](https://docs.datafiniti.co/mcp-server).
-
