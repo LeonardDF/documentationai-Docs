@@ -1,8 +1,6 @@
 ---
-title: "November 2023 — DR4 & DR5 — 31 New Property Fields"
+title: November 2023 — DR4 & DR5 — 31 New Property Fields
 ---
-
-
 ### DR4: 31 New Property Schema Fields
 
 Three new data sources added — MLS data, refinancing data, and commercial properties.
@@ -15,6 +13,10 @@ Three new data sources added — MLS data, refinancing data, and commercial prop
 
 **Refinance Data:** `taxExemptions`, `title`, `transactions.documentNumber`, `transactions.transactionID`, `trustDescription`
 
+<Callout kind="info" collapsed="false">
+  Datafiniti's property data covers MLS listings across the entire US market. If you work with an MLS you don't see reflected in our data, contact us at [support@datafiniti.co](mailto:support@datafiniti.co) and we'll look into it.
+</Callout>
+
 ### DR5: Standardization
 
 Standardizing field values, moving semi-structured data from features to top-level fields, and adding additional types to some fields.
@@ -22,13 +24,9 @@ Standardizing field values, moving semi-structured data from features to top-lev
 ### Bug Fixes
 
 - Converted all "sqft" to "sq ft" in unit values
-
 - Lowercased all emails; removed agent names with "non" from brokers
-
 - Added max limit to prices for price range functionality
-
 - Status and prices cleanup — ensured `firstDateSeen`/`lastDateSeen` filled out
-
 - Transactions now create status objects; converted "Rental Unit" to "Rental"
 
 ### Source Updates

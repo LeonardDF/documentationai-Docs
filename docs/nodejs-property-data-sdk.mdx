@@ -428,6 +428,10 @@ main();
 
 Look up MLS listings by `mlsNumber` when you already know the listing identifier. Start with a single MLS number and province to find one record, then expand to multiple MLS numbers with additional filters such as price, ownership, and broker data. For query patterns and market-level exports, see [Search for MLS Property Data](https://docs.datafiniti.co/docs/search-for-mls-property-data).
 
+<Callout kind="info" collapsed="false">
+  Datafiniti's property data covers MLS listings across the entire US market. If you work with an MLS you don't see reflected in our data, contact us at [support@datafiniti.co](mailto:support@datafiniti.co) and we'll look into it.
+</Callout>
+
 ```ts
 import { PropertyClient } from "datafiniti-sdk";
 
@@ -547,4 +551,3 @@ try {
 <Callout kind="info" collapsed="false">
   The client automatically retries retryable failures (HTTP 408, 429, 5xx, and network errors) up to `maxRetries` times (default 3). You can tune `maxRetries` and `timeoutMs` when constructing the client: `new PropertyClient({ apiKey, maxRetries: 5, timeoutMs: 90000 })`.
 </Callout>
-
