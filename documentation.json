@@ -455,7 +455,7 @@
                         "pages": [
                           {
                             "title": "Getting Started with People Data",
-                            "path": "docs/getting-started-with-people-data-1"
+                            "path": "docs/getting-started-with-people-data"
                           },
                           {
                             "title": "People Data with Postman",

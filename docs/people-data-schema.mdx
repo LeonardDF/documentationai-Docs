@@ -319,16 +319,6 @@ The people data schema below lists all available Fields in a people record.  Not
   ```
 </ParamField>
 
-<ParamField body="tcpa" param-type="boolean" required="false" deprecated="false" show-location="false">
-  A flag indicating whether the person is on the TCPA litigators list.
-
-  **Example:**
-
-  ```json
-  "tcpa": false
-  ```
-</ParamField>
-
 ## Geographical Fields
 
 <ParamField body="address" param-type="text" required="false" deprecated="false" show-location="false">
@@ -483,6 +473,16 @@ The people data schema below lists all available Fields in a people record.  Not
   ```
 </ParamField>
 
+<ParamField body="tcpa" param-type="boolean" required="false" deprecated="false" show-location="false">
+  A flag indicating whether the person is on the TCPA litigators list.
+
+  **Example:**
+
+  ```json
+  "tcpa": false
+  ```
+</ParamField>
+
 ## Property & Asset Fields
 
 <ParamField body="mostRecentPropertyPurchaseDate" param-type="date" required="false" deprecated="false" show-location="false">
@@ -552,7 +552,7 @@ The people data schema below lists all available Fields in a people record.  Not
 </ParamField>
 
 <ParamField body="propertyKeys" param-type="string" required="false" deprecated="false" show-location="false">
-  The generated key from Datafiniti's property data. This key directly links a property to the person. Whether that be the broker or the owner of the property itself. 
+  The generated key from Datafiniti's property data. This key directly links a property to the person. Whether that be the broker or the owner of the property itself.
 
   **Example:**
 
@@ -572,7 +572,6 @@ The people data schema below lists all available Fields in a people record.  Not
   "domains": ["datafiniti.co"]
   ```
 </ParamField>
-
 
 <ParamField body="mostRecentProfileImageURL" param-type="text" required="false" deprecated="false" show-location="false">
   The URL of the person's most recent professional profile picture.
