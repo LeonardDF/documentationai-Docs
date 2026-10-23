@@ -5,6 +5,16 @@ The people data schema below lists all available Fields in a people record.  Not
 
 ## Brokers Fields
 
+<ParamField body="currentListingCount" param-type="integer" required="false" deprecated="false" show-location="false">
+  The number of active property listings currently associated with the broker.
+
+  **Example:**
+
+  ```json
+  "currentListingCount": 5
+  ```
+</ParamField>
+
 <ParamField body="licenses" param-type="nested" required="false" deprecated="false" show-location="false">
   A list of licenses associated with this person.
 
@@ -25,6 +35,16 @@ The people data schema below lists all available Fields in a people record.  Not
   </Expandable>
 </ParamField>
 
+<ParamField body="maxListingPrice" param-type="float" required="false" deprecated="false" show-location="false">
+  The maximum listing price among the broker's active property listings.
+
+  **Example:**
+
+  ```json
+  "maxListingPrice": 895000
+  ```
+</ParamField>
+
 <ParamField body="maxRecentSoldPrice" param-type="float" required="false" deprecated="false" show-location="false">
   The maximum most recently sold price of a property from the broker.
 
@@ -32,6 +52,16 @@ The people data schema below lists all available Fields in a people record.  Not
 
   ```json
   "maxRecentSoldPrice": 700000
+  ```
+</ParamField>
+
+<ParamField body="minListingPrice" param-type="float" required="false" deprecated="false" show-location="false">
+  The minimum listing price among the broker's active property listings.
+
+  **Example:**
+
+  ```json
+  "minListingPrice": 69000
   ```
 </ParamField>
 
@@ -55,6 +85,16 @@ The people data schema below lists all available Fields in a people record.  Not
   ```
 </ParamField>
 
+<ParamField body="recentlySoldCount" param-type="integer" required="false" deprecated="false" show-location="false">
+  The number of recently sold properties associated with the broker.
+
+  **Example:**
+
+  ```json
+  "recentlySoldCount": 32
+  ```
+</ParamField>
+
 <ParamField body="salesCountAllTime" param-type="integer" required="false" deprecated="false" show-location="false">
   The total count of properties sold by the broker.
 
@@ -72,6 +112,16 @@ The people data schema below lists all available Fields in a people record.  Not
 
   ```json
   "salesCountLastYear": 12
+  ```
+</ParamField>
+
+<ParamField body="salesHistoryDateSeen" param-type="date" required="false" deprecated="false" show-location="false">
+  The most recent date the broker's sales history was seen by Datafiniti.
+
+  **Example:**
+
+  ```json
+  "salesHistoryDateSeen": "2026-09-06T16:02:39.028Z"
   ```
 </ParamField>
 
@@ -287,6 +337,16 @@ The people data schema below lists all available Fields in a people record.  Not
   ```
 </ParamField>
 
+<ParamField body="middleName" param-type="text" required="false" deprecated="false" show-location="false">
+  The person's middle name or middle initial.
+
+  **Example:**
+
+  ```json
+  "middleName": "A"
+  ```
+</ParamField>
+
 ## Generic Fields
 
 <ParamField body="dateAdded" param-type="date" required="false" deprecated="false" show-location="false">
@@ -391,6 +451,81 @@ The people data schema below lists all available Fields in a people record.  Not
   ```json
   "businessName": "International Direct Response Inc"
   ```
+</ParamField>
+
+<ParamField body="experiences" param-type="nested" required="false" deprecated="false" show-location="false">
+  A list of the person's employment experiences. Each experience contains:
+
+  **Example:**
+
+  ```json
+  "experiences": [
+      {
+        "jobTitle": "commercial mortgage underwriting intern",
+        "jobLevel": "training",
+        "businessName": "principal financial group",
+        "numEmployeesMin": 10001,
+        "numEmployeesMax": 10001,
+        "address": "711 high street",
+        "city": "des moines",
+        "province": "iowa",
+        "country": "united states",
+        "latitude": "41.60,-93.60",
+        "websites": ["principal.com"],
+        "companyFounded": "1879"
+      }
+    ]
+  ```
+
+  <Expandable title="Sub-fields" default-open="false">
+    <ParamField body="experiences.address" param-type="text" required="false" deprecated="false" show-location="false">
+      The street address of the business for this experience.
+    </ParamField>
+
+    <ParamField body="experiences.businessName" param-type="text" required="false" deprecated="false" show-location="false">
+      The name of the business for this experience.
+    </ParamField>
+
+    <ParamField body="experiences.city" param-type="text" required="false" deprecated="false" show-location="false">
+      The city of the business for this experience.
+    </ParamField>
+
+    <ParamField body="experiences.companyFounded" param-type="text" required="false" deprecated="false" show-location="false">
+      The year the business was founded.
+    </ParamField>
+
+    <ParamField body="experiences.country" param-type="text" required="false" deprecated="false" show-location="false">
+      The country of the business for this experience.
+    </ParamField>
+
+    <ParamField body="experiences.jobLevel" param-type="text" required="false" deprecated="false" show-location="false">
+      The job level held in this experience.
+    </ParamField>
+
+    <ParamField body="experiences.jobTitle" param-type="text" required="false" deprecated="false" show-location="false">
+      The job title held in this experience.
+    </ParamField>
+
+    <ParamField body="experiences.latitude" param-type="text" required="false" deprecated="false" show-location="false">
+      The latitude and longitude coordinates of the business, as a comma-separated string.
+    </ParamField>
+
+    <ParamField body="experiences.numEmployeesMax" param-type="integer" required="false" deprecated="false" show-location="false">
+      The maximum number of employees at the business for this experience.
+    </ParamField>
+
+    <ParamField body="experiences.numEmployeesMin" param-type="integer" required="false" deprecated="false" show-location="false">
+      The minimum number of employees at the business for this experience.
+    </ParamField>
+
+    <ParamField body="experiences.province" param-type="text" required="false" deprecated="false" show-location="false">
+      The province/state of the business for this experience.
+    </ParamField>
+
+    <ParamField body="experiences.websites" param-type="text" required="false" deprecated="false" show-location="false">
+      A list of websites associated with the business for this experience.
+    </ParamField>
+  </Expandable>
 </ParamField>
 
 <ParamField body="industries" param-type="text" required="false" deprecated="false" show-location="false">
@@ -537,16 +672,16 @@ The people data schema below lists all available Fields in a people record.  Not
   ```
 
   <Expandable title="Sub-fields" default-open="false">
-    <ParamField body="propertiesOwnedHistory.propertyKey" param-type="keyword" required="false" deprecated="false" show-location="false">
-      The property data record that corresponds to the homeowner.
-    </ParamField>
-
     <ParamField body="propertiesOwnedHistory.datePurchased" param-type="date" required="false" deprecated="false" show-location="false">
       The date the homeowner purchased the property.
     </ParamField>
 
     <ParamField body="propertiesOwnedHistory.dateSold" param-type="date" required="false" deprecated="false" show-location="false">
       The date the property owner sold this property.
+    </ParamField>
+
+    <ParamField body="propertiesOwnedHistory.propertyKey" param-type="keyword" required="false" deprecated="false" show-location="false">
+      The property data record that corresponds to the homeowner.
     </ParamField>
   </Expandable>
 </ParamField>
@@ -600,6 +735,16 @@ The people data schema below lists all available Fields in a people record.  Not
 
   ```json
   "sourceURLs": ["https://datafiniti.co"]
+  ```
+</ParamField>
+
+<ParamField body="websites" param-type="text" required="false" deprecated="false" show-location="false">
+  A list of websites associated with this person.
+
+  **Example:**
+
+  ```json
+  "websites": ["https://www.homes.com/real-estate-agents/chris-whitten/gdlvldw/", "https://www.premeerrealestate.com/"]
   ```
 </ParamField>
 
