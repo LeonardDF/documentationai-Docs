@@ -160,6 +160,36 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
+<ParamField body="businessesAtAddress" param-type="nested" required="false" deprecated="false" show-location="false">
+  A list of businesses that have been seen operating at this property's address. Each business can contain:
+
+  **Example:**
+
+  ```json
+  "businessesAtAddress": [
+      {
+        "name": "Alderbrook Boutique",
+        "key": "us/me/eastbrook/1212eastbrookrd/alderbrookboutique",
+        "dateSeen": "2026-09-26T00:22:11Z"
+      }
+    ]
+  ```
+
+  <Expandable title="Sub-fields" default-open="false">
+    <ParamField body="businessesAtAddress.name" param-type="text" required="false" deprecated="false" show-location="false">
+      The name of the business seen at this address.
+    </ParamField>
+
+    <ParamField body="businessesAtAddress.key" param-type="keyword" required="false" deprecated="false" show-location="false">
+      The corresponding key that links to Datafiniti's business data record.
+    </ParamField>
+
+    <ParamField body="businessesAtAddress.dateSeen" param-type="date" required="false" deprecated="false" show-location="false">
+      The date when this business was seen at this address.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
 <ParamField body="capRate" param-type="float" required="false" deprecated="false" show-location="false">
   The capitalization rate associated with the property.
 
@@ -177,6 +207,16 @@ The property data schema below lists all available fields in a property record. 
 
   ```json
   "capRateSourceURL": "https://www.loopnet.com/listing/412-main-st-dallas-tx/31245001/"
+  ```
+</ParamField>
+
+<ParamField body="corporateTenants" param-type="text" required="false" deprecated="false" show-location="false">
+  A list of corporate tenants associated with the commercial property.
+
+  **Example:**
+
+  ```json
+  "corporateTenants": ["Walgreens", "FedEx Office"]
   ```
 </ParamField>
 
@@ -207,6 +247,16 @@ The property data schema below lists all available fields in a property record. 
 
   ```json
   "groundLease": false
+  ```
+</ParamField>
+
+<ParamField body="investmentSubtype" param-type="string" required="false" deprecated="false" show-location="false">
+  The investment subtype classification for the commercial property.
+
+  **Example:**
+
+  ```json
+  "investmentSubtype": "Strip Center"
   ```
 </ParamField>
 
@@ -277,6 +327,26 @@ The property data schema below lists all available fields in a property record. 
 
   ```json
   "netRentable": 18500
+  ```
+</ParamField>
+
+<ParamField body="noi" param-type="float" required="false" deprecated="false" show-location="false">
+  The net operating income reported for the property.
+
+  **Example:**
+
+  ```json
+  "noi": 184200
+  ```
+</ParamField>
+
+<ParamField body="numBuildings" param-type="integer" required="false" deprecated="false" show-location="false">
+  The number of buildings included in the commercial offering.
+
+  **Example:**
+
+  ```json
+  "numBuildings": 1
   ```
 </ParamField>
 
@@ -500,6 +570,16 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
+<ParamField body="mostRecentEstimatedPriceCurrency" param-type="text" required="false" deprecated="false" show-location="false">
+  The currency listed for mostRecentEstimatedPriceAmount.
+
+  **Example:**
+
+  ```json
+  "mostRecentEstimatedPriceCurrency": "USD"
+  ```
+</ParamField>
+
 <ParamField body="mostRecentEstimatedPriceDate" param-type="date" required="false" deprecated="false" show-location="false">
   The most recent estimate price date
 
@@ -720,6 +800,16 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
+<ParamField body="postalCodePlusFour" param-type="keyword" required="false" deprecated="false" show-location="false">
+  The ZIP+4 postal code of the property.
+
+  **Example:**
+
+  ```json
+  "postalCodePlusFour": "84020-5534"
+  ```
+</ParamField>
+
 <ParamField body="province" param-type="text" required="false" deprecated="false" show-location="false">
   The province or state for this property.
 
@@ -727,6 +817,16 @@ The property data schema below lists all available fields in a property record. 
 
   ```json
   "province": "TX"
+  ```
+</ParamField>
+
+<ParamField body="rawAddress" param-type="text" required="false" deprecated="false" show-location="false">
+  The raw, unnormalized address as collected from the source, before Datafiniti's address normalization.
+
+  **Example:**
+
+  ```json
+  "rawAddress": "1759 Longbranch Ct, Draper, UT, 84020, US"
   ```
 </ParamField>
 
@@ -928,6 +1028,16 @@ The property data schema below lists all available fields in a property record. 
 
   ```json
   "numFloor": 2
+  ```
+</ParamField>
+
+<ParamField body="numKeys" param-type="integer" required="false" deprecated="false" show-location="false">
+  The number of keys associated with the property record.
+
+  **Example:**
+
+  ```json
+  "numKeys": 2
   ```
 </ParamField>
 
@@ -1227,6 +1337,16 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
+<ParamField body="mostRecentSaleListPriceCurrency" param-type="text" required="false" deprecated="false" show-location="false">
+  The currency listed for mostRecentSaleListPriceAmount.
+
+  **Example:**
+
+  ```json
+  "mostRecentSaleListPriceCurrency": "USD"
+  ```
+</ParamField>
+
 <ParamField body="mostRecentSaleListPriceDate" param-type="date" required="false" deprecated="false" show-location="false">
   The most recent "sale list" price date from our prices field.
 
@@ -1408,6 +1528,16 @@ The property data schema below lists all available fields in a property record. 
 
   ```json
   "mostRecentOwnerPeopleKey": "jeff/allback/us/al/85255/3114epatrickst"
+  ```
+</ParamField>
+
+<ParamField body="mostRecentOwnerTransactionDate" param-type="date" required="false" deprecated="false" show-location="false">
+  The most recent transaction date from the owners top level field.
+
+  **Example:**
+
+  ```json
+  "mostRecentOwnerTransactionDate": "2024-11-04T00:00:00.000Z"
   ```
 </ParamField>
 
@@ -1597,6 +1727,16 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
+<ParamField body="mostRecentRentalListPriceCurrency" param-type="text" required="false" deprecated="false" show-location="false">
+  The currency listed for mostRecentRentalListPriceAmount.
+
+  **Example:**
+
+  ```json
+  "mostRecentRentalListPriceCurrency": "USD"
+  ```
+</ParamField>
+
 <ParamField body="mostRecentRentalListPriceDate" param-type="date" required="false" deprecated="false" show-location="false">
   The most recent "rental list" price date from our prices field.
 
@@ -1614,6 +1754,16 @@ The property data schema below lists all available fields in a property record. 
 
   ```json
   "mostRecentRentalPriceAmount": 8940
+  ```
+</ParamField>
+
+<ParamField body="mostRecentRentalPriceCurrency" param-type="text" required="false" deprecated="false" show-location="false">
+  The currency listed for mostRecentRentalPriceAmount.
+
+  **Example:**
+
+  ```json
+  "mostRecentRentalPriceCurrency": "USD"
   ```
 </ParamField>
 
@@ -1911,6 +2061,26 @@ The property data schema below lists all available fields in a property record. 
   ```
 </ParamField>
 
+<ParamField body="mostRecentPricePerSquareFoot" param-type="float" required="false" deprecated="false" show-location="false">
+  The price per square foot for the most recent price.
+
+  **Example:**
+
+  ```json
+  "mostRecentPricePerSquareFoot": 147.0
+  ```
+</ParamField>
+
+<ParamField body="mostRecentPriceSourceURL" param-type="text" required="false" deprecated="false" show-location="false">
+  The source URL for the most recent price.
+
+  **Example:**
+
+  ```json
+  "mostRecentPriceSourceURL": "https://www.redfin.com/DC/Washington/2401-H-St-NW-20037/unit-810/home/9046909"
+  ```
+</ParamField>
+
 <ParamField body="mostRecentSoldPriceAmount" param-type="float" required="false" deprecated="false" show-location="false">
   The most recent "sale" price from our prices field.
 
@@ -1918,6 +2088,16 @@ The property data schema below lists all available fields in a property record. 
 
   ```json
   "mostRecentSoldPriceAmount": 480000
+  ```
+</ParamField>
+
+<ParamField body="mostRecentSoldPriceCurrency" param-type="text" required="false" deprecated="false" show-location="false">
+  The currency listed for mostRecentSoldPriceAmount.
+
+  **Example:**
+
+  ```json
+  "mostRecentSoldPriceCurrency": "USD"
   ```
 </ParamField>
 
