@@ -1,8 +1,9 @@
 ---
 title: November 2026 Release Log
-description: Use Datafiniti from AI tools, work with expanded Property and People Data schemas, and follow the latest migration and roadmap updates.
+description: >-
+  Use Datafiniti from AI tools, work with expanded Property and People Data
+  schemas, and follow the latest migration and roadmap updates.
 ---
-
 ## New Features
 
 Use Datafiniti from AI tools and get more context from Property and People Data with expanded schema coverage.
@@ -22,7 +23,9 @@ New guides show you how to connect Datafiniti and use it with common AI tools:
 - [MCP Server](https://docs.datafiniti.co/mcp-server)
 - [Postman](https://docs.datafiniti.co/postman)
 - [Claude](https://docs.datafiniti.co/claude)
+  - Official plugin pending review
 - [ChatGPT and Codex](https://docs.datafiniti.co/chatgpt/codex)
+  - Official plugin pending review
 - [Other LLMs](https://docs.datafiniti.co/other-llms)
 
 Worked examples are also available for:
@@ -36,6 +39,14 @@ Worked examples are also available for:
 - [Property Data with GPT](https://docs.datafiniti.co/property-data-with-gpt)
 
 ## Updates
+
+### Datafiniti Features
+
+
+
+#### Faster Downloads
+
+We have improved download times up to 6x on download over 50000 records. This was a huge goal of ours due to customer feedback. 
 
 ### Property Data schema
 
@@ -62,7 +73,7 @@ The Property Data schema also now clarifies that first-seen dates indicate when 
 
 ### People Data schema
 
-The [People Data Schema](https://docs.datafiniti.co/docs/people-data-schema) now includes broker, identity, employment, and website fields:
+The [People Data Schema](https://docs.datafiniti.co/docs/people-data-schema) now includes broker, identity, and website fields:
 
 - `currentListingCount`
 - `maxListingPrice`
@@ -70,22 +81,6 @@ The [People Data Schema](https://docs.datafiniti.co/docs/people-data-schema) now
 - `recentlySoldCount`
 - `salesHistoryDateSeen`
 - `middleName`
-- `websites` at the person level
-- `experiences`, including:
-  - `address`
-  - `businessName`
-  - `city`
-  - `companyFounded`
-  - `country`
-  - `jobLevel`
-  - `jobTitle`
-  - `latitude`
-  - `numEmployeesMax`
-  - `numEmployeesMin`
-  - `province`
-  - `websites`
-
-No new Business Data or Product Data fields were identified in this release period.
 
 ### Property status history migration
 
@@ -100,5 +95,7 @@ The Property Data schema received documentation clarifications for first-seen da
 ## Coming Soon
 
 - Normalized product categories.
-- Faster downloads.
-- Official Claude and ChatGPT connectors, awaiting approval.
+  - We plan to normalize the entire categories field withing the product dataset. This will create new taxonomy and more organized structured sub fields to search on. 
+
+* Official Claude and ChatGPT connectors, awaiting approval.
+
