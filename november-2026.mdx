@@ -1,0 +1,104 @@
+---
+title: November 2026 Release Log
+description: Use Datafiniti from AI tools, work with expanded Property and People Data schemas, and follow the latest migration and roadmap updates.
+---
+
+## New Features
+
+Use Datafiniti from AI tools and get more context from Property and People Data with expanded schema coverage.
+
+### Datafiniti MCP server
+
+The new Datafiniti MCP server lets AI tools search records, count matching records, retrieve individual records, start and check downloads, and retrieve schemas. It includes 45 prebuilt prompts so you can work with Datafiniti without building a separate integration.
+
+Connect an MCP-capable tool to `https://api.datafiniti.co/v4/mcp`.
+
+[Learn about Using Datafiniti with AI](https://docs.datafiniti.co/MCP-Overview).
+
+### AI setup and use guides
+
+New guides show you how to connect Datafiniti and use it with common AI tools:
+
+- [MCP Server](https://docs.datafiniti.co/mcp-server)
+- [Postman](https://docs.datafiniti.co/postman)
+- [Claude](https://docs.datafiniti.co/claude)
+- [ChatGPT and Codex](https://docs.datafiniti.co/chatgpt/codex)
+- [Other LLMs](https://docs.datafiniti.co/other-llms)
+
+Worked examples are also available for:
+
+- [People Data with Claude](https://docs.datafiniti.co/people-data-with-claude)
+- [Business Data with Claude](https://docs.datafiniti.co/business-data-with-claude)
+- [Product Data with Claude](https://docs.datafiniti.co/product-data-with-claude)
+- [Property Data with Claude](https://docs.datafiniti.co/property-data-with-claude)
+- [Business Data with GPT](https://docs.datafiniti.co/business-data-with-gpt)
+- [Product Data with GPT](https://docs.datafiniti.co/product-data-with-gpt)
+- [Property Data with GPT](https://docs.datafiniti.co/property-data-with-gpt)
+
+## Updates
+
+### Property Data schema
+
+The [Property Data Schema](https://docs.datafiniti.co/docs/property-data-schema) now includes the following fields:
+
+- `businessesAtAddress`: Links Property Data records with Business Data records that share the same address. Each linked record includes its name, key, and date seen.
+- `corporateTenants`
+- `investmentSubtype`
+- `noi`
+- `numBuildings`
+- `mostRecentEstimatedPriceCurrency`
+- `postalCodePlusFour`
+- `rawAddress`
+- `numKeys`
+- `mostRecentSaleListPriceCurrency`
+- `mostRecentOwnerTransactionDate`
+- `mostRecentRentalListPriceCurrency`
+- `mostRecentRentalPriceCurrency`
+- `mostRecentPricePerSquareFoot`
+- `mostRecentPriceSourceURL`
+- `mostRecentSoldPriceCurrency`
+
+The Property Data schema also now clarifies that first-seen dates indicate when Datafiniti first observed the relevant owner or status.
+
+### People Data schema
+
+The [People Data Schema](https://docs.datafiniti.co/docs/people-data-schema) now includes broker, identity, employment, and website fields:
+
+- `currentListingCount`
+- `maxListingPrice`
+- `minListingPrice`
+- `recentlySoldCount`
+- `salesHistoryDateSeen`
+- `middleName`
+- `websites` at the person level
+- `experiences`, including:
+  - `address`
+  - `businessName`
+  - `city`
+  - `companyFounded`
+  - `country`
+  - `jobLevel`
+  - `jobTitle`
+  - `latitude`
+  - `numEmployeesMax`
+  - `numEmployeesMin`
+  - `province`
+  - `websites`
+
+No new Business Data or Product Data fields were identified in this release period.
+
+### Property status history migration
+
+The migration from `statuses` to `statusHistory` is complete. Use `statusHistory` for a property's full status history and `mostRecentStatus` for its current status.
+
+## Bug Fixes
+
+No user-facing product bug fixes were identified in this release period.
+
+The Property Data schema received documentation clarifications for first-seen date descriptions. These changes clarify existing documentation and do not represent a product bug fix.
+
+## Coming Soon
+
+- Normalized product categories.
+- Faster downloads.
+- Official Claude and ChatGPT connectors, awaiting approval.
