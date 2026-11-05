@@ -268,7 +268,7 @@ Uses a custom view to fetch only the fields needed to determine whether a
 shipping address matches a vacant or off-market property — a common signal
 for potentially fraudulent e-commerce orders.
 
-Reference: https://docs.datafiniti.co/docs/identify-e-commerce-orders-shipping-to-vacant-houses
+Reference: https://docs.datafiniti.co/docs/identify-e-commerce-orders-shipping-to-frauded-addresses
 """
 
 from datafiniti.property import PropertyDataSDK
@@ -389,4 +389,3 @@ if __name__ == "__main__":
   **Handling Normalizing addresses before querying.** \
   Datafiniti stores addresses using standard abbreviations. By default using the address field will attempt to convert non-normalized terms to normalized values. Like `"Ave"` not `"Avenue"`, `"St"` not `"Street"`, `"Dr"` not `"Drive"`, `"Ln"` not `"Lane"`, `"Rd"` not `"Road"`. Queries with unabbreviated designations may return zero results. For more details, see [Normalized Address Data](https://docs.datafiniti.co/docs/normalized-address-data).
 </Callout>
-

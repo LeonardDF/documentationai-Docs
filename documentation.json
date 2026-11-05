@@ -333,8 +333,8 @@
                             "path": "docs/find-investment-properties"
                           },
                           {
-                            "title": "Identify e-commerce orders shipping to vacant houses",
-                            "path": "docs/identify-e-commerce-orders-shipping-to-vacant-houses"
+                            "title": "Identify e-commerce orders shipping to frauded addresses",
+                            "path": "docs/identify-e-commerce-orders-shipping-to-frauded-addresses"
                           },
                           {
                             "title": "Collect HOA fee data for a property",
@@ -2423,5 +2423,11 @@
     "gtm": {
       "tagId": "GTM-N886Q4F"
     }
-  }
+  },
+  "redirects": [
+    {
+      "source": "/docs/identify-e-commerce-orders-shipping-to-vacant-houses",
+      "destination": "/docs/identify-e-commerce-orders-shipping-to-frauded-addresses"
+    }
+  ]
 }

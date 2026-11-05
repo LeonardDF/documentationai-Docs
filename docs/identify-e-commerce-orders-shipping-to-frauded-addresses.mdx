@@ -1,7 +1,6 @@
 ---
-title: Identify e-commerce orders shipping to vacant houses
+title: Identify e-commerce orders shipping to frauded addresses
 ---
-
 ## Introduction
 
 One of the more creative uses of Datafiniti is using our property data to track potentially fraudulent e-commerce orders.  Fraudsters may attempt to ship packages to a vacant home and pick up those packages from those houses because they know no one is living there.  Online retailers can use our property data to check the shipping addresses against the addresses of recently listed or sold homes to flag potentially fraudulent orders.
@@ -9,7 +8,7 @@ One of the more creative uses of Datafiniti is using our property data to track 
 Here's a brief overview of how this process works.
 
 <Steps>
-  <Step title="Collect a list of recent shipping addresses">
+  <Step title="Collect a list of recent shipping addresses" title-type="p">
     As new orders come in, collect the shipping addresses on each order.  That list might look something like:
 
     ```text
@@ -22,10 +21,11 @@ Here's a brief overview of how this process works.
     <Callout kind="tip" collapsed="true">
       **Address normalization**
 
-    Datafiniti normalizes street designations to standardized abbreviations, such as converting `street` to `st` and `drive` to `dr`. Use the normalized form of an address for exact matching against Datafiniti property data. Learn more in [Normalized Property Addresses](/docs/normalized-address-data).
+      Datafiniti normalizes street designations to standardized abbreviations, such as converting `street` to `st` and `drive` to `dr`. Use the normalized form of an address for exact matching against Datafiniti property data. Learn more in [Normalized Property Addresses](/docs/normalized-address-data).
     </Callout>
   </Step>
-  <Step title="Check an MLS address against Datafiniti">
+
+  <Step title="Check an MLS address against Datafiniti" title-type="p">
     Pass each address (provided by your or an MLS network) to the Datafiniti Property API and check the status of the property.  Your query will look like:
 
     ```json
@@ -41,7 +41,8 @@ Here's a brief overview of how this process works.
     "mostRecentStatusDate": "2023-03-28T15:34:20.727Z",
     ```
   </Step>
-  <Step title="Flag properties recently listed or sold">
+
+  <Step title="Flag properties recently listed or sold" title-type="p">
     If the address matches a property that is recently listed (`For Sale`) or sold (`Sold`), then you can decide to flag that corresponding order as potentially fraudulent.
   </Step>
 </Steps>
@@ -50,10 +51,9 @@ Here's a brief overview of how this process works.
 
 Here are example bulk download files of our previous query:
 
-* [E-Commerce Record CSV](https://drive.google.com/file/d/1I183NOK-Eiter0NMLsUyNHcDayPtIeXh/view?usp=share_link)
-* [E-Commerce Record Json](https://drive.google.com/file/d/1r-83OC28GDOp9VmhFV6lngNQ_LU9XGLy/view?usp=share_link)
+- [E-Commerce Record CSV](https://drive.google.com/file/d/1I183NOK-Eiter0NMLsUyNHcDayPtIeXh/view?usp=share_link)
+- [E-Commerce Record Json](https://drive.google.com/file/d/1r-83OC28GDOp9VmhFV6lngNQ_LU9XGLy/view?usp=share_link)
 
 ### Conclusion
 
 You can utilize the address with property status to build a report to calculate if the address is legitimate or not. This will help online retailers protect themselves against fraudulent orders.
-
