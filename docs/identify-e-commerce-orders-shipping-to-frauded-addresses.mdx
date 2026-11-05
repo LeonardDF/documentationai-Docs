@@ -47,6 +47,66 @@ Here's a brief overview of how this process works.
   </Step>
 </Steps>
 
+## Flag orders shipping to business addresses
+
+Vacant homes aren't the only shipping-address risk.  Fraudsters also route stolen-card orders to commercial locations disguised as residences — freight forwarders, reshipping "drops," and commercial mail-receiving agencies (CMRAs) — or to addresses that don't correspond to a real delivery point at all.  The `businessesAtAddress` field lets you confirm whether an address a customer entered as a home is actually a place of business, adding a second layer of fraud coverage on top of the vacant-home check.
+
+<Steps>
+  <Step title="Check the shipping address for a business" title-type="p">
+    Reuse the same property query from above.  In the returned record, inspect the `businessesAtAddress` field, which lists any businesses Datafiniti has seen operating at that address:
+
+    ```json
+    "businessesAtAddress": [
+      {
+        "name": "Alderbrook Boutique",
+        "key": "us/me/eastbrook/1212eastbrookrd/alderbrookboutique",
+        "dateSeen": "2026-09-26T00:22:11Z"
+      }
+    ]
+    ```
+  </Step>
+
+  <Step title="Flag residential orders tied to a business" title-type="p">
+    If a shipping address entered as a home comes back with one or more entries in `businessesAtAddress`, treat it as a commercial location rather than a residence.  Pair it with `propertyType` to separate a genuine home from a storefront, mailbox service, or freight forwarder.  When no business has ever been seen at the address and the address matches no property record, that absence can point to a fake or non-deliverable address worth holding for review.
+
+    <Callout kind="tip" collapsed="true">
+      **Weigh home-based businesses**
+
+      A legitimate home-based business can also appear in `businessesAtAddress`, so treat this field as one signal among several (order value, billing/shipping mismatch, vacancy status) rather than an automatic decline.
+    </Callout>
+  </Step>
+</Steps>
+
+A record flagged by the business-address check looks like this — the address was entered as a residence, but Datafiniti shows a business operating there:
+
+```json
+{
+  "address": "1212 Eastbrook Rd",
+  "city": "Eastbrook",
+  "province": "ME",
+  "postalCode": "04634",
+  "businessesAtAddress": [
+    {
+      "name": "Alderbrook Boutique",
+      "key": "us/me/eastbrook/1212eastbrookrd/alderbrookboutique",
+      "dateSeen": "2026-09-26T00:22:11Z"
+    }
+  ]
+}
+```
+
+A genuine residence returns no business at the address:
+
+```json
+{
+  "address": "451 Webber Ln",
+  "city": "Austin",
+  "province": "TX",
+  "postalCode": "78721"
+}
+
+```
+
 ### Example Records
 
 Here are example bulk download files of our previous query:
