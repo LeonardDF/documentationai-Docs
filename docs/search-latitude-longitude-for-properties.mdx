@@ -1,26 +1,32 @@
 ---
-title: Search latitude & longitude for properties
+title: Search Property Data by Latitude & Longitude (Radius Search)
+description: >-
+  Use the Datafiniti Property Data API to find properties within a radius of a
+  latitude and longitude, filter by status and property type, and build a 90-day
+  comparable sales (comps) report.
 ---
+# Search property data by latitude & longitude
+
 ## Introduction
 
-One popular use case for Datafiniti's Property Data is finding properties near a specific geo-coordinate that match certain criteria.  Here's how to do this!
+Datafiniti's Property Data API lets you find every property within a set distance of a latitude and longitude coordinate using a radius search.  You can combine the radius with filters like listing status, property type, postal code, and date to find homes for sale, recently sold homes, or comparable sales (comps) near any location in the US.  Here's how to do this!
 
-## Searching around latitude & longitude
+## How do I search for properties near a latitude & longitude?
 
 Let's say you have the following latitude and longitude coordinates:
 
 ```json
 {
-  "latitude": 30.253540,
-  "longitude": -97.770640
+	"latitude": 30.253540,
+	"longitude": -97.770640
 }
 ```
 
-You can run a search for properties near this geo-coordinate like so:
+You can run a search for properties near this geo-coordinate using a radial search.
 
 ## Using Radial Search
 
-You can use geoLocation to search in a radius of a Longitude and Latitude. The following example will show you how to build a query.
+You can use `geoLocation` to search in a radius around a longitude and latitude.  The following example will show you how to build a query.
 
 ```json
 {
@@ -30,50 +36,91 @@ You can use geoLocation to search in a radius of a Longitude and Latitude. The f
 
 This will return all matching properties within a 10 mile radius.  You can change the `10` and the `mi` to other values you want, like `5,km` for 5 kilometers.
 
+The `geoLocation` filter uses this format:
+
+| Position | Value     | Example       |
+| -------- | --------- | ------------- |
+| 1        | Longitude | `-97.7430600` |
+| 2        | Latitude  | `30.2671500`  |
+| 3        | Distance  | `10`          |
+| 4        | Unit      | `mi`          |
+
+Longitude always comes first.  Supported units are `m`, `mi`, `ft`, `yd`, `mm`, `km`, `NM`, and `cm`.
+
+Here's the same search as a full API request with cURL:
+
+```bash
+curl -X POST "https://api.datafiniti.co/v4/properties/search" \
+	-H "Authorization: Bearer YOUR_API_TOKEN" \
+	-H "Content-Type: application/json" \
+	-d '{
+		"query": "geoLocation:[-97.7430600,30.2671500,10,mi]",
+		"num_records": 10
+	}'
+```
+
+And with the [Datafiniti Python SDK](https://pypi.org/project/datafiniti-sdk/):
+
+```python
+from datafiniti import PropertyDataSDK
+
+sdk = PropertyDataSDK.from_env()
+
+results = sdk.geolocation(
+	longitude=-97.7430600,
+	latitude=30.2671500,
+	distance=10,
+	unit="mi",
+	num_records=10,
+)
+```
+
 <Callout kind="info" collapsed="false">
   The AI assistant can help explain the query, break down the request body, and suggest ways to refine your search, but it does not execute live Datafiniti API calls from within the docs. To test this use case in real time, open the Properties API reference and run the request with your own API token in Postman, cURL, or your application code.
 </Callout>
 
 ## Search the Most Recent Records
 
-This will pull just the mostRecentStatus of "For Sale" properties in the area from the provided date to the present date.
+This will pull just the properties with a `mostRecentStatus` of "For Sale" in the area, updated from the provided date to the present date.
 
 ```json
 {
-	"query": "geoLocation:[-97.7430600,30.2671500,10,mi] AND mostRecentStatus:"For Sale" AND dateUpdated:[2023-03-14 TO *]"  
+	"query": "geoLocation:[-97.7430600,30.2671500,10,mi] AND mostRecentStatus:\"For Sale\" AND dateUpdated:[2023-03-14 TO *]"
 }
 ```
 
 ## Adding more filters
 
-You probably want to be more specific than every property available, so you can additional filters like this:
+You probably want to be more specific than every property available, so you can add additional filters like this:
 
 ```json
 {
-	"query": "geoLocation:[-97.7430600,30.2671500,10,mi] AND propertyType:("Single Family Dwelling" OR Apartment)"
+	"query": "geoLocation:[-97.7430600,30.2671500,10,mi] AND propertyType:(\"Single Family Dwelling\" OR Apartment)"
 }
 ```
 
 This will narrow down your matches to properties that are single family homes or apartments.  You can add any additional filters from the fields [available in our schema](/docs/property-data-schema).
 
-# Build a comparable sales report within a geolocation
+## Build a comparable sales report for recently sold homes
 
-Another popular use case is building a comparable sales report, or "comps," for a specific area.  Here's how to pull every home sold in the last 90 days in the 72728 postal code (Elm Springs, AR).
+Another popular use case is building a comparable sales report, or "comps," for a specific area.  Real estate agents, appraisers, investors, and lenders use comps to estimate a home's market value in a comparative market analysis (CMA).  Here's how to pull every home sold in the last 90 days in the 72728 postal code (Elm Springs, AR).
 
-## Searching for recently sold homes
+### Choosing a center point
 
 Let's say you want to center your report on the following latitude and longitude coordinates:
 
 ```json
 {
-  "latitude": 36.2088,
-  "longitude": -94.2327
+	"latitude": 36.2088,
+	"longitude": -94.2327
 }
 ```
 
 These are the approximate coordinates for the center of 72728.  You can also use the coordinates of a specific subject property.
 
-You can use geoLocation, postalCode, and mostRecentStatus together to find sold homes in the area.  The following example will show you how to build a query.
+### Searching for recently sold homes
+
+You can use `geoLocation`, `postalCode`, and `mostRecentStatus` together to find sold homes in the area.  The following example will show you how to build a query.
 
 ```json
 {
@@ -83,7 +130,7 @@ You can use geoLocation, postalCode, and mostRecentStatus together to find sold 
 
 This will return all sold properties within a 5 mile radius of the center point and inside the 72728 postal code, updated from the provided date to the present date.  Set the start date to 90 days before today to get a 90 day window.  If you get too few results, you can increase the `5` to a larger radius or remove the `postalCode` filter.
 
-## Narrowing to comparable homes
+### Narrowing to comparable homes
 
 You probably want to compare homes that are similar to each other, so you can add additional filters like this:
 
@@ -125,8 +172,25 @@ This will return each property as a clean row you can export to JSON or CSV and 
 
 ## Example files
 
-Here are example bulk download files for ourprevious query:
+Here are example bulk download files for the radial search query:
 
-- [long/lat JSON](https://drive.google.com/file/d/1y7cHkHF5d2ZlUYLOkk672-d5jFN9-0ZA/view?usp=sharing)
-- [long/lat CSV](https://drive.google.com/file/d/1YWohYam6LkQgj0-N93gHBLErkuJc3wYv/view?usp=sharing)
+- [Radius search example results (JSON)](https://drive.google.com/file/d/1y7cHkHF5d2ZlUYLOkk672-d5jFN9-0ZA/view?usp=sharing)
+- [Radius search example results (CSV)](https://drive.google.com/file/d/1YWohYam6LkQgj0-N93gHBLErkuJc3wYv/view?usp=sharing)
 
+# Frequently asked questions
+
+## What order does geoLocation use for coordinates?
+
+`geoLocation` uses longitude first, then latitude, then distance, then unit: `geoLocation:[longitude,latitude,distance,unit]`.  Swapping longitude and latitude is the most common reason a radius search returns no results.
+
+### Can I search by kilometers instead of miles?
+
+Yes.  Change the unit to `km`, like `geoLocation:[-97.7430600,30.2671500,5,km]`.  Supported units are `m`, `mi`, `ft`, `yd`, `mm`, `km`, `NM`, and `cm`.
+
+## Can I combine a radius search with a postal code?
+
+Yes.  Add `postalCode:\"72728\"` to your query with `AND` to keep results inside a specific ZIP code, or leave it out to search the full radius.
+
+## What if my radius search returns zero results?
+
+A zero-result query is a valid response, not an error.  Check that longitude comes before latitude, then try a larger distance or remove some filters.
