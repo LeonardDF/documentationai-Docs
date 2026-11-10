@@ -285,10 +285,6 @@
                             "path": "docs/use-cases-for-property-data"
                           },
                           {
-                            "title": "Property Use Cases",
-                            "path": "docs/property-use-cases"
-                          },
-                          {
                             "title": "Search for MLS Numbers or Download MLS Markets",
                             "path": "docs/search-for-mls-property-data"
                           },
@@ -298,7 +294,7 @@
                           },
                           {
                             "title": "Search latitude & longitude for properties",
-                            "path": "docs/search-for-properties-around-a-latlong"
+                            "path": "docs/search-latitude-longitude-for-properties"
                           },
                           {
                             "title": "Select sites for commercial development",
