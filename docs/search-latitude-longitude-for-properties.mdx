@@ -1,7 +1,6 @@
 ---
-title: "Search latitude & longitude for properties"
+title: Search latitude & longitude for properties
 ---
-
 ## Introduction
 
 One popular use case for Datafiniti's Property Data is finding properties near a specific geo-coordinate that match certain criteria.  Here's how to do this!
@@ -41,7 +40,7 @@ This will pull just the mostRecentStatus of "For Sale" properties in the area fr
 
 ```json
 {
-	"query": "geoLocation:[-97.7430600,30.2671500,10,mi] AND mostRecentStatus:\"For Sale\" AND dateUpdated:[2023-03-14 TO *]"  
+	"query": "geoLocation:[-97.7430600,30.2671500,10,mi] AND mostRecentStatus:"For Sale" AND dateUpdated:[2023-03-14 TO *]"  
 }
 ```
 
@@ -51,16 +50,83 @@ You probably want to be more specific than every property available, so you can 
 
 ```json
 {
-	"query": "geoLocation:[-97.7430600,30.2671500,10,mi] AND propertyType:(\"Single Family Dwelling\" OR Apartment)"
+	"query": "geoLocation:[-97.7430600,30.2671500,10,mi] AND propertyType:("Single Family Dwelling" OR Apartment)"
 }
 ```
 
 This will narrow down your matches to properties that are single family homes or apartments.  You can add any additional filters from the fields [available in our schema](/docs/property-data-schema).
 
+# Build a comparable sales report within a geolocation
+
+Another popular use case is building a comparable sales report, or "comps," for a specific area.  Here's how to pull every home sold in the last 90 days in the 72728 postal code (Elm Springs, AR).
+
+## Searching for recently sold homes
+
+Let's say you want to center your report on the following latitude and longitude coordinates:
+
+```json
+{
+  "latitude": 36.2088,
+  "longitude": -94.2327
+}
+```
+
+These are the approximate coordinates for the center of 72728.  You can also use the coordinates of a specific subject property.
+
+You can use geoLocation, postalCode, and mostRecentStatus together to find sold homes in the area.  The following example will show you how to build a query.
+
+```json
+{
+	"query": "geoLocation:[-94.2327,36.2088,5,mi] AND postalCode:\"72728\" AND mostRecentStatus:\"Sold\" AND dateUpdated:[2026-08-12 TO *]"
+}
+```
+
+This will return all sold properties within a 5 mile radius of the center point and inside the 72728 postal code, updated from the provided date to the present date.  Set the start date to 90 days before today to get a 90 day window.  If you get too few results, you can increase the `5` to a larger radius or remove the `postalCode` filter.
+
+## Narrowing to comparable homes
+
+You probably want to compare homes that are similar to each other, so you can add additional filters like this:
+
+```json
+{
+	"query": "geoLocation:[-94.2327,36.2088,5,mi] AND postalCode:\"72728\" AND mostRecentStatus:\"Sold\" AND dateUpdated:[2026-08-12 TO *] AND propertyType:\"Single Family Dwelling\" AND numBedroom:[3 TO 4] AND numBathroom:[2 TO *]"
+}
+```
+
+This will narrow down your matches to single family homes with 3 to 4 bedrooms and at least 2 bathrooms.  You can add any additional filters from the fields [available in our schema](/docs/property-data-schema).
+
+### Returning only report fields
+
+You can add a `view` to your request to return only the fields you need for your report:
+
+```json
+{
+	"query": "geoLocation:[-94.2327,36.2088,5,mi] AND postalCode:\"72728\" AND mostRecentStatus:\"Sold\" AND dateUpdated:[2026-08-12 TO *]",
+	"view": [
+		{"name": "address"},
+		{"name": "city"},
+		{"name": "postalCode"},
+		{"name": "mostRecentStatus"},
+		{"name": "mostRecentPriceAmount"},
+		{"name": "numBedroom"},
+		{"name": "numBathroom"},
+		{"name": "floorSizeValue"},
+		{"name": "yearBuilt"},
+		{"name": "dateUpdated"}
+	]
+}
+```
+
+This will return each property as a clean row you can export to JSON or CSV and use to calculate average sale price, median sale price, and price per square foot.
+
+<Callout kind="info" collapsed="false">
+  If your comps report returns more than 10,000 records, you'll need to use a bulk download instead of paging through results.  Download links expire after 7 days.
+</Callout>
+
 ## Example files
 
 Here are example bulk download files for ourprevious query:
 
-* [long/lat JSON](https://drive.google.com/file/d/1y7cHkHF5d2ZlUYLOkk672-d5jFN9-0ZA/view?usp=sharing)
-* [long/lat CSV](https://drive.google.com/file/d/1YWohYam6LkQgj0-N93gHBLErkuJc3wYv/view?usp=sharing)
+- [long/lat JSON](https://drive.google.com/file/d/1y7cHkHF5d2ZlUYLOkk672-d5jFN9-0ZA/view?usp=sharing)
+- [long/lat CSV](https://drive.google.com/file/d/1YWohYam6LkQgj0-N93gHBLErkuJc3wYv/view?usp=sharing)
 
