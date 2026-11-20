@@ -150,7 +150,7 @@
                     "path": "other-llms"
                   }
                 ],
-                "path": "overview"
+                "path": "Using-Datafiniti-with-AI"
               },
               {
                 "group": "Datafiniti API",
@@ -403,7 +403,7 @@
                           },
                           {
                             "title": "Count",
-                            "path": "docs/count-property"
+                            "path": "docs/property-count"
                           },
                           {
                             "title": "Fuzzy Match",
@@ -949,7 +949,7 @@
                           },
                           {
                             "title": "Fuzzy Match",
-                            "path": "docs/fuzzy-match-business"
+                            "path": "docs/fuzzy-match-business-address"
                           },
                           {
                             "title": "Geolocation",

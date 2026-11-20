@@ -1,5 +1,14 @@
 ---
 title: Search for Specific Restaurants
+description: >-
+  Use the Datafiniti restaurant data API to find restaurants by cuisine,
+  category or restaurant operating hours — and see how restaurant menus,
+  cuisines and hours of operation are stored on each record.
+metaTitle: 'Restaurant Data API: Search Restaurants by Cuisine or Hours'
+metaDescription: >-
+  Query the restaurant data API for restaurants by cuisine, category or
+  restaurant operating hours, and learn how restaurant menus become searchable
+  categories and cuisines fields and where hours of operation live.
 ---
 
 ## Introduction
@@ -48,6 +57,61 @@ Since the fields we have used so far (`categories `& `cuisines`) are typically p
   "num_records":10
 }
 ```
+
+## Search for Restaurants by Operating Hours
+
+Restaurant operating hours live in the `hours` field of the business schema. Each entry describes one block of opening times with the sub-fields `day`, `hour`, `dept` and `meal`, so you can find restaurants that publish their hours and read what those hours are.
+
+### Only return restaurants that publish hours
+
+Adding an existence filter on `hours.day` keeps the vegan California results from the earlier examples but only returns locations with hours on file.
+
+```json
+{
+  "query": "country:US AND province:CA AND cuisines:(vegan) AND hours.day:*",
+  "num_records": 10
+}
+```
+
+Hours come back as a list on each business:
+
+```json
+{
+  "name": "Green Fork Kitchen",
+  "city": "Santa Monica",
+  "province": "CA",
+  "hours": [
+    {
+      "day": "Mon - Fri",
+      "hour": "11:00 am - 9:00 pm"
+    },
+    {
+      "day": "Sat - Sun",
+      "meal": "Brunch",
+      "hour": "10:00 am - 10:00 pm"
+    }
+  ]
+}
+```
+
+### Find restaurants open for a specific meal period
+
+Where a source lists meal periods, they appear in `hours.meal` and can be searched directly, e.g. brunch.
+
+```json
+{
+  "query": "country:US AND province:CA AND cuisines:(vegan) AND hours.meal:(Brunch OR Breakfast)",
+  "num_records": 10
+}
+```
+
+Meal periods are only present where a source publishes them, so combine this with the `hours.day:*` existence filter when you need every record to have hours.
+
+<Callout kind="info" title="Hours are text values">
+  `hours.hour` is stored as text such as "11:00 am - 9:00 pm" and `hours.day` as a day or day range such as "Mon - Fri". Use the query fields to find and filter restaurants by presence of hours, then parse the returned strings in your own code if you need open/closed times as machine-readable values.
+</Callout>
+
+See the [business data schema](/docs/business-data-schema) for every `hours` sub-field.
 
 ## Example Files
 

@@ -1,7 +1,14 @@
 ---
-title: "Lookup Products by GTIN (UPC, EAN, etc.)"
+title: 'Lookup Products by GTIN (UPC, EAN, etc.)'
+description: >-
+  Use the Datafiniti UPC lookup API to find a product by any barcode — UPC, EAN,
+  ISBN or VIN — and see how the GTIN database stores every format in one
+  searchable field.
+metaTitle: 'UPC Lookup API: Search Products by GTIN (UPC, EAN, ISBN)'
+metaDescription: >-
+  Query the Datafiniti UPC lookup API by GTIN to match UPC, UPCa, UPCe, EAN,
+  ISBN and VIN codes, and learn which barcode fields the GTIN database captures.
 ---
-
 ## Introduction
 
 Datafiniti collects several types of product barcodes.  Collectively, these are referred to as GTINs (Global Trade Item Numbers).  We can use Datafiniti to search for specific products by searching against the GTINs field.  Let's learn how!
@@ -40,10 +47,10 @@ This should return a single product match that will look like this (truncated fo
 
 You can see that the record contains individual barcode fields:
 
-* `ean`
-* `ean13`
-* `upc`
-* `upca`
+- `ean`
+- `ean13`
+- `upc`
+- `upca`
 
 These are all variations of one another, but Datafiniti collects all of them, just to be comprehensive.  Every one of these values is grouped into the `gtins` field so that it's easier to search for barcodes, no matter what format they're in.
 
@@ -51,14 +58,14 @@ These are all variations of one another, but Datafiniti collects all of them, ju
 
 Here is the full set of fields that are captured within our `gtins` field:
 
-* `asins`
-* `ean`
-* `ean13`
-* `isbn`
-* `upc`
-* `upca`
-* `upce`
-* `vin`
+- `asins`
+- `ean`
+- `ean13`
+- `isbn`
+- `upc`
+- `upca`
+- `upce`
+- `vin`
 
 ## Enriching Your Data
 
@@ -68,6 +75,6 @@ The product record example shown above has been truncated, but each Datafiniti r
 
 Here are example bulk download files of our previous query:
 
-* [Gtins CSV](https://drive.google.com/file/d/1VodBKysSsJGRWawvBuxnDXwxhRlRvdm5/view?usp=share_link)
-* [Gtins JSON](https://drive.google.com/file/d/1h2Y0TDe8dlJJhlbGxVxGUzfUvrSaYshe/view?usp=share_link)
+- [Gtins CSV](https://drive.google.com/file/d/1VodBKysSsJGRWawvBuxnDXwxhRlRvdm5/view?usp=share_link)
+- [Gtins JSON](https://drive.google.com/file/d/1h2Y0TDe8dlJJhlbGxVxGUzfUvrSaYshe/view?usp=share_link)
 
