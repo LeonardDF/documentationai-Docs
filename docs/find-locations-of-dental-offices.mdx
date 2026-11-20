@@ -1,10 +1,24 @@
 ---
 title: Find locations of dental offices
+description: Search Datafiniti property records for buildings described or used as dental offices, then confirm active practices before you download the list.
 ---
 
 ## Introduction
 
 You may need to use Datafiniti to search for very specific types of buildings.  As an example, you may want to look for properties that are or can be used for dental offices.
+
+A successful search returns a list of candidate properties, each carrying the street address, `propertyType`, current listing status, and floor or lot size, so you can shortlist buildings before you spend credits on a full download.
+
+## How the search works
+
+Property records have no dedicated "dental office" category. What a building is, or could be used for, lives in the listing text and characteristics attached to the record, which is why this workflow matches keywords instead of filtering on a structured field.
+
+Two fields carry that text:
+
+- **`descriptions.value`**: free-text descriptions written by the listing source, often containing phrases like "former dental office" or "near dental offices".
+- **`features.value`**: individual feature values and miscellaneous characteristics, such as "dental", "medical office", or "handicap accessible".
+
+Both are keyword matches. A hit means the term appears somewhere in the record, not that the property operates as a dental practice today. See [Property Data Schema](/docs/property-data-schema) for the full field list and [Possible Values for Property Fields](/docs/possible-values-for-property-fields) for the values `propertyType` accepts.
 
 ## Searching for dental offices
 
@@ -22,6 +36,20 @@ The `descriptions` and `features` fields available in many of our property recor
 
 You can use the `( ... OR ...)` construction to search on multiple possible values for each field at once.
 
+### Broaden the keyword list
+
+A first pass on `dental OR dentist` misses practices that describe themselves as orthodontic, endodontic, periodontic, or oral surgery. Add the related terms, one `( ... OR ... )` group per field, and wrap each group in parentheses so the OR values stay scoped to that field:
+
+```json
+{
+  "query": "descriptions.value:(dental OR dentist OR dentistry OR orthodontic OR orthodontist OR endodontic OR periodontic OR \"oral surgery\") OR features.value:(dental OR dentist OR dentistry OR orthodontic OR orthodontist OR endodontic OR periodontic OR \"oral surgery\")"
+}
+```
+
+Multi-word values such as `"oral surgery"` need the escaped quotes shown above. For the full set of operators and grouping rules, see [Constructing Property Queries](/docs/constructing-property-queries).
+
+### Restrict to commercial property types
+
 You can further refine your search by specifying the `propertyType`:
 
 ```json
@@ -29,6 +57,167 @@ You can further refine your search by specifying the `propertyType`:
   "query": "descriptions.value:(dental OR dentist) OR features.value:(dental OR dentist) AND propertyType:(commercial OR retail)"
 }
 ```
+
+Operator precedence makes that query wider than it looks. `AND` binds tighter than `OR`, so `propertyType` filters only the `features.value` clause, and every record matching the description still comes back regardless of property type. Wrap the keyword group in parentheses to apply the filter to both clauses:
+
+```json
+{
+  "query": "(descriptions.value:(dental OR dentist) OR features.value:(dental OR dentist)) AND propertyType:(Commercial OR Retail)"
+}
+```
+
+`Commercial` and `Retail` are the valid `propertyType` values for this kind of search. Check [Possible Values for Property Fields](/docs/possible-values-for-property-fields) before you add others, since a misspelled value returns zero records rather than an error.
+
+## Confirming an actual practice at the address
+
+`businessesAtAddress` lists the businesses Datafiniti has seen operating at the address, and it is the field that separates a plausible listing from a working practice. Each entry carries a `name`, a `key`, and a `dateSeen` timestamp for when that business was last observed there.
+
+```json
+{
+  "query": "businessesAtAddress.name:(dental OR dentist OR dentistry) AND city:(Austin) AND province:(TX)",
+  "num_records": 25
+}
+```
+
+The `key` identifies the underlying business record, so you can join the property to the tenant's business profile for phone numbers, categories, and hours. See [Business Data Schema](/docs/business-data-schema) for the fields that record exposes.
+
+<Callout kind="alert">
+  A keyword match in `descriptions` or `features` is a lead, not proof. The text may describe a nearby practice, a former tenant, a planned build-out, or simply say "near dental offices". Confirm the property with `businessesAtAddress` or the original source listing before treating it as an active dental office.
+</Callout>
+
+## Narrowing by area and status
+
+Combine the keyword match with location filters to keep the result set local. `city`, `province`, and `postalCode` all accept multiple values, so you can cover a metro area without running separate queries:
+
+```json
+{
+  "query": "(businessesAtAddress.name:(dental OR dentist)) AND city:(Austin OR Round Rock OR Cedar Park) AND province:(TX) AND postalCode:(78701 OR 78702 OR 78731) AND mostRecentStatus:\"For Sale\"",
+  "num_records": 25
+}
+```
+
+For a radius search, use `geoLocation:[Longitude,Latitude,Distance,Distance Unit]`. Note the order: longitude first, then latitude.
+
+```json
+{
+  "query": "(descriptions.value:(dental OR dentist) OR features.value:(dental OR dentist)) AND geoLocation:[-97.7431,30.2672,10,mi] AND mostRecentStatus:\"For Sale\""
+}
+```
+
+That example searches within 10 miles of downtown Austin. [Geolocation](/docs/geolocation-property) covers the supported distance units and how the radius behaves at larger values.
+
+Adding `mostRecentStatus:"For Sale"` keeps only active sale listings, which removes long-closed practices and stale records from the shortlist. For leased space, swap in `mostRecentRentalStatus:Rental` and read `mostRecentRentalPriceAmount` instead of the sale price.
+
+## Size the result set before you download
+
+Set `num_records` to `0` to get only the count. No records come back and the call costs no credits, so it is the cheapest way to see whether your filters are too broad or too narrow.
+
+```json
+{
+  "query": "(descriptions.value:(dental OR dentist) OR features.value:(dental OR dentist)) AND propertyType:(Commercial OR Retail) AND mostRecentStatus:\"For Sale\"",
+  "num_records": 0
+}
+```
+
+The response reports the total in `num_found` and returns an empty `records` array:
+
+```json
+{
+  "num_found": 1842,
+  "num_records": 0,
+  "records": []
+}
+```
+
+Once the number looks right, pull a small sample to check that the matches are the kind of property you expect:
+
+```json
+{
+  "query": "(descriptions.value:(dental OR dentist) OR features.value:(dental OR dentist)) AND propertyType:(Commercial OR Retail) AND mostRecentStatus:\"For Sale\"",
+  "num_records": 10
+}
+```
+
+Then request the full set as a file download. Bulk downloads are billed per record, which is why the count step matters.
+
+```json
+{
+  "query": "(descriptions.value:(dental OR dentist) OR features.value:(dental OR dentist)) AND propertyType:(Commercial OR Retail) AND mostRecentStatus:\"For Sale\"",
+  "num_records": 500,
+  "download": true,
+  "format": "CSV"
+}
+```
+
+The response includes a link to the generated file, which you can fetch when the download finishes. Use `"format": "JSON"` when you plan to process `businessesAtAddress` programmatically. [Property Count](/docs/property-count) explains how `num_found` relates to the records you are billed for.
+
+## Fields worth reading on each match
+
+Skim these fields first when you review the results. Most of them tell you whether a candidate is worth a phone call before you open the source listing.
+
+<ParamField body="address" param-type="string" show-location="false">
+  Street address exactly as the source reported it. Use this when you cross-check against a map or the original listing.
+</ParamField>
+
+<ParamField body="addressStandardized" param-type="string" show-location="false">
+  Normalized version of the address. Compare it with `address` to spot units, suites, and formatting differences.
+</ParamField>
+
+<ParamField body="city" param-type="string" show-location="false">
+  City the property sits in.
+</ParamField>
+
+<ParamField body="province" param-type="string" show-location="false">
+  State or province abbreviation, such as `TX`.
+</ParamField>
+
+<ParamField body="postalCode" param-type="string" show-location="false">
+  Postal code, useful for grouping matches into neighborhoods.
+</ParamField>
+
+<ParamField body="propertyType" param-type="string" show-location="false">
+  Type of property, such as `Commercial`, `Retail`, `Industrial`, or `Building`. Confirms the record matches the use you are searching for.
+</ParamField>
+
+<ParamField body="mostRecentStatus" param-type="string" show-location="false">
+  Latest known listing status, such as `For Sale`. A stale or missing status is a signal to verify the property independently.
+</ParamField>
+
+<ParamField body="mostRecentPriceAmount" param-type="number" show-location="false">
+  Latest known asking price. Compare it with nearby listings to flag outliers.
+</ParamField>
+
+<ParamField body="floorSizeValue" param-type="number" show-location="false">
+  Building floor area. Pair it with `floorSizeUnit` before comparing records, since sources report square feet and square meters.
+</ParamField>
+
+<ParamField body="floorSizeUnit" param-type="string" show-location="false">
+  Unit for `floorSizeValue`, written as an abbreviated code such as `sq ft` or `sq m`.
+</ParamField>
+
+<ParamField body="lotSizeValue" param-type="number" show-location="false">
+  Lot size, which matters when you are evaluating a building for expansion or parking.
+</ParamField>
+
+<ParamField body="yearBuilt" param-type="number" show-location="false">
+  Year the building was constructed. Older buildings may need plumbing and electrical work before a practice can move in.
+</ParamField>
+
+<ParamField body="businessesAtAddress" param-type="array" show-location="false">
+  Businesses observed operating at the address, each with `name`, `key`, and `dateSeen`. This is the strongest signal that a dental practice is actually there.
+</ParamField>
+
+<ParamField body="descriptions" param-type="array" show-location="false">
+  Listing descriptions that produced the keyword match. Read the surrounding sentence to see whether the term refers to this property or a neighbor.
+</ParamField>
+
+<ParamField body="features" param-type="array" show-location="false">
+  Feature values and characteristics attached to the record.
+</ParamField>
+
+<ParamField body="dateUpdated" param-type="string" show-location="false">
+  When Datafiniti last updated the record. Recent dates mean the listing data is more likely to still be accurate.
+</ParamField>
 
 ## Example files
 
@@ -39,5 +228,18 @@ Here are example bulk download files of our previous query:
 
 ## Conclusion
 
-With the knowledge of how to pull records with new homeowner data, you can find dental offices that fit your demographics.
+Keyword matches in `descriptions` and `features` give you a broad list of candidate properties, and `businessesAtAddress` tells you which of those addresses actually house a dental practice. Location filters on `city`, `province`, `postalCode`, or a `geoLocation` radius keep the list local, status filters keep it current, and a `num_records: 0` count tells you the size of the download before you spend credits. Working through those steps in order turns a keyword search into a verified shortlist of dental office properties.
 
+### Next steps
+
+<Columns cols={2}>
+
+  <Card title="Browse more property use cases" href="/docs/property-use-cases" icon="book-open" />
+
+  <Card title="Build more complex property queries" href="/docs/constructing-property-queries" icon="code" />
+
+  <Card title="Filter by distance with geolocation" href="/docs/geolocation-property" icon="settings" />
+
+  <Card title="Search via street address" href="/docs/searching-by-address-in-property" icon="folder" />
+
+</Columns>

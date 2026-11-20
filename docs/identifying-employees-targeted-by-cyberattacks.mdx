@@ -1,38 +1,153 @@
 ---
 title: Identifying employees targeted by cyberattacks
+description: Match a list of compromised or exposed individuals against Datafiniti people records to find each person's current employer, then rank the companies most at risk by seniority, industry and company size.
 ---
 
 ## Introduction
 
 By providing a commercially-available database of personally-identifiable information (PII), Datafiniti's People Data can be used to protect companies against potential cyberattacks. Let's learn how!
 
-### Searching against a known target list
+## What this workflow produces
 
-If your company provides cybersecurity protection, you likely have access to lists of known compromised individuals These lists will likely contain name, email, and other identifiers for each person. A list may look like:
+Start with a list of names and email addresses drawn from a breach, a credential dump, a phishing report, or an internal watchlist. By the end of the workflow you have each person's current employer, plus the fields needed to decide which accounts to reset, lock down, or escalate first.
 
+The workflow runs in three stages:
+
+1. **Match the people.** Find each target in the people database using their email and name.
+2. **Enrich each match.** Append employment fields such as `businessName`, `jobTitle`, and company size to your target list.
+3. **Aggregate and rank.** Group the enriched rows by company to see which employers carry the most exposure.
+
+## How the match works
+
+A Datafiniti people record describes a single person. The record can hold several email addresses: `emails` is the combined list of addresses associated with the person, `personalEmails` holds personal addresses, and `professionalEmails` and `primaryEmail` hold current work addresses. Each record also carries `firstName`, `lastName`, `middleName`, `city`, and `province`, plus `businessName`, the current business where the person works. The [People Data Schema](/docs/people-data-schema) lists the full set of fields and their types.
+
+An exact email match is the strongest single signal you have. It survives misspelled names, nicknames, and married-name changes, because the address itself is the identifier. When the address in your target list is a personal one (gmail, yahoo, a university domain), the address alone no longer identifies an employer. Pair the name with `city` or `province` to separate people who share a common name, then confirm the employer through `businessName`.
+
+Because a record can list several addresses, searching `emails` catches professional and personal addresses in one pass. You can also match several people in a single request by joining their conditions with OR. The [People Data Schema](/docs/people-data-schema) documents each email field and its type.
+
+## Searching against a known target list
+
+If your company provides cybersecurity protection, you likely have access to lists of known compromised individuals. These lists will likely contain name, email, and other identifiers for each person. A list may look like:
+
+```text
 Name, Email
-Joe Curry, joe.curry@universallumpers.com
+Joe Curry, joe.curry@bellideas.com
 Tina Harris, tharris@gmail.com
 Luis Fiego, luis42@plymouth.edu
+```
 
 You can take information like this and use it to find matching individuals in our people database. For this search we will build a filtered search based on `firstName`, `lastName`, & `emails`. Here's how such a search might look:
 
 <Image src="https://blob-cdn.documentation.ai/org-a829270c-4408-45aa-90cb-a8cad2967955/doc-82f0e261-4f6b-45af-9f00-b0b805bf07d2/1775452460090-6bgha3s1u8s-b5f3273-image.png?fm=auto&auto=compress%2Cformat" width="1920" height="1080" alt="Screenshot showing searching against a known target list" noCaption />
 
-### Aggregating data to identify compromised companies
+Behind that screenshot, the request body is a filtered query. To match a single person, combine the name with an email:
+
+```json
+{
+  "query": "firstName:\"Joe\" AND lastName:\"Curry\" AND emails:\"joe.curry@bellideas.com\""
+}
+```
+
+To match several people at once, join each person's conditions with OR:
+
+```json
+{
+  "query": "(firstName:\"Joe\" AND lastName:\"Curry\" AND emails:\"joe.curry@bellideas.com\") OR (firstName:\"Tina\" AND lastName:\"Harris\" AND emails:\"tharris@gmail.com\") OR (firstName:\"Luis\" AND lastName:\"Fiego\" AND emails:\"luis42@plymouth.edu\")"
+}
+```
+
+If the email addresses in your target list are the reliable part, drop the name fields and match on email alone. This is the most forgiving option for lists with inconsistent name formatting:
+
+```json
+{
+  "query": "emails:\"joe.curry@bellideas.com\" OR emails:\"tharris@gmail.com\" OR emails:\"luis42@plymouth.edu\""
+}
+```
+
+Target lists drawn from breaches are rarely clean — truncated addresses, duplicated surnames, typos of a single character — and a mistyped address simply returns no match for that person. Run the query with a small `num_records` first and compare the returned `emails` and names against your file, so you know which rows resolved before you commit to the full download.
+
+<Callout kind="tip">
+  **Size the job before you download it**
+
+  Run the same query first with `"num_records": 0` to get a count without pulling records, then request a small sample (`"num_records": 10`) to eyeball the matches. Only download the full result set once the sample looks right. See [Count](/docs/people-count) for how count requests are billed.
+
+</Callout>
+
+## Enriching each match
+
+Matching tells you who a record belongs to. Enrichment tells you what to do about it. Append these fields to your target list before you triage, and this is why each one matters:
+
+- **`businessName`**: the company to act on. This is the field you group by in the next stage.
+- **`businessCategories`**: the employer's industry, so you can group similar companies and prioritize critical-infrastructure or financial-services targets first. The allowed values are on [Possible Values for People Fields](/docs/possible-values-for-people-fields).
+- **`jobTitle`, `jobLevel`, `jobFunction`**: seniority and role. `jobLevel` runs from `cxo`, `vp`, `director`, `manager`, `owner`, and `partner` down to `senior`, `entry`, `training`, and `unpaid`. `jobFunction` includes values such as `engineering`, `finance`, `human_resources`, `legal`, and `operations`. An executive account, or an IT or finance account, is worth more to an attacker than an entry-level one, so use these to set priority.
+- **`numEmployeesMin` and `numEmployeesMax`**: company size, which tells you roughly how many accounts sit behind each compromised company. The ranges run from 1 to 10 up to 10000 and above.
+- **`dateUpdated`**: how recently Datafiniti last saw the record. A stale record can point at an employer the person has already left, so flag old rows before anyone is contacted.
+- **`sourceURLs` and `domains`**: where the record came from. `domains` holds the unique domains found in the `sourceURLs` field, so it describes provenance rather than the employer.
+- **`linkedinURL` and `websites`**: the fields to use when you want to confirm the employer independently of the record.
+- **`experiences`**: the list of past employment entries. Each entry carries its own `jobTitle`, `jobLevel`, `businessName`, `numEmployeesMin`, `numEmployeesMax`, `city`, `province`, `companyFounded`, and `websites`. Use it when the current `businessName` looks wrong or the person appears to have moved.
+- **`industries`**: categories drawn from the person's previous businesses, useful when you want industry context beyond the current employer.
+
+<Callout kind="alert">
+  **A match is a strong indicator, not proof**
+
+  The people database is commercially sourced PII. A record tells you where a person most likely works, not where they work today with certainty. Confirm before you act: check `dateUpdated` for recency and corroborate the employer with a second identifier such as `linkedinURL` or a work address in `professionalEmails`.
+
+  A record can also carry several addresses. If the match came from an old or personal email in `emails`, the `businessName` may be a company the person has since left.
+
+</Callout>
+
+## Aggregating data to identify compromised companies
 
 As you match each person and find their current company, you can append the data to your original file:
 
+```text
 Name, Email, Company
-Joe Curry, joe.curry@bellideas.com, universal lumpers inc.	
+Joe Curry, joe.curry@bellideas.com, bell ideas
 Tina Harris, tharris@gmail.com, quickpro
 Luis Fiego, luis42@plymouth.edu, plymouth university
+```
 
 Once you've done so, you can count up the companies in your updated list to find which companies may be compromised more severely than others.
 
 <Callout kind="info">
   **For larger amount of people data**
 
-For anything searching a large amount of people data, we recommend automating this with our Datafiniti People API Search. For more on that you can read more here: [People Use Cases](/docs/people-use-cases)
+  For anything searching a large amount of people data, we recommend automating this with our Datafiniti People API Search. For more on that you can read more here: [People Use Cases](/docs/people-use-cases).
+
 </Callout>
 
+## Running this at scale
+
+When the target list is more than a handful of rows, automate the match, enrich, and aggregate loop through the API instead of working through the portal. That gives you repeatable queries and a full download you can aggregate directly.
+
+The [People API Features](/docs/people-api-features) page covers the request options, [Constructing People Queries](/docs/constructing-people-queries) explains the query syntax, and [People Data with Python](/docs/people-data-with-python) shows how to drive the API from a script.
+
+To download the full result set as a file, add `download`, `format`, and a `num_records` cap to your query:
+
+```json
+{
+  "query": "emails:\"joe.curry@bellideas.com\" OR emails:\"tharris@gmail.com\" OR emails:\"luis42@plymouth.edu\"",
+  "download": true,
+  "format": "CSV",
+  "num_records": 3
+}
+```
+
+A CSV download puts each people schema field in its own column, so you can group by `businessName` and count rows in a spreadsheet or BI tool without reshaping the data.
+
+## Next steps
+
+For the company-level view, see [Identifying companies with employees targeted by cyberattacks](/docs/identifying-companies-with-employees-targeted-by-cyberattacks), which ranks employers by how many of their people appear on your list. Browse the other workflows on [People Use Cases](/docs/people-use-cases).
+
+<Columns cols={2}>
+  <Card title="Rank companies by exposure" href="/docs/identifying-companies-with-employees-targeted-by-cyberattacks" icon="shield">
+
+  See which employers carry the most compromised accounts.
+
+  </Card>
+  <Card title="Browse people use cases" href="/docs/people-use-cases" icon="users">
+
+  Find other workflows for people data.
+
+  </Card>
+</Columns>
