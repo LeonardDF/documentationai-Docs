@@ -406,7 +406,7 @@
       "delete": {
         "operationId": "cancelDownload",
         "summary": "Cancel a Download",
-        "description": "Cancel an in-progress download. Cancelling a download will stop it, but not delete it. It will still include all records that were added before cancellation, and you can still retrieve these records via `GET /downloads/{id}`. Your account will still have credits deducted for the number of records added before cancellation.",
+        "description": "Cancel an in-progress download. A download can be cancelled only while its status is `queued` or `running`; downloads that have already completed cannot be cancelled. Cancelling stops the download but does not delete it: records added before cancellation are retained and remain retrievable via `GET /downloads/{id}`. Result links expire after 7 days. Credits for records added before cancellation are still deducted, as before.",
         "tags": [
           "Downloads"
         ],

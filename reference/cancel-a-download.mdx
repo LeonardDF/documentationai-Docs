@@ -4,10 +4,19 @@ description: "Cancel an in-progress download. Cancelled downloads retain records
 ---
 
 <Callout kind="alert">
-Cancelling a download will stop the download, but not delete it. It will still include all records that were added to the download before it was cancelled, and you will be able to retrieve these records still, through `GET /downloads/{id}`.
+
+Cancel a download only while its status is `queued` or `running`. Downloads that have already completed cannot be cancelled. Cancelling stops the download but does not delete it: records added before cancellation are retained and remain retrievable through `GET /downloads/{id}`.
+
 </Callout>
 
 <Callout kind="info">
-Your account will still have credits deducted for the number of records that were added before the download was cancelled.
+
+Result links for a download expire after 7 days. Retrieve the records before then.
+
 </Callout>
 
+<Callout kind="info">
+
+Your account will still have credits deducted for the number of records that were added before the download was cancelled.
+
+</Callout>
