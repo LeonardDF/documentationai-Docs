@@ -1,6 +1,11 @@
 ---
 title: Constructing Business Queries
 ---
+> For the complete documentation index, see [llms.txt](https://docs.datafiniti.co/llms.txt).
+> Use it to discover all available pages before exploring further.
+
+#
+
 The Datafiniti API lets you build out a wide variety of search queries so you can get the exact data you want.
 
 ## Querying a Single Field
@@ -43,11 +48,11 @@ You can use the `OR` operator to run broader queries.  For example:
 }
 ```
 
-That's not all though.  We can group fields and operators with parentheses to do some really fancy stuff:
+You can also group fields and operators with parentheses. Keep grouping to one level where you can (see [Keep Grouping Simple](#keep-grouping-simple)):
 
 ```json
 {
-	"query": "(categories:hotels OR categories:restaurants) AND city:Austin"
+	"query": "categories:(hotels OR restaurants) AND city:Austin"
 }
 ```
 
@@ -61,13 +66,39 @@ If you want to query multiple values within the same field, there is a simple wa
 }
 ```
 
-This returns any businesses matching any of the above categories.  This is much simpler than:
+Using () parenthesis allows the field names to contain multiple OR or AND&#x20;
+
+## Keep Grouping Simple
+
+When a query covers several values for the same fields, put each field's values in one list and join the fields with `AND`. Don't build a separate parenthesized clause for each group, and don't nest groups inside other groups.
+
+For example, a search for restaurants in parts of the St. Louis metro on both sides of the Missouri–Illinois line is often written with one clause per state:
 
 ```json
 {
-	"query": "categories:hotels OR categories:restaurants OR categories:bars"
+	"query": "categories:restaurants AND ((province:MO AND city:(Florissant OR \"Maryland Heights\")) OR (province:IL AND city:(Belleville OR Edwardsville)))"
 }
 ```
+
+Use one list per field instead:
+
+```json
+{
+	"query": "categories:restaurants AND province:(MO OR IL) AND city:(Florissant OR \"Maryland Heights\" OR Belleville OR Edwardsville)"
+}
+```
+
+<Callout kind="info" collapsed="false">
+  **Check for values that repeat across groups**
+
+  The flat query matches every combination of its lists. If a value exists in more than one group (Springfield is a city in both Missouri and Illinois), the flat query also returns it from the other group. Run a free count on both versions. If the difference matters, keep the query flat and switch to a field that is unique on its own, such as `postalCode`, rather than nesting:
+
+  ```json
+  {
+  	"query": "categories:restaurants AND postalCode:(63031 OR 63043 OR 62220 OR 62025)"
+  }
+  ```
+</Callout>
 
 ## Wildcards
 
@@ -145,7 +176,7 @@ Along with querying individual sub-fields, you can also query for sub-objects th
 
 ```text
 {
-   "query":"{ reviews.rating:5 AND reviews.userProvince:Austin }",
+   "query":"reviews.rating:5 AND reviews.userProvince:Austin",
     "num_records":10
 }
 ```

@@ -1,6 +1,11 @@
 ---
 title: Constructing Product Queries
 ---
+> For the complete documentation index, see [llms.txt](https://docs.datafiniti.co/llms.txt).
+> Use it to discover all available pages before exploring further.
+
+#
+
 The Datafiniti API lets you build out a wide variety of search queries so you can get the exact data you want.
 
 ## Querying a Single Field
@@ -43,7 +48,7 @@ You can use the `OR` operator to run broader queries.  For example:
 }
 ```
 
-That's not all though.  We can group fields and operators with parentheses to do some really fancy stuff:
+You can also group fields and operators with parentheses. Keep grouping to one level where you can (see [Keep Grouping Simple](#keep-grouping-simple)):
 
 ```json
 {
@@ -68,6 +73,34 @@ This returns any products matching any of the above categories.  This is much si
   "query": "categories:laptops OR categories:desktops OR categories:tablets"
 }
 ```
+
+## Keep Grouping Simple
+
+When a query covers several values for the same fields, put each field's values in one list and join the fields with `AND`. Don't wrap each value in its own clause, and don't nest groups inside other groups.
+
+Avoid:
+
+```json
+{
+  "query": "((brand:Apple OR brand:Samsung) AND (categories:\"gaming laptops\" OR categories:tablets))"
+}
+```
+
+Use one list per field instead:
+
+```json
+{
+  "query": "brand:(Apple OR Samsung) AND categories:(\"gaming laptops\" OR tablets)"
+}
+```
+
+Both queries return the same records. The second is shorter and easier to check.
+
+<Callout kind="info" collapsed="false">
+  **Flattening can change what you match**
+
+  A flat query matches every combination of its lists. `(brand:Apple AND categories:tablets) OR (brand:Samsung AND categories:\"gaming laptops\")` asks only for Apple tablets and Samsung gaming laptops. Flattening it to `brand:(Apple OR Samsung) AND categories:(tablets OR \"gaming laptops\")` also returns Samsung tablets and Apple gaming laptops. When you need specific pairs like this, run one simple query per pair instead of nesting them.
+</Callout>
 
 ## Wildcards
 
@@ -190,7 +223,7 @@ You can use the API to search via the `address` field. For example, if you would
 
 ```json
 {
-    "query":"address:\"2815 Manor Rd\" AND postalCode:78722"
+    "query":"address:"2815 Manor Rd" AND postalCode:78722"
 }
 ```
 
