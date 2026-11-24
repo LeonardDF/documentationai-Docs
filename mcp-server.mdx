@@ -1,10 +1,13 @@
 ---
 title: MCP Server
-description: >-
-  Connect an MCP-aware AI client to Datafiniti through the Model Context
-  Protocol to search, count, and download product, business, property, and
-  people data.
 ---
+> For the complete documentation index, see [llms.txt](https://docs.datafiniti.co/llms.txt).
+> Use it to discover all available pages before exploring further.
+
+# MCP Server
+
+Connect an MCP-aware AI client to Datafiniti through the Model Context Protocol to search, count, and download product, business, property, and people data.
+
 # Using Datafiniti's MCP Server
 
 The Datafiniti MCP server lets any MCP-aware client — Claude, ChatGPT, Codex, Cursor, or an agent framework — query Datafiniti's product, business, property, and people data directly. It's one of several ways to use Datafiniti with AI (see the [Overview](https://docs.datafiniti.co/overview)); this one is best when you want an assistant or agent to _run_ queries on its own rather than just help you write them.
@@ -68,7 +71,7 @@ claude mcp add --transport http datafiniti https://api.datafiniti.co/v4/mcp \
   --header "Authorization: Bearer $DATAFINITI_API_TOKEN"
 ```
 
-**Cursor / VS Code / Codex / generic&#x20;****`mcpServers`****&#x20;config**
+**Cursor / VS Code / Codex / generic `mcpServers` config**
 
 Most config-file clients accept a `mcpServers` block. Add:
 
@@ -175,7 +178,7 @@ Returns `{ "num_found": <int> }`. No credit cost.
 
 Returns `{ "num_found", "total_cost", "records": [...] }` — the same shape as a REST search.
 
-**`num_records`****\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\* defaults to 1**
+**`num_records`\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\* defaults to 1**
 
 If you don't set `num_records`, `df_search` returns a single record. Set it explicitly (up to 50) when you want more.
 
@@ -331,6 +334,31 @@ Models predictably make a few mistakes against these schemas. If you're writing 
 - **Property status is split by side.** Sale-side values live on `mostRecentStatus`; rental-side values on `mostRecentRentalStatus`. A rental value queried against the sale field returns zero results.
 - **Enum fields need exact values** from the Possible Values pages — not paraphrases.
 - **Count before you search or download** to size a result set without spending credits.
+- **Keep boolean logic flat.** Put all values for a field in one `field:(A OR B)` group and join fields with `AND`. Don't nest one clause per group inside another group. If a value exists in more than one group, use a field that is unique on its own, such as `countyFIPS`, rather than nesting.
+
+For example, a two-state metro query for Kansas City (Missouri and Kansas) is often written with a nested clause per state:
+
+```json
+{
+  "data_type": "property",
+  "query": "country:US AND propertyType:(\"Single Family Dwelling\" OR \"Multi-Family Dwelling\") AND ((province:MO AND county:(Jackson OR Clay)) OR (province:KS AND county:(Johnson OR Wyandotte)))"
+}
+```
+
+Flatten it into one list. County FIPS codes are unique nationwide, so the query needs no `province` filter:
+
+```json
+{
+  "data_type": "property",
+  "query": "country:US AND propertyType:(\"Single Family Dwelling\" OR \"Multi-Family Dwelling\") AND countyFIPS:(29095 OR 29047 OR 20091 OR 20209)"
+}
+```
+
+<Callout kind="info" collapsed="false">
+  **Flat county names can over-match**
+
+  `province:(MO OR KS) AND county:(Jackson OR Clay OR Johnson OR Wyandotte)` is also flat, but it matches every state-county combination. Jackson and Clay Counties exist in Kansas, and Johnson County exists in Missouri, so this version returns extra records. Run `df_count` on both versions to compare.
+</Callout>
 
 ## Credits
 
@@ -345,9 +373,9 @@ To keep spend predictable: run `df_count` first, keep `num_records` low while it
 
 ## Limits
 
-- **Records per&#x20;****`df_search`****&#x20;call:** 50.
-- **Records via paging (****`df_search`****):** up to 10,000 total for a query. Beyond that, use `df_start_download`.
-- **Records per download (****`df_start_download`****):** governed by your [subscription plan](https://portal.datafiniti.co/settings/billing/subscription), not a fixed MCP cap.
+- **Records per `df_search` call:** 50.
+- **Records via paging (`df_search`):** up to 10,000 total for a query. Beyond that, use `df_start_download`.
+- **Records per download (`df_start_download`):** governed by your [subscription plan](https://portal.datafiniti.co/settings/billing/subscription), not a fixed MCP cap.
 - **Download link lifetime:** 7 days.
 - **Rate limiting:** Datafiniti reserves the right to restrict, limit, throttle, or suspend API access at its discretion, and to protect infrastructure from unreasonable load, as described in the API Usage section of the [Terms of Use](https://www.datafiniti.co/terms). Don't attempt to circumvent throttling or suspension (for example, by rotating IPs) — that's a Terms violation. Build clients to back off and retry rather than hammer the endpoint.
 
@@ -411,9 +439,10 @@ For full, end-to-end walkthroughs per data type — count, search, a data-type-s
 
 ## Troubleshooting
 
-- **`tools/list`****\*\*\*\*\*\*\*\*\*\*\*\* returns nothing / connection refused** — re-check the URL and that your `Accept` header includes both `application/json` and `text/event-stream`. Try the [cURL smoke test](/reference/api-status-check).
+- **`tools/list`\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\* returns nothing / connection refused** — re-check the URL and that your `Accept` header includes both `application/json` and `text/event-stream`. Try the [cURL smoke test](/reference/api-status-check).
 - **401 / auth error** — confirm `DATAFINITI_API_TOKEN` is set and current; it regenerates on password change.
-- **A client won't accept the&#x20;****`Authorization`****&#x20;header** — use the `mcp-remote` bridge, or the OAuth flow on the [Claude](https://docs.datafiniti.co/claude) page.
+- **A client won't accept the `Authorization` header** — use the `mcp-remote` bridge, or the OAuth flow on the [Claude](https://docs.datafiniti.co/claude) page.
+- **Queries return more records than expected** — check for a flat list that matches a value in the wrong group (for example, a county name that exists in two states). Use a field that is unique on its own, such as `countyFIPS`. See [Tips for agents](#tips-for-agents).
 - **Queries return zero unexpectedly** — a zero-result query isn't an error; adjust it. Check for a rental status queried against the sale field, an enum value that isn't in Possible Values, or a field name that doesn't match the schema. Run `df_count` to test changes for free.
 
 ## Next steps

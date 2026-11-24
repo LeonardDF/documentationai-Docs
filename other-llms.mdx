@@ -1,10 +1,13 @@
 ---
 title: Other LLMs
-description: >-
-  Use any capable model with Datafiniti — via MCP, tool-calling, or plain
-  conversation — by supplying the API endpoint, authentication, and query
-  syntax.
 ---
+> For the complete documentation index, see [llms.txt](https://docs.datafiniti.co/llms.txt).
+> Use it to discover all available pages before exploring further.
+
+# Other LLMs
+
+Use any capable model with Datafiniti — via MCP, tool-calling, or plain conversation — by supplying the API endpoint, authentication, and query syntax.
+
 # Using Other LLMs & Datafiniti's MCP
 
 You aren't limited to Claude, ChatGPT, or Codex. Any capable model can work with Datafiniti, because AI access is just the Datafiniti API plus its query syntax. This is one of several ways to use Datafiniti with AI — see the [Overview](https://docs.datafiniti.co/overview) — and it's the catch-all for models that have their own MCP support, their own tool-calling, or nothing but a chat box.
@@ -41,6 +44,11 @@ Datafiniti queries use field:value syntax with boolean operators
 nested sub-fields (e.g. descriptions.value), ranges for date/number
 fields, and {} to match multiple sub-fields within one nested object.
 Exact-match values use escaped quotes, e.g. brand:\"Apple\".
+Keep logic flat: put all values for one field in a single
+field:(A OR B OR C) group and join fields with AND. Do not nest
+groups inside groups, such as ((a:1 AND b:X) OR (a:2 AND b:Y)).
+If a value could match in more than one group, use a field that is
+unique on its own (for example countyFIPS) instead of nesting.
 ```
 
 ## Approach 3 — Plain conversation (any model)
@@ -52,6 +60,28 @@ This works everywhere, keeps your credentials out of the model, and costs no cre
 **Give the model the right context**
 
 Less capable or less familiar models especially benefit from being handed the actual reference material — the query-construction guide for your data type (for example [Constructing Product Queries](https://docs.datafiniti.co/docs/constructing-product-queries)) and the possible-values page for any enum fields. Without it, a model will guess at field names and syntax.
+
+## Keep query logic flat
+
+Models often build one parenthesized clause per group, then nest those clauses inside each other. These queries are hard to read and easy to break. Ask for flat logic instead: one `field:(A OR B OR C)` list per field, joined with `AND`.
+
+For example, a request for single and multi-family homes in the core St. Louis metro (Missouri plus Illinois's Metro East) often comes back nested by state:
+
+```typescript
+country:US AND propertyType:(\"Single Family Dwelling\" OR \"Multi-Family Dwelling\") AND ((province:MO AND county:(\"St. Louis\" OR \"St. Charles\")) OR (province:IL AND county:(Madison OR \"St. Clair\")))
+```
+
+Use one flat list instead. County FIPS codes are unique nationwide, so they cover both states without `province` or spelling variants like St. vs. Saint:
+
+```typescript
+country:US AND propertyType:(\"Single Family Dwelling\" OR \"Multi-Family Dwelling\") AND countyFIPS:(29510 OR 29189 OR 29183 OR 17119 OR 17163)
+```
+
+<Callout kind="info" collapsed="false">
+  **Watch for values that repeat across groups**
+
+  A shortcut like `province:(MO OR IL) AND county:(\"St. Louis\" OR \"St. Charles\" OR Madison OR \"St. Clair\")` is flat, but it matches every state-county combination. Madison and St. Clair Counties also exist in Missouri, so this version returns extra records. When a value can appear in more than one group, switch to a field that is unique on its own rather than nesting.
+</Callout>
 
 ## What every approach needs
 
@@ -76,5 +106,6 @@ Because a less familiar model may produce an invalid query, it's worth confirmin
 
 1. Run the model's query through `df_count` (or a REST count) first — a zero or absurd count usually means a bad field name or unescaped quote.
 2. Check field names against the data type's schema page.
-3. Test in [Postman](https://docs.datafiniti.co/postman) before automating.
+3. Check for nested groups like `((...) OR (...))` and ask the model to flatten them (see [Keep query logic flat](#keep-query-logic-flat)).
+4. Test in [Postman](https://docs.datafiniti.co/postman) before automating.
 
